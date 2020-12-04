@@ -1,5 +1,5 @@
 {
-  "name": "image-board-viewer-vue-cli",
+  "name": "material-e621",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,12 +8,13 @@
     "lint": "vue-cli-service lint",
     "format": "npx prettier --write './**/*.{vue,js,json,scss,json5}'",
     "postinstall": "npm run build-icons",
-    "build-icons": "node icons/build-icons"
+    "build-icons": "npx ts-node icons/build-icons"
   },
   "dependencies": {
     "@mdi/font": "^2.8.94",
     "@types/debug": "^4.1.5",
     "@types/hammerjs": "^2.0.36",
+    "@types/node": "^14.14.10",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "@vue/cli-plugin-babel": "~4.4.0",
@@ -63,6 +64,7 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "to-ico": "^1.1.5",
+    "ts-node": "^9.1.0",
     "twemoji": "^11.2.0",
     "typeface-roboto": "0.0.54",
     "typescript": "~3.9.3",

@@ -4,7 +4,7 @@ const fs = require("fs");
 
 console.log(__dirname);
 
-const resizeImages = async (sizes) => {
+const resizeImages = async (sizes: number[]) => {
   for (const size of sizes) {
     const icon = await Jimp.read(`${__dirname}/icon.png`);
     icon
@@ -13,18 +13,22 @@ const resizeImages = async (sizes) => {
   }
 };
 
-const generateIco = (sizes) => {
+const generateIco = (sizes: number[]) => {
   return new Promise((resolve, reject) => {
-    fs.readFile(`${__dirname}/icon.png`, (err, data) => {
+    fs.readFile(`${__dirname}/icon.png`, (err: Error, data: Buffer) => {
       if (err) return reject(err);
       toIco(data, {
         resize: true,
         sizes,
-      }).then((buf) => {
-        fs.writeFile(`${__dirname}/../public/favicon.ico`, buf, (err) => {
-          if (err) return reject(err);
-          resolve();
-        });
+      }).then((buf: Buffer) => {
+        fs.writeFile(
+          `${__dirname}/../public/favicon.ico`,
+          buf,
+          (err: Error) => {
+            if (err) return reject(err);
+            resolve();
+          },
+        );
       });
     });
   });
