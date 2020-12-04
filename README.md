@@ -1,5 +1,11 @@
 # Material e621
 
+## some goals for this project
+
+- rewrite everything using typescript, vue3 function api and vuetify 3; with more focus on performance
+- more customizability, re-add features removed during rewriting
+- create a desktop application
+
 ```plaintext
                 .,ccc,
                .cdxxxo.
