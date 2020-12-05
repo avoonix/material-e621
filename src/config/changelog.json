@@ -1,0 +1,21 @@
+[
+  {
+    "large": true,
+    "color": "light-blue lighten-3",
+    "opposite": "Winter 2020",
+    "headline": "Upcoming Version",
+    "changes": [
+      {
+        "text": "Change a bunch of stuff",
+        "color": "orange",
+        "description": "Rewrite"
+      }
+    ]
+  },
+  {
+    "color": "light-green",
+    "opposite": "Upcoming",
+    "headline": "Upcoming version",
+    "text": "Under development"
+  }
+]

@@ -1,0 +1,176 @@
+{
+  "ratingTags": [
+    {
+      "text": "rating:safe",
+      "color": "light-green lighten-4",
+      "display": "Safe"
+    },
+    {
+      "text": "rating:questionable",
+      "color": "orange lighten-3",
+      "display": "Questionable"
+    },
+    {
+      "text": "rating:explicit",
+      "color": "red darken-2",
+      "display": "Explicit"
+    }
+  ],
+  "metaTags": [
+    {
+      "text": "rating:safe",
+      "color": "light-green lighten-4",
+      "display": "Safe"
+    },
+    {
+      "text": "rating:questionable",
+      "color": "orange lighten-3",
+      "display": "Questionable"
+    },
+    {
+      "text": "rating:explicit",
+      "color": "red darken-2",
+      "display": "Explicit"
+    },
+    {
+      "text": "type:jpg",
+      "color": "blue-grey",
+      "display": "JPG Image"
+    },
+    {
+      "text": "type:png",
+      "color": "blue-grey",
+      "display": "PNG Image"
+    },
+    {
+      "text": "type:gif",
+      "color": "blue-grey",
+      "display": "GIF Image"
+    },
+    {
+      "text": "type:swf",
+      "color": "blue-grey",
+      "display": "SWF Flash"
+    },
+    {
+      "text": "type:webm",
+      "color": "blue-grey",
+      "display": "WEBM Video"
+    },
+    {
+      "text": "score:>=100",
+      "color": "blue-grey",
+      "display": "Posts with at least 100 likes"
+    },
+    {
+      "text": "score:>=200",
+      "color": "blue-grey",
+      "display": "Posts with at least 200 likes"
+    },
+    {
+      "text": "score:>=300",
+      "color": "blue-grey",
+      "display": "Posts with at least 300 likes"
+    },
+    {
+      "text": "score:>=400",
+      "color": "blue-grey",
+      "display": "Posts with at least 400 likes"
+    },
+    {
+      "text": "favcount:>=100",
+      "color": "blue-grey",
+      "display": "Posts with at least 100 favorites"
+    },
+    {
+      "text": "favcount:>=200",
+      "color": "blue-grey",
+      "display": "Posts with at least 200 favorites"
+    },
+    {
+      "text": "favcount:>=300",
+      "color": "blue-grey",
+      "display": "Posts with at least 300 favorites"
+    },
+    {
+      "text": "favcount:>=400",
+      "color": "blue-grey",
+      "display": "Posts with at least 400 favorites"
+    },
+    {
+      "text": "filesize:<=100kb",
+      "color": "blue-grey",
+      "display": "Files smaller than 100kb"
+    },
+    {
+      "text": "filesize:<=1mb",
+      "color": "blue-grey",
+      "display": "Files smaller than 1mb"
+    },
+    {
+      "text": "filesize:>=1mb",
+      "color": "blue-grey",
+      "display": "Files bigger than 1mb"
+    },
+    {
+      "text": "filesize:>=10mb",
+      "color": "blue-grey",
+      "display": "Files bigger than 10mb"
+    },
+    {
+      "text": "tagcount:>=100",
+      "color": "blue-grey",
+      "display": "Posts with more than 100 tags"
+    },
+    {
+      "text": "tagcount:>=50",
+      "color": "blue-grey",
+      "display": "Posts with more than 50 tags"
+    },
+    {
+      "text": "tagcount:<=50",
+      "color": "blue-grey",
+      "display": "Posts with less than 50 tags"
+    },
+    {
+      "text": "ratio:1.33",
+      "color": "blue-grey",
+      "display": "Aspect ratio: 4:3 landscape"
+    },
+    {
+      "text": "ratio:0.75",
+      "color": "blue-grey",
+      "display": "Aspect ratio: 4:3 portrait"
+    },
+    {
+      "text": "ratio:1.77",
+      "color": "blue-grey",
+      "display": "Aspect ratio: 16:9 landscape"
+    },
+    {
+      "text": "ratio:0.56",
+      "color": "blue-grey",
+      "display": "Aspect ratio: 16:9 portrait"
+    },
+    {
+      "text": "ratio:2.33",
+      "color": "blue-grey",
+      "display": "Aspect ratio: 21:9 landscape"
+    },
+    {
+      "text": "ratio:0.43",
+      "color": "blue-grey",
+      "display": "Aspect ratio: 21:9 portrait"
+    },
+    {
+      "text": "ratio:1",
+      "color": "blue-grey",
+      "display": "Aspect ratio: 1:1"
+    },
+    {
+      "text": "order:random",
+      "color": "blue-grey",
+      "display": "Random order"
+    }
+  ]
+}

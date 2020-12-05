@@ -1,0 +1,140 @@
+{
+  "none": {
+    "name": "No transition"
+  },
+  "fade": {
+    "name": "Fade",
+    "left": {
+      "enter": "fadeInLeft",
+      "leave": "fadeOutRight"
+    },
+    "none": {
+      "enter": "fadeIn",
+      "leave": "fadeOut"
+    },
+    "right": {
+      "enter": "fadeInRight",
+      "leave": "fadeOutLeft"
+    }
+  },
+  "fadebig": {
+    "name": "Fade (big)",
+    "left": {
+      "enter": "fadeInLeftBig",
+      "leave": "fadeOutRightBig"
+    },
+    "none": {
+      "enter": "fadeIn",
+      "leave": "fadeOut"
+    },
+    "right": {
+      "enter": "fadeInRightBig",
+      "leave": "fadeOutLeftBig"
+    }
+  },
+  "bounce": {
+    "name": "Bounce",
+    "left": {
+      "enter": "bounceInLeft",
+      "leave": "bounceOutRight"
+    },
+    "none": {
+      "enter": "bounceIn",
+      "leave": "bounceOut"
+    },
+    "right": {
+      "enter": "bounceInRight",
+      "leave": "bounceOutLeft"
+    }
+  },
+  "zoom": {
+    "name": "Zoom",
+    "left": {
+      "enter": "zoomInLeft",
+      "leave": "zoomOutRight"
+    },
+    "none": {
+      "enter": "zoomIn",
+      "leave": "zoomOut"
+    },
+    "right": {
+      "enter": "zoomInRight",
+      "leave": "zoomOutLeft"
+    }
+  },
+  "zoomalt": {
+    "name": "Zoom (alternative)",
+    "left": {
+      "enter": "zoomIn",
+      "leave": "zoomOutRight"
+    },
+    "none": {
+      "enter": "zoomIn",
+      "leave": "zoomOut"
+    },
+    "right": {
+      "enter": "zoomIn",
+      "leave": "zoomOutLeft"
+    }
+  },
+  "slide": {
+    "name": "Slide",
+    "left": {
+      "enter": "slideInLeft",
+      "leave": "slideOutRight"
+    },
+    "none": {
+      "enter": "slideInDown",
+      "leave": "slideOutDown"
+    },
+    "right": {
+      "enter": "slideInRight",
+      "leave": "slideOutLeft"
+    }
+  },
+  "slidealt": {
+    "name": "Slide (alternative)",
+    "left": {
+      "enter": "slideInLeft",
+      "leave": "fadeOut"
+    },
+    "none": {
+      "enter": "slideInUp",
+      "leave": "slideOutUp"
+    },
+    "right": {
+      "enter": "fadeIn",
+      "leave": "slideOutLeft"
+    }
+  },
+  "rotate": {
+    "name": "Rotate",
+    "left": {
+      "enter": "rotateInDownLeft",
+      "leave": "rotateOutDownLeft"
+    },
+    "none": {
+      "enter": "rotateIn",
+      "leave": "rotateOut"
+    },
+    "right": {
+      "enter": "rotateInDownRight",
+      "leave": "rotateOutDownRight"
+    }
+  },
+  "rotatealt": {
+    "name": "Rotate (alternative)",
+    "right": {
+      "enter": "rotateInUpRight",
+      "leave": "rotateOutDownRight"
+    },
+    "none": {
+      "enter": "rotateIn",
+      "leave": "rotateOut"
+    },
+    "left": {
+      "enter": "rotateInUpLeft",
+      "leave": "rotateOutDownLeft"
+    }
+  }
+}
