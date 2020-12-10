@@ -19,22 +19,6 @@ const wait = (t) => {
   return new Promise((r) => setTimeout(r, t));
 };
 
-const getNextOrPreviousPost = ({
-  nextOffset /*either +1 or -1*/,
-  posts,
-  currentId,
-}) => {
-  const index = posts.findIndex((post) => post.id == currentId);
-  let i = index + nextOffset;
-  while (posts[i]) {
-    // if (posts[i].file_ext != "webm") {
-    return { index: i, id: posts[i].id };
-    // }
-    // i += nextOffset;
-  }
-  return false;
-};
-
 // store.state.route.path   // current path (string)
 // store.state.route.params // current params (object)
 // store.state.route.query  // current query (object)
@@ -348,23 +332,6 @@ const createStore = () => {
           })
           .catch(console.log);
       },
-      nextFullscreenPost({ dispatch, getters }) {
-        const result = getNextOrPreviousPost({
-          nextOffset: 1,
-          currentId: getters[GETTERS.GET_FULLSCREEN_POST].id,
-          posts: getters[GETTERS.GET_VISIBLE_POSTS],
-        });
-        if (result) dispatch(ACTIONS.SET_FULLSCREEN_POST_ID, result.id);
-      },
-      previousFullscreenPost({ dispatch, getters }) {
-        const result = getNextOrPreviousPost({
-          nextOffset: -1,
-          currentId: getters[GETTERS.GET_FULLSCREEN_POST].id,
-          posts: getters[GETTERS.GET_VISIBLE_POSTS],
-        });
-
-        if (result) dispatch(ACTIONS.SET_FULLSCREEN_POST_ID, result.id);
-      },
       [ACTIONS.LOAD_COMMENTS]({ state, getters }, { id }) {
         if (!(state.allPosts[id] || {}).has_comments) {
           state.comments = { ...state.comments, [id]: Object.seal([]) };
@@ -445,22 +412,6 @@ const createStore = () => {
       },
       [GETTERS.GET_DETAILS_VIEW_POST](state, getters) {
         return getters[GETTERS.GET_POST](state.detailed);
-      },
-      hasPreviousFullscreenPost(state, getters) {
-        const result = getNextOrPreviousPost({
-          nextOffset: -1,
-          currentId: getters[GETTERS.GET_FULLSCREEN_POST].id,
-          posts: getters[GETTERS.GET_VISIBLE_POSTS],
-        });
-        return !!result;
-      },
-      hasNextFullscreenPost(state, getters) {
-        const result = getNextOrPreviousPost({
-          nextOffset: 1,
-          currentId: getters[GETTERS.GET_FULLSCREEN_POST].id,
-          posts: getters[GETTERS.GET_VISIBLE_POSTS],
-        });
-        return !!result;
       },
     },
   });

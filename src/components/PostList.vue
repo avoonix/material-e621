@@ -1,70 +1,72 @@
 <template>
-  <!-- masonry -->
-  <masonry
-    v-if="layout == 'masonry'"
-    :size="size"
-    :is-dialog="isDialog"
-    :layout="layout"
-    :visible-posts="visiblePosts"
-  />
-  <div v-else>
-    <!-- grid -->
-    <template v-if="!(layout == 'blog' || layout.startsWith('feed'))">
-      <v-layout row wrap="">
-        <template v-for="(post, index) in visiblePosts">
-          <v-flex :key="index" v-bind="gridSizes">
-            <post
-              :key="post.id"
-              :post="post"
-              :is-dialog="isDialog"
-              :size="size"
-              :layout="layout"
-            />
-          </v-flex>
-        </template>
-      </v-layout>
+  <!-- grid -->
+  <v-layout v-if="!(layout == 'blog' || layout.startsWith('feed'))" row wrap="">
+    <template v-for="(post, index) in visiblePosts">
+      <v-flex :key="post.id" v-bind="gridSizes">
+        <post
+          :key="post.id"
+          :post="post"
+          :is-dialog="isDialog"
+          :size="size"
+          :layout="layout"
+          ref="posts"
+          @open-post="$emit('open-post', $event)"
+        />
+      </v-flex>
     </template>
-    <!-- blog/feed -->
-    <v-flex
-      v-else
-      xs12
-      lg6
-      :offset-lg3="!layout.startsWith('feed')"
-      :offset-lg2="layout.startsWith('feed')"
-      md8
-      :offset-md2="!layout.startsWith('feed')"
-      :offset-md1="layout.startsWith('feed')"
-      wrap=""
-    >
-      <template>
-        <v-flex
-          :key="index"
-          xs12
-          class="mb-5"
-          v-for="(post, index) in visiblePosts"
-        >
-          <post
-            :post="post"
-            :key="post.id"
-            :is-dialog="isDialog"
-            :size="size"
-            :layout="layout"
-          />
-        </v-flex>
-      </template>
-    </v-flex>
-  </div>
+  </v-layout>
+  <!-- blog/feed -->
+  <v-flex
+    v-else
+    xs12
+    lg6
+    :offset-lg3="!layout.startsWith('feed')"
+    :offset-lg2="layout.startsWith('feed')"
+    md8
+    :offset-md2="!layout.startsWith('feed')"
+    :offset-md1="layout.startsWith('feed')"
+    wrap=""
+  >
+    <template>
+      <v-flex
+        :key="post.id"
+        xs12
+        class="mb-5"
+        v-for="(post, index) in visiblePosts"
+      >
+        <post
+          :post="post"
+          :key="post.id"
+          :is-dialog="isDialog"
+          :size="size"
+          :layout="layout"
+          ref="posts"
+          @open-post="$emit('open-post', $event)"
+        />
+      </v-flex>
+    </template>
+  </v-flex>
 </template>
 
 <script>
-import Masonry from "../components/Masonry.vue";
 import Post from "./Post.vue";
 import { GETTERS } from "../store/constants";
+
+function isAnyPartOfElementInViewport(el) {
+  const rect = el.getBoundingClientRect();
+  const windowHeight =
+    window.innerHeight || document.documentElement.clientHeight;
+  const windowWidth = window.innerWidth || document.documentElement.clientWidth;
+
+  const vertInView = rect.top <= windowHeight && rect.top + rect.height >= 0;
+  const horInView = rect.left <= windowWidth && rect.left + rect.width >= 0;
+
+  return vertInView && horInView;
+}
 
 export default {
   components: {
     Post,
-    Masonry,
   },
   props: {
     isDialog: {
@@ -77,7 +79,41 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      firstVisibleElement: null,
+    };
+  },
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.handleScroll);
+  },
+  watch: {
+    visiblePosts: {
+      async handler() {
+        const printVals = (el) => {
+          if (!el) {
+            console.log("no el");
+          }
+          let top = 0;
+
+          do {
+            top += el.offsetTop - el.scrollTop;
+          } while ((el = el.offsetParent));
+
+          return top;
+        };
+        if (this.firstVisibleElement) {
+          const el = this.firstVisibleElement.$el;
+          const oldScroll = printVals(el);
+          await this.$nextTick();
+          const newScroll = printVals(el);
+
+          window.scrollBy(0, newScroll - oldScroll);
+        }
+      },
+    },
   },
   computed: {
     gridSizes() {
@@ -102,12 +138,8 @@ export default {
     },
     size() {
       const layout = this.$store.getters[GETTERS.POST_LAYOUT];
-      if (
-        layout.startsWith("grid") ||
-        layout.startsWith("masonry") ||
-        layout.startsWith("feed")
-      ) {
-        return layout.replace(/(grid|masonry|feed)/gi, "");
+      if (layout.startsWith("grid") || layout.startsWith("feed")) {
+        return layout.replace(/(grid|feed)/gi, "");
       }
       return "md";
     },
@@ -118,6 +150,15 @@ export default {
       );
     },
   },
-  methods: {},
+  methods: {
+    handleScroll(event) {
+      if (this.visiblePosts && this.$refs.posts) {
+        this.firstVisibleElement = this.$refs.posts.find((post) =>
+          isAnyPartOfElementInViewport(post.$el),
+        );
+        // window.scroll(window.scrollX, window.scrollY + 100);
+      }
+    },
+  },
 };
 </script>

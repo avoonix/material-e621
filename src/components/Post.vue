@@ -272,40 +272,7 @@
 </template>
 
 <script>
-// post:
-//   id                The ID of the post
-//   author            Username of the user who uploaded the post
-//   creator_id        User ID of the user who uploaded the post
-//   created_at        When the post was uploaded
-//   status            Post status, one of: active, flagged, pending, deleted
-//   source            The post's source (if there are multiple sources, only the first one is returned
-//   sources           An array of the post's sources
-//   tags              The post's tags
-//   artist            A HTML-escaped JSON array of the post's artist tag(s). Use something like PHP's html_entity_decode() to decode the HTML string, then json_decode() to convert the JSON string to an array.
-//   description       The post's description
-//   fav_count         The number of users who have the post in their favorites
-//   score             The post's score
-//   rating            The post's rating. One of: e, q, s
-//   parent_id         If the post has a parent, the ID of the parent post
-//   has_children      If the post has any children
-//   children          Comma-separated list of post IDs of this post's children
-//   has_notes         If the post has any notes
-//   has_comments      If the post has any comments
-//   md5               The post's MD5 hash
-//   file_url          Absolute URL of the filename
-//   file_ext          The post's extension. One of: jpg, png, gif, swf, webm
-//   file_size         Size (in bytes) of the post
-//   width             Height of the image
-//   height            Height of the image
-//   sample_url        Absolute URL of the sample (scaled) filename
-//   sample_width      Height of the sample (scaled) image
-//   sample_height     Height of the sample (scaled) image
-//   preview_url       Absolute URL of the preview (thumbnail) filename
-//   preview_width     Height of the preview (thumbnail) image
-//   preview_height    Height of the preview (thumbnail) image
-//   delreason         Reason the post was deleted. Only appears on posts that have been deleted before.
 import DTextDisplay from "./DTextDisplay.vue";
-import prettyBytes from "pretty-bytes";
 import { GETTERS, ACTIONS } from "../store/constants";
 import TagLabel from "./TagLabel.vue";
 import PostButtons from "./PostButtons.vue";
@@ -362,11 +329,7 @@ export default {
       return this.$store.getters[GETTERS.IS_LOGGED_IN];
     },
     extraSpacing() {
-      return (
-        this.layout == "blog" ||
-        this.layout == "feed" ||
-        this.layout == "masonry"
-      );
+      return this.layout == "blog" || this.layout == "feed";
     },
     lessInfo() {
       return this.$store.getters[GETTERS.POST_COMPACTNESS] == "compact";
@@ -396,11 +359,7 @@ export default {
     },
     mainBackgroundColorClasses() {
       return {
-        box: !(
-          this.layout == "blog" ||
-          this.layout == "feed" ||
-          this.layout == "masonry"
-        ),
+        box: !(this.layout == "blog" || this.layout == "feed"),
         ...this.backgroundColorClasses,
       };
     },
@@ -474,10 +433,7 @@ export default {
       this.clicked = true;
     },
     setFullscreen() {
-      this.$store.dispatch(ACTIONS.SET_FULLSCREEN_POST_ID, false);
-      setTimeout(() => {
-        this.$store.dispatch(ACTIONS.SET_FULLSCREEN_POST_ID, this.post.id);
-      }, 10);
+      this.$emit("open-post", this.post.id);
     },
   },
 };

@@ -7,7 +7,7 @@
     scrollable
     persistent
   >
-    <div class="fullscreen grey darken-4">
+    <div class="fullscreen grey darken-4" v-if="current">
       <div class="flex">
         <div
           v-show="prevousNextButtons"
@@ -97,18 +97,9 @@
               <logo
                 class="centered-in-container"
                 svg-margin-auto
-                v-if="loading || (isPopup && !current)"
+                v-if="loading"
                 :loader="loading"
               />
-              <div v-if="!loading && !current && isPopup">
-                <div>
-                  Ready! Click the button again on any post to view it here
-                </div>
-                <div>
-                  You can even view previous/next posts, download files and view
-                  info
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -244,6 +235,7 @@ export default {
       }
     },
     openDetails() {
+      // TODO
       this.$store.dispatch(ACTIONS.SET_DETAILS_VIEW, {
         id: this.current.id,
       });
@@ -278,13 +270,13 @@ export default {
     showNextImage() {
       if (!this.hasNextFullscreenPost) return;
       this.loadStart();
-      this.$store.dispatch("nextFullscreenPost");
+      this.$emit("next-post");
       this.setTransitionNames(false);
     },
     showPreviousImage() {
       if (!this.hasPreviousFullscreenPost) return;
       this.loadStart();
-      this.$store.dispatch("previousFullscreenPost");
+      this.$emit("previous-post");
       this.setTransitionNames(true);
     },
     enableTouchRecognizer() {
@@ -477,16 +469,13 @@ export default {
       );
     },
     zoomedIn() {
-      if (!this.current && this.isPopup) {
-        return false;
-      }
       return this.zoom.level > 1 && !this.loading;
     },
     buttonLayout() {
       return this.$store.getters[GETTERS.FULLSCREEN_BUTTONS_LAYOUT];
     },
     zoomEnabled() {
-      return this.current.file_ext !== "swf" || (!this.current && this.isPopup);
+      return !!(this.current && this.current.file_ext !== "swf");
     },
     containerStyle() {
       const zoom = this.loading || !this.current ? this.initialZoom : this.zoom;
@@ -509,10 +498,7 @@ export default {
       return this.switched ? false : this.current.preview_url;
     },
     open() {
-      return !!(this.current || this.isPopup);
-    },
-    isPopup() {
-      return this.$store.getters[GETTERS.IS_POPUP];
+      return !!this.current;
     },
   },
 };

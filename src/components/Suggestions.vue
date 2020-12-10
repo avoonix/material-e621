@@ -95,12 +95,10 @@ export default {
           inBlacklist = true;
         }
       }
-      if (!this.$store.getters[GETTERS.IS_POPUP]) {
         if (inArray) options.push(menu.remove);
         if (!inArray) options.push(menu.add);
         if (!inArrayButNegated) options.push(menu.exclude);
         if (!inBlacklist) options.push(menu.blacklist);
-      }
       options.push(menu.wiki);
       options.push(menu.openNew);
       return options;
