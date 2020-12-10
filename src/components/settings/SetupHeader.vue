@@ -17,10 +17,10 @@
 export default {
   props: {
     step: {
-      type: Number | String,
+      type: [Number, String],
     },
     value: {
-      type: Number | String,
+      type: [Number, String],
     },
     name: {
       type: String,

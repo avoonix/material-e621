@@ -37,7 +37,6 @@ export const registerServiceWorker = async () => {
   //       //     }
   //       //   });
   //     });
-
   //     navigator.serviceWorker.controller.postMessage({
   //       text: "hi",
   //     });

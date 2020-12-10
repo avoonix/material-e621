@@ -28,8 +28,8 @@ export default new Router({
       name: "Posts",
       component: () =>
         // TODO: uncomment once completed
-        // import(/* webpackChunkName: "posts" */ "@/components/views/PostsPage"),
-        import ("@/components/Posts")
+        import(/* webpackChunkName: "posts" */ "@/components/views/PostsPage"),
+      // import ("@/components/Posts")
     },
     {
       path: "/settings",
