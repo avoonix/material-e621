@@ -135,11 +135,8 @@ const mobileBreakPoint = 1264;
 export default {
   metaInfo() {
     return {
-      title: "loading",
+      title: "Landing Page",
       titleTemplate: `${this.$appName} - %s`,
-      link: [
-        { rel: "shortcut icon", type: "image/x-icon", href: "/favicon.ico" },
-      ],
       meta: [
         {
           name: "description",

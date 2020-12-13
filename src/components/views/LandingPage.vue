@@ -8,7 +8,7 @@
       <v-layout column align-center justify-center fill-height class="">
         <logo mascot />
         <h1 class="mb-2 display-4 text-xs-center">Material e621</h1>
-        <div class="headline">Your personal e621 client</div>
+        <div class="headline">e621 client</div>
         <div class="ma-5">
           <v-btn
             large
