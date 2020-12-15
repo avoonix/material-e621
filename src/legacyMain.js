@@ -14,14 +14,11 @@ import { sync } from "vuex-router-sync";
 import MyPlugin from "./utilities/vuePlugin";
 import VueLazyload from "vue-lazyload";
 import Meta from "vue-meta";
-import { runWorker } from "./worker";
 import ExternalLink from "./components/ExternalLink";
 import Vuetify from "vuetify";
-import { UtilitiesPlugin } from "./utilities/utilities";
 
 import PortalVue from "portal-vue";
 Vue.use(PortalVue);
-Vue.use(UtilitiesPlugin);
 
 Vue.use(Vuetify, {
   iconfont: "mdi",
@@ -46,8 +43,6 @@ Vue.use(Meta, {
 
 const store = createStore();
 sync(store, router, { moduleName: "routerModule" });
-
-runWorker(store);
 
 Vue.config.productionTip = false;
 

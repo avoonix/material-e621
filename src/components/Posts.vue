@@ -87,7 +87,7 @@ import PostList from "../components/PostList.vue";
 // import Pagination from "../components/Pagination.vue";
 import FullscreenDialog from "./dialogs/FullscreenDialog.vue";
 // import DetailsDialog from "./dialogs/DetailsDialog.vue";
-import Logo from "./Logo.vue";
+import Logo from "./updated/dumb/Logo.vue";
 // import { GETTERS, ACTIONS } from "../store/constants";
 // import BlacklistSuggestions from "./BlacklistSuggestions.vue";
 // import { ratingTags } from "../config/customTags";

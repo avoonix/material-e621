@@ -1,9 +1,5 @@
 <template>
   <v-layout>
-    <v-menu offset-y :close-on-content-click="false">
-      <v-btn slot="activator" :color="currentColor" dark>Picker</v-btn>
-      <chrome disable-alpha v-model="currentColor" />
-    </v-menu>
     <v-select
       :background-color="currentColor"
       :items="colors"
@@ -16,8 +12,9 @@
       <template
         slot="selection"
         slot-scope="{ item, selected, disabled, index }"
-        >{{ item.name }}</template
       >
+        {{ item.name }}
+      </template>
       <template slot="item" slot-scope="{ item, title }">
         <v-list-tile-avatar>
           <v-avatar size="36" :color="item.value">
@@ -30,48 +27,58 @@
   </v-layout>
 </template>
 
-<script>
+<script lang="ts">
 import vuetifyColors from "vuetify/es5/util/colors";
-import { GETTERS, ACTIONS } from "../../store/constants";
-import colorOrder from "../../config/colorChooserOrder";
-import { Chrome } from "vue-color";
+import { computed, defineComponent } from "@vue/composition-api";
 
-const colors = Object.entries(vuetifyColors).reduce(
+const colorOrder = [
+  "darken4",
+  "darken3",
+  "darken2",
+  "darken1",
+  "base",
+  "lighten1",
+  "lighten2",
+  "lighten3",
+  "lighten4",
+  "accent1",
+  "accent2",
+  "accent3",
+];
+
+const colors = Object.entries(vuetifyColors).reduce<
+  { name: string; value: any }[]
+>(
   (prev, [color, cur]) => [
     ...prev,
-    ...Object.entries(cur)
+    ...Object.entries(cur as any)
       .filter(([k, _]) => colorOrder.indexOf(k) !== -1)
       .sort(([k1], [k2]) => colorOrder.indexOf(k2) - colorOrder.indexOf(k1))
-      .map(([k, c]) => ({ name: `${color} (${k})`, value: c })),
+      .map(([k, c]) => ({ name: `${color} ${k}`, value: c })),
   ],
   [],
 );
 
-export default {
-  components: {
-    Chrome,
-  },
+export default defineComponent({
   props: {
-    colorKey: {
+    color: {
       type: String,
-      default: "primary",
+      required: true,
     },
   },
-  computed: {
-    currentColor: {
+  setup(props, context) {
+    const currentColor = computed<string>({
       get() {
-        return this.$store.getters[GETTERS.CUSTOM_COLORS][this.colorKey];
+        return props.color;
       },
       set(val) {
-        this.$store.dispatch(ACTIONS.SET_CUSTOM_COLORS, {
-          key: this.colorKey,
-          color: val.hex || val,
-        });
+        context.emit("update:color", val);
       },
-    },
-    colors() {
-      return colors;
-    },
+    });
+    return {
+      currentColor,
+      colors,
+    };
   },
-};
+});
 </script>

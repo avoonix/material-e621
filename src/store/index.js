@@ -4,7 +4,6 @@ import {
   favoritePost,
   downloadPost,
   loadComments,
-  createQuery,
   normalizePosts,
 } from "./api";
 import snackbarModule from "./snackbar";
@@ -13,6 +12,7 @@ import { MUTATIONS, GETTERS, ACTIONS } from "./constants";
 import JSZip from "jszip";
 import { bitrate } from "../utilities/bitrate";
 import { getApiService } from "../worker/services";
+import { blacklistService } from "@/services";
 
 const wait = (t) => {
   // eslint-disable-next-line
@@ -299,12 +299,12 @@ const createStore = () => {
             service
               .getPosts({
                 limit: getters[GETTERS.POST_FETCH_COUNT],
-                tags: createQuery(
-                  getters[GETTERS.BLACKLIST_MODE],
-                  getters[GETTERS.GET_BLACKLIST_STRING],
-                  state.routerModule.query.tags || "",
-                  // state.allTags,
-                ),
+                // tags: createQuery(
+                //   getters[GETTERS.BLACKLIST_MODE],
+                //   blacklistService.tags.join(" "),
+                tags: state.routerModule.query.tags || "",
+                // state.allTags,
+                // ),
                 page: getters[GETTERS.IS_PAGINATED_MODE] ? page : undefined,
                 postsBefore: !getters[GETTERS.IS_PAGINATED_MODE]
                   ? before_id

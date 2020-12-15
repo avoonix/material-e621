@@ -10,6 +10,8 @@ import {
 } from "./api";
 import { isPostBlacklisted } from "./blacklist";
 import debug from "debug";
+import { createTagQuery } from "@/utilities/createTagQuery";
+import { BlacklistMode } from "@/services/types";
 // import { getTagColor } from "@/utilities/utilities";
 
 debug.enable("app:*");
@@ -23,11 +25,26 @@ export interface EnhancedTag extends Tag {
 }
 
 export class ApiService {
-  async getPosts(
-    args: IPostsListArgs & { blacklist?: string; removeBlacklisted: boolean },
-  ) {
+  async getPosts(args: {
+    page?: number;
+    limit: number;
+    postsBefore?: number;
+    postsAfter?: number;
+    tags: string[];
+    blacklist?: string[];
+    blacklistMode: BlacklistMode;
+  }) {
     log(args);
-    const posts = (await e621.posts.list(args)).data.posts;
+    const posts = (
+      await e621.posts.list({
+        ...args,
+        tags: createTagQuery(
+          args.blacklistMode,
+          args.blacklist || [],
+          args.tags,
+        ),
+      })
+    ).data.posts;
 
     // extra fields for compatibility with legacy api
     // todo: remove extra fields
@@ -49,7 +66,7 @@ export class ApiService {
       has_comments: post.comment_count > 0,
 
       _postCustom: {
-        isBlacklisted: isPostBlacklisted(post, args.blacklist),
+        isBlacklisted: isPostBlacklisted(post, args.blacklist || []),
       },
     }));
   }

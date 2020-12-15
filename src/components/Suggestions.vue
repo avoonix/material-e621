@@ -47,6 +47,7 @@ import TagLabel from "./TagLabel.vue";
 import escapeStringRegexp from "escape-string-regexp";
 import { GETTERS } from "../store/constants";
 import { api } from "../store/api";
+import { blacklistService } from "@/services";
 
 const menu = {
   remove: "Remove from search",
@@ -95,10 +96,10 @@ export default {
           inBlacklist = true;
         }
       }
-        if (inArray) options.push(menu.remove);
-        if (!inArray) options.push(menu.add);
-        if (!inArrayButNegated) options.push(menu.exclude);
-        if (!inBlacklist) options.push(menu.blacklist);
+      if (inArray) options.push(menu.remove);
+      if (!inArray) options.push(menu.add);
+      if (!inArrayButNegated) options.push(menu.exclude);
+      if (!inBlacklist) options.push(menu.blacklist);
       options.push(menu.wiki);
       options.push(menu.openNew);
       return options;
@@ -160,13 +161,15 @@ export default {
               )
               .replace(/\s+/, " "),
             blacklist: (
-              this.$store.getters[GETTERS.GET_BLACKLIST_STRING].replace(
-                new RegExp(
-                  "(\\s|^)(\\-)?" + escapeStringRegexp(tag) + "(\\s|$)",
-                  "g",
-                ),
-                " ",
-              ) +
+              blacklistService.tags
+                .join(" ")
+                .replace(
+                  new RegExp(
+                    "(\\s|^)(\\-)?" + escapeStringRegexp(tag) + "(\\s|$)",
+                    "g",
+                  ),
+                  " ",
+                ) +
               " " +
               tag
             ).replace(/\s+/g, " "),
@@ -217,7 +220,7 @@ export default {
       return (this.$store.state.routerModule.query.tags || "").split(" ");
     },
     currentBlacklist() {
-      return this.$store.getters[GETTERS.GET_BLACKLIST_ARRAY];
+      return blacklistService.tags;
     },
   },
 };

@@ -32,7 +32,7 @@
     :active.sync="bottomNav"
     class="sidenav-color"
     :style="
-      `background-color: ${currentTheme.sidebar} !important; border-color: ${currentTheme.sidebar} !important;`
+      `background-color: ${sidebarColor} !important; border-color: ${sidebarColor} !important;`
     "
     fixed
     shift
@@ -70,6 +70,7 @@
 </template>
 
 <script>
+import { appearanceService } from "@/services";
 import { GETTERS } from "../store/constants";
 
 export default {
@@ -82,22 +83,14 @@ export default {
       type: Number,
       required: true,
     },
-    blacklistCount: {
-      type: Number,
-      required: true,
-    },
-    blacklistOpen: {
-      type: Boolean,
-      required: true,
-    },
     navMode: {
       type: String,
       required: true,
     },
   },
   computed: {
-    currentTheme() {
-      return this.$store.getters[GETTERS.CUSTOM_COLORS];
+    sidebarColor() {
+      return appearanceService.sidebarColor;
     },
     navigationOptions() {
       return [
@@ -135,17 +128,6 @@ export default {
           active: this.$store.state.routerModule.path == "/suggester",
         },
         {
-          icon: "mdi-block-helper",
-          name: "Edit blacklist",
-          router: false,
-          exact: false,
-          onClick: () => (this.blacklistOpenSynced = true),
-          to: null,
-          badge: true,
-          badgeCount: this.blacklistCount,
-          active: this.blacklistOpenSynced,
-        },
-        {
           icon: "mdi-folder-download",
           name: `Download all ${this.postCount} images on this page`,
           router: false,
@@ -168,14 +150,6 @@ export default {
         if (option.onClick) return option.onClick();
         if (option.to) return this.$router.push(option.to);
         console.log("No nav event defined");
-      },
-    },
-    blacklistOpenSynced: {
-      get() {
-        return this.blacklistOpen;
-      },
-      set(val) {
-        this.$emit("update:blacklistOpen", val);
       },
     },
   },

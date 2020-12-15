@@ -1,6 +1,6 @@
 <template>
   <div>
-    <tag-search :tag-string.sync="tagSearch" />
+    <tag-search :tags="tags" @add-tag="addTag" @remove-tag="removeTag" />
     <posts
       :posts="posts"
       :loading="loading"
@@ -30,7 +30,8 @@ import {
   getTagColorFromCategoryId,
 } from "../../utilities/utilities";
 import Suggestions from "../Suggestions.vue";
-import TagSearch from "../TagSearch.vue";
+import TagSearch from "../updated/smart/TagSearch";
+import { blacklistService } from "@/services";
 
 // TODO: reset first post on tag change
 
@@ -72,9 +73,6 @@ export default {
     settingsSuggestedTagsCount() {
       return this.$store.getters[GETTERS.SUGGESTION_COUNT];
     },
-    settingsBlacklist() {
-      return this.$store.getters[GETTERS.GET_BLACKLIST_STRING];
-    },
     firstPostId() {
       return this.posts.length
         ? this.posts[0].id
@@ -85,18 +83,31 @@ export default {
         ? this.posts[this.posts.length - 1].id
         : this.$route.query.first_post + 1;
     },
-    tagSearch: {
-      get() {
-        return this.$route.query.tags;
-      },
-      set(tags) {
-        updateRouterQuery(this.$router, {
-          tags,
-        });
-      },
+    tags() {
+      return (this.$route.query.tags || "").split(" ");
     },
+    // tagSearch: {
+    //   get() {
+    //     return this.$route.query.tags;
+    //   },
+    //   set(tags) {
+    //     updateRouterQuery(this.$router, {
+    //       tags,
+    //     });
+    //   },
+    // },
   },
   methods: {
+    addTag(tag) {
+      updateRouterQuery(this.$router, {
+        tags: this.tags + " " + tag,
+      });
+    },
+    removeTag(tag) {
+      updateRouterQuery(this.$router, {
+        tags: this.tags.replace(tag, ""),
+      });
+    },
     async selectFullscreenPost(relativeIndex) {
       const idx = this.posts.findIndex((p) => p.id === this.fullscreenPost.id);
       await this.openPost(this.posts[idx + relativeIndex].id);
@@ -109,7 +120,7 @@ export default {
           const service = await getApiService();
           const posts = await service.getPosts({
             limit: 1,
-            tags: `id:${postId}`,
+            tags: [`id:${postId}`],
             removeBlacklisted: false,
           });
           return posts[0] || null;
@@ -134,11 +145,9 @@ export default {
           limit: this.settingsPageSize,
           postsBefore,
           postsAfter,
-          // TODO: blacklist
-          // TODO: blacklist mode (hide, blur)
-          tags: this.tagSearch,
-          blacklist: this.settingsBlacklist,
-          removeBlacklisted: true, // TODO: from settings
+          tags: this.tags,
+          blacklist: blacklistService.tags,
+          blacklistMode: blacklistService.mode,
         });
         const postCountToRemove = Math.max(
           0,
@@ -156,7 +165,7 @@ export default {
           );
         }
       } catch (error) {
-        this.$notify(error);
+        console.error(error);
       } finally {
         this.loading = false;
       }

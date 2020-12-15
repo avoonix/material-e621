@@ -22,16 +22,6 @@ const settingsComputedPropertiesMapping = [
     query: "fname",
   },
   {
-    value: "transition",
-    getter: GETTERS.ROUTE_TRANSITION,
-    query: "transition",
-  },
-  {
-    value: "fullscreenTransition",
-    getter: GETTERS.FULLSCREEN_TRANSITION,
-    query: "fstransition",
-  },
-  {
     value: "downloadProgress",
     getter: GETTERS.IS_DOWNLOAD_PROGRESS,
     query: "dp",
@@ -58,15 +48,12 @@ const settingsComputedPropertiesMapping = [
     getter: GETTERS.SUGGESTION_COUNT,
     query: "scount",
   },
-
-  { value: "backgroundColor", getter: GETTERS.BACKGROUND_COLOR, query: "bcol" },
   { value: "mascot", getter: GETTERS.MASCOT_STYLE, query: "msct" },
   {
     value: "compactness",
     getter: GETTERS.POST_COMPACTNESS,
     query: "compactness",
   },
-  { value: "blacklistMode", getter: GETTERS.BLACKLIST_MODE, query: "blm" },
   {
     value: "fullscreenNextPrevious",
     getter: GETTERS.FULLSCREEN_PREVIOUS_NEXT_LAYOUT,

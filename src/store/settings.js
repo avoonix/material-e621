@@ -1,9 +1,6 @@
 import { MUTATIONS, GETTERS, ACTIONS } from "./constants";
 import store from "store";
 import router from "../router";
-import vuetifyColors from "vuetify/es5/util/colors";
-
-const defaultBlacklist = "rape nightmare_fuel rating:explicit young";
 
 const mathMinMaxDefault = (min, max, def, cur) => {
   if (!cur && cur !== 0) return def;
@@ -34,14 +31,8 @@ const settingsModule = {
     [GETTERS.IS_LOGGED_IN](state) {
       return state.loggedIn;
     },
-    [GETTERS.BLACKLIST_MODE](state, getters, rootState) {
-      return rootState.routerModule.query.blm || "dynamic";
-    },
     [GETTERS.FULLSCREEN_PREVIOUS_NEXT_LAYOUT](state, getters, rootState) {
       return rootState.routerModule.query.fpnb || "zoom";
-    },
-    [GETTERS.BACKGROUND_COLOR](state, getters, rootState) {
-      return rootState.routerModule.query.bcol || "darkblue";
     },
     [GETTERS.MASCOT_STYLE](state, getters, rootState) {
       return rootState.routerModule.query.msct || "default";
@@ -51,41 +42,6 @@ const settingsModule = {
     },
     [GETTERS.FULLSCREEN_BUTTONS_LAYOUT](state, getters, rootState) {
       return rootState.routerModule.query.fsl || "br";
-    },
-
-    [GETTERS.GET_BLACKLIST_STRING](state, getters, rootState) {
-      const blacklist = rootState.routerModule.query.blacklist;
-      return typeof blacklist === "string" ? blacklist : defaultBlacklist;
-    },
-    [GETTERS.GET_BLACKLIST_ARRAY](state, getters) {
-      return getters[GETTERS.GET_BLACKLIST_STRING]
-        .split(" ")
-        .map((str) => str.replace(/^-/, ""))
-        .filter((str) => str.length);
-    },
-
-    [GETTERS.CUSTOM_COLORS](state, getters, rootState) {
-      let themeName = rootState.routerModule.query.bcol || "darkblue";
-      const dark = themeName.startsWith("dark");
-      const colors = themeName.replace(/(dark|light)/g, "").match(/.{6}/g); // split string in groups of 6;
-      if (!colors || colors.length < 5) {
-        return {
-          primary: vuetifyColors.blue.darken2,
-          secondary: vuetifyColors.grey.darken3,
-          accent: vuetifyColors.blue.accent1,
-          background: "#102442",
-          sidebar: "#001325",
-          dark: true,
-        };
-      }
-      return {
-        primary: "#" + colors[0],
-        secondary: "#" + colors[1],
-        accent: "#" + colors[2],
-        background: "#" + colors[3],
-        sidebar: "#" + colors[4],
-        dark: dark,
-      };
     },
     [GETTERS.POST_BUTTONS_LAYOUT](state, getters, rootState) {
       const downloadButton = {
@@ -184,12 +140,6 @@ const settingsModule = {
     [GETTERS.NAVIGATION_TYPE](state, getters, rootState) {
       return rootState.routerModule.query.nav || "sidebar";
     },
-    [GETTERS.ROUTE_TRANSITION](state, getters, rootState) {
-      return rootState.routerModule.query.transition || "fade";
-    },
-    [GETTERS.FULLSCREEN_TRANSITION](state, getters, rootState) {
-      return rootState.routerModule.query.fstransition || "slide";
-    },
     [GETTERS.POST_LAYOUT](state, getters, rootState) {
       return rootState.routerModule.query.layout || "blog";
     },
@@ -197,12 +147,6 @@ const settingsModule = {
       return (
         rootState.routerModule.query.pagination === "true" ||
         rootState.routerModule.query.pagination === true
-      );
-    },
-    [GETTERS.SHOW_AGREEMENT](state, getters, rootState) {
-      return !(
-        rootState.routerModule.query.agree === "true" ||
-        rootState.routerModule.query.agree === true
       );
     },
     [GETTERS.IS_LOW_RESOLUTION_MODE](state, getters, rootState) {
@@ -304,22 +248,6 @@ const settingsModule = {
     },
   },
   actions: {
-    [ACTIONS.SET_CUSTOM_COLORS]({ rootState, getters }, { key, color }) {
-      const newColors = { ...getters[GETTERS.CUSTOM_COLORS] };
-      newColors[key] = color;
-      router.push({
-        query: {
-          ...rootState.routerModule.query,
-          bcol:
-            (newColors.dark ? "dark" : "light") +
-            newColors.primary.replace("#", "") +
-            newColors.secondary.replace("#", "") +
-            newColors.accent.replace("#", "") +
-            newColors.background.replace("#", "") +
-            newColors.sidebar.replace("#", ""),
-        },
-      });
-    },
     [ACTIONS.SET_CURRENT_PAGE_NUMBER]({ rootState }, id) {
       router.push({
         query: {

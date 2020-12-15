@@ -4,8 +4,8 @@ import Install from "@/components/Install.vue";
 
 // workaround for errors in console
 const originalPush = Router.prototype.push;
-Router.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch((err) => err);
+Router.prototype.push = function push(location: any) {
+  return (originalPush.call(this, location) as any).catch((err: any) => err);
 };
 
 Vue.use(Router);
@@ -28,7 +28,9 @@ export default new Router({
       name: "Posts",
       component: () =>
         // TODO: uncomment once completed
-        import(/* webpackChunkName: "posts" */ "@/components/views/PostsPage"),
+        import(
+          /* webpackChunkName: "posts" */ "@/components/views/PostsPage.vue"
+        ),
       // import ("@/components/Posts")
     },
     {
@@ -36,25 +38,33 @@ export default new Router({
       name: "Settings",
       component: () =>
         import(
-          /* webpackChunkName: "settings" */ "@/components/settings/SettingsPage.vue"
+          /* webpackChunkName: "settings" */ "@/components/updated/dumb/SettingsPage.vue"
         ),
     },
     {
-      path: "/settings/setup/:step",
-      name: "SettingsSetup",
+      path: "/settings/blacklist",
+      name: "BlacklistSettings",
       component: () =>
         import(
-          /* webpackChunkName: "settings" */ "@/components/settings/SettingsPage.vue"
+          /* webpackChunkName: "settings" */ "@/components/updated/smart/BlacklistSettingsPage.vue"
         ),
     },
     {
-      path: "/settings/:id",
-      name: "SettingsSection",
+      path: "/settings/appearance",
+      name: "AppearanceSettings",
       component: () =>
         import(
-          /* webpackChunkName: "settings" */ "@/components/settings/SettingsPage.vue"
+          /* webpackChunkName: "settings" */ "@/components/updated/smart/AppearanceSettingsPage.vue"
         ),
     },
+    // {
+    //   path: "/settings/setup/:step",
+    //   name: "SettingsSetup",
+    //   component: () =>
+    //     import(
+    //       /* webpackChunkName: "settings" */ "@/components/settings/SettingsPage.vue"
+    //     ),
+    // },
     {
       path: "/parser",
       name: "Parser",
@@ -89,7 +99,7 @@ export default new Router({
       name: "ErrorPage",
       component: () =>
         import(
-          /* webpackChunkName: "error" */ "@/components/views/ErrorPage.vue"
+          /* webpackChunkName: "error" */ "@/components/updated/dumb/ErrorPage.vue"
         ),
       alias: "*",
     },

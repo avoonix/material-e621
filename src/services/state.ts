@@ -1,23 +1,23 @@
 import { computed, reactive, readonly } from "@vue/composition-api";
 import clone from "clone";
-
-export enum BlacklistMode {
-  hide,
-  blur,
-  blackout,
-}
-
-export interface ISettingsServiceState {
-  blacklist: {
-    mode: BlacklistMode;
-    tags: string[];
-  };
-}
+import { BlacklistMode, ISettingsServiceState } from "./types";
 
 const defaultSettings: ISettingsServiceState = {
   blacklist: {
     mode: BlacklistMode.blur,
-    tags: ["rating:explicit"],
+    tags: ["rating:explicit", "rating:questionable"],
+  },
+  appearance: {
+    primary: "#1976d2",
+    secondary: "#424242",
+    accent: "#82b1ff",
+    background: "#102442",
+    sidebar: "#001325",
+    dark: true,
+    transition: {
+      fullscreen: "slide",
+      route: "fade",
+    },
   },
 };
 

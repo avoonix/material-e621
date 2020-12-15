@@ -3,16 +3,16 @@ import debug from "debug";
 
 const log = debug("app:blacklist");
 
-export const isPostBlacklisted = (post: Post, blacklist?: string) => {
+export const isPostBlacklisted = (post: Post, blacklist?: string[]) => {
   if (!blacklist) {
     log("no blacklist");
     return false;
   }
   const postTags = Object.values(post.tags).flat() as string[];
-  const blacklistTags = blacklist
-    .split(" ")
-    .map((tag) => tag.replace(/$-/, ""))
-    .filter((tag) => tag.length);
+  // const blacklistTags = blacklist
+  //   .split(" ")
+  //   .map((tag) => tag.replace(/$-/, ""))
+  //   .filter((tag) => tag.length);
   log(postTags);
   switch (post.rating) {
     case "e":
@@ -26,7 +26,7 @@ export const isPostBlacklisted = (post: Post, blacklist?: string) => {
       break;
   }
   for (const tag of postTags) {
-    if (blacklistTags.indexOf(tag) !== -1) {
+    if (blacklist.indexOf(tag) !== -1) {
       return true;
     }
   }

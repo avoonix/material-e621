@@ -1,17 +1,17 @@
 <template>
-  <v-container fill-height class="">
+  <v-container fill-height>
     <v-layout align-center>
       <v-flex>
         <v-flex md6 xs12 offset-md3 class="my-2">
           <v-card>
-            <v-card-title
-              >{{ $appName }} - v{{ version.version }}-{{ version.branch }}-{{
+            <v-card-title>
+              {{ $appName }} - v{{ version.version }}-{{ version.branch }}-{{
                 version.commitShort
-              }}</v-card-title
-            >
-            <v-card-text
-              >{{ $appName }} is a customizable e621 client.</v-card-text
-            >
+              }}
+            </v-card-title>
+            <v-card-text>
+              {{ $appName }} is a customizable e621 client.
+            </v-card-text>
             <v-card-actions>
               <v-spacer />
               <external-link
@@ -19,8 +19,9 @@
                 color="primary"
                 flat
                 href="https://e621.net/forum/show/261165"
-                >visit e621 forum post</external-link
               >
+                visit e621 forum post
+              </external-link>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -92,7 +93,6 @@
   </v-container>
 </template>
 <script>
-import { GETTERS } from "../../store/constants";
 import ChangelogItem from "../ChangelogItem.vue";
 import changelog from "../../config/changelog";
 import packageJson from "../../../package";
@@ -122,5 +122,3 @@ export default {
   name: "About",
 };
 </script>
-
-<style lang="stylus" scoped></style>

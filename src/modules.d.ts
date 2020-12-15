@@ -6,3 +6,4 @@ declare module "worker-loader!*" {
   export default WebpackWorker;
 }
 declare module "serviceworker-webpack-plugin/lib/runtime";
+declare module "vuetify/es5/util/colors";

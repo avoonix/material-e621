@@ -172,7 +172,7 @@ export const fetchMultiplePosts = async ({
       service
         .getPosts({
           limit: limitPerRequest,
-          tags: tags,
+          tags: tags.split(" "),
           postsBefore: partBeforeId,
         })
         .then((posts) => normalizePosts(posts)),

@@ -23,8 +23,9 @@
               path: '/settings/setup/1',
               query: $store.state.routerModule.query,
             }"
-            >View the introduction</v-btn
           >
+            View the introduction
+          </v-btn>
         </div>
       </v-layout>
     </section>
@@ -64,7 +65,7 @@
 
 <script>
 import ChangelogItem from "../ChangelogItem.vue";
-import Logo from "../Logo.vue";
+import Logo from "../updated/dumb/Logo.vue";
 import changelog from "../../config/changelog";
 
 export default {

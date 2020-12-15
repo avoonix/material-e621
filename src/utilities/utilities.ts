@@ -44,11 +44,3 @@ export const getTagColorFromCategory = (category: string) => {
 export const getTagColorFromCategoryId = (categoryId: number) => {
   return tagColorMappingId[categoryId] || tagColorMapping.default!;
 };
-
-export const UtilitiesPlugin = {
-  install(Vue: any) {
-    Vue.prototype.$notify = (...args: any[]) => {
-      console.log("notify", ...args);
-    };
-  },
-};

@@ -317,9 +317,10 @@ export default {
   }),
   computed: {
     blacklistMode() {
-      if (this.post.custom_blacklisted_by_user) {
-        return this.$store.getters[GETTERS.BLACKLIST_MODE]; // blur, black
-      }
+      // TODO: use blacklist service
+      // if (this.post.custom_blacklisted_by_user) {
+      //   return this.$store.getters[GETTERS.BLACKLIST_MODE]; // blur, black
+      // }
       return false;
     },
     fastLoad() {

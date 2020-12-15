@@ -152,11 +152,12 @@
 <script>
 import { GETTERS, ACTIONS } from "../../store/constants";
 import scrollIntoView from "scroll-into-view";
-import Logo from "../Logo.vue";
+import Logo from "../updated/dumb/Logo.vue";
 import { togglePostFavorite } from "../../utilities/mixins";
 import PostButtons from "../PostButtons.vue";
 import Hammer from "hammerjs";
 import { getTransitionName } from "../../utilities";
+import { appearanceService } from "@/services";
 
 export default {
   metaInfo() {
@@ -451,12 +452,13 @@ export default {
   },
   computed: {
     transitionName() {
-      return this.$store.getters[GETTERS.FULLSCREEN_TRANSITION];
+      return appearanceService.fullscreenTransition;
     },
     blacklistMode() {
-      if (this.current && this.current.custom_blacklisted_by_user) {
-        return this.$store.getters[GETTERS.BLACKLIST_MODE]; // blur, black
-      }
+      // TODO: use blacklist service
+      // if (this.current && this.current.custom_blacklisted_by_user) {
+      //   return this.$store.getters[GETTERS.BLACKLIST_MODE]; // blur, black
+      // }
       return false;
     },
     prevousNextButtons() {

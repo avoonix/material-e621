@@ -1,5 +1,5 @@
 <template>
-  <v-app :dark="isDark" :class="`theme--${backgroundColor}`">
+  <v-app :dark="isDark" :class="`theme--${isDark ? 'dark' : 'light'}`">
     <template>
       <v-navigation-drawer
         persistent
@@ -20,8 +20,6 @@
         <navigation
           type="sidebar"
           :post-count="postCount"
-          :blacklist-count="blacklistCount"
-          :blacklist-open.sync="blacklistOpen"
           :nav-mode="navMode"
         />
         <portal-target name="sidebar-suggestions"></portal-target>
@@ -52,8 +50,6 @@
           <navigation
             type="dropdown"
             :post-count="postCount"
-            :blacklist-count="blacklistCount"
-            :blacklist-open.sync="blacklistOpen"
             :nav-mode="navMode"
           />
         </v-menu>
@@ -67,16 +63,14 @@
         <v-toolbar-title v-if="navMode != 'im' || $route.path != '/e621'">
           {{ $appName }}
         </v-toolbar-title>
-        <tag-search
+        <!-- <tag-search
           class="ma-2 pt-2"
           v-if="$route.path == '/e621' && navMode == 'im'"
-        />
+        /> -->
         <v-spacer></v-spacer>
         <navigation
           type="toolbar"
           :post-count="postCount"
-          :blacklist-count="blacklistCount"
-          :blacklist-open.sync="blacklistOpen"
           :nav-mode="navMode"
           v-if="!$route.meta.minimalHeader"
         />
@@ -85,8 +79,6 @@
       <navigation
         type="bottom"
         :post-count="postCount"
-        :blacklist-count="blacklistCount"
-        :blacklist-open.sync="blacklistOpen"
         :nav-mode="$route.meta.minimalHeader ? '' : navMode"
       />
       <v-content
@@ -95,7 +87,6 @@
           `background-color: ${currentTheme.background} !important; border-color: ${currentTheme.background} !important;`
         "
       >
-        <error-alert />
         <transition
           v-if="!isPrerender"
           :enter-active-class="enterTransitionName"
@@ -104,8 +95,6 @@
         >
           <router-view :key="routeKey" />
         </transition>
-        <first-visit-dialog />
-        <blacklist-dialog v-model="blacklistOpen" />
         <download-dialog />
         <posts-dialog />
         <update-dialog />
@@ -116,23 +105,28 @@
 </template>
 
 <script>
-import TagSearch from "./components/TagSearch.vue";
-import BlacklistDialog from "./components/dialogs/BlacklistDialog.vue";
+// import TagSearch from "./components/TagSearch.vue";
 import Snackbar from "./components/Snackbar.vue";
-import Logo from "./components/Logo.vue";
+import Logo from "./components/updated/dumb/Logo.vue";
 import LoginDialog from "./components/dialogs/LoginDialog.vue";
 import Navigation from "./components/Navigation.vue";
 import PostsDialog from "./components/dialogs/PostsDialog.vue";
 import UpdateDialog from "./components/dialogs/UpdateDialog.vue";
-import FirstVisitDialog from "./components/dialogs/FirstVisitDialog.vue";
 import DownloadDialog from "./components/dialogs/DownloadDialog.vue";
-import ErrorAlert from "./components/ErrorAlert.vue";
 import { ACTIONS, GETTERS } from "./store/constants";
 import { getTransitionName } from "./utilities";
+import { useSettingsServiceState, appearanceService } from "./services";
 
 const mobileBreakPoint = 1264;
 
 export default {
+  setup() {
+    const { state } = useSettingsServiceState();
+
+    return {
+      state,
+    };
+  },
   metaInfo() {
     return {
       title: "Landing Page",
@@ -147,7 +141,6 @@ export default {
     };
   },
   components: {
-    FirstVisitDialog,
     LoginDialog,
     Logo,
     Snackbar,
@@ -155,9 +148,6 @@ export default {
     PostsDialog,
     UpdateDialog,
     Navigation,
-    BlacklistDialog,
-    TagSearch,
-    ErrorAlert,
   },
   data() {
     return {
@@ -165,15 +155,11 @@ export default {
       enterTransitionName: "fade",
       leaveTransitionName: "fade",
       drawer_: true,
-      blacklistOpen: false,
     };
-  },
-  created() {
-    this.debugTimer = Date.now();
   },
   computed: {
     transitionName() {
-      return this.$store.getters[GETTERS.ROUTE_TRANSITION];
+      return appearanceService.routeTransition;
     },
     isPrerender() {
       return !!(
@@ -203,22 +189,20 @@ export default {
     navMode() {
       return this.$store.getters[GETTERS.NAVIGATION_TYPE];
     },
-    blacklistCount() {
-      return this.$store.getters[GETTERS.GET_BLACKLIST_ARRAY].length;
-    },
     postCount() {
       return this.$store.getters[GETTERS.GET_VISIBLE_POSTS].length;
     },
     isDark() {
-      return (this.$store.getters[GETTERS.BACKGROUND_COLOR] || "").startsWith(
-        "dark",
-      );
-    },
-    backgroundColor() {
-      return this.$store.getters[GETTERS.BACKGROUND_COLOR];
+      return appearanceService.dark;
     },
     currentTheme() {
-      return this.$store.getters[GETTERS.CUSTOM_COLORS];
+      return {
+        primary: appearanceService.primaryColor,
+        secondary: appearanceService.secondaryColor,
+        accent: appearanceService.accentColor,
+        background: appearanceService.backgroundColor,
+        sidebar: appearanceService.sidebarColor,
+      };
     },
   },
   methods: {
@@ -285,8 +269,13 @@ export default {
     "$store.state.favoritedPosts"() {
       this.$saveSettings();
     },
-    backgroundColor() {
-      this.applyTheme();
+
+    currentTheme: {
+      deep: true,
+      immediate: true,
+      handler() {
+        this.applyTheme();
+      },
     },
   },
   name: "App",
