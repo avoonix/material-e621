@@ -134,6 +134,7 @@
             :key="current.id"
             large
             fullscreen
+            @open-post-details="$emit('open-post-details', $event)"
           />
         </v-card>
         <post-buttons
@@ -143,6 +144,7 @@
           :key="current.id"
           large
           fullscreen
+          @open-post-details="$emit('open-post-details', $event)"
         />
       </div>
     </div>

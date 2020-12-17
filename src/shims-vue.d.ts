@@ -6,6 +6,7 @@ declare module "*.vue" {
 declare module "*.js" {
   const a: any;
   export default a;
+  export const store: any;
 }
 
 declare module "worker-loader*" {

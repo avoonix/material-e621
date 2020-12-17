@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="dialog" scrollable max-width="600px">
-    <v-card>
+    <v-card v-if="current">
       <v-card-title class="mt-0 pt-0 mx-0 px-0">
         <v-progress-linear
           v-if="!commentsLoaded"
@@ -185,8 +185,6 @@
           </v-tab-item>
           <v-tab-item>
             <v-card flat>
-              currently doesn't work. submit a github issue if you want this
-              feature
               <v-card-text v-if="current.has_comments">
                 <template v-for="comment in comments">
                   <v-card :key="comment.id" class="mb-3 elevation-4">
@@ -313,6 +311,7 @@ import formatDate from "date-fns/format";
 import parseDate from "date-fns/parse";
 
 export default {
+  name: "DetailsDialog",
   components: {
     Suggestions,
     CommentEditor,
@@ -370,38 +369,39 @@ export default {
       );
     },
     loadComments() {
-      setTimeout(() => {
-        this.$store.dispatch(ACTIONS.LOAD_COMMENTS, {
-          id: this.current.id,
-        });
-      });
+      // setTimeout(() => {
+      //   this.$store.dispatch(ACTIONS.LOAD_COMMENTS, {
+      //     id: this.current.id,
+      //   });
+      // });
     },
     openInDialog(childId) {
-      this.$store.dispatch(ACTIONS.ADD_VISIBLE_POSTS_DIALOG, [childId]);
-      this.$store.dispatch(ACTIONS.SET_FULLSCREEN_POST_ID, childId);
+      // this.$store.dispatch(ACTIONS.ADD_VISIBLE_POSTS_DIALOG, [childId]);
+      // this.$store.dispatch(ACTIONS.SET_FULLSCREEN_POST_ID, childId);
     },
     openChildrenInDialog() {
-      this.$store.dispatch(
-        ACTIONS.ADD_VISIBLE_POSTS_DIALOG,
-        this.current.children.split(",").filter((str) => str.length),
-      );
+      // this.$store.dispatch(
+      //   ACTIONS.ADD_VISIBLE_POSTS_DIALOG,
+      //   this.current.children.split(",").filter((str) => str.length),
+      // );
     },
     close() {
-      this.$store.dispatch(ACTIONS.SET_DETAILS_VIEW, {
-        id: false,
-      });
+      this.$emit("close");
+      // this.$store.dispatch(ACTIONS.SET_DETAILS_VIEW, {
+      //   id: false,
+      // });
     },
     shareButtonClick({ url, name, clipboard, noPopup }) {
       if (clipboard) {
         copyToClipboard(url)
           .then(() => {
-            this.$store.dispatch(ACTIONS.ADD_MESSAGE, "Link copied");
+            // this.$store.dispatch(ACTIONS.ADD_MESSAGE, "Link copied");
           })
           .catch((err) => {
-            this.$store.dispatch(
-              ACTIONS.ADD_MESSAGE,
-              err.message || err || "Error",
-            );
+            // this.$store.dispatch(
+            //   ACTIONS.ADD_MESSAGE,
+            //   err.message || err || "Error",
+            // );
           });
         return;
       }

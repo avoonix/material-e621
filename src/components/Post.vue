@@ -143,6 +143,7 @@
                     ref="postButtonsRef"
                     :small="size == 'sm'"
                     :post="post"
+                    @open-post-details="$emit('open-post-details', $event)"
                   />
                   <v-btn
                     :small="size == 'sm'"
@@ -183,7 +184,12 @@
         v-if="!hideInfo"
         :class="{ 'py-1': lessInfo || layout == 'feed' }"
       >
-        <post-buttons ref="postButtonsRef" :small="size == 'sm'" :post="post" />
+        <post-buttons
+          ref="postButtonsRef"
+          :small="size == 'sm'"
+          :post="post"
+          @open-post-details="$emit('open-post-details', $event)"
+        />
         <v-spacer></v-spacer>
         <v-btn icon @click="show = !show" v-if="!noExpand">
           <v-icon>{{ show ? "mdi-chevron-up" : "mdi-chevron-down" }}</v-icon>

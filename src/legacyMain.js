@@ -6,7 +6,6 @@ import "vuetify/dist/vuetify.min.css";
 import "@mdi/font/css/materialdesignicons.min.css";
 
 import Vue from "vue";
-import App from "./App";
 import router from "./router";
 import { createStore } from "./store";
 import Vuex from "vuex";
@@ -59,14 +58,4 @@ window.addEventListener("beforeinstallprompt", () => {
     });
 });
 
-const app = new Vue({
-  router,
-  render: (h) => h(App),
-  store,
-  metaInfo: {
-    titleTemplate: "%s",
-    title: "Material e621",
-  },
-}).$mount("#app");
-
-export default app;
+export { store };

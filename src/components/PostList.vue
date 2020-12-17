@@ -11,6 +11,7 @@
           :layout="layout"
           ref="posts"
           @open-post="$emit('open-post', $event)"
+          @open-post-details="$emit('open-post-details', $event)"
         />
       </v-flex>
     </template>
@@ -42,6 +43,7 @@
           :layout="layout"
           ref="posts"
           @open-post="$emit('open-post', $event)"
+          @open-post-details="$emit('open-post-details', $event)"
         />
       </v-flex>
     </template>

@@ -63,10 +63,6 @@
         <v-toolbar-title v-if="navMode != 'im' || $route.path != '/e621'">
           {{ $appName }}
         </v-toolbar-title>
-        <!-- <tag-search
-          class="ma-2 pt-2"
-          v-if="$route.path == '/e621' && navMode == 'im'"
-        /> -->
         <v-spacer></v-spacer>
         <navigation
           type="toolbar"
@@ -212,14 +208,12 @@ export default {
       this.$vuetify.theme.accent = this.currentTheme.accent;
     },
   },
-  beforeCreate() {
-    this.$restoreSettings();
-  },
   async mounted() {
     this.applyTheme();
     this.$store.dispatch(ACTIONS.LOG_IN);
     await this.$nextTick();
 
+    // You'll need this for renderAfterDocumentEvent.
     // renderAfterDocumentEvent (prerendering)
     document.dispatchEvent(new Event("render-event"));
   },
@@ -238,8 +232,6 @@ export default {
         }
       },
     },
-    // You'll need this for renderAfterDocumentEvent.
-    // document.dispatchEvent(new Event("render-event"));
     $route(to, from) {
       const toDepth = to.path.split("/").length;
       const fromDepth = from.path.split("/").length;
@@ -263,13 +255,6 @@ export default {
         });
       }
     },
-    "$store.state.routerModule.query"() {
-      this.$saveSettings();
-    },
-    "$store.state.favoritedPosts"() {
-      this.$saveSettings();
-    },
-
     currentTheme: {
       deep: true,
       immediate: true,

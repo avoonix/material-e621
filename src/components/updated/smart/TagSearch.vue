@@ -120,7 +120,9 @@ export default defineComponent({
         },
         ...tags.value,
       ];
-      return inverted ? arr.map((t) => ({ ...t, text: `-${t.text}` })) : arr;
+      return inverted.value
+        ? arr.map((t) => ({ ...t, text: `-${t.text}` }))
+        : arr;
     });
     const fetchTags = debounce(
       async (search: string) => {

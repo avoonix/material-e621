@@ -179,14 +179,15 @@ export default {
           .focus();
     },
     openDetails() {
-      this.$store.dispatch(ACTIONS.SET_DETAILS_VIEW, {
-        id: false,
-      });
-      setTimeout(() => {
-        this.$store.dispatch(ACTIONS.SET_DETAILS_VIEW, {
-          id: this.post.id,
-        });
-      }, 10);
+      this.$emit("open-post-details", this.post.id);
+      // this.$store.dispatch(ACTIONS.SET_DETAILS_VIEW, {
+      //   id: false,
+      // });
+      // setTimeout(() => {
+      //   this.$store.dispatch(ACTIONS.SET_DETAILS_VIEW, {
+      //     id: this.post.id,
+      //   });
+      // }, 10);
     },
   },
 };

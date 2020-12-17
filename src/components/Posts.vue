@@ -4,7 +4,11 @@
       load previous
     </v-btn>
     <!-- <logo v-if="loading" loader /> -->
-    <post-list :visible-posts="posts" @open-post="$emit('open-post', $event)" />
+    <post-list
+      :visible-posts="posts"
+      @open-post="$emit('open-post', $event)"
+      @open-post-details="$emit('open-post-details', $event)"
+    />
     <!-- <logo v-if="loading" loader /> -->
     <v-btn @click="loadNext">
       load next
@@ -16,7 +20,9 @@
       @close="$emit('exit-fullscreen')"
       @next-post="$emit('next-fullscreen-post')"
       @previous-post="$emit('previous-fullscreen-post')"
+      @open-post-details="$emit('open-post-details', $event)"
     />
+    <details-dialog :current="detailsPost" @close="$emit('close-details')" />
     <!--
     <div>
       <blacklist-suggestions :suggested-blacklist="ratingTags" />
@@ -39,7 +45,6 @@
         </v-chip>
       </v-slide-x-transition>
     </div>
-    <details-dialog :current="currentDetailsPost" />
     <div class="text-xs-center mb-3" v-if="!isControlled">
       <pagination :loading="loading" @load-posts="loadPosts" />
     </div>
@@ -86,14 +91,15 @@
 import PostList from "../components/PostList.vue";
 // import Pagination from "../components/Pagination.vue";
 import FullscreenDialog from "./dialogs/FullscreenDialog.vue";
-// import DetailsDialog from "./dialogs/DetailsDialog.vue";
+import DetailsDialog from "./dialogs/DetailsDialog.vue";
 import Logo from "./updated/dumb/Logo.vue";
+import { defineComponent } from "@vue/composition-api";
 // import { GETTERS, ACTIONS } from "../store/constants";
 // import BlacklistSuggestions from "./BlacklistSuggestions.vue";
 // import { ratingTags } from "../config/customTags";
 // import * as plugins from "../utilities/vuePlugin";
 
-export default {
+export default defineComponent({
   metaInfo: {
     title: "Posts",
   },
@@ -101,7 +107,7 @@ export default {
     //   TagSearch,
     PostList,
     FullscreenDialog,
-    //   DetailsDialog,
+    DetailsDialog,
     // Logo,
     //   Pagination,
     //   BlacklistSuggestions,
@@ -112,6 +118,7 @@ export default {
     //     required: true,
     //   },
     fullscreenPost: { type: Object },
+    detailsPost: { type: Object },
     posts: { type: Array, required: true },
     loading: { type: Boolean, required: true },
     hasPreviousFullscreenPost: { type: Boolean, required: true },
@@ -289,5 +296,5 @@ export default {
     //     }
     //   },
   },
-};
+});
 </script>

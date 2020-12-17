@@ -13,6 +13,9 @@
       @previous-fullscreen-post="selectFullscreenPost(-1)"
       :has-previous-fullscreen-post="true"
       :has-next-fullscreen-post="true"
+      :details-post="detailsPost"
+      @open-post-details="openPostDetails"
+      @close-details="detailsPost = null"
     />
     <!-- TODO: set has-(next|previous)-fullscreen-post -->
     <portal to="sidebar-suggestions">
@@ -46,6 +49,7 @@ export default {
     return {
       posts: [],
       fullscreenPost: null,
+      detailsPost: null,
       suggestedTags: [],
       loading: false,
     };
@@ -61,6 +65,10 @@ export default {
         });
         await this.suggestTags();
       },
+    },
+    "tags.length"() {
+      this.posts = [];
+      this.loadNextPage();
     },
   },
   computed: {
@@ -84,28 +92,21 @@ export default {
         : this.$route.query.first_post + 1;
     },
     tags() {
-      return (this.$route.query.tags || "").split(" ");
+      return (this.$route.query.tags || "").split(" ").filter((t) => t);
     },
-    // tagSearch: {
-    //   get() {
-    //     return this.$route.query.tags;
-    //   },
-    //   set(tags) {
-    //     updateRouterQuery(this.$router, {
-    //       tags,
-    //     });
-    //   },
-    // },
   },
   methods: {
+    openPostDetails(postId) {
+      this.detailsPost = this.posts.find((p) => p.id === postId);
+    },
     addTag(tag) {
       updateRouterQuery(this.$router, {
-        tags: this.tags + " " + tag,
+        tags: [...this.tags, tag].join(" "),
       });
     },
     removeTag(tag) {
       updateRouterQuery(this.$router, {
-        tags: this.tags.replace(tag, ""),
+        tags: this.tags.filter((t) => t !== tag).join(" "),
       });
     },
     async selectFullscreenPost(relativeIndex) {
