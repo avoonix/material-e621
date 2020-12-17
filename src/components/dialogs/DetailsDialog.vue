@@ -20,148 +20,7 @@
           <v-tab-item>
             <v-card flat>
               <v-card-text>
-                <v-list dense>
-                  <v-list-tile>
-                    <v-list-tile-content>ID:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{
-                      current.id
-                    }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Score:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{
-                      current.score
-                    }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Favorites:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{
-                      current.fav_count
-                    }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Author:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{
-                      current.author
-                    }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>File size:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">
-                      {{ current.custom_pretty_file_size }}
-                      ({{ current.file_size }}
-                      B)
-                    </v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Uploaded:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">
-                      {{ current.custom_pretty_relative_upload_date }} ({{
-                        current.custom_pretty_upload_date
-                      }})
-                    </v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>MD5:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{
-                      current.md5
-                    }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>File type:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{
-                      (current.file_ext || "").toUpperCase()
-                    }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Rating:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{
-                      current.rating
-                    }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Status:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{
-                      current.status
-                    }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Dimensions:</v-list-tile-content>
-                    <v-list-tile-content class="align-end"
-                      >{{ current.width }} x
-                      {{ current.height }}</v-list-tile-content
-                    >
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Has comments:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{
-                      current.has_comments
-                    }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Has notes:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{
-                      current.has_notes
-                    }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Has children:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{
-                      current.has_children
-                    }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile v-if="current.has_children">
-                    <v-list-tile-content>Children:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">
-                      <span v-if="current.children">
-                        <a
-                          target="_blank"
-                          @click="openChildrenInDialog"
-                          v-for="(childId, idx) in current.children.split(',')"
-                          :key="idx"
-                          >{{ childId }}</a
-                        >
-                      </span>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile v-if="current.parent_id">
-                    <v-list-tile-content>Parent:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">
-                      <span>
-                        <a
-                          target="_blank"
-                          @click="openInDialog(current.parent_id)"
-                          >{{ current.parent_id }}</a
-                        >
-                      </span>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Resolution:</v-list-tile-content>
-                    <v-list-tile-content class="align-end"
-                      >{{
-                        (current.width * current.height) / 1000000
-                      }}
-                      Megapixel</v-list-tile-content
-                    >
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Sources:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">
-                      <span>
-                        <span
-                          v-for="(source, idx) in current.sources"
-                          :key="idx"
-                        >
-                          <external-link :href="source">
-                            Source
-                            {{ idx + 1 }} </external-link
-                          >,&nbsp;
-                        </span>
-                      </span>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                </v-list>
+                <post-info-list :post="current" />
               </v-card-text>
             </v-card>
           </v-tab-item>
@@ -246,38 +105,10 @@
           <v-tab-item>
             <v-card flat>
               <v-card-text>
-                <v-radio-group v-model="radioGroup">
-                  <v-radio
-                    v-for="(option, index) in radioOptions"
-                    :key="option.type"
-                    :label="option.display"
-                    :value="index"
-                  ></v-radio>
-                </v-radio-group>
-                <div class="body-1">
-                  <v-layout row wrap="">
-                    <v-flex
-                      class="pa-1"
-                      v-for="(button, index) in shareButtons"
-                      :key="index"
-                      xs12
-                      md6
-                    >
-                      <v-btn
-                        class="ma-0"
-                        :dark="button.dark"
-                        large
-                        block
-                        :color="button.color"
-                        @click="shareButtonClick(button)"
-                        :href="button.noPopup ? button.url : undefined"
-                      >
-                        <v-icon left>{{ button.icon }}</v-icon>
-                        {{ button.name }}
-                      </v-btn>
-                    </v-flex>
-                  </v-layout>
-                </div>
+                <link-share
+                  :postId="current.id"
+                  :rawFileUrl="current.file.url"
+                />
               </v-card-text>
             </v-card>
           </v-tab-item>
@@ -305,10 +136,11 @@ import CommentEditor from "../CommentEditor.vue";
 import prettyBytes from "pretty-bytes";
 import { openOnE621, downloadPost } from "../../utilities/mixins";
 import DTextDisplay from "../DTextDisplay";
-import copyToClipboard from "clipboard-copy";
 import distanceInWordsToNow from "date-fns/distance_in_words_to_now";
 import formatDate from "date-fns/format";
 import parseDate from "date-fns/parse";
+import PostInfoList from "../updated/dumb/PostInfoList.vue";
+import LinkShare from "../updated/dumb/LinkShare.vue";
 
 export default {
   name: "DetailsDialog",
@@ -316,6 +148,8 @@ export default {
     Suggestions,
     CommentEditor,
     DTextDisplay,
+    PostInfoList,
+    LinkShare,
   },
   mixins: [openOnE621, downloadPost],
   props: {
@@ -326,21 +160,6 @@ export default {
   data() {
     return {
       tabs: 1,
-      radioGroup: 0,
-      radioOptions: [
-        {
-          type: "material-e621",
-          display: `Share link to the ${this.$appName} fullscreen post`,
-        },
-        {
-          type: "e621",
-          display: "Share link to the e621 page",
-        },
-        {
-          type: "image",
-          display: "Share link to raw image",
-        },
-      ],
     };
   },
   watch: {
@@ -391,125 +210,10 @@ export default {
       //   id: false,
       // });
     },
-    shareButtonClick({ url, name, clipboard, noPopup }) {
-      if (clipboard) {
-        copyToClipboard(url)
-          .then(() => {
-            // this.$store.dispatch(ACTIONS.ADD_MESSAGE, "Link copied");
-          })
-          .catch((err) => {
-            // this.$store.dispatch(
-            //   ACTIONS.ADD_MESSAGE,
-            //   err.message || err || "Error",
-            // );
-          });
-        return;
-      }
-      if (noPopup) {
-        return;
-      }
-      window.open(url, `Share to ${name}`, "width=600,height=400");
-    },
   },
   computed: {
     currentRawImageUrl() {
       return this.current.file_url;
-    },
-    currentShareUrl() {
-      if (!this.current) return `${this.$baseUrl}/#/e621`;
-      switch (this.radioOptions[this.radioGroup].type) {
-        case "material-e621":
-          return `${this.$baseUrl}/#/e621?fspost=${this.current.id}`;
-        case "e621":
-          return `https://e621.net/post/show/${this.current.id}`;
-        case "image":
-        default:
-          return this.currentRawImageUrl;
-      }
-    },
-    shareButtons() {
-      if (!this.current) return [];
-      const url = encodeURIComponent(this.currentShareUrl),
-        unencodedText = "Check out this awesome post!",
-        text = encodeURIComponent(unencodedText),
-        rawUrl = encodeURIComponent(this.currentRawImageUrl);
-      return [
-        {
-          name: "Twitter",
-          color: "#1DA1F3",
-          dark: true,
-          url: `https://twitter.com/intent/tweet?url=${url}&text=${text}`,
-          icon: "mdi-twitter",
-        }, // TODO:
-        {
-          name: "Reddit",
-          color: "#F73F07",
-          dark: true,
-          url: `https://www.reddit.com/submit?url=${url}&title=${text}`,
-          icon: "mdi-reddit",
-        },
-        {
-          name: "Telegram",
-          color: "#2A9ED0",
-          dark: true,
-          url: `https://telegram.me/share/url?url=${url}&text=${text}`,
-          icon: "mdi-telegram",
-        },
-        {
-          name: "Google+",
-          color: "#D64A37",
-          dark: true,
-          url: `https://plus.google.com/share?url=${url}`,
-          icon: "mdi-google-plus",
-        },
-        {
-          name: "Email",
-          color: "#b2b2b2",
-          dark: false,
-          url: `mailto:?&subject=${text}&body=${url}`,
-          icon: "mdi-email",
-          noPopup: true,
-        },
-        {
-          name: "Tumblr",
-          color: "#2F4155",
-          dark: true,
-          url: `http://www.tumblr.com/share/link?url=${url}&name=${text}&description=${text}`,
-          icon: "mdi-tumblr",
-        },
-
-        {
-          name: "Copy to clipboard",
-          color: "#353535",
-          dark: true,
-          url: this.currentShareUrl,
-          icon: "mdi-clipboard-text",
-          clipboard: true,
-        },
-        {
-          name: "Reverse Google search",
-          color: "#999999",
-          dark: false,
-          url: `https://www.google.com/searchbyimage?image_url=${rawUrl}`,
-          icon: "mdi-google",
-        },
-        {
-          name: "Copy DText link",
-          color: "#152f56",
-          dark: true,
-          url: `"${unencodedText}":${this.currentShareUrl}`, // no urlencoding
-          icon: "mdi-code-brackets",
-          clipboard: true,
-        },
-        {
-          name: "Copy IFrame embed",
-          color: "#f6b73c",
-          dark: false,
-          url: `<iframe title="${unencodedText}" src="${this.currentShareUrl}"></iframe>`, // no urlencoding
-          icon: "mdi-code-tags",
-          clipboard: true,
-        },
-      ];
     },
     comments() {
       const comments = this.$store.getters[GETTERS.GET_COMMENTS](
@@ -554,83 +258,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="stylus">
-.hidden {
-  visibility: hidden;
-}
-
-.fullscreen {
-  z-index: 1000;
-  position: fixed;
-  height: 100vh;
-  width: 100%;
-  top: 0;
-  left: 0;
-  margin: 0;
-  padding: 0;
-
-  .flex {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    height: 100vh;
-    width: 100%;
-
-    .left {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-width: 60px;
-    }
-
-    .middle {
-      flex-grow: 1;
-
-      .overflow {
-        overflow: hidden;
-        height: 100%;
-        width: 100%;
-
-        img {
-          max-height: 100%;
-          max-width: 100%;
-          height: 100%;
-          width: 100%;
-          object-fit: contain;
-        }
-      }
-    }
-
-    .right {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-width: 60px;
-    }
-  }
-
-  .top-right {
-    position: fixed;
-    top: 0;
-    right: 0;
-    z-index: 1005;
-
-    button {
-      float: right;
-    }
-  }
-
-  .bottom-right {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    z-index: 1006;
-
-    button {
-      float: right;
-    }
-  }
-}
-</style>

@@ -1,5 +1,8 @@
 import VueRouter from "vue-router";
 
+export const getAppName = () => "Material e621";
+export const getBaseUrl = () => document.location.origin;
+
 const tagColorMappingId: { [idx: string]: string | undefined } = {
   "1": "yellow",
   "4": "green",
