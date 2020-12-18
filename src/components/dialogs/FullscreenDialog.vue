@@ -25,84 +25,85 @@
             <v-icon size="50">mdi-chevron-left</v-icon>
           </v-btn>
         </div>
-        <div
-          ref="middle"
-          class="middle black"
-          @wheel="onScroll"
-          @mousewheel="onScroll"
-          :class="{
-            'blacklist-blur': blacklistMode == 'blur',
-            'blacklist-black': blacklistMode == 'black',
-          }"
+        <zoom-pan-image
+          @swipe-down="!$event.zoomedIn && exitFullscreen()"
+          @swipe-right="!$event.zoomedIn && showPreviousImage()"
+          @swipe-left="!$event.zoomedIn && showNextImage()"
         >
-          <object
-            v-if="current.file_ext == 'swf' && currentFileUrl"
-            class="overflow flash grey"
-          >
-            <param name="movie" :value="current.file_url" />
-            <embed
-              type="application/x-shockwave-flash"
-              :src="current.file_url"
-              allowscriptaccess="never"
-            />
-          </object>
-          <video
-            v-else-if="current.file_ext == 'webm' && currentFileUrl"
-            class="overflow flash black"
-            controls
-            loop
-            autoplay
-            preload=""
-          >
-            <source :src="current.file_url" type="video/webm" />
-            Video type not supported by your browser
-          </video>
           <div
-            v-else
-            ref="overflow"
-            class="overflow"
-            @mousemove="onMouseMove"
-            @mousedown.prevent="onMouseDown"
-            @mouseup="onMouseUp"
+            style="height: 100%"
+            ref="middle"
+            class="middle black"
+            :class="{
+              'blacklist-blur': blacklistMode == 'blur',
+              'blacklist-black': blacklistMode == 'black',
+            }"
           >
-            <div
-              :style="containerStyle"
-              ref="zoom"
-              class="zoom-container text-xs-center"
-              style="position: relative;"
+            <object
+              v-if="current.file_ext == 'swf' && currentFileUrl"
+              class="overflow flash grey"
             >
-              <transition
-                :enter-active-class="enterTransitionName"
-                :leave-active-class="leaveTransitionName"
-                mode="in-out"
-              >
-                <div
-                  :key="currentFileUrl"
-                  style=" position: absolute; width: 100%; height: 100%; left: 0;"
-                >
-                  <img
-                    v-if="currentSampleFileUrl"
-                    :class="{ grey: false, 'darken-3': false }"
-                    :src="currentSampleFileUrl"
-                  />
-                  <img
-                    v-if="currentFileUrl"
-                    @loadstart="loadStart"
-                    @load="loadEnd"
-                    :class="{ grey: false, 'darken-3': false, hidden: loading }"
-                    :src="currentFileUrl"
-                  />
-                </div>
-              </transition>
-              <logo
-                class="centered-in-container"
-                svg-margin-auto
-                v-if="loading"
-                :loader="loading"
+              <param name="movie" :value="current.file_url" />
+              <embed
+                type="application/x-shockwave-flash"
+                :src="current.file_url"
+                allowscriptaccess="never"
               />
+            </object>
+            <video
+              v-else-if="current.file_ext == 'webm' && currentFileUrl"
+              class="overflow flash black"
+              controls
+              loop
+              autoplay
+              preload=""
+            >
+              <source :src="current.file_url" type="video/webm" />
+              Video type not supported by your browser
+            </video>
+            <div v-else ref="overflow" class="overflow">
+              <div
+                ref="zoom"
+                class="zoom-container text-xs-center"
+                style="position: relative;"
+              >
+                <transition
+                  :enter-active-class="enterTransitionName"
+                  :leave-active-class="leaveTransitionName"
+                  mode="in-out"
+                >
+                  <div
+                    :key="currentFileUrl"
+                    style=" position: absolute; width: 100%; height: 100%; left: 0;"
+                  >
+                    <img
+                      v-if="currentSampleFileUrl"
+                      :class="{ grey: false, 'darken-3': false }"
+                      :src="currentSampleFileUrl"
+                    />
+                    <img
+                      v-if="currentFileUrl"
+                      @loadstart="loadStart"
+                      @load="loadEnd"
+                      :class="{
+                        grey: false,
+                        'darken-3': false,
+                        hidden: loading,
+                      }"
+                      :src="currentFileUrl"
+                    />
+                  </div>
+                </transition>
+                <logo
+                  class="centered-in-container"
+                  svg-margin-auto
+                  v-if="loading"
+                  :loader="loading"
+                />
+              </div>
             </div>
           </div>
-        </div>
+        </zoom-pan-image>
         <div
           v-show="prevousNextButtons"
           class="right"
@@ -157,9 +158,9 @@ import scrollIntoView from "scroll-into-view";
 import Logo from "../updated/dumb/Logo.vue";
 import { togglePostFavorite } from "../../utilities/mixins";
 import PostButtons from "../PostButtons.vue";
-import Hammer from "hammerjs";
 import { getTransitionName } from "../../utilities";
 import { appearanceService } from "@/services";
+import ZoomPanImage from "../updated/dumb/ZoomPanImage.vue";
 
 export default {
   metaInfo() {
@@ -176,6 +177,7 @@ export default {
   components: {
     Logo,
     PostButtons,
+    ZoomPanImage,
   },
   mixins: [togglePostFavorite],
   props: {
@@ -192,26 +194,14 @@ export default {
     },
   },
   data() {
-    const initialZoom = {
-      top: 0,
-      left: 0,
-      level: 1,
-      mouseDown: false,
-      startX: 0,
-      startY: 0,
-      startLevel: 0,
-    };
     return {
       enterTransitionName: "fade",
       leaveTransitionName: "fade",
       switched: false,
       loading: false,
-      zoom: initialZoom,
-      initialZoom,
     };
   },
   mounted() {
-    this.enableTouchRecognizer();
     window.addEventListener("keydown", this.keyDown);
   },
   beforeDestroy() {
@@ -257,7 +247,6 @@ export default {
     loadEnd() {
       clearTimeout(this.loadTimeout);
       this.loading = false;
-      this.enableTouchRecognizer();
     },
     exitFullscreen() {
       this.$emit("close");
@@ -282,159 +271,6 @@ export default {
       this.$emit("previous-post");
       this.setTransitionNames(true);
     },
-    enableTouchRecognizer() {
-      if (!this.zoomEnabled || !this.$refs.zoom || !this.$refs.middle) return;
-      if (this.hammer) this.hammer.destroy();
-      this.hammer = new Hammer.Manager(this.$refs.middle, {
-        recognizers: [
-          [Hammer.Tap],
-          [Hammer.Pan, { threshold: 1 }],
-          [
-            Hammer.Swipe,
-            { direction: Hammer.DIRECTION_ALL, threshold: 100 },
-            ["pan"],
-          ],
-          [Hammer.Pinch, { enable: true, threshold: 0.01 }, ["pan"]],
-        ],
-      });
-      this.hammer.on("swipeleft", (event) => {
-        if (this.zoomedIn) return;
-        this.showNextImage();
-      });
-      this.hammer.on("swiperight", (event) => {
-        if (this.zoomedIn) return;
-        this.showPreviousImage();
-      });
-      this.hammer.on("swipedown", (event) => {
-        if (this.zoomedIn) return;
-        this.exitFullscreen();
-      });
-      this.hammer.on("pinchstart", () => {
-        this.zoom.startLevel = this.zoom.level;
-      });
-      this.hammer.on("pinchin", this.onScroll);
-      this.hammer.on("pinchout", this.onScroll);
-      this.hammer.on("panstart", (event) => {
-        this.zoom.startX = event.center.x;
-        this.zoom.startY = event.center.y;
-      });
-      this.hammer.on("panmove", this.onPan);
-      this.hammer.on("tap", this.onScroll);
-
-      this.zoom = { ...this.initialZoom };
-      this.constrainZoom();
-    },
-    onScroll(event) {
-      if (!this.zoomEnabled || !this.$refs.zoom || !this.$refs.middle) return;
-      const oldLevel = this.zoom.level;
-      if (event.type == "pinchin" || event.type == "pinchout") {
-        event.clientX = event.center.x;
-        event.clientY = event.center.y;
-        this.zoom.level = this.zoom.startLevel * event.scale;
-      } else if (event.type == "tap") {
-        event.clientX = event.center.x;
-        event.clientY = event.center.y;
-        if (event.tapCount == 2) {
-          if (this.zoom.level == 1) {
-            this.zoom.level = 2;
-          } else {
-            this.zoom.level = 1;
-          }
-        }
-      } else {
-        const zoomOut = event.deltaY > 0;
-        this.zoom.level *= zoomOut ? 0.9 : 1.1;
-      }
-      this.zoom.level = Math.min(Math.max(1, this.zoom.level), 100);
-
-      const mouseOffset = {
-        x: event.clientX - this.$refs.middle.getBoundingClientRect().x,
-        y: event.clientY - this.$refs.middle.getBoundingClientRect().y,
-      };
-
-      const left =
-        ((mouseOffset.x + this.zoom.left) * this.zoom.level) / oldLevel -
-        mouseOffset.x;
-      const top =
-        ((mouseOffset.y + this.zoom.top) * this.zoom.level) / oldLevel -
-        mouseOffset.y;
-
-      this.zoom.top = top;
-      this.zoom.left = left;
-
-      this.$nextTick(() => {
-        this.constrainZoom();
-      });
-    },
-    onMouseUp() {
-      this.zoom.mouseDown = false;
-    },
-    onMouseDown(event) {
-      this.zoom.mouseDown = true;
-      // this.zoom.startX = event.screenX;
-      // this.zoom.startY = event.screenY;
-    },
-    onMouseMove(event) {
-      // if (!this.zoomEnabled || !this.$refs.zoom || !this.$refs.middle) return;
-      // if (!this.zoom.mouseDown) return;
-      // if (!(event.buttons & 1)) return;
-      // const x = event.screenX,
-      //   y = event.screenY;
-      // const dx = x - this.zoom.startX,
-      //   dy = y - this.zoom.startY;
-      // this.zoom.left -= dx;
-      // this.zoom.top -= dy;
-      // this.zoom.startX = x;
-      // this.zoom.startY = y;
-      // this.constrainZoom();
-    },
-    onPan(event) {
-      if (!this.zoomEnabled || !this.$refs.zoom || !this.$refs.middle) return;
-      // if (!this.zoom.mouseDown) return;
-      // if (!(event.buttons & 1)) return;
-      // const x = event.screenX,
-      //   y = event.screenY;
-      const { x, y } = event.center;
-      const dx = x - this.zoom.startX,
-        dy = y - this.zoom.startY;
-
-      this.zoom.left -= dx;
-      this.zoom.top -= dy;
-
-      this.zoom.startX = x;
-      this.zoom.startY = y;
-
-      this.constrainZoom();
-    },
-    constrainZoom() {
-      if (!this.zoomEnabled || !this.$refs.zoom || !this.$refs.middle) return;
-      const padding = 0;
-      const constraints = {
-        left: {
-          min: 0 - padding,
-          max:
-            this.$refs.zoom.getBoundingClientRect().width -
-            this.$refs.middle.getBoundingClientRect().width +
-            padding,
-        },
-        top: {
-          min: 0 - padding,
-          max:
-            this.$refs.zoom.getBoundingClientRect().height -
-            this.$refs.middle.getBoundingClientRect().height +
-            padding,
-        },
-      };
-
-      this.zoom.left = Math.min(
-        Math.max(this.zoom.left, constraints.left.min),
-        constraints.left.max,
-      );
-      this.zoom.top = Math.min(
-        Math.max(this.zoom.top, constraints.top.min),
-        constraints.top.max,
-      );
-    },
   },
   watch: {
     current(val, prev) {
@@ -445,7 +281,6 @@ export default {
           this.switched = false;
           if (val)
             this.$nextTick(() => {
-              this.enableTouchRecognizer();
               this.loading = true;
             });
         });
@@ -472,26 +307,12 @@ export default {
         ((!this.zoomedIn && layout == "zoom") || layout == "always")
       );
     },
-    zoomedIn() {
-      return this.zoom.level > 1 && !this.loading;
-    },
     buttonLayout() {
       return this.$store.getters[GETTERS.FULLSCREEN_BUTTONS_LAYOUT];
     },
-    zoomEnabled() {
-      return !!(this.current && this.current.file_ext !== "swf");
-    },
-    containerStyle() {
-      const zoom = this.loading || !this.current ? this.initialZoom : this.zoom;
-      const style = {
-        "transform-origin": "top left",
-        transform: `translate(${-zoom.left}px, ${-zoom.top}px) scale(${
-          zoom.level
-        })`,
-        display: "block",
-      };
-      return style;
-    },
+    // zoomEnabled() {
+    //   return !!(this.current && this.current.file_ext !== "swf");
+    // },
     loggedIn() {
       return this.$store.getters[GETTERS.IS_LOGGED_IN];
     },
