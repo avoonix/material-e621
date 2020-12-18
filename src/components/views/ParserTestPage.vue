@@ -118,5 +118,3 @@ header | header | header
   name: "ParserTestPage",
 };
 </script>
-
-<style lang="stylus" scoped></style>

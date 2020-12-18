@@ -1,11 +1,6 @@
 import Vuex from "vuex";
 import uniq from "lodash.uniq";
-import {
-  favoritePost,
-  downloadPost,
-  loadComments,
-  normalizePosts,
-} from "./api";
+import { favoritePost, downloadPost, normalizePosts } from "./api";
 import snackbarModule from "./snackbar";
 import settingsModule from "./settings";
 import { MUTATIONS, GETTERS, ACTIONS } from "./constants";
@@ -30,7 +25,6 @@ const createStore = () => {
       settings: settingsModule,
     },
     state: {
-      comments: {},
       pages: {}, // page number => array of ids
       visiblePostList: [], // array of ids
       visiblePostListDialog: [], // array of ids
@@ -112,93 +106,6 @@ const createStore = () => {
       },
       [ACTIONS.SET_DETAILS_VIEW]({ commit }, { id }) {
         commit(MUTATIONS.SET_DETAILS_VIEW, { id });
-      },
-      async downloadPage({ state, getters, dispatch }) {
-        state.zip.loading = true;
-        try {
-          const zip = new JSZip();
-          const visiblePosts = getters[GETTERS.GET_VISIBLE_POSTS];
-          const promises = [];
-          const concurrent = getters[GETTERS.IS_CONCURRENT_DOWNLOADS];
-
-          state.zip.timeRemaining = 0;
-          const smoothingFactor = 0.05;
-          const startTime = Date.now();
-          let averageBitrate = 0;
-          const calculateAverage = () => {
-            const currentTime = Date.now();
-            const percentageDone = (() => {
-              let allFileSize = 0;
-              let doneFileSize = 0;
-              for (let i = 0; i < visiblePosts.length; i++) {
-                allFileSize += visiblePosts[i].file_size;
-                doneFileSize +=
-                  visiblePosts[i].file_size * (state.zip.progressArr[i] / 100);
-              }
-              const currentBitrate = bitrate(
-                doneFileSize,
-                (currentTime - startTime) / 1000,
-                "MB/s", // mb/s
-              );
-              if (averageBitrate == 0) averageBitrate = currentBitrate;
-              const bitrateSmooting = 0.05;
-              averageBitrate =
-                bitrateSmooting * currentBitrate +
-                (1 - smoothingFactor) * averageBitrate;
-              state.zip.bitrate = averageBitrate.toFixed(2) + " MB/s";
-              state.zip.rawBitrate = currentBitrate;
-              state.zip.rawAllByteSize = allFileSize;
-              return doneFileSize / allFileSize;
-            })();
-
-            state.zip.timeRemaining =
-              Math.round(
-                (state.zip.rawAllByteSize * (1 - percentageDone)) /
-                  1e6 /
-                  state.zip.rawBitrate /
-                  5,
-              ) * 5;
-          };
-
-          state.zip.progressArr = [...new Array(visiblePosts.length)].map(
-            () => 0,
-          );
-          for (let current = 0; current < visiblePosts.length; current++) {
-            const post = visiblePosts[current];
-            promises.push(
-              (async () => {
-                const image = await downloadPost({
-                  url: "https://cors-anywhere.herokuapp.com/" + post.file_url,
-                  progress: (percentage) => {
-                    state.zip.progressArr[current] = percentage; // 0-100
-                    state.zip.progressArr = [...state.zip.progressArr]; // trigger update
-                    calculateAverage();
-                  },
-                });
-                state.zip.progressArr[current] = 100; // make sure progress is really 100
-                state.zip.progressArr = [...state.zip.progressArr]; // trigger update
-                calculateAverage();
-                const allTags = Object.values(post.tags) // TODO: use GET_POST getter's all tags instead
-                  .reduceRight((prev, cur) => [...cur, ...prev], [])
-                  .join(" ");
-                const filename = getters[GETTERS.IS_DESCRIPTIVE_FILENAME]
-                  ? post.id + " " + allTags + "." + post.file_ext
-                  : post.file_url.split("/").slice(-1)[0];
-                zip.file(filename, image);
-              })(),
-            );
-            if (!concurrent) {
-              await Promise.all(promises); // awaits each promise individually
-            }
-          }
-          await Promise.all(promises); // awaits all promises
-          const zipBlob = await zip.generateAsync({ type: "blob" });
-          state.zip.ready = true;
-          window.zipBlob = zipBlob;
-        } catch (error) {
-          dispatch(ACTIONS.ADD_MESSAGE, error.message || error);
-        }
-        state.zip.loading = false;
       },
       async favoritePost({ commit, state }, { action, postId }) {
         favoritePost({
@@ -332,24 +239,8 @@ const createStore = () => {
           })
           .catch(console.log);
       },
-      [ACTIONS.LOAD_COMMENTS]({ state, getters }, { id }) {
-        if (!(state.allPosts[id] || {}).has_comments) {
-          state.comments = { ...state.comments, [id]: Object.seal([]) };
-          return;
-        }
-        loadComments({
-          id: id,
-        })
-          .then((comments) => {
-            state.comments = { ...state.comments, [id]: Object.seal(comments) }; // array of comments or empty array
-          })
-          .catch(() => {});
-      },
     },
     getters: {
-      [GETTERS.GET_COMMENTS](state) {
-        return (id) => state.comments[id] || false; // TODO:
-      },
       [GETTERS.GET_CURRENT_PAGE_LOADED](state, getters) {
         return (
           state.pages[getters[GETTERS.GET_CURRENT_PAGE_NUMBER]] !== undefined

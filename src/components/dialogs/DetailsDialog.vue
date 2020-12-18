@@ -2,16 +2,10 @@
   <v-dialog v-model="dialog" scrollable max-width="600px">
     <v-card v-if="current">
       <v-card-title class="mt-0 pt-0 mx-0 px-0">
-        <v-progress-linear
-          v-if="!commentsLoaded"
-          indeterminate
-          class="ma-0 pa-0"
-        ></v-progress-linear>
         <v-tabs v-model="tabs">
           <v-tab ripple>Overview</v-tab>
           <v-tab ripple>Tags</v-tab>
           <v-tab ripple>Description</v-tab>
-          <v-tab ripple>Comments</v-tab>
           <v-tab ripple>Share</v-tab>
         </v-tabs>
       </v-card-title>
@@ -39,66 +33,6 @@
                     :text="current.description || 'No description'"
                   />
                 </div>
-              </v-card-text>
-            </v-card>
-          </v-tab-item>
-          <v-tab-item>
-            <v-card flat>
-              <v-card-text v-if="current.has_comments">
-                <template v-for="comment in comments">
-                  <v-card :key="comment.id" class="mb-3 elevation-4">
-                    <v-card-title>
-                      {{ comment.creator }}&nbsp;
-                      <span class="grey--text">{{
-                        formatDate(comment.created_at)
-                      }}</span>
-                    </v-card-title>
-                    <v-card-text>
-                      <d-text-display :text="comment.body" />
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer />
-                      <v-icon
-                        :color="
-                          comment.score == 0
-                            ? 'yellow'
-                            : comment.score > 0
-                            ? 'green'
-                            : 'red'
-                        "
-                        class="mr-2"
-                        >{{
-                          comment.score == 0
-                            ? "mdi-thumbs-up-down"
-                            : comment.score > 0
-                            ? "mdi-thumb-up"
-                            : "mdi-thumb-down"
-                        }}</v-icon
-                      >
-                      <span
-                        :class="{
-                          'red--text': comment.score < 0,
-                          'green--text': comment.score > 0,
-                          'yellow--text': comment.score == 0,
-                        }"
-                        >{{ comment.score }}</span
-                      >
-                    </v-card-actions>
-                  </v-card>
-                </template>
-                <comment-editor
-                  v-if="current"
-                  @update-comments="loadComments"
-                  :post-id="current.id"
-                />
-              </v-card-text>
-              <v-card-text v-else
-                >No comments
-                <comment-editor
-                  v-if="current"
-                  @update-comments="loadComments"
-                  :post-id="current.id"
-                />
               </v-card-text>
             </v-card>
           </v-tab-item>
@@ -132,7 +66,6 @@
 <script>
 import { GETTERS, ACTIONS } from "../../store/constants";
 import Suggestions from "../Suggestions.vue";
-import CommentEditor from "../CommentEditor.vue";
 import prettyBytes from "pretty-bytes";
 import { openOnE621, downloadPost } from "../../utilities/mixins";
 import DTextDisplay from "../DTextDisplay";
@@ -146,7 +79,6 @@ export default {
   name: "DetailsDialog",
   components: {
     Suggestions,
-    CommentEditor,
     DTextDisplay,
     PostInfoList,
     LinkShare,
@@ -162,19 +94,6 @@ export default {
       tabs: 1,
     };
   },
-  watch: {
-    current(val) {
-      if (val && val.id) this.loadComments();
-    },
-    commentsLoaded: {
-      immediate: true,
-      handler(loaded) {
-        if (!loaded && this.current && this.current.id) {
-          this.loadComments();
-        }
-      },
-    },
-  },
   methods: {
     formatDate(time) {
       const date = parseDate(time);
@@ -186,13 +105,6 @@ export default {
         }) +
         ")"
       );
-    },
-    loadComments() {
-      // setTimeout(() => {
-      //   this.$store.dispatch(ACTIONS.LOAD_COMMENTS, {
-      //     id: this.current.id,
-      //   });
-      // });
     },
     openInDialog(childId) {
       // this.$store.dispatch(ACTIONS.ADD_VISIBLE_POSTS_DIALOG, [childId]);
@@ -214,17 +126,6 @@ export default {
   computed: {
     currentRawImageUrl() {
       return this.current.file_url;
-    },
-    comments() {
-      const comments = this.$store.getters[GETTERS.GET_COMMENTS](
-        this.current.id,
-      );
-      if (!comments) return comments;
-      return []; // TODO: comments dont work
-      // return comments.reverse();
-    },
-    commentsLoaded() {
-      return this.comments !== false;
     },
     tags() {
       const order = ["artist", "character", "copyright", "species", "general"];

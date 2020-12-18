@@ -15,14 +15,8 @@ const api = {
     createStandalonePostUrl({ id }) {
       return `https://e621.net/post/show/${id}`;
     },
-    createSubmitCommentUrl({ postId, username, key, body, proxy }) {
-      return `${proxy}/comment/create.json?comment[post_id]=${postId}&comment[body]=${body}&login=${username}&password_hash=${key}`;
-    },
     createPostUrl({ id }) {
       return `https://e621.net/posts.json?tags=id:${id}`;
-    },
-    createCommentsUrl({ id }) {
-      return `https://e621.net/comments.json?post_id=${id}`; // TODO: not described in official api docs
     },
     transformTagList(data) {
       return data;
@@ -65,41 +59,6 @@ const favoritePost = ({ postId, action, username, key, callback, proxy }) => {
     });
 };
 
-const submitComment = ({ postId, username, key, body, proxy }) => {
-  return axios
-    .post(
-      api.e621.createSubmitCommentUrl({
-        postId,
-        username,
-        key,
-        body,
-        proxy,
-      }),
-    )
-    .then((response) => {
-      console.log(response.data);
-      return response.data;
-    });
-};
-
-const loadComments = ({ id }) => {
-  return new Promise((resolve, reject) => {
-    axios
-      .get(
-        api.e621.createCommentsUrl({
-          id: id,
-        }),
-        {
-          responseType: "json",
-        },
-      )
-      .then((response) => {
-        resolve(response.data);
-      })
-      .catch(reject);
-  });
-};
-
 const downloadPost = ({ url, progress }) => {
   const onDownloadProgress = (event) => {
     const percentCompleted = Math.floor((event.loaded * 100) / event.total);
@@ -115,11 +74,4 @@ const downloadPost = ({ url, progress }) => {
   });
 };
 
-export {
-  downloadPost,
-  api,
-  normalizePosts,
-  favoritePost,
-  loadComments,
-  submitComment,
-};
+export { downloadPost, api, normalizePosts, favoritePost };

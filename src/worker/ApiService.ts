@@ -63,7 +63,6 @@ export class ApiService {
       file_size: post.file.size || 0,
       file_url: post.file.url,
       // score: post.score.total,
-      has_comments: post.comment_count > 0,
 
       _postCustom: {
         isBlacklisted: isPostBlacklisted(post, args.blacklist || []),
