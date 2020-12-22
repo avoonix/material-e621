@@ -46,9 +46,10 @@
             <v-card-text>
               <v-flex v-for="(tags, index) in suggestedTags" :key="index">
                 <template v-if="tags && tags.length">
-                  <tag-list-display
-                    :tags="tags.slice(0, showPosts ? 5 : 10)"
-                    show-numbers
+                  <tag-label
+                    v-for="(tag, idx) in tags.slice(0, showPosts ? 5 : 10)"
+                    :tag="tag"
+                    :key="idx"
                   />
                   <span
                     class="grey--text"
@@ -209,16 +210,16 @@ import {
   extractFavoriteTags,
   fetchSuggestions,
 } from "../utilities/suggesters";
-import TagListDisplay from "./TagListDisplay";
 import Posts from "./Posts.vue";
+import TagLabel from "./updated/dumb/TagLabel.vue";
 
 export default {
   metaInfo: {
     title: "Suggestions",
   },
   components: {
-    TagListDisplay,
     Posts,
+    TagLabel,
   },
   data() {
     return {

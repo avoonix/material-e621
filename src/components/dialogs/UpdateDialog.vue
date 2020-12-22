@@ -10,9 +10,9 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn color="primary" flat @click.native="updateServiceWorker"
-          >Install now</v-btn
-        >
+        <v-btn color="primary" flat @click.native="updateServiceWorker">
+          Install now
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

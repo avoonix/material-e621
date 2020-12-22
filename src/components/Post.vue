@@ -258,16 +258,7 @@
           <div class="body-1 mb-3" v-if="!lessInfo">
             <d-text-display :text="post.description" />
           </div>
-          <template v-for="(category, index) of reversedTaskCategories">
-            <span :key="index">
-              <template v-for="(tag, tagIndex) of category[1]">
-                <tag-label
-                  :key="tagIndex"
-                  :tag="{ text: tag, color: $getTagColor(category[0]) }"
-                />
-              </template>
-            </span>
-          </template>
+          <suggestions :tags="tags" />
           <div class="body-1 mt-3" v-if="lessInfo">
             <d-text-display :text="post.description" />
           </div>
@@ -278,9 +269,9 @@
 </template>
 
 <script>
+import Suggestions from "./updated/dumb/Suggestions.vue";
 import DTextDisplay from "./DTextDisplay.vue";
 import { GETTERS, ACTIONS } from "../store/constants";
-import TagLabel from "./TagLabel.vue";
 import PostButtons from "./PostButtons.vue";
 import {
   openOnE621,
@@ -290,7 +281,7 @@ import {
 
 export default {
   components: {
-    TagLabel,
+    Suggestions,
     PostButtons,
     DTextDisplay,
   },
@@ -416,6 +407,11 @@ export default {
     },
     uploadDate() {
       return this.post.custom_pretty_upload_date;
+    },
+    tags() {
+      return Object.entries(this.post.tags).flatMap(([category, tags]) =>
+        tags.map((t) => ({ name: t, category })),
+      );
     },
     allTags() {
       return this.post.custom_all_tags;

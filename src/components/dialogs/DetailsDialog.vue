@@ -65,7 +65,7 @@
 
 <script>
 import { GETTERS, ACTIONS } from "../../store/constants";
-import Suggestions from "../Suggestions.vue";
+import Suggestions from "../updated/dumb/Suggestions.vue";
 import prettyBytes from "pretty-bytes";
 import { openOnE621, downloadPost } from "../../utilities/mixins";
 import DTextDisplay from "../DTextDisplay";

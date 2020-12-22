@@ -3,16 +3,23 @@
     <!-- TODO: do propery -->
     <!-- <v-chip v-on="$listeners" v-bind="$attrs" :class="classes" :title="title"> -->
     <!-- {{ text }} -->
-    {{ tag.text || tag }}
+    {{ tag.name || tag.text || tag }}
   </v-chip>
 </template>
 
-<script>
+<script lang="ts">
+import { PropType } from "@vue/composition-api";
+
+export interface ITag {
+  name: string;
+  post_count: number;
+}
+
 export default {
   inheritAttrs: false,
   props: {
     tag: {
-      type: Object,
+      type: Object as PropType<ITag>,
       required: true,
     },
     // showNumbers: {

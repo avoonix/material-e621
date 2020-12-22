@@ -19,6 +19,7 @@
     />
     <!-- TODO: set has-(next|previous)-fullscreen-post -->
     <portal to="sidebar-suggestions">
+      <v-subheader v-if="suggestedTags.length > 0">Tag suggestions</v-subheader>
       <suggestions :tags="suggestedTags" />
     </portal>
   </div>
@@ -32,7 +33,7 @@ import {
   updateRouterQuery,
   getTagColorFromCategoryId,
 } from "../../utilities/utilities";
-import Suggestions from "../Suggestions.vue";
+import Suggestions from "../updated/dumb/Suggestions.vue";
 import TagSearch from "../updated/smart/TagSearch";
 import { blacklistService } from "@/services";
 
