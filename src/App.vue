@@ -101,8 +101,7 @@
 </template>
 
 <script>
-// import TagSearch from "./components/TagSearch.vue";
-import Snackbar from "./components/Snackbar.vue";
+import Snackbar from "./components/updated/smart/Snackbar.vue";
 import Logo from "./components/updated/dumb/Logo.vue";
 import LoginDialog from "./components/dialogs/LoginDialog.vue";
 import Navigation from "./components/Navigation.vue";

@@ -23,6 +23,7 @@ const defaultSettings: ISettingsServiceState = {
     entries: [],
     maxLength: 100,
   },
+  snackbar: null,
 };
 
 export const state = reactive<ISettingsServiceState>(clone(defaultSettings));

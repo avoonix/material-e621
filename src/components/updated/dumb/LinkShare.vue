@@ -37,6 +37,7 @@
 </template>
 
 <script lang="ts">
+import { snackbarService } from "@/services";
 import { getAppName, getBaseUrl } from "@/utilities/utilities";
 import { computed, defineComponent, ref } from "@vue/composition-api";
 import copyToClipboard from "clipboard-copy";
@@ -109,7 +110,7 @@ export default defineComponent({
 
     const copyUrlToClipboard = async () => {
       await copyToClipboard(url.value);
-      // this.$store.dispatch(ACTIONS.ADD_MESSAGE, "Link copied");
+      snackbarService.addMessage("Link copied");
     };
 
     const shareButtons = computed(() => {

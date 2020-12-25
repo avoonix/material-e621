@@ -1,13 +1,13 @@
 import Vuex from "vuex";
 import uniq from "lodash.uniq";
 import { favoritePost, downloadPost, normalizePosts } from "./api";
-import snackbarModule from "./snackbar";
 import settingsModule from "./settings";
 import { MUTATIONS, GETTERS, ACTIONS } from "./constants";
 import JSZip from "jszip";
 import { bitrate } from "../utilities/bitrate";
 import { getApiService } from "../worker/services";
 import { blacklistService } from "@/services";
+import { snackbarService } from "@/services";
 
 const wait = (t) => {
   // eslint-disable-next-line
@@ -21,7 +21,6 @@ const wait = (t) => {
 const createStore = () => {
   const store = new Vuex.Store({
     modules: {
-      snackbar: snackbarModule,
       settings: settingsModule,
     },
     state: {
@@ -124,17 +123,16 @@ const createStore = () => {
             console.log(data.message);
             if (notAuthenticated || otherError) {
               if (notAuthenticated) {
-                commit(
-                  MUTATIONS.ADD_MESSAGE,
+                snackbarService.addMessage(
                   "Your login information is wrong. Please check the API key and username",
                 );
               } else {
-                commit(MUTATIONS.ADD_MESSAGE, message);
+                snackbarService.addMessage(message);
               }
               return;
             }
             if (alreadyExists) {
-              commit(MUTATIONS.ADD_MESSAGE, "You already favorited this");
+              snackbarService.addMessage("You already favorited this");
             }
             let operation;
             if (action == "create") {

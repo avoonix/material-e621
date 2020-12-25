@@ -25,5 +25,6 @@ export interface ISettingsServiceState {
     entries: string[][];
     maxLength: number;
   };
+  snackbar: string | null;
 }
 

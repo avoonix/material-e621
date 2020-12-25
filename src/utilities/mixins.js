@@ -1,6 +1,7 @@
 import { GETTERS, ACTIONS } from "../store/constants";
 import axios from "axios";
 import { api } from "../store/api";
+import { snackbarService } from "@/services";
 
 export const openOnE621 = {
   methods: {
@@ -51,8 +52,9 @@ export const downloadPost = {
       this.downloadPost_({
         filename: filename,
         loadEnd: (error) => {
-          if (error)
-            this.$store.dispatch(ACTIONS.ADD_MESSAGE, error.message || error);
+          if (error) {
+            snackbarService.addMessage(error.message || error);
+          }
           this.downloadPostLoading = false;
         },
         url: "https://cors-anywhere.herokuapp.com/" + post.file_url,
