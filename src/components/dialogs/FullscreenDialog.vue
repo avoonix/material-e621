@@ -158,7 +158,7 @@ import scrollIntoView from "scroll-into-view";
 import Logo from "../updated/dumb/Logo.vue";
 import { togglePostFavorite } from "../../utilities/mixins";
 import PostButtons from "../PostButtons.vue";
-import { getTransitionName } from "../../utilities";
+import { getTransitionName } from "../../utilities/transitions";
 import { appearanceService } from "@/services";
 import ZoomPanImage from "../updated/dumb/ZoomPanImage.vue";
 

@@ -43,8 +43,6 @@ Vue.use(Meta, {
 const store = createStore();
 sync(store, router, { moduleName: "routerModule" });
 
-Vue.config.productionTip = false;
-
 window.addEventListener("beforeinstallprompt", () => {
   if (navigator.storage && navigator.storage.persist)
     navigator.storage.persist().then((granted) => {

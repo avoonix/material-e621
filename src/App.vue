@@ -109,7 +109,7 @@ import PostsDialog from "./components/dialogs/PostsDialog.vue";
 import UpdateDialog from "./components/dialogs/UpdateDialog.vue";
 import DownloadDialog from "./components/dialogs/DownloadDialog.vue";
 import { ACTIONS, GETTERS } from "./store/constants";
-import { getTransitionName } from "./utilities";
+import { getTransitionName } from "./utilities/transitions";
 import { useSettingsServiceState, appearanceService } from "./services";
 
 const mobileBreakPoint = 1264;
