@@ -21,5 +21,9 @@ export interface ISettingsServiceState {
       fullscreen: string;
   };
   };
+  history: {
+    entries: string[][];
+    maxLength: number;
+  };
 }
 

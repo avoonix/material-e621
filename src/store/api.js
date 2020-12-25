@@ -9,9 +9,6 @@ const api = {
     return `${proxy}/favorite/${action}.json?id=${postId}&login=${username}&password_hash=${key}`;
   },
   e621: {
-    createWikiUrl({ tag }) {
-      return `https://e621.net/wiki/show?title=${tag}`;
-    },
     createStandalonePostUrl({ id }) {
       return `https://e621.net/post/show/${id}`;
     },

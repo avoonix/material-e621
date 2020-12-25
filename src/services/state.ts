@@ -19,6 +19,10 @@ const defaultSettings: ISettingsServiceState = {
       route: "fade",
     },
   },
+  history: {
+    entries: [],
+    maxLength: 100,
+  },
 };
 
 export const state = reactive<ISettingsServiceState>(clone(defaultSettings));

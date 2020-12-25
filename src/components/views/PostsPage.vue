@@ -1,6 +1,23 @@
 <template>
   <div>
     <tag-search :tags="tags" @add-tag="addTag" @remove-tag="removeTag" />
+    <v-menu
+      bottom
+      left
+      max-height="300"
+      lazy
+      offset-y
+      transition="slide-y-transition"
+    >
+      <v-btn slot="activator" dark icon>
+        <v-icon>mdi-history</v-icon>
+      </v-btn>
+      <history-list
+        :entries="historyEntries"
+        @delete-entry="deleteEntry($event)"
+        @click-entry="setTags($event)"
+      />
+    </v-menu>
     <posts
       :posts="posts"
       :loading="loading"
@@ -35,16 +52,19 @@ import {
 } from "../../utilities/utilities";
 import Suggestions from "../updated/dumb/Suggestions.vue";
 import TagSearch from "../updated/smart/TagSearch";
-import { blacklistService } from "@/services";
+import { blacklistService, historyService } from "@/services";
+import HistoryList from "../updated/dumb/HistoryList.vue";
+import { defineComponent } from "@vue/composition-api";
 
 // TODO: reset first post on tag change
 
-export default {
+export default defineComponent({
   name: "PostsPage",
   components: {
     Posts,
     Suggestions,
     TagSearch,
+    HistoryList,
   },
   data() {
     return {
@@ -70,9 +90,13 @@ export default {
     "tags.length"() {
       this.posts = [];
       this.loadNextPage();
+      historyService.addEntry(this.tags);
     },
   },
   computed: {
+    historyEntries() {
+      return historyService.entries;
+    },
     // settingsIsPaginated() {
     //   return this.$store.getters[GETTERS.IS_PAGINATED_MODE];
     // },
@@ -97,17 +121,19 @@ export default {
     },
   },
   methods: {
+    deleteEntry: (idx) => historyService.deleteEntry(idx),
     openPostDetails(postId) {
       this.detailsPost = this.posts.find((p) => p.id === postId);
     },
     addTag(tag) {
-      updateRouterQuery(this.$router, {
-        tags: [...this.tags, tag].join(" "),
-      });
+      this.setTags([...this.tags, tag]);
     },
     removeTag(tag) {
+      this.setTags(this.tags.filter((t) => t !== tag));
+    },
+    setTags(tags) {
       updateRouterQuery(this.$router, {
-        tags: this.tags.filter((t) => t !== tag).join(" "),
+        tags: tags.join(" "),
       });
     },
     async selectFullscreenPost(relativeIndex) {
@@ -189,5 +215,5 @@ export default {
         }));
     },
   },
-};
+});
 </script>

@@ -14,6 +14,12 @@
           icon="mdi-palette"
           color="darken-1 pink"
         ></settings-page-section>
+        <settings-page-section
+          section="history"
+          title="History"
+          icon="mdi-format-list-bulleted"
+          color="darken-1 green"
+        ></settings-page-section>
         <!-- text="Change your blacklist settings." -->
         <!-- :text="`Change the overall theme of ${$appName}.`" -->
 
