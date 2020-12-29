@@ -1,24 +1,7 @@
-import localforage from "localforage";
 import { toCategory, toColor } from "../config/colorTagMapping";
 
 const appName = "Material e621";
 const baseUrl = document.location.origin;
-
-localforage.config({
-  description: "",
-  driver: [localforage.INDEXEDDB, localforage.WEBSQL, localforage.LOCALSTORAGE],
-  name: "material-e621",
-  storeName: "material_e631",
-});
-
-// export const saveToLocalStorage = <T>(key: string, value: T): Promise<T> =>
-//   localforage.setItem<T>(key, value);
-
-// export const getFromLocalStorage = <T>(key: string): Promise<T> =>
-//   localforage.getItem<T>(key);
-
-// export const deleteFromLocalStorage = (key: string): Promise<void> =>
-//   localforage.removeItem(key);
 
 const getTagColor = (type) => {
   return toColor[type] || toColor["default"];

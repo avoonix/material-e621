@@ -173,12 +173,6 @@ const settingsModule = {
         rootState.routerModule.query.sorder === false
       );
     },
-    [GETTERS.IS_DTEXT_PARSER_ENABLED](state, getters, rootState) {
-      return !(
-        rootState.routerModule.query.dtxt === "false" ||
-        rootState.routerModule.query.dtxt === false
-      );
-    },
     [GETTERS.IS_DOWNLOAD_PROGRESS](state, getters, rootState) {
       return (
         rootState.routerModule.query.dp === "true" ||

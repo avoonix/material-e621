@@ -13,7 +13,6 @@ import { sync } from "vuex-router-sync";
 import MyPlugin from "./utilities/vuePlugin";
 import VueLazyload from "vue-lazyload";
 import Meta from "vue-meta";
-import ExternalLink from "./components/ExternalLink";
 import Vuetify from "vuetify";
 
 import PortalVue from "portal-vue";
@@ -22,8 +21,6 @@ Vue.use(PortalVue);
 Vue.use(Vuetify, {
   iconfont: "mdi",
 });
-
-Vue.component("external-link", ExternalLink);
 
 Vue.config.devtools = true;
 

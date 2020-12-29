@@ -279,11 +279,6 @@ export default defineComponent({
       fixedText,
     };
   },
-  // enabled() {
-  //   return this.$store.getters[GETTERS.IS_DTEXT_PARSER_ENABLED];
-  // },
-  // methods: {
-  // },
   render(h) {
     if (this.enabled) {
       return h(

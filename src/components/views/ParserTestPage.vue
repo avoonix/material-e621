@@ -2,30 +2,7 @@
   <v-container fill-height>
     <v-layout>
       <v-flex>
-        <v-flex xs12 sm6 offset-sm3 v-if="!enabled">
-          <v-card>
-            <v-card-title primary-title>
-              <div class="title mb-2 red--text">DText parsing disabled</div>
-            </v-card-title>
-            <v-card-title class="mt-0 pt-0">
-              <span class="grey--text"
-                >Enable DText parsing in settings to use this page</span
-              >
-            </v-card-title>
-          </v-card>
-        </v-flex>
-        <v-slider
-          v-model="textRows"
-          thumb-label
-          :min="2"
-          :max="50"
-          label="Text field rows"
-        ></v-slider>
-        <v-textarea
-          :rows="textRows"
-          v-model="testText"
-          label="Edit me"
-        ></v-textarea>
+        <v-textarea :rows="20" v-model="testText" label="Edit me"></v-textarea>
         <d-text :text="testText" />
       </v-flex>
     </v-layout>
@@ -42,17 +19,11 @@ export default {
   components: {
     DText,
   },
-  computed: {
-    enabled() {
-      return this.$store.getters[GETTERS.IS_DTEXT_PARSER_ENABLED];
-    },
-  },
   data() {
     return {
-      textRows: 10,
       testText: `
 h1. Hello there
-Edit this text and see the results below. [b]Please report any errors in the e621 forum.[/b]
+Edit this text and see the results below.
 
 Some features listed "here":https://e621.net/help/show/dtext are not implemented:
 * Some link syntaxes

@@ -80,7 +80,6 @@ import { debounce, differenceBy } from "lodash";
 import Vue from "vue";
 import { computed, defineComponent, ref, watch } from "@vue/composition-api";
 import { getApiService } from "@/worker/services";
-import { removeItem } from "localforage";
 
 export default defineComponent({
   props: {

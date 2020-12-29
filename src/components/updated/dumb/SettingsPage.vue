@@ -20,6 +20,12 @@
           icon="mdi-format-list-bulleted"
           color="darken-1 green"
         ></settings-page-section>
+        <settings-page-section
+          section="restore"
+          title="Backup and restore"
+          icon="mdi-backup-restore"
+          color="darken-1 blue"
+        ></settings-page-section>
         <!-- text="Change your blacklist settings." -->
         <!-- :text="`Change the overall theme of ${$appName}.`" -->
 

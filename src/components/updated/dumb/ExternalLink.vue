@@ -12,14 +12,12 @@
   </a>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "@vue/composition-api";
+
+export default defineComponent({
   inheritAttrs: false,
   props: {
-    // disabled: {
-    //   type: Boolean,
-    //   default: false,
-    // },
     href: {
       type: String,
       default: "",
@@ -29,5 +27,5 @@ export default {
       default: "a",
     },
   },
-};
+});
 </script>

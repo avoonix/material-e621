@@ -14,6 +14,7 @@
     "@mdi/font": "^2.8.94",
     "@types/clone": "^2.1.0",
     "@types/debug": "^4.1.5",
+    "@types/downloadjs": "^1.4.2",
     "@types/hammerjs": "^2.0.36",
     "@types/lodash": "^4.14.166",
     "@types/lodash.debounce": "^4.0.6",

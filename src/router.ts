@@ -65,6 +65,14 @@ export default new Router({
           /* webpackChunkName: "settings" */ "@/components/updated/smart/HistorySettingsPage.vue"
         ),
     },
+    {
+      path: "/settings/restore",
+      name: "RestoreSettings",
+      component: () =>
+        import(
+          /* webpackChunkName: "settings" */ "@/components/updated/smart/RestoreSettingsPage.vue"
+        ),
+    },
     // {
     //   path: "/settings/setup/:step",
     //   name: "SettingsSetup",
