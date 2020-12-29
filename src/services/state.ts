@@ -2,7 +2,7 @@ import { computed, reactive, readonly } from "@vue/composition-api";
 import clone from "clone";
 import { BlacklistMode, ISettingsServiceState } from "./types";
 
-const defaultSettings: ISettingsServiceState = {
+export const defaultSettings: ISettingsServiceState = {
   blacklist: {
     mode: BlacklistMode.blur,
     tags: ["rating:explicit", "rating:questionable"],

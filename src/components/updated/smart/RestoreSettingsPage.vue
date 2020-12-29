@@ -29,6 +29,9 @@
             >
               upload
             </v-btn>
+            <v-btn flat color="accent" class="mb-3" @click="reset">
+              reset to default
+            </v-btn>
           </settings-page-item>
         </form>
       </v-flex>
@@ -60,9 +63,14 @@ export default defineComponent({
       await persistanceService.loadStateFromFile(file);
       snackbarService.addMessage("successfully restored settings");
     };
+    const reset = () => {
+      persistanceService.resetStateToDefault();
+      snackbarService.addMessage("successfully reset settings");
+    };
     return {
       download,
       restore,
+      reset,
     };
   },
 });

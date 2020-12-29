@@ -1,7 +1,8 @@
-import { state } from "./state";
+import { state, defaultSettings } from "./state";
 import localforage from "localforage";
 import { ISettingsServiceState } from "./types";
 import debug from "debug";
+import clone from "clone";
 
 localforage.config({
   description: "",
@@ -48,6 +49,11 @@ class PersistanceService {
       reader.readAsText(file, "utf");
     });
   }
+
+  public resetStateToDefault() {
+    Object.assign(state, clone(defaultSettings));
+  }
+
   private serializeState() {
     return JSON.stringify(state);
   }
