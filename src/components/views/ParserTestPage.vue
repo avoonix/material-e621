@@ -26,21 +26,21 @@
           v-model="testText"
           label="Edit me"
         ></v-textarea>
-        <d-text-display :text="testText" />
+        <d-text :text="testText" />
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 <script>
 import { GETTERS } from "../../store/constants";
-import DTextDisplay from "../DTextDisplay.vue";
+import DText from "../updated/dumb/DText.vue";
 
 export default {
   metaInfo: {
     title: "Parser Test Page",
   },
   components: {
-    DTextDisplay,
+    DText,
   },
   computed: {
     enabled() {

@@ -29,9 +29,7 @@
             <v-card flat>
               <v-card-text>
                 <div class="body-1">
-                  <d-text-display
-                    :text="current.description || 'No description'"
-                  />
+                  <d-text :text="current.description || 'No description'" />
                 </div>
               </v-card-text>
             </v-card>
@@ -68,7 +66,7 @@ import { GETTERS, ACTIONS } from "../../store/constants";
 import Suggestions from "../updated/dumb/Suggestions.vue";
 import prettyBytes from "pretty-bytes";
 import { openOnE621, downloadPost } from "../../utilities/mixins";
-import DTextDisplay from "../DTextDisplay";
+import DText from "../updated/dumb/DText.vue";
 import distanceInWordsToNow from "date-fns/distance_in_words_to_now";
 import formatDate from "date-fns/format";
 import parseDate from "date-fns/parse";
@@ -79,7 +77,7 @@ export default {
   name: "DetailsDialog",
   components: {
     Suggestions,
-    DTextDisplay,
+    DText,
     PostInfoList,
     LinkShare,
   },

@@ -53,7 +53,7 @@
               {{ post.description || "Untitled post" }}
             </div>
             <div class="ma-2">
-              <d-text-display :text="post.description" />
+              <d-text :text="post.description" />
             </div>
           </div>
           <div
@@ -256,11 +256,11 @@
             </v-chip>
           </div>
           <div class="body-1 mb-3" v-if="!lessInfo">
-            <d-text-display :text="post.description" />
+            <d-text :text="post.description" />
           </div>
           <suggestions :tags="tags" />
           <div class="body-1 mt-3" v-if="lessInfo">
-            <d-text-display :text="post.description" />
+            <d-text :text="post.description" />
           </div>
         </v-card-text>
       </v-slide-y-transition>
@@ -270,7 +270,7 @@
 
 <script>
 import Suggestions from "./updated/dumb/Suggestions.vue";
-import DTextDisplay from "./DTextDisplay.vue";
+import DText from "./updated/dumb/DText.vue";
 import { GETTERS, ACTIONS } from "../store/constants";
 import PostButtons from "./PostButtons.vue";
 import {
@@ -283,7 +283,7 @@ export default {
   components: {
     Suggestions,
     PostButtons,
-    DTextDisplay,
+    DText,
   },
   mixins: [openOnE621, downloadPost, togglePostFavorite],
   inject: ["theme"],

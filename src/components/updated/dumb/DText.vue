@@ -1,4 +1,7 @@
-import { getTagColor } from "../utilities/vuePlugin";
+<script lang="ts">
+import { getTagColorFromCategory } from "@/utilities/utilities";
+import { computed, defineComponent } from "@vue/composition-api";
+import { CreateElement } from "vue";
 
 const validBbElements = [
   "b",
@@ -16,14 +19,20 @@ const validBbElements = [
   "table",
 ];
 
-const customBbElementGenerator = {
+const customBbElementGenerator: {
+  [idx: string]: (arg0: {
+    h: CreateElement;
+    innerText: string;
+    attributes?: string;
+  }) => void;
+} = {
   color({ h, innerText, attributes }) {
     if (attributes && attributes.startsWith("=")) {
       let color = attributes.substring(1); // remove = from attributes
       if (
         ["artist", "character", "copyright", "species"].indexOf(color) != -1
       ) {
-        color = getTagColor(color);
+        color = getTagColorFromCategory(color);
       }
       return h("span", { style: `color: ${color}` }, createTree(h, innerText));
     }
@@ -57,7 +66,7 @@ const customBbElementGenerator = {
     }
     for (let i = 1; i < rows.length; i++) {
       const columns = rows[i].split("|");
-      const rowVal = {};
+      const rowVal: { [idx: string]: string } = {};
       for (let j = 0; j < columns.length; j++) {
         rowVal[j] = columns[j];
       }
@@ -109,9 +118,12 @@ const customBbElementGenerator = {
   },
 };
 
-// [^] matches any character (including newline)
-// . matchees any character except newline
-const customMatchers = [
+const customMatchers: Array<{
+  render: (arg0: { match: RegExpExecArray; h: CreateElement }) => void;
+  name: string;
+  regex: RegExp;
+  isValid?: (match: RegExpExecArray) => boolean;
+}> = [
   {
     name: "Code",
     regex: /`([^].*)`/i,
@@ -156,7 +168,7 @@ const customMatchers = [
       const bbElement = match[1];
       const attributes = match[2];
       const innerText = match[4];
-      if (typeof customBbElementGenerator[bbElement] == "function") {
+      if (typeof customBbElementGenerator[bbElement] === "function") {
         return customBbElementGenerator[bbElement]({
           h,
           innerText,
@@ -216,28 +228,26 @@ const customMatchers = [
   },
 ];
 
-const createTree = (h, text) => {
+const createTree = (h: CreateElement, text: string): Array<any> => {
   const retVal = [];
   if (text) {
-    // text doesn't contain any bb elements
     let customMatcherMatched = false;
-    for (let i = 0; i < customMatchers.length; i++) {
-      const matcherMatch = customMatchers[i].regex.exec(text);
-      if (
-        matcherMatch &&
-        (!customMatchers[i].isValid || customMatchers[i].isValid(matcherMatch))
-      ) {
+    for (const matcher of customMatchers) {
+      const matcherMatch = matcher.regex.exec(text);
+      if (matcherMatch && (!matcher.isValid || matcher.isValid(matcherMatch))) {
         customMatcherMatched = true;
         const startIndex = text.indexOf(matcherMatch[0]);
         const endIndex = startIndex + matcherMatch[0].length;
         const textBefore = text.substring(0, startIndex);
         const textAfter = text.substring(endIndex);
         retVal.push(createTree(h, textBefore));
-        retVal.push(customMatchers[i].render({ match: matcherMatch, h }));
+        retVal.push(matcher.render({ match: matcherMatch, h }));
         retVal.push(createTree(h, textAfter));
         break;
       }
     }
+    // for (let i = 0; i < customMatchers.length; i++) {
+    // }
     if (!customMatcherMatched) {
       retVal.push(text);
     }
@@ -245,8 +255,68 @@ const createTree = (h, text) => {
   return retVal;
 };
 
-const parse = (h, text) => {
-  return h("span", { style: { whiteSpace: "pre-wrap" } }, createTree(h, text));
+const fixEmojis = (text: string) => {
+  return text.replace(/([\uf000-\uffff])/g, (char) =>
+    String.fromCodePoint(char.codePointAt(0)! + 0x10000),
+  );
 };
 
-export default parse;
+export default defineComponent({
+  props: {
+    text: {
+      type: String,
+      required: true,
+    },
+    enabled: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  setup(props) {
+    const fixedText = computed(() => fixEmojis(props.text));
+
+    return {
+      fixedText,
+    };
+  },
+  // enabled() {
+  //   return this.$store.getters[GETTERS.IS_DTEXT_PARSER_ENABLED];
+  // },
+  // methods: {
+  // },
+  render(h) {
+    if (this.enabled) {
+      return h(
+        "span",
+        { style: { whiteSpace: "pre-wrap" } },
+        createTree(h, this.fixedText as string),
+      );
+    }
+    // return <span style={{ whiteSpace: "pre-wrap" }} >{this.text}</span>;
+    return h(
+      "span",
+      { style: { whiteSpace: "pre-wrap" } },
+      this.fixedText as string,
+    );
+  },
+});
+</script>
+
+<style lang="stylus" scoped>
+.spoiler {
+  transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+
+  a {
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+}
+
+.spoiler:not(:hover) {
+  color: black;
+  background-color: black;
+
+  a {
+    color: black;
+  }
+}
+</style>
