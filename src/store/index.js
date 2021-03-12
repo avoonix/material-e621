@@ -42,7 +42,6 @@ const createStore = () => {
         rawBitrate: 0,
         rawAllByteSize: 1,
       },
-      WORKER_GET_POST: {}, // id => post
     },
     mutations: {
       updateFavoritedPosts(state, { operation, postId }) {
@@ -89,16 +88,10 @@ const createStore = () => {
       [MUTATIONS.SET_VISIBLE_POSTS_DIALOG](state, { posts }) {
         state.visiblePostListDialog = posts;
       },
-      [MUTATIONS.ADD_VISIBLE_POSTS_DIALOG](state, posts) {
-        state.visiblePostListDialog.push(...posts);
-      },
     },
     actions: {
       [ACTIONS.SET_VISIBLE_POSTS_DIALOG]({ commit }, { posts }) {
         commit(MUTATIONS.SET_VISIBLE_POSTS_DIALOG, { posts });
-      },
-      [ACTIONS.ADD_VISIBLE_POSTS_DIALOG]({ commit }, posts) {
-        commit(MUTATIONS.ADD_VISIBLE_POSTS_DIALOG, posts);
       },
       resetNoResults({ commit }) {
         commit("resetNoResults");
@@ -178,65 +171,65 @@ const createStore = () => {
           // resolve();
         }, 4000);
       },
-      async loadPosts(
-        { commit, state, getters, dispatch },
-        { reset, resetNoResults },
-      ) {
-        state.queryHistory = state.queryHistory.filter(
-          (t) => t !== state.routerModule.query.tags,
-        );
-        state.queryHistory.unshift(state.routerModule.query.tags);
+      // async loadPosts(
+      //   { commit, state, getters, dispatch },
+      //   { reset, resetNoResults },
+      // ) {
+      //   state.queryHistory = state.queryHistory.filter(
+      //     (t) => t !== state.routerModule.query.tags,
+      //   );
+      //   state.queryHistory.unshift(state.routerModule.query.tags);
 
-        if (resetNoResults) state.noResults = false;
-        if (getters.noResults) return;
-        if (reset) dispatch("resetPosts");
-        const before_id =
-          getters[GETTERS.GET_VISIBLE_POSTS].length != 0
-            ? getters[GETTERS.GET_VISIBLE_POSTS][
-                getters[GETTERS.GET_VISIBLE_POSTS].length - 1
-              ].id
-            : false;
+      //   if (resetNoResults) state.noResults = false;
+      //   if (getters.noResults) return;
+      //   if (reset) dispatch("resetPosts");
+      //   const before_id =
+      //     getters[GETTERS.GET_VISIBLE_POSTS].length != 0
+      //       ? getters[GETTERS.GET_VISIBLE_POSTS][
+      //           getters[GETTERS.GET_VISIBLE_POSTS].length - 1
+      //         ].id
+      //       : false;
 
-        const page = getters[GETTERS.GET_CURRENT_PAGE_NUMBER];
+      //   const page = getters[GETTERS.GET_CURRENT_PAGE_NUMBER];
 
-        await getApiService()
-          .then((service) =>
-            service
-              .getPosts({
-                limit: getters[GETTERS.POST_FETCH_COUNT],
-                // tags: createQuery(
-                //   getters[GETTERS.BLACKLIST_MODE],
-                //   blacklistService.tags.join(" "),
-                tags: state.routerModule.query.tags || "",
-                // state.allTags,
-                // ),
-                page: getters[GETTERS.IS_PAGINATED_MODE] ? page : undefined,
-                postsBefore: !getters[GETTERS.IS_PAGINATED_MODE]
-                  ? before_id
-                  : undefined,
-              })
-              .then((posts) => normalizePosts(posts)),
-          )
-          .then((normalizedPosts) => {
-            commit("addPosts", {
-              posts: normalizedPosts,
-              shouldContain: getters[GETTERS.POST_FETCH_COUNT],
-              page: page,
-            });
-            if (normalizedPosts.result.length > 0) {
-              dispatch(
-                ACTIONS.SET_MAX_PAGE_NUMBER,
-                Math.max(
-                  page,
-                  getters[GETTERS.GET_CURRENT_PAGE_NUMBER],
-                  getters[GETTERS.GET_MAX_PAGE_NUMBER],
-                ),
-              );
-            }
-            // dispatch("addTagsFromPost", { normalizedPosts });
-          })
-          .catch(console.log);
-      },
+      //   await getApiService()
+      //     .then((service) =>
+      //       service
+      //         .getPosts({
+      //           limit: getters[GETTERS.POST_FETCH_COUNT],
+      //           // tags: createQuery(
+      //           //   getters[GETTERS.BLACKLIST_MODE],
+      //           //   blacklistService.tags.join(" "),
+      //           tags: state.routerModule.query.tags || "",
+      //           // state.allTags,
+      //           // ),
+      //           page: getters[GETTERS.IS_PAGINATED_MODE] ? page : undefined,
+      //           postsBefore: !getters[GETTERS.IS_PAGINATED_MODE]
+      //             ? before_id
+      //             : undefined,
+      //         })
+      //         .then((posts) => normalizePosts(posts)),
+      //     )
+      //     .then((normalizedPosts) => {
+      //       commit("addPosts", {
+      //         posts: normalizedPosts,
+      //         shouldContain: getters[GETTERS.POST_FETCH_COUNT],
+      //         page: page,
+      //       });
+      //       if (normalizedPosts.result.length > 0) {
+      //         dispatch(
+      //           ACTIONS.SET_MAX_PAGE_NUMBER,
+      //           Math.max(
+      //             page,
+      //             getters[GETTERS.GET_CURRENT_PAGE_NUMBER],
+      //             getters[GETTERS.GET_MAX_PAGE_NUMBER],
+      //           ),
+      //         );
+      //       }
+      //       // dispatch("addTagsFromPost", { normalizedPosts });
+      //     })
+      //     .catch(console.log);
+      // },
     },
     getters: {
       [GETTERS.GET_CURRENT_PAGE_LOADED](state, getters) {
@@ -244,63 +237,11 @@ const createStore = () => {
           state.pages[getters[GETTERS.GET_CURRENT_PAGE_NUMBER]] !== undefined
         );
       },
-      [GETTERS.GET_VISIBLE_POSTS_BLACKLISTED](state, getters) {
-        let postList;
-        if (getters[GETTERS.IS_PAGINATED_MODE]) {
-          postList =
-            state.pages[getters[GETTERS.GET_CURRENT_PAGE_NUMBER]] || [];
-        } else {
-          postList = state.visiblePostList;
-        }
-        return postList // FIXME: 3.5 ms js profiler
-          .map((postId) => getters[GETTERS.GET_POST](postId))
-          .filter((post) => !post || !post.id).length;
-      },
-      [GETTERS.GET_VISIBLE_POSTS](state, getters) {
-        let postList;
-        if (getters[GETTERS.IS_PAGINATED_MODE]) {
-          postList =
-            state.pages[getters[GETTERS.GET_CURRENT_PAGE_NUMBER]] || [];
-        } else {
-          postList = state.visiblePostList;
-        }
-        let enhancedPostList = postList
-          .map((postId) => getters[GETTERS.GET_POST](postId))
-          .filter((post) => post && post.id);
-        return enhancedPostList;
-      },
-      [GETTERS.GET_VISIBLE_POSTS_DIALOG](state, getters) {
-        return state.visiblePostListDialog
-          .map((postId) => getters[GETTERS.GET_POST](postId))
-          .filter((post) => post && post.id);
-      },
-      [GETTERS.GET_NOT_YET_LOADED_POSTS_DIALOG](state) {
-        return state.visiblePostListDialog.filter((postId) => {
-          const post = state.allPosts[postId];
-          return !post;
-        });
-      },
-      [GETTERS.GET_POST](state) {
-        return (id) => {
-          return state.WORKER_GET_POST[id] || false;
-        };
-      },
-      noMorePosts(state, getters) {
-        return state.noResults && getters[GETTERS.GET_VISIBLE_POSTS].length > 0;
-      },
+      // noMorePosts(state, getters) {
+      //   return state.noResults && getters[GETTERS.GET_VISIBLE_POSTS].length > 0;
+      // },
       noResults(state) {
         return state.noResults;
-      },
-      [GETTERS.GET_FULLSCREEN_POST](state, getters) {
-        return getters[GETTERS.GET_POST](
-          getters[GETTERS.GET_FULLSCREEN_POST_ID],
-        );
-      },
-      [GETTERS.GET_FULLSCREEN_POST_ID](state) {
-        return parseInt(state.routerModule.query.fspost || 0);
-      },
-      [GETTERS.GET_DETAILS_VIEW_POST](state, getters) {
-        return getters[GETTERS.GET_POST](state.detailed);
       },
     },
   });

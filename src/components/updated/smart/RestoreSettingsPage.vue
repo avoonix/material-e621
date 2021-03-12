@@ -5,9 +5,9 @@
         <settings-page-title title="Backup and restore" color="darken-1 blue" />
         <settings-page-item title="Backup settings" switch>
           <!-- description="Download your settings as JSON file." -->
-          <v-btn flat color="accent" class="mb-3" @click="download"
-            >download</v-btn
-          >
+          <v-btn flat color="accent" class="mb-3" @click="download">
+            download
+          </v-btn>
         </settings-page-item>
 
         <form>

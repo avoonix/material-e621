@@ -71,15 +71,16 @@
             <div
               @click="setClicked"
               v-ripple="clickable"
-              :class="{
-                feed: layout == 'feed',
-                feedmd: layout == 'feed' && size == 'md',
-                content: !extraSpacing,
-                clickable: clickable,
-                'aspect-ratio-box': layout !== 'grid' && layout != 'feed',
-                'blacklist-blur': blacklistMode == 'blur',
-                'blacklist-black': blacklistMode == 'black',
-              }"
+              :class="[
+                {
+                  feed: layout == 'feed',
+                  feedmd: layout == 'feed' && size == 'md',
+                  content: !extraSpacing,
+                  clickable: clickable,
+                  'aspect-ratio-box': layout !== 'grid' && layout != 'feed',
+                },
+                blacklistClasses,
+              ]"
               :style="{
                 'padding-top':
                   layout !== 'grid' && layout != 'feed'
@@ -278,8 +279,11 @@ import {
   downloadPost,
   togglePostFavorite,
 } from "../utilities/mixins";
+import { blacklistService } from "@/services";
+import { computed, defineComponent } from "@vue/composition-api";
+import { useBlacklistClasses } from "@/utilities/blacklist";
 
-export default {
+export default defineComponent({
   components: {
     Suggestions,
     PostButtons,
@@ -308,18 +312,23 @@ export default {
       default: "blog",
     },
   },
+  setup(props) {
+    const postIsBlacklisted = computed(() =>
+      Boolean(props.post?._postCustom?.isBlacklisted),
+    );
+    const { classes: blacklistClasses } = useBlacklistClasses({
+      mode: blacklistService.mode,
+      postIsBlacklisted,
+    });
+    return {
+      blacklistClasses,
+    };
+  },
   data: () => ({
     show: false,
     clicked: false,
   }),
   computed: {
-    blacklistMode() {
-      // TODO: use blacklist service
-      // if (this.post.custom_blacklisted_by_user) {
-      //   return this.$store.getters[GETTERS.BLACKLIST_MODE]; // blur, black
-      // }
-      return false;
-    },
     fastLoad() {
       return this.$store.getters[GETTERS.IS_FAST_LOAD_MODE];
     },
@@ -439,7 +448,7 @@ export default {
       this.$emit("open-post", this.post.id);
     },
   },
-};
+});
 </script>
 
 <style lang="stylus" scoped>
@@ -572,14 +581,5 @@ img[lazy=loaded] {
     opacity: 1;
     filter: blur(0);
   }
-}
-
-.blacklist-black {
-  filter: brightness(0.02);
-}
-
-.blacklist-blur {
-  filter: blur(7px) !important;
-  // transform: scale(0.99);
 }
 </style>

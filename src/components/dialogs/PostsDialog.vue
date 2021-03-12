@@ -58,10 +58,12 @@ export default {
       },
     },
     visiblePosts() {
-      return this.$store.getters[GETTERS.GET_VISIBLE_POSTS_DIALOG];
+      // return this.$store.getters[GETTERS.GET_VISIBLE_POSTS_DIALOG];
+      return [];
     },
     notYetLoadedPosts() {
-      return this.$store.getters[GETTERS.GET_NOT_YET_LOADED_POSTS_DIALOG];
+      // return this.$store.getters[GETTERS.GET_NOT_YET_LOADED_POSTS_DIALOG];
+      return [];
     },
   },
 };

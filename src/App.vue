@@ -185,7 +185,8 @@ export default {
       return this.$store.getters[GETTERS.NAVIGATION_TYPE];
     },
     postCount() {
-      return this.$store.getters[GETTERS.GET_VISIBLE_POSTS].length;
+      // return this.$store.getters[GETTERS.GET_VISIBLE_POSTS].length;
+      return 0;
     },
     isDark() {
       return appearanceService.dark;
@@ -271,6 +272,15 @@ export default {
 </style>
 
 <style>
+.blacklist-black {
+  filter: brightness(0.02);
+}
+
+.blacklist-blur {
+  filter: blur(7px) !important;
+  /* // transform: scale(0.99); */
+}
+
 body {
   user-select: initial !important;
   background-color: #808080;

@@ -34,10 +34,7 @@
             style="height: 100%"
             ref="middle"
             class="middle black"
-            :class="{
-              'blacklist-blur': blacklistMode == 'blur',
-              'blacklist-black': blacklistMode == 'black',
-            }"
+            :class="blacklistClasses"
           >
             <object
               v-if="current.file_ext == 'swf' && currentFileUrl"
@@ -159,10 +156,12 @@ import Logo from "../updated/dumb/Logo.vue";
 import { togglePostFavorite } from "../../utilities/mixins";
 import PostButtons from "../PostButtons.vue";
 import { getTransitionName } from "../../utilities/transitions";
-import { appearanceService } from "@/services";
+import { appearanceService, blacklistService } from "@/services";
 import ZoomPanImage from "../updated/dumb/ZoomPanImage.vue";
+import { useBlacklistClasses } from "../../utilities/blacklist";
+import { computed, defineComponent } from "@vue/composition-api";
 
-export default {
+export default defineComponent({
   metaInfo() {
     return {
       title: this.current
@@ -192,6 +191,18 @@ export default {
     current: {
       required: true,
     },
+  },
+  setup(props) {
+    const postIsBlacklisted = computed(() =>
+      Boolean(props?.current?._postCustom?.isBlacklisted),
+    );
+    const { classes: blacklistClasses } = useBlacklistClasses({
+      mode: blacklistService.mode,
+      postIsBlacklisted,
+    });
+    return {
+      blacklistClasses,
+    };
   },
   data() {
     return {
@@ -274,7 +285,7 @@ export default {
   },
   watch: {
     current(val, prev) {
-      if (val.id != prev.id) {
+      if (val && (!prev || val.id != prev.id)) {
         this.scrollIntoView();
         this.switched = true;
         this.$nextTick(() => {
@@ -290,13 +301,6 @@ export default {
   computed: {
     transitionName() {
       return appearanceService.fullscreenTransition;
-    },
-    blacklistMode() {
-      // TODO: use blacklist service
-      // if (this.current && this.current.custom_blacklisted_by_user) {
-      //   return this.$store.getters[GETTERS.BLACKLIST_MODE]; // blur, black
-      // }
-      return false;
     },
     prevousNextButtons() {
       const layout = this.$store.getters[
@@ -326,7 +330,7 @@ export default {
       return !!this.current;
     },
   },
-};
+});
 </script>
 
 <style scoped lang="stylus">
@@ -500,14 +504,5 @@ export default {
   position: absolute;
   height: 100%;
   width: 100%;
-}
-
-.blacklist-black {
-  filter: brightness(0.02);
-}
-
-.blacklist-blur {
-  filter: blur(7px) !important;
-  // transform: scale(0.99);
 }
 </style>

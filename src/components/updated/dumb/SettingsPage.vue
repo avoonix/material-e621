@@ -3,6 +3,12 @@
     <v-layout align-center>
       <v-flex text-xs-center xs12 md8 offset-md2>
         <settings-page-section
+          section="info"
+          title="Info"
+          icon="mdi-information"
+          color="darken-2 teal"
+        ></settings-page-section>
+        <settings-page-section
           section="blacklist"
           title="Blacklist"
           icon="mdi-playlist-remove"
