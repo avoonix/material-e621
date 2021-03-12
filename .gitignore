@@ -131,3 +131,4 @@ pnpm-debug.log*
 *.log
 public/static/*.png
 public/favicon.ico
+package-lock.json
