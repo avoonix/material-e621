@@ -160,7 +160,7 @@ export default defineComponent({
           color: "#2F4155",
           dark: true,
           url: `http://www.tumblr.com/share/link?url=${encodedUrl}&name=${text}&description=${text}`,
-          icon: "mdi-tumblr",
+          icon: "mdi-alpha-t-box",
         },
         {
           name: "Copy to clipboard",

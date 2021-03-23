@@ -106,7 +106,7 @@ export default {
           active: this.$store.state.routerModule.path == "/e621",
         },
         {
-          icon: "mdi-settings",
+          icon: "mdi-cog",
           name: "Settings",
           router: true,
           exact: false,
