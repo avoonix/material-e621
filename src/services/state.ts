@@ -5,7 +5,7 @@ import { BlacklistMode, ISettingsServiceState } from "./types";
 export const defaultSettings: ISettingsServiceState = {
   blacklist: {
     mode: BlacklistMode.blur,
-    tags: ["rating:explicit", "rating:questionable"],
+    tags: [],
   },
   appearance: {
     primary: "#1976d2",
