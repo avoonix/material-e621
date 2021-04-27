@@ -14,7 +14,8 @@ import { createTagQuery } from "@/utilities/createTagQuery";
 import { BlacklistMode } from "@/services/types";
 // import { getTagColor } from "@/utilities/utilities";
 
-debug.enable("app:*");
+debug.disable();
+// debug.enable("app:*");
 
 const log = debug("app:ApiService");
 
@@ -97,5 +98,3 @@ export class ApiService {
   //   this._counter += delta;
   // }
 }
-
-expose(ApiService);

@@ -3,9 +3,9 @@ import { wrap, Remote } from "comlink";
 // import { TsWorkerExports } from "./TsWorker";
 // import TsWorker from "worker-loader!./TsWorker";
 import { ApiService } from "./ApiService";
-import ApiServiceWorker from "worker-loader!./ApiService";
-import { SuggestionService } from "./SuggestionService";
-import SuggestionServiceWorker from "worker-loader!./SuggestionService";
+import ApiServiceWorker from "worker-loader!./ApiServiceWorker";
+import { AnalyzeService } from "./AnalyzeService";
+import AnalyzeServiceWorker from "worker-loader!./AnalyzeService";
 
 // export function takeALongTimeToDoSomething() {
 //   const worker = new TsWorker();
@@ -35,13 +35,13 @@ export const getApiService = async () => {
   );
 };
 
-let suggestionServiceInstance: Remote<SuggestionService>;
+let analyzeServiceInstance: Remote<AnalyzeService>;
 
-export const getSuggestionService = async () => {
+export const getAnalyzeService = async () => {
   return (
-    suggestionServiceInstance ||
-    (suggestionServiceInstance = await createWorker<SuggestionService>(
-      SuggestionServiceWorker,
+    analyzeServiceInstance ||
+    (analyzeServiceInstance = await createWorker<AnalyzeService>(
+      AnalyzeServiceWorker,
     ))
   );
 };

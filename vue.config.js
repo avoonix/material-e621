@@ -25,6 +25,7 @@ process.env.VUE_APP_GIT_BRANCH_NAME = execSync(
 
 module.exports = {
   configureWebpack: {
+    devtool: "source-map",
     plugins: [
       new ServiceWorkerWebpackPlugin({
         entry: path.join(__dirname, "src/worker/serviceWorker/index.ts"),

@@ -119,6 +119,22 @@ export default new Router({
         ),
     },
     {
+      path: "/analyzer",
+      name: "FavoritesAnalyzer",
+      component: () =>
+        import(
+          /* webpackChunkName: "analyzer" */ "@/components/updated/smart/FavoritesAnalyzer.vue"
+        ),
+    },
+    {
+      path: "/analyzer-result",
+      name: "FavoritesAnalyzerResult",
+      component: () =>
+        import(
+          /* webpackChunkName: "analyzer" */ "@/components/updated/smart/FavoritesAnalyzerResult.vue"
+        ) as any,
+    },
+    {
       path: "/404",
       name: "ErrorPage",
       component: () =>

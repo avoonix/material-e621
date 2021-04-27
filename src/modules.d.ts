@@ -7,3 +7,4 @@ declare module "worker-loader!*" {
 }
 declare module "serviceworker-webpack-plugin/lib/runtime";
 declare module "vuetify/es5/util/colors";
+declare module "d3-cloud";

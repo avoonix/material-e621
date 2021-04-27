@@ -31,9 +31,7 @@
     v-else-if="type == 'bottom'"
     :active.sync="bottomNav"
     class="sidenav-color"
-    :style="
-      `background-color: ${sidebarColor} !important; border-color: ${sidebarColor} !important;`
-    "
+    :style="`background-color: ${sidebarColor} !important; border-color: ${sidebarColor} !important;`"
     fixed
     shift
     app
@@ -128,15 +126,26 @@ export default {
           active: this.$store.state.routerModule.path == "/suggester",
         },
         {
-          icon: "mdi-folder-download",
-          name: `Download all ${this.postCount} images on this page`,
-          router: false,
-          exact: false,
-          onClick: () => this.$store.dispatch("downloadPage"),
-          to: null,
-          disabled: this.postCount == 0 || this.$store.state.zip.loading,
-          loading: this.$store.state.zip.loading,
+          icon: "mdi-graph",
+          name: "Stats",
+          router: true,
+          exact: true,
+          to: {
+            path: "/analyzer",
+            query: this.$store.state.routerModule.query,
+          },
+          active: this.$store.state.routerModule.path == "/analyzer",
         },
+        // {
+        //   icon: "mdi-folder-download",
+        //   name: `Download all ${this.postCount} images on this page`,
+        //   router: false,
+        //   exact: false,
+        //   onClick: () => this.$store.dispatch("downloadPage"),
+        //   to: null,
+        //   disabled: this.postCount == 0 || this.$store.state.zip.loading,
+        //   loading: this.$store.state.zip.loading,
+        // },
       ];
     },
     bottomNav: {

@@ -44,7 +44,7 @@
 
 <script>
 import Posts from "@/components/Posts.vue";
-import { getApiService, getSuggestionService } from "../../worker/services";
+import { getApiService, getAnalyzeService } from "../../worker/services";
 import { GETTERS } from "../../store/constants";
 import {
   updateRouterQuery,
@@ -203,8 +203,8 @@ export default defineComponent({
         this.suggestedTags = [];
         return;
       }
-      const service = await getSuggestionService();
-      const occurences = await service.getTagOccurences(this.posts);
+      const service = await getAnalyzeService();
+      const occurences = await service.getTagOccurrences(this.posts);
       // TODO: handle slicing and mapping in worker
       this.suggestedTags = occurences.sorted
         .slice(0, this.settingsSuggestedTagsCount)

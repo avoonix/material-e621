@@ -132,3 +132,4 @@ pnpm-debug.log*
 public/static/*.png
 public/favicon.ico
 package-lock.json
+todo*
