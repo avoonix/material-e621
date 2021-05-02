@@ -261,7 +261,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./styles/animate.scss";
+@import "./shared/styles/animate.scss";
 </style>
 
 <style>
