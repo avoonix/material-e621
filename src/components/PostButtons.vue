@@ -119,13 +119,14 @@
 
 <script>
 import {
-  openOnE621,
   downloadPost,
   togglePostFavorite,
 } from "../utilities/mixins";
-import { GETTERS, ACTIONS } from "../store/constants";
+import { GETTERS } from "../store/constants";
+import { openE6PostInStandaloneWindow } from "../shared/utils/url"
+
 export default {
-  mixins: [downloadPost, openOnE621, togglePostFavorite],
+  mixins: [downloadPost, togglePostFavorite],
   props: {
     post: {
       type: Object,
@@ -143,6 +144,12 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  setup(){
+    const openOnE621 = (id) => openE6PostInStandaloneWindow(id);
+    return {
+      openOnE621,
+    }
   },
   computed: {
     loggedIn() {

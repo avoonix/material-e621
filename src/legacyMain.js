@@ -11,7 +11,6 @@ import { createStore } from "./store";
 import Vuex from "vuex";
 import { sync } from "vuex-router-sync";
 import MyPlugin from "./utilities/vuePlugin";
-import VueLazyload from "vue-lazyload";
 import Meta from "vue-meta";
 import Vuetify from "vuetify";
 
@@ -22,15 +21,8 @@ Vue.use(Vuetify, {
   iconfont: "mdi",
 });
 
-Vue.config.devtools = true;
-
 Vue.use(Vuex);
 Vue.use(MyPlugin);
-Vue.use(VueLazyload, {
-  // preLoad: 1.3, error: "dist/error.png", loading: "dist/loading.gif",
-  attempt: 9999,
-  // observer: true
-});
 Vue.use(Meta, {
   tagIDKeyName: "vmid",
   attribute: "data-vue-meta",

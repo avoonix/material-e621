@@ -1,4 +1,4 @@
-import { normalizePosts, api } from "../store/api";
+// import { normalizePosts } from "../store/api";
 import * as plugins from "../utilities/vuePlugin";
 import { debug } from "debug";
 
@@ -106,7 +106,7 @@ export const fetchSuggestions = async ({
     currentBeforeId = fetchedPosts.result[fetchedPosts.result.length - 1];
     sendProgress();
   }
-  return { posts: normalizePosts(matchingPosts), beforeId: currentBeforeId };
+  // return { posts: normalizePosts(matchingPosts), beforeId: currentBeforeId };
 };
 
 const log = debug("app:suggesters");

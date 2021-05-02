@@ -49,7 +49,7 @@
           </v-card>
         </v-flex>
 
-        <v-flex md6 xs12 offset-md3 class="my-2">
+        <!-- <v-flex md6 xs12 offset-md3 class="my-2">
           <v-card>
             <v-card-title>Legend</v-card-title>
             <v-card-text>
@@ -73,7 +73,7 @@
               </v-layout>
             </v-card-text>
           </v-card>
-        </v-flex>
+        </v-flex> -->
         <v-timeline style="width: 100%;" :dense="$vuetify.breakpoint.smAndDown">
           <v-timeline-item
             v-for="(item, index) in timeline"
@@ -93,9 +93,9 @@
   </v-container>
 </template>
 <script>
-import ChangelogItem from "../ChangelogItem.vue";
-import changelog from "../../config/changelog";
-import packageJson from "../../../package";
+import ChangelogItem from "../components/ChangelogItem.vue";
+import changelog from "../config/changelog";
+import packageJson from "../../package";
 
 export default {
   metaInfo: {

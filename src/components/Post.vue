@@ -110,7 +110,6 @@
                 v-else-if="fastLoad || clicked"
                 :src="imageSrc"
                 :alt="allTags"
-                lazy="loaded"
               />
               <img
                 v-else
@@ -272,10 +271,9 @@
 <script>
 import Suggestions from "./updated/dumb/Suggestions.vue";
 import DText from "./updated/dumb/DText.vue";
-import { GETTERS, ACTIONS } from "../store/constants";
+import { GETTERS } from "../store/constants";
 import PostButtons from "./PostButtons.vue";
 import {
-  openOnE621,
   downloadPost,
   togglePostFavorite,
 } from "../utilities/mixins";
@@ -289,7 +287,7 @@ export default defineComponent({
     PostButtons,
     DText,
   },
-  mixins: [openOnE621, downloadPost, togglePostFavorite],
+  mixins: [downloadPost, togglePostFavorite],
   inject: ["theme"],
   props: {
     post: {
@@ -554,22 +552,22 @@ img, video {
   pointer-events: none;
 }
 
-img[lazy=loading] {
-  filter: blur(2px);
-  opacity: 0.7;
-  /* your style here */
-}
+// img[lazy=loading] {
+//   filter: blur(2px);
+//   opacity: 0.7;
+//   /* your style here */
+// }
 
-img[lazy=error] {
-  /* your style here */
-}
+// img[lazy=error] {
+//   /* your style here */
+// }
 
-img[lazy=loaded] {
-  animation-duration: 0.5s;
-  animation-fill-mode: both;
-  animation-name: fadeIn;
-  /* your style here */
-}
+// img[lazy=loaded] {
+//   animation-duration: 0.5s;
+//   animation-fill-mode: both;
+//   animation-name: fadeIn;
+//   /* your style here */
+// }
 
 @keyframes fadeIn {
   from {

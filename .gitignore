@@ -119,7 +119,6 @@ pnpm-debug.log*
 
 # Editor directories and files
 .idea
-.vscode
 *.suo
 *.ntvs*
 *.njsproj
@@ -133,3 +132,5 @@ public/static/*.png
 public/favicon.ico
 package-lock.json
 todo*
+
+.vscode/settings.json

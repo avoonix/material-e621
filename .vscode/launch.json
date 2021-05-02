@@ -1,0 +1,10 @@
+{
+  "configurations": [
+    {
+      "command": "npm run serve",
+      "name": "Serve app",
+      "request": "launch",
+      "type": "node-terminal"
+    }
+  ]
+}

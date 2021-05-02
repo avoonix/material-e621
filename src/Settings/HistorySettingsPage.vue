@@ -19,9 +19,9 @@
 </template>
 
 <script lang="ts">
-import SettingsPageTitle from "../dumb/SettingsPageTitle.vue";
-import SettingsPageItem from "../dumb/SettingsPageItem.vue";
-import HistoryList from "../dumb/HistoryList.vue";
+import SettingsPageTitle from "./SettingsPageTitle.vue";
+import SettingsPageItem from "./SettingsPageItem.vue";
+import HistoryList from "../components/updated/dumb/HistoryList.vue";
 import { computed, defineComponent } from "@vue/composition-api";
 import { historyService } from "@/services";
 import router from "@/router";

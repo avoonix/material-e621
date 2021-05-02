@@ -12,9 +12,7 @@
         app
         width="400"
         class="pa-2 sidenav-color"
-        :style="
-          `background-color: ${currentTheme.sidebar} !important; border-color: ${currentTheme.sidebar} !important;`
-        "
+        :style="`background-color: ${currentTheme.sidebar} !important; border-color: ${currentTheme.sidebar} !important;`"
       >
         <logo />
         <navigation
@@ -79,9 +77,7 @@
       />
       <v-content
         class="main-content-color"
-        :style="
-          `background-color: ${currentTheme.background} !important; border-color: ${currentTheme.background} !important;`
-        "
+        :style="`background-color: ${currentTheme.background} !important; border-color: ${currentTheme.background} !important;`"
       >
         <transition
           v-if="!isPrerender"
@@ -91,7 +87,6 @@
         >
           <router-view :key="routeKey" />
         </transition>
-        <download-dialog />
         <posts-dialog />
         <update-dialog />
         <snackbar />
@@ -107,7 +102,6 @@ import LoginDialog from "./components/dialogs/LoginDialog.vue";
 import Navigation from "./components/Navigation.vue";
 import PostsDialog from "./components/dialogs/PostsDialog.vue";
 import UpdateDialog from "./components/dialogs/UpdateDialog.vue";
-import DownloadDialog from "./components/dialogs/DownloadDialog.vue";
 import { ACTIONS, GETTERS } from "./store/constants";
 import { getTransitionName } from "./utilities/transitions";
 import { useSettingsServiceState, appearanceService } from "./services";
@@ -139,7 +133,6 @@ export default {
     LoginDialog,
     Logo,
     Snackbar,
-    DownloadDialog,
     PostsDialog,
     UpdateDialog,
     Navigation,

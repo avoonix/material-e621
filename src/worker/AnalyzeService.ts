@@ -87,15 +87,16 @@ export class AnalyzeService {
 
   cache: { [key: string]: Post[] | undefined } = {};
 
-  async analyzeTags(
-    args: IAnalyzeTagsArgs,
+  // TODO: generator?
+  private async fetchPostsCached(
+    tags: string[],
+    postLimit: number,
     onProgress: (event: IProgressEvent) => void,
-  ): Promise<IAnalyzeTagsResult> {
-
+  ) {
     const service = new ApiService();
     const posts: Post[] = [];
     let postsBefore: undefined | number = undefined;
-    const key = args.tags.join("");
+    const key = [tags, postLimit].join("");
     log("start fetch");
     if (key && this.cache[key]) {
       posts.push(...this.cache[key]!);
@@ -104,30 +105,41 @@ export class AnalyzeService {
         const newPosts: Post[] = await service.getPosts({
           blacklistMode: BlacklistMode.blur,
           limit: 320,
-          tags: args.tags,
+          tags,
           postsBefore,
         });
         postsBefore = newPosts[newPosts.length - 1]?.id;
         posts.push(...newPosts);
-        onProgress({message: `got ${posts.length} of ${args.postLimit} posts`, progress: Math.min(1, posts.length/args.postLimit) * .5});
-        if (newPosts.length !== 320 || posts.length >= args.postLimit) {
+        onProgress({
+          message: `got ${posts.length} of ${postLimit} posts`,
+          progress: Math.min(1, posts.length / postLimit) * 0.5,
+        });
+        if (newPosts.length !== 320 || posts.length >= postLimit) {
           break;
         }
       }
       this.cache[key] = posts;
     }
-    onProgress({message: "got posts, creating clouds", progress: .5, indeterminate: true});
-    log("got posts")
+    return posts;
+  }
 
-    const counts: any = {};
-    for (const post of posts) {
-      for (const [category, tags] of Object.entries(post.tags)) {
-        counts[category] = counts[category] || {};
-        for (const tag of tags) {
-          counts[category][tag] = (counts[category][tag] || 0) + 1;
-        }
-      }
-    }
+  async analyzeTags(
+    args: IAnalyzeTagsArgs,
+    onProgress: (event: IProgressEvent) => void,
+  ): Promise<IAnalyzeTagsResult> {
+    const posts = await this.fetchPostsCached(
+      args.tags,
+      args.postLimit,
+      onProgress,
+    );
+    onProgress({
+      message: "got posts, creating clouds",
+      progress: 0.5,
+      indeterminate: true,
+    });
+    log("got posts");
+
+    const counts = getCounts(posts);
 
     const result: any = [];
     for (const [category, obj] of Object.entries(counts)) {
@@ -135,13 +147,31 @@ export class AnalyzeService {
         category,
         result: await createCloud(obj, args.width, args.height),
       });
-      log("created a cloud")
+      log("created a cloud");
     }
-    onProgress({message: "done", progress: 1});
+    onProgress({ message: "done", progress: 1 });
     return {
       wordPositions: result,
     };
   }
+
+  // display most favorited tags to user
+  async getFavoriteTags(
+    username: string,
+    onProgress: (event: IProgressEvent) => void,
+  ): Promise<FavoriteTagsResult> {
+    const posts = await this.fetchPostsCached(
+      [`fav:${username}`],
+      1000,
+      onProgress,
+    );
+
+    const counts = getCounts(posts);
+
+    return { counts };
+  }
+
+  // TODO: get new posts and use favorited tags to score them
 }
 
 const createCloud = (counts: any, width: number, height: number) => {
@@ -186,5 +216,24 @@ const createCloud = (counts: any, width: number, height: number) => {
     layout.start();
   });
 };
+
+const getCounts = (posts: Post[]) => {
+  const counts: {
+    [category: string]: undefined | { [tag: string]: undefined | number };
+  } = {};
+  for (const post of posts) {
+    for (const [category, tags] of Object.entries(post.tags)) {
+      counts[category] = counts[category] || {};
+      for (const tag of tags) {
+        counts[category]![tag] = (counts[category]![tag] || 0) + 1;
+      }
+    }
+  }
+  return counts;
+};
+
+export interface FavoriteTagsResult {
+  counts: ReturnType<typeof getCounts>;
+}
 
 expose(AnalyzeService);

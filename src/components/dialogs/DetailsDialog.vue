@@ -64,14 +64,15 @@
 <script>
 import { GETTERS, ACTIONS } from "../../store/constants";
 import Suggestions from "../updated/dumb/Suggestions.vue";
-import prettyBytes from "pretty-bytes";
-import { openOnE621, downloadPost } from "../../utilities/mixins";
+// import prettyBytes from "pretty-bytes";
+import { downloadPost } from "../../utilities/mixins";
 import DText from "../updated/dumb/DText.vue";
 import distanceInWordsToNow from "date-fns/distance_in_words_to_now";
 import formatDate from "date-fns/format";
 import parseDate from "date-fns/parse";
 import PostInfoList from "../updated/dumb/PostInfoList.vue";
 import LinkShare from "../updated/dumb/LinkShare.vue";
+import { openE6PostInStandaloneWindow } from '@/shared/utils/url';
 
 export default {
   name: "DetailsDialog",
@@ -81,11 +82,17 @@ export default {
     PostInfoList,
     LinkShare,
   },
-  mixins: [openOnE621, downloadPost],
+  mixins: [downloadPost],
   props: {
     current: {
       required: true,
     },
+  },
+  setup(){
+    const openOnE621 = (id) => openE6PostInStandaloneWindow(id);
+    return {
+      openOnE621,
+    }
   },
   data() {
     return {

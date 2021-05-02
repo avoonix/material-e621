@@ -3,6 +3,7 @@ import localforage from "localforage";
 import { ISettingsServiceState } from "./types";
 import debug from "debug";
 import clone from "clone";
+import { watch } from "@vue/composition-api";
 
 localforage.config({
   description: "",
@@ -32,7 +33,7 @@ class PersistanceService {
     });
   }
   public async loadStateFromFile(file: File) {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const reader = new FileReader();
 
       reader.onload = (event) => {
@@ -47,6 +48,12 @@ class PersistanceService {
       };
 
       reader.readAsText(file, "utf");
+    });
+  }
+
+  public persist() {
+    this.loadState().then(() => {
+      watch(state, () => this.saveState(), { deep: true });
     });
   }
 

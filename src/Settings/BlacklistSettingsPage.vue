@@ -27,13 +27,13 @@
 </template>
 
 <script lang="ts">
-import SettingsPageTitle from "../dumb/SettingsPageTitle.vue";
-import SettingsPageItem from "../dumb/SettingsPageItem.vue";
-import BlacklistSuggestions from "../dumb/BlacklistSuggestions.vue";
+import SettingsPageTitle from "./SettingsPageTitle.vue";
+import SettingsPageItem from "./SettingsPageItem.vue";
+import BlacklistSuggestions from "../components/updated/dumb/BlacklistSuggestions.vue";
 import { blacklistService } from "@/services";
 import { computed, defineComponent } from "@vue/composition-api";
 import blacklistSuggestions from "@/config/blacklistSuggestions.json";
-import TagSearch from "./TagSearch.vue";
+import TagSearch from "../components/updated/smart/TagSearch.vue";
 import { BlacklistMode } from "@/services/types";
 
 export default defineComponent({

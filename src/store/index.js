@@ -1,12 +1,9 @@
 import Vuex from "vuex";
 import uniq from "lodash.uniq";
-import { favoritePost, downloadPost, normalizePosts } from "./api";
+// import { favoritePost, normalizePosts } from "./api";
 import settingsModule from "./settings";
 import { MUTATIONS, GETTERS, ACTIONS } from "./constants";
-import JSZip from "jszip";
-import { bitrate } from "../utilities/bitrate";
 import { getApiService } from "../worker/services";
-import { blacklistService } from "@/services";
 import { snackbarService } from "@/services";
 
 const wait = (t) => {
@@ -33,15 +30,6 @@ const createStore = () => {
       detailed: 0, // details view
       noResults: false,
       queryHistory: [], // string[]
-      zip: {
-        loading: false,
-        ready: false,
-        progressArr: [],
-        timeRemaining: 0,
-        bitrate: "? MB/s",
-        rawBitrate: 0,
-        rawAllByteSize: 1,
-      },
     },
     mutations: {
       updateFavoritedPosts(state, { operation, postId }) {

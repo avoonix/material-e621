@@ -1,8 +1,5 @@
-import { expose } from "comlink";
-
 import {
   e621,
-  IPostsListArgs,
   ITagsListArgs,
   IPoolsArgs,
   Post,

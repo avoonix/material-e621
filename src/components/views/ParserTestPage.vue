@@ -9,7 +9,6 @@
   </v-container>
 </template>
 <script>
-import { GETTERS } from "../../store/constants";
 import DText from "../updated/dumb/DText.vue";
 
 export default {

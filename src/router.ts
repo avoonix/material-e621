@@ -17,7 +17,7 @@ export default new Router({
       name: "LandingPage",
       component: () =>
         import(
-          /* webpackChunkName: "landing-page" */ "@/components/views/LandingPage.vue"
+          /* webpackChunkName: "landing-page" */ "@/Landing/LandingPage.vue"
         ),
       meta: {
         minimalHeader: true,
@@ -38,7 +38,7 @@ export default new Router({
       name: "Settings",
       component: () =>
         import(
-          /* webpackChunkName: "settings" */ "@/components/updated/dumb/SettingsPage.vue"
+          /* webpackChunkName: "settings" */ "@/Settings/SettingsPage.vue"
         ),
     },
     {
@@ -46,7 +46,7 @@ export default new Router({
       name: "BlacklistSettings",
       component: () =>
         import(
-          /* webpackChunkName: "settings" */ "@/components/updated/smart/BlacklistSettingsPage.vue"
+          /* webpackChunkName: "settings" */ "@/Settings/BlacklistSettingsPage.vue"
         ),
     },
     {
@@ -54,7 +54,7 @@ export default new Router({
       name: "AppearanceSettings",
       component: () =>
         import(
-          /* webpackChunkName: "settings" */ "@/components/updated/smart/AppearanceSettingsPage.vue"
+          /* webpackChunkName: "settings" */ "@/Settings/AppearanceSettingsPage.vue"
         ),
     },
     {
@@ -62,7 +62,7 @@ export default new Router({
       name: "HistorySettings",
       component: () =>
         import(
-          /* webpackChunkName: "settings" */ "@/components/updated/smart/HistorySettingsPage.vue"
+          /* webpackChunkName: "settings" */ "@/Settings/HistorySettingsPage.vue"
         ),
     },
     {
@@ -70,7 +70,7 @@ export default new Router({
       name: "RestoreSettings",
       component: () =>
         import(
-          /* webpackChunkName: "settings" */ "@/components/updated/smart/RestoreSettingsPage.vue"
+          /* webpackChunkName: "settings" */ "@/Settings/RestoreSettingsPage.vue"
         ),
     },
     {
@@ -78,17 +78,9 @@ export default new Router({
       name: "Infos",
       component: () =>
         import(
-          /* webpackChunkName: "settings" */ "@/components/updated/smart/InfoPage.vue"
+          /* webpackChunkName: "settings" */ "@/Settings/InfoPage.vue"
         ),
     },
-    // {
-    //   path: "/settings/setup/:step",
-    //   name: "SettingsSetup",
-    //   component: () =>
-    //     import(
-    //       /* webpackChunkName: "settings" */ "@/components/settings/SettingsPage.vue"
-    //     ),
-    // },
     {
       path: "/parser",
       name: "Parser",
@@ -97,14 +89,14 @@ export default new Router({
           /* webpackChunkName: "parser" */ "@/components/views/ParserTestPage.vue"
         ),
     },
-    {
-      path: "/suggester",
-      name: "PostSuggester",
-      component: () =>
-        import(
-          /* webpackChunkName: "suggester" */ "@/components/PostSuggester.vue"
-        ),
-    },
+    // {
+    //   path: "/suggester",
+    //   name: "PostSuggester",
+    //   component: () =>
+    //     import(
+    //       /* webpackChunkName: "suggester" */ "@/components/PostSuggester.vue"
+    //     ),
+    // },
     {
       path: "/install",
       name: "Install",
@@ -115,7 +107,7 @@ export default new Router({
       name: "About",
       component: () =>
         import(
-          /* webpackChunkName: "about" */ "@/components/views/AboutPage.vue"
+          /* webpackChunkName: "about" */ "@/About/AboutPage.vue"
         ),
     },
     {
@@ -123,7 +115,7 @@ export default new Router({
       name: "FavoritesAnalyzer",
       component: () =>
         import(
-          /* webpackChunkName: "analyzer" */ "@/components/updated/smart/FavoritesAnalyzer.vue"
+          /* webpackChunkName: "analyzer" */ "@/Analyzer/FavoritesAnalyzer.vue"
         ),
     },
     {
@@ -131,8 +123,24 @@ export default new Router({
       name: "FavoritesAnalyzerResult",
       component: () =>
         import(
-          /* webpackChunkName: "analyzer" */ "@/components/updated/smart/FavoritesAnalyzerResult.vue"
+          /* webpackChunkName: "analyzer" */ "@/Analyzer/FavoritesAnalyzerResult.vue"
         ) as any,
+    },
+    {
+      path: "/suggester",
+      name: "Suggester",
+      component: () =>
+        import(
+          /* webpackChunkName: "suggester" */ "@/Suggester/SuggesterInput.vue"
+        ),
+    },
+    {
+      path: "/suggester-result",
+      name: "SuggesterResult",
+      component: () =>
+        import(
+          /* webpackChunkName: "suggester" */ "@/Suggester/SuggesterResult.vue"
+        ),
     },
     {
       path: "/404",

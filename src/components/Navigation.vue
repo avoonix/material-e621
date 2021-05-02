@@ -69,7 +69,6 @@
 
 <script>
 import { appearanceService } from "@/services";
-import { GETTERS } from "../store/constants";
 
 export default {
   props: {
@@ -114,17 +113,17 @@ export default {
           },
           active: this.$store.state.routerModule.path.startsWith("/settings"),
         },
-        {
-          icon: "mdi-braille",
-          name: "Post suggester",
-          router: true,
-          exact: true,
-          to: {
-            path: "/suggester",
-            query: this.$store.state.routerModule.query,
-          },
-          active: this.$store.state.routerModule.path == "/suggester",
-        },
+        // {
+        //   icon: "mdi-braille",
+        //   name: "Post suggester",
+        //   router: true,
+        //   exact: true,
+        //   to: {
+        //     path: "/suggester",
+        //     query: this.$store.state.routerModule.query,
+        //   },
+        //   active: this.$store.state.routerModule.path == "/suggester",
+        // },
         {
           icon: "mdi-graph",
           name: "Stats",
@@ -136,16 +135,6 @@ export default {
           },
           active: this.$store.state.routerModule.path == "/analyzer",
         },
-        // {
-        //   icon: "mdi-folder-download",
-        //   name: `Download all ${this.postCount} images on this page`,
-        //   router: false,
-        //   exact: false,
-        //   onClick: () => this.$store.dispatch("downloadPage"),
-        //   to: null,
-        //   disabled: this.postCount == 0 || this.$store.state.zip.loading,
-        //   loading: this.$store.state.zip.loading,
-        // },
       ];
     },
     bottomNav: {

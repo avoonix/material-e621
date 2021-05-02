@@ -21,8 +21,8 @@
 </template>
 
 <script lang="ts">
-import SettingsPageTitle from "../dumb/SettingsPageTitle.vue";
-import SettingsPageItem from "../dumb/SettingsPageItem.vue";
+import SettingsPageTitle from "./SettingsPageTitle.vue";
+import SettingsPageItem from "./SettingsPageItem.vue";
 import { computed, defineComponent, reactive } from "@vue/composition-api";
 import prettyBytes from "pretty-bytes";
 

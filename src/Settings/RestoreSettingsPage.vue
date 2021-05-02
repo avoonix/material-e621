@@ -40,8 +40,8 @@
 </template>
 
 <script lang="ts">
-import SettingsPageTitle from "../dumb/SettingsPageTitle.vue";
-import SettingsPageItem from "../dumb/SettingsPageItem.vue";
+import SettingsPageTitle from "./SettingsPageTitle.vue";
+import SettingsPageItem from "./SettingsPageItem.vue";
 import { computed, defineComponent } from "@vue/composition-api";
 import { persistanceService, snackbarService } from "@/services";
 import downloadjs from "downloadjs";

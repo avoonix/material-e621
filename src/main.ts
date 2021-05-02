@@ -1,4 +1,4 @@
-import "./plugins";
+import "./misc/plugins";
 import { store } from "./legacyMain.js";
 import { showConsoleMessage } from "./utilities/consoleMessage";
 import { registerServiceWorker } from "./worker/serviceWorker/register";
@@ -6,8 +6,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import ExternalLink from "./components/updated/dumb/ExternalLink.vue";
-import { persistanceService, state } from "./services";
-import { watch } from "@vue/composition-api";
+import { persistanceService } from "./services";
 
 registerServiceWorker();
 
@@ -15,9 +14,7 @@ Vue.component("external-link", ExternalLink);
 
 process.env.NODE_ENV !== "development" && showConsoleMessage();
 
-persistanceService.loadState().then(() => {
-  watch(state, () => persistanceService.saveState(), { deep: true });
-});
+persistanceService.persist();
 
 new (Vue as any)({
   router,

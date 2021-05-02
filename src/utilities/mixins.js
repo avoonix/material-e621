@@ -1,21 +1,6 @@
-import { GETTERS, ACTIONS } from "../store/constants";
+import { GETTERS } from "../store/constants";
 import axios from "axios";
-import { api } from "../store/api";
 import { snackbarService } from "@/services";
-
-export const openOnE621 = {
-  methods: {
-    openOnE621(id) {
-      const win = window.open(
-        api.e621.createStandalonePostUrl({
-          id,
-        }),
-        "_blank",
-      );
-      win.focus();
-    },
-  },
-};
 
 export const downloadPost = {
   data() {

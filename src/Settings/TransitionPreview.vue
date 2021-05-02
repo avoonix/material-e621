@@ -30,7 +30,7 @@ import {
   onMounted,
   ref,
 } from "@vue/composition-api";
-import { getTransitionName } from "../../../utilities/transitions";
+import { getTransitionName } from "../utilities/transitions";
 
 export default defineComponent({
   props: {

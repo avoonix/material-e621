@@ -80,13 +80,13 @@
 </template>
 
 <script lang="ts">
-import SettingsPageTitle from "../dumb/SettingsPageTitle.vue";
-import SettingsPageItem from "../dumb/SettingsPageItem.vue";
-import TransitionPreview from "../dumb/TransitionPreview.vue";
+import SettingsPageTitle from "./SettingsPageTitle.vue";
+import SettingsPageItem from "./SettingsPageItem.vue";
+import TransitionPreview from "./TransitionPreview.vue";
 import { computed, defineComponent } from "@vue/composition-api";
-import ColorChooser from "../dumb/ColorChooser.vue";
+import ColorChooser from "../components/updated/dumb/ColorChooser.vue";
 import { appearanceService } from "@/services";
-import transitions from "../../../config/transitions.json";
+import transitions from "../config/transitions.json";
 
 export default defineComponent({
   metaInfo: {

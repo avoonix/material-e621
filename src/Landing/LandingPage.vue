@@ -64,9 +64,9 @@
 </template>
 
 <script>
-import ChangelogItem from "../ChangelogItem.vue";
-import Logo from "../updated/dumb/Logo.vue";
-import changelog from "../../config/changelog";
+import ChangelogItem from "../components/ChangelogItem.vue";
+import Logo from "../components/updated/dumb/Logo.vue";
+import changelog from "../config/changelog";
 
 export default {
   inject: ["theme"],
