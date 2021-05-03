@@ -42,6 +42,14 @@ export default new Router({
         ),
     },
     {
+      path: "/settings/account",
+      name: "AccountSettings",
+      component: () =>
+        import(
+          /* webpackChunkName: "settings" */ "@/Settings/AccountSettingsPage.vue"
+        ),
+    },
+    {
       path: "/settings/blacklist",
       name: "BlacklistSettings",
       component: () =>
@@ -119,7 +127,7 @@ export default new Router({
         ),
     },
     {
-      path: "/analyzer-result",
+      path: "/analyzer/result",
       name: "FavoritesAnalyzerResult",
       component: () =>
         import(
@@ -135,7 +143,7 @@ export default new Router({
         ),
     },
     {
-      path: "/suggester-result",
+      path: "/suggester/result",
       name: "SuggesterResult",
       component: () =>
         import(

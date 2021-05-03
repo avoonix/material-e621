@@ -24,6 +24,10 @@ export const defaultSettings: ISettingsServiceState = {
     maxLength: 100,
   },
   snackbar: null,
+  account: {
+    apiKey: null,
+    username: null,
+  }
 };
 
 export const state = reactive<ISettingsServiceState>(clone(defaultSettings));

@@ -68,7 +68,9 @@
           :nav-mode="navMode"
           v-if="!$route.meta.minimalHeader"
         />
-        <login-dialog v-if="!$route.meta.minimalHeader" />
+        <!-- <login-dialog v-if="!$route.meta.minimalHeader" /> -->
+        <account-menu />
+
       </v-toolbar>
       <navigation
         type="bottom"
@@ -87,8 +89,8 @@
         >
           <router-view :key="routeKey" />
         </transition>
-        <posts-dialog />
-        <update-dialog />
+        <!-- <posts-dialog /> -->
+        <!-- <update-dialog /> -->
         <snackbar />
       </v-content>
     </template>
@@ -96,15 +98,13 @@
 </template>
 
 <script>
-import Snackbar from "./components/updated/smart/Snackbar.vue";
+import Snackbar from "./App/Snackbar.vue";
 import Logo from "./components/updated/dumb/Logo.vue";
-import LoginDialog from "./components/dialogs/LoginDialog.vue";
 import Navigation from "./components/Navigation.vue";
-import PostsDialog from "./components/dialogs/PostsDialog.vue";
-import UpdateDialog from "./components/dialogs/UpdateDialog.vue";
 import { ACTIONS, GETTERS } from "./store/constants";
 import { getTransitionName } from "./utilities/transitions";
 import { useSettingsServiceState, appearanceService } from "./services";
+import AccountMenu from './App/AccountMenu.vue';
 
 const mobileBreakPoint = 1264;
 
@@ -130,12 +130,10 @@ export default {
     };
   },
   components: {
-    LoginDialog,
     Logo,
     Snackbar,
-    PostsDialog,
-    UpdateDialog,
     Navigation,
+    AccountMenu,
   },
   data() {
     return {

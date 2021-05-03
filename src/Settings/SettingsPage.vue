@@ -32,6 +32,12 @@
           icon="mdi-backup-restore"
           color="darken-1 blue"
         ></settings-page-section>
+        <settings-page-section
+          section="account"
+          title="Account"
+          icon="mdi-account"
+          color="darken-3 yellow"
+        ></settings-page-section>
         <!-- text="Change your blacklist settings." -->
         <!-- :text="`Change the overall theme of ${$appName}.`" -->
 

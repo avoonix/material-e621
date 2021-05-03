@@ -26,5 +26,9 @@ export interface ISettingsServiceState {
     maxLength: number;
   };
   snackbar: string | null;
+  account: {
+    username: string | null;
+    apiKey: string | null;
+  };
 }
 
