@@ -15,8 +15,10 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <post-buttons
+        :buttons="buttons"
         :post="post"
         @open-post-details="$emit('open-post-details', $event)"
+        @open-post-fullscreen="setClicked"
       />
     </v-card-actions>
     <div :class="stripeColor" :style="{ height: '5px' }" />
@@ -24,8 +26,7 @@
 </template>
 
 <script lang="ts">
-import PostButtons from "../components/PostButtons.vue";
-import { blacklistService } from "@/services";
+import { blacklistService, postService } from "@/services";
 import { computed, defineComponent, PropType } from "@vue/composition-api";
 import { useBlacklistClasses } from "@/utilities/blacklist";
 import FixedAspectRatioBox from "./FixedAspectRatioBox.vue";
@@ -33,6 +34,7 @@ import PostPreview from "./PostPreview.vue";
 import PostText from "./PostText.vue";
 import { useStripeColor } from "./stripeColor";
 import { Post } from "@/worker/api";
+import PostButtons from "./PostButtons.vue";
 
 export default defineComponent({
   components: {
@@ -61,10 +63,13 @@ export default defineComponent({
       context.emit("open-post", props.post.id);
     };
 
+    const buttons = computed(() => postService.buttons);
+
     return {
       blacklistClasses,
       stripeColor,
       setClicked,
+      buttons,
     };
   },
 });

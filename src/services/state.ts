@@ -28,7 +28,11 @@ export const defaultSettings: ISettingsServiceState = {
   account: {
     apiKey: null,
     username: null,
-  }
+  },
+  posts: {
+    buttons: ["info", "fullscreen", "external"],
+    fullscreenButtons: ["external", "info"],
+  },
 };
 
 export const state = reactive<ISettingsServiceState>(clone(defaultSettings));

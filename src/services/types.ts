@@ -4,6 +4,8 @@ export enum BlacklistMode {
   blackout,
 }
 
+export type ButtonType = "info"|"fullscreen"|"external";
+
 export interface ISettingsServiceState {
   blacklist: {
     mode: BlacklistMode;
@@ -27,6 +29,10 @@ export interface ISettingsServiceState {
     maxLength: number;
   };
   snackbar: string | null;
+  posts: {
+    buttons: ButtonType[]
+    fullscreenButtons: ButtonType[]
+  }
   account: {
     username: string | null;
     apiKey: string | null;

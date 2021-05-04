@@ -62,7 +62,7 @@
               <div
                 ref="zoom"
                 class="zoom-container text-xs-center"
-                style="position: relative;"
+                style="position: relative"
               >
                 <transition
                   :enter-active-class="enterTransitionName"
@@ -71,7 +71,12 @@
                 >
                   <div
                     :key="currentFileUrl"
-                    style=" position: absolute; width: 100%; height: 100%; left: 0;"
+                    style="
+                      position: absolute;
+                      width: 100%;
+                      height: 100%;
+                      left: 0;
+                    "
                   >
                     <img
                       v-if="currentSampleFileUrl"
@@ -124,25 +129,12 @@
           'top-left': buttonLayout.startsWith('tl'),
         }"
       >
-        <v-card class="ma-3 pa-1" v-if="buttonLayout.endsWith('c')" dark>
-          <post-buttons
-            ref="postButtonsRef"
-            v-if="current"
-            :post="current"
-            :key="current.id"
-            large
-            fullscreen
-            @open-post-details="$emit('open-post-details', $event)"
-          />
-        </v-card>
         <post-buttons
-          ref="postButtonsRef"
-          v-else-if="current"
-          :post="current"
           :key="current.id"
-          large
-          fullscreen
+          :buttons="buttons"
+          :post="current"
           @open-post-details="$emit('open-post-details', $event)"
+          @open-post-fullscreen="exitFullscreen()"
         />
       </div>
     </div>
@@ -154,12 +146,12 @@ import { GETTERS, ACTIONS } from "../../store/constants";
 import scrollIntoView from "scroll-into-view";
 import Logo from "../updated/dumb/Logo.vue";
 import { togglePostFavorite } from "../../utilities/mixins";
-import PostButtons from "../PostButtons.vue";
 import { getTransitionName } from "../../utilities/transitions";
-import { appearanceService, blacklistService } from "@/services";
+import { appearanceService, blacklistService, postService } from "@/services";
 import ZoomPanImage from "../updated/dumb/ZoomPanImage.vue";
 import { useBlacklistClasses } from "../../utilities/blacklist";
 import { computed, defineComponent } from "@vue/composition-api";
+import PostButtons from "@/Post/PostButtons.vue";
 
 export default defineComponent({
   metaInfo() {
@@ -200,8 +192,12 @@ export default defineComponent({
       mode: blacklistService.mode,
       postIsBlacklisted,
     });
+
+    const buttons = computed(() => postService.fullscreenButtons);
+
     return {
       blacklistClasses,
+      buttons,
     };
   },
   data() {

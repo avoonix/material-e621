@@ -50,6 +50,14 @@ export default new Router({
         ),
     },
     {
+      path: "/settings/posts",
+      name: "PostSettings",
+      component: () =>
+        import(
+          /* webpackChunkName: "settings" */ "@/Settings/PostSettingsPage.vue"
+        ),
+    },
+    {
       path: "/settings/blacklist",
       name: "BlacklistSettings",
       component: () =>
