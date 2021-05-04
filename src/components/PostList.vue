@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import Post from "./Post.vue";
+import Post from "../Post/Post.vue";
 import { GETTERS } from "../store/constants";
 
 function isAnyPartOfElementInViewport(el) {

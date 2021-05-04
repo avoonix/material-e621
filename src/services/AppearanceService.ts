@@ -56,6 +56,13 @@ class AppearanceService {
   public set routeTransition(value) {
     state.appearance.transition.route = value;
   }
+
+  public get ratingStripe() {
+    return state.appearance.coloredRatingStripe;
+  }
+  public set ratingStripe(value) {
+    state.appearance.coloredRatingStripe = value;
+  }
 }
 
 export const appearanceService = new AppearanceService();

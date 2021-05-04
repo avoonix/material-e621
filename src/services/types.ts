@@ -20,6 +20,7 @@ export interface ISettingsServiceState {
       route: string;
       fullscreen: string;
   };
+    coloredRatingStripe: boolean;
   };
   history: {
     entries: string[][];

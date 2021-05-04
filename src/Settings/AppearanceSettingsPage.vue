@@ -74,6 +74,9 @@
             class="mt-3"
           />
         </settings-page-item>
+        <settings-page-item title="Colored stripe indicating post rating" switch>
+          <v-switch v-model="stripe"></v-switch>
+        </settings-page-item>
       </v-flex>
     </v-layout>
   </v-container>
@@ -84,7 +87,7 @@ import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
 import TransitionPreview from "./TransitionPreview.vue";
 import { computed, defineComponent } from "@vue/composition-api";
-import ColorChooser from "../components/updated/dumb/ColorChooser.vue";
+import ColorChooser from "./ColorChooser.vue";
 import { appearanceService } from "@/services";
 import transitions from "../config/transitions.json";
 
@@ -169,6 +172,14 @@ export default defineComponent({
         },
         set(value) {
           appearanceService.routeTransition = value;
+        },
+      }),
+      stripe: computed<boolean>({
+        get() {
+          return appearanceService.ratingStripe;
+        },
+        set(value) {
+          appearanceService.ratingStripe = value;
         },
       }),
     };

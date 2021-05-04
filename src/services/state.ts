@@ -18,6 +18,7 @@ export const defaultSettings: ISettingsServiceState = {
       fullscreen: "slide",
       route: "fade",
     },
+    coloredRatingStripe: true,
   },
   history: {
     entries: [],
