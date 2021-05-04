@@ -14,6 +14,13 @@ class PostService {
   public set fullscreenButtons(value) {
     state.posts.fullscreenButtons = [...value];
   }
+
+  public get detailsButtons() {
+    return [...state.posts.detailsButtons];
+  }
+  public set detailsButtons(value) {
+    state.posts.detailsButtons = [...value];
+  }
 }
 
 export const postService = new PostService();

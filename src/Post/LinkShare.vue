@@ -41,7 +41,6 @@ import { snackbarService } from "@/services";
 import { getAppName, getBaseUrl } from "@/utilities/utilities";
 import { computed, defineComponent, ref } from "@vue/composition-api";
 import copyToClipboard from "clipboard-copy";
-import { encode } from "punycode";
 
 enum UrlTypes {
   image,

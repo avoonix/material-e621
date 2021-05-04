@@ -214,7 +214,6 @@
 </template>
 
 <script>
-// import { GETTERS } from "../store/constants";
 export default {
   props: {
     loader: {
@@ -229,23 +228,15 @@ export default {
   },
   computed: {
     isHalloween() {
-      if (this.mascot) return false;
-      // return this.$store.getters[GETTERS.BACKGROUND_COLOR] == "darkhw";
       return false;
     },
     isChristmas() {
-      if (this.mascot) return false;
-      // return this.$store.getters[GETTERS.BACKGROUND_COLOR] == "winter";
       return false;
     },
     isEaster() {
-      if (this.mascot) return false;
-      // return this.$store.getters[GETTERS.BACKGROUND_COLOR] == "spring";
       return false;
     },
     isSummer() {
-      if (this.mascot) return false;
-      // return this.$store.getters[GETTERS.BACKGROUND_COLOR] == "summer";
       return false;
     },
     displayMode() {

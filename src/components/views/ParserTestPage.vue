@@ -9,7 +9,7 @@
   </v-container>
 </template>
 <script>
-import DText from "../updated/dumb/DText.vue";
+import DText from "../../Post/DText.vue";
 
 export default {
   metaInfo: {

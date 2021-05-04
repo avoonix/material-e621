@@ -32,6 +32,7 @@ export interface ISettingsServiceState {
   posts: {
     buttons: ButtonType[]
     fullscreenButtons: ButtonType[]
+    detailsButtons: ButtonType[]
   }
   account: {
     username: string | null;

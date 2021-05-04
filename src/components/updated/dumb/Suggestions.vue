@@ -38,11 +38,6 @@
 </template>
 
 <script lang="ts">
-// import TagLabel from "./TagLabel.vue";
-// import escapeStringRegexp from "escape-string-regexp";
-// import { GETTERS } from "../store/constants";
-// import { blacklistService } from "@/services";
-
 import { defineComponent, PropType } from "@vue/composition-api";
 import { ITag, default as TagLabel } from "./TagLabel.vue";
 

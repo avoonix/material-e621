@@ -22,7 +22,7 @@
       @previous-post="$emit('previous-fullscreen-post')"
       @open-post-details="$emit('open-post-details', $event)"
     />
-    <details-dialog :current="detailsPost" @close="$emit('close-details')" />
+    <details-dialog :current="detailsPost" @close="$emit('close-details')" @open-post-fullscreen="$emit('open-post', $event)" />
     <!--
     <div>
       <blacklist-suggestions :suggested-blacklist="ratingTags" />
@@ -91,7 +91,7 @@
 import PostList from "../components/PostList.vue";
 // import Pagination from "../components/Pagination.vue";
 import FullscreenDialog from "./dialogs/FullscreenDialog.vue";
-import DetailsDialog from "./dialogs/DetailsDialog.vue";
+import DetailsDialog from "../Post/DetailsDialog.vue";
 import Logo from "./updated/dumb/Logo.vue";
 import { defineComponent } from "@vue/composition-api";
 // import { GETTERS, ACTIONS } from "../store/constants";

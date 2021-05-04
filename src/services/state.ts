@@ -32,6 +32,7 @@ export const defaultSettings: ISettingsServiceState = {
   posts: {
     buttons: ["info", "fullscreen", "external"],
     fullscreenButtons: ["external", "info"],
+    detailsButtons: ["external"],
   },
 };
 

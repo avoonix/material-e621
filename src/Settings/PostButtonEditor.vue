@@ -55,6 +55,27 @@
         </draggable>
       </v-card-text>
     </v-card>
+    <v-card>
+      <v-card-title> Details buttons </v-card-title>
+      <v-card-text>
+        <draggable
+          v-model="detailsButtonsComputed"
+          :group="{ name: 'post-button-editor', pull: true, put: true }"
+          @add="
+            detailsButtonsComputed = handleSort(detailsButtonsComputed)(
+              $event,
+            )
+          "
+        >
+          <post-button
+            class="trashable"
+            v-for="button in detailsButtonsComputed"
+            :key="button"
+            :type="button"
+          />
+        </draggable>
+      </v-card-text>
+    </v-card>
   </div>
 </template>
 
@@ -82,6 +103,10 @@ export default defineComponent({
       type: Array as PropType<ButtonType[]>,
       required: true,
     },
+    detailsButtons: {
+      type: Array as PropType<ButtonType[]>,
+      required: true,
+    },
   },
   setup(props, context) {
     const postButtonsComputed = computed<ButtonType[]>({
@@ -100,6 +125,14 @@ export default defineComponent({
         context.emit("update:fullscreen-buttons", value);
       },
     });
+    const detailsButtonsComputed = computed<ButtonType[]>({
+      get() {
+        return props.detailsButtons;
+      },
+      set(value) {
+        context.emit("update:details-buttons", value);
+      },
+    });
 
     const handleSort = (list: ButtonType[]) => (event: any) => {
       const droppedElement = list[event.newIndex];
@@ -112,6 +145,7 @@ export default defineComponent({
       postButtonsComputed,
       fullscreenButtonsComputed,
       handleSort,
+      detailsButtonsComputed,
     };
   },
 });

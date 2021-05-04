@@ -7,6 +7,7 @@
           <post-button-editor
             :available-buttons="availableButtons"
             :fullscreen-buttons.sync="fullscreenButtons"
+            :details-buttons.sync="detailsButtons"
             :post-buttons.sync="postButtons"
           />
         </settings-page-item>
@@ -50,11 +51,20 @@ export default defineComponent({
         postService.fullscreenButtons = value;
       },
     });
+    const detailsButtons = computed<ButtonType[]>({
+      get() {
+        return postService.detailsButtons;
+      },
+      set(value) {
+        postService.detailsButtons = value;
+      },
+    });
 
     return {
       availableButtons,
       postButtons,
       fullscreenButtons,
+      detailsButtons,
     };
   },
 });
