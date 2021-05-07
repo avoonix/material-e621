@@ -7,6 +7,10 @@
       {{ post.fav_count }} &bull;
       <v-icon>mdi-file</v-icon>
       {{ post.file.ext.toUpperCase() }} ({{ fileSize }})
+      <span v-if="score">
+        <v-icon>mdi-counter</v-icon>
+        {{ score }}
+      </span>
     </div>
     <span class="grey--text">
       {{ relativeUploadDate }} ({{ uploadDate }})
@@ -15,10 +19,13 @@
 </template>
 
 <script lang="ts">
+import { ScoredPost } from "@/worker/AnalyzeService";
 import { Post } from "@/worker/api";
 import { computed, defineComponent, PropType } from "@vue/composition-api";
 import { distanceInWordsToNow, format, parse } from "date-fns";
 import prettyBytes from "pretty-bytes";
+
+const isScoredPost = (post: any): post is ScoredPost => !!post.__score;
 
 export default defineComponent({
   props: {
@@ -36,11 +43,19 @@ export default defineComponent({
     const uploadDate = computed(() =>
       format(date.value, "MMMM D, YYYY h:mm A"),
     );
+    // post.__score
+    const score = computed(() => {
+      if (isScoredPost(props.post)) {
+        return props.post.__score;
+      }
+      return null;
+    });
 
     return {
       fileSize,
       relativeUploadDate,
       uploadDate,
+      score,
     };
   },
 });

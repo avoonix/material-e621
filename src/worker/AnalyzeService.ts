@@ -13,7 +13,7 @@ debug.disable();
 debug.enable("app:AnalyzeService");
 
 
-interface ScoredPost extends Post {
+export interface ScoredPost extends Post {
   __score: number;
 }
 
