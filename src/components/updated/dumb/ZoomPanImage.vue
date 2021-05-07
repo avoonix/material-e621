@@ -74,16 +74,16 @@ export default defineComponent({
         ],
       });
       hammer.on("swipeleft", (event) => {
-        context.emit("swipe-left", zoomInfo);
+        context.emit("swipe-left", zoomInfo.value);
       });
       hammer.on("swiperight", (event) => {
-        context.emit("swipe-right", zoomInfo);
+        context.emit("swipe-right", zoomInfo.value);
       });
       hammer.on("swipedown", (event) => {
-        context.emit("swipe-down", zoomInfo);
+        context.emit("swipe-down", zoomInfo.value);
       });
       hammer.on("swipeup", (event) => {
-        context.emit("swipe-up", zoomInfo);
+        context.emit("swipe-up", zoomInfo.value);
       });
       hammer.on("pinchstart", () => {
         currentZoom.startLevel = currentZoom.level;
