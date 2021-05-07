@@ -41,6 +41,7 @@
 import {
   computed,
   defineComponent,
+  nextTick,
   ref,
   watchEffect,
 } from "@vue/composition-api";
@@ -100,9 +101,11 @@ export default defineComponent({
           progress.value = progressEvent;
         }),
       );
+      await nextTick();
+      await loadNextPage();
     };
 
-    const pageSize = 2; // TODO
+    const pageSize = 30; // TODO
 
     const {
       loadPreviousPage,

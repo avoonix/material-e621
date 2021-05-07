@@ -12,7 +12,6 @@ const log = debug("app:AnalyzeService");
 debug.disable();
 debug.enable("app:AnalyzeService");
 
-
 export interface ScoredPost extends Post {
   __score: number;
 }
@@ -197,7 +196,8 @@ export class AnalyzeService {
     },
     onProgress: (event: IProgressEvent) => void,
   ): Promise<ScoredPost[]> {
-    // fetch `5*limit` posts, sort them by score and display the top `limit` ones
+    // fetch posts, sort them by score and display the top `limit` ones
+    const toFetch = limit * 30;
 
     const service = new ApiService();
     const posts: ScoredPost[] = [];
@@ -206,39 +206,46 @@ export class AnalyzeService {
     let postsAfter: undefined | number = args.postsAfter || undefined;
     // const key = [tags, postLimit].join("");
     // log("start fetch");
-    let stop = false;
-    while (!stop) {
-      onProgress({progress: Math.random(), message: "fetching posts"}) // TODO: progress
+    while (1) {
+      onProgress({
+        progress: Math.min(1, posts.length / toFetch),
+        message: `got ${posts.length} of ${toFetch} posts`,
+      }); // TODO: progress
       const newPosts = await service.getPosts({
         blacklistMode: BlacklistMode.blur, // TODO: blacklist mode
-        limit: limit,
+        limit: 320,
         tags: [],
         postsBefore,
         postsAfter,
       });
 
-      if (posts.length) {
-        stop = true;
-      }
-
-      onProgress({indeterminate: true, message: "scoring posts", progress: 0})
+      onProgress({
+        indeterminate: true,
+        message: "scoring posts",
+        progress: 0,
+      });
       const scoredNewPosts = scorePosts(tags, weights, newPosts);
       if (direction === "after") {
         postsAfter = scoredNewPosts[0]?.id || undefined;
         posts.unshift(...scoredNewPosts);
       } else {
-        postsBefore = scoredNewPosts[scoredNewPosts.length - 1]?.id || undefined;
+        postsBefore =
+          scoredNewPosts[scoredNewPosts.length - 1]?.id || undefined;
         posts.push(...scoredNewPosts);
       }
+
+      if (posts.length >= toFetch || scoredNewPosts.length < 320) {
+        break;
+      }
     }
+    const bestPostIds = posts
+      .sort((a, b) => b.__score - a.__score)
+      .slice(0, limit)
+      .map((p) => p.id);
+    const result = posts.filter((p) => bestPostIds.includes(p.id)); // keep original order
+    onProgress({ indeterminate: true, message: "done", progress: 1 });
 
-    console.log(
-      "post ids",
-      posts.map((p) => p.id),
-    );
-
-    console.log("called suggest posts");
-    return posts;
+    return result;
   }
 }
 
@@ -249,15 +256,14 @@ const scorePosts = (
 ) => {
   const scoredPosts: ScoredPost[] = [];
   for (const post of posts) {
-  let score = 0;
-  let tagCount = 0;
-    console.log(post);
+    let score = 0;
+    let tagCount = 0;
     for (const tag of tagIterator(post.tags)) {
       ++tagCount;
-      const categoryWeight  = Number((weights as any)[tag.category]);
-      if(!categoryWeight) continue;
+      const categoryWeight = Number((weights as any)[tag.category]);
+      if (!categoryWeight) continue;
       const count = tags.counts[tag.category]?.[tag.tag];
-      if(!count) continue;
+      if (!count) continue;
       score += count * categoryWeight;
     }
     scoredPosts.push({
