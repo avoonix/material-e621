@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <div>
     <post-button
       :post="post"
       v-for="(button, idx) in buttons"
@@ -8,7 +8,7 @@
       @open-post-details="$emit('open-post-details', $event)"
       @open-post-fullscreen="$emit('open-post-fullscreen', $event)"
     />
-  </fragment>
+  </div>
 </template>
 
 <script lang="ts">

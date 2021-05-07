@@ -113,17 +113,17 @@ export default {
           },
           active: this.$store.state.routerModule.path.startsWith("/settings"),
         },
-        // {
-        //   icon: "mdi-braille",
-        //   name: "Post suggester",
-        //   router: true,
-        //   exact: true,
-        //   to: {
-        //     path: "/suggester",
-        //     query: this.$store.state.routerModule.query,
-        //   },
-        //   active: this.$store.state.routerModule.path == "/suggester",
-        // },
+        {
+          icon: "mdi-braille",
+          name: "Post suggester",
+          router: true,
+          exact: true,
+          to: {
+            path: "/suggester",
+            query: this.$store.state.routerModule.query,
+          },
+          active: this.$store.state.routerModule.path == "/suggester",
+        },
         {
           icon: "mdi-graph",
           name: "Stats",

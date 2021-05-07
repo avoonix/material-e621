@@ -3,9 +3,25 @@
     <v-layout align-center>
       <v-flex text-xs-center ref="container">
         <div v-if="result">
-          <!-- {{ result }} -->
-          <base-tags :counts="result.counts" />
-          <!-- TODO: post list -->
+          <posts
+            :posts="posts"
+            :loading="loading"
+            @load-previous="loadPreviousPage()"
+            @load-next="loadNextPage()"
+            @open-post="openFullscreenPost"
+            :fullscreen-post="fullscreenPost"
+            @exit-fullscreen="fullscreenPost = null"
+            @next-fullscreen-post="openNextFullscreenPost()"
+            @previous-fullscreen-post="openPreviousFullscreenPost()"
+            :has-previous-fullscreen-post="true"
+            :has-next-fullscreen-post="true"
+            :details-post="detailsPost"
+            @open-post-details="openPostDetails"
+            @close-details="detailsPost = null"
+          />
+          <portal to="sidebar-suggestions">
+            <base-tags :counts="result.counts" />
+          </portal>
         </div>
         <div v-else>
           <logo loader />
@@ -34,6 +50,9 @@ import { getAnalyzeService } from "@/worker/services";
 import Logo from "../components/updated/dumb/Logo.vue";
 import * as Comlink from "comlink";
 import BaseTags from "./BaseTags.vue";
+import { usePostListManager } from "@/Post/postListManager";
+import { updateRouterQuery } from "@/utilities/utilities";
+import Posts from "@/components/Posts.vue";
 
 export default defineComponent({
   metaInfo: {
@@ -42,6 +61,7 @@ export default defineComponent({
   components: {
     Logo,
     BaseTags,
+    Posts,
   },
   setup(props, context) {
     const progress = ref<IProgressEvent>();
@@ -82,6 +102,60 @@ export default defineComponent({
       );
     };
 
+    const pageSize = 2; // TODO
+
+    const {
+      loadPreviousPage,
+      loadNextPage,
+      posts,
+      fullscreenPost,
+      detailsPost,
+      loading,
+      openPostDetails,
+      openFullscreenPost,
+      openNextFullscreenPost,
+      openPreviousFullscreenPost,
+    } = usePostListManager({
+      getSavedFirstPostId() {
+        return Number(router.currentRoute.query.first_post); // TODO: handle null
+      },
+      getSettingsPageSize() {
+        return pageSize;
+      },
+      saveFirstPostId(id) {
+        updateRouterQuery(router, {
+          first_post: String(id),
+        });
+      },
+      async loadPosts({ postsBefore, postsAfter }) {
+        if (!result.value) {
+          throw new Error("no tags available");
+        }
+        // const service = await getApiService();
+        // const posts = await service.getPosts({
+        //   limit: size,
+        //   postsBefore,
+        //   postsAfter,
+        //   tags: tags.value,
+        //   blacklist: blacklistService.tags,
+        //   blacklistMode: blacklistService.mode,
+        // });
+        // return posts;
+        const service = await getAnalyzeService();
+        const posts = await service.suggestPosts(
+          result.value,
+          weights.value,
+          pageSize,
+          { postsBefore, postsAfter },
+          Comlink.proxy((progressEvent) => {
+            console.log(progressEvent); // TODO
+            // progress.value = progressEvent;
+          }),
+        );
+        return posts;
+      },
+    });
+
     watchEffect(() => {
       analyze(username.value);
     });
@@ -89,6 +163,16 @@ export default defineComponent({
     return {
       result,
       progress,
+      loadPreviousPage,
+      loadNextPage,
+      posts,
+      fullscreenPost,
+      detailsPost,
+      loading,
+      openPostDetails,
+      openFullscreenPost,
+      openNextFullscreenPost,
+      openPreviousFullscreenPost,
     };
   },
 });

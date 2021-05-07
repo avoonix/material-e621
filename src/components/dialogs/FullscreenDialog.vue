@@ -7,7 +7,7 @@
     scrollable
     persistent
   >
-    <div class="fullscreen grey darken-4" v-if="current">
+    <div class="fullscreen grey darken-4">
       <div class="flex">
         <div
           v-show="prevousNextButtons"
@@ -15,15 +15,9 @@
           v-ripple="hasPreviousFullscreenPost"
           @click="showPreviousImage"
         >
-          <v-btn
-            dark
-            large
-            icon
-            :ripple="false"
-            v-if="hasPreviousFullscreenPost"
-          >
-            <v-icon size="50">mdi-chevron-left</v-icon>
-          </v-btn>
+          <v-icon size="50" v-if="hasPreviousFullscreenPost">
+            mdi-chevron-left
+          </v-icon>
         </div>
         <zoom-pan-image
           @swipe-down="!$event.zoomedIn && exitFullscreen()"
@@ -31,8 +25,8 @@
           @swipe-left="!$event.zoomedIn && showNextImage()"
         >
           <div
+            v-if="current"
             style="height: 100%"
-            ref="middle"
             class="middle black"
             :class="blacklistClasses"
           >
@@ -58,9 +52,8 @@
               <source :src="current.file_url" type="video/webm" />
               Video type not supported by your browser
             </video>
-            <div v-else ref="overflow" class="overflow">
+            <div v-else class="overflow">
               <div
-                ref="zoom"
                 class="zoom-container text-xs-center"
                 style="position: relative"
               >
@@ -112,15 +105,13 @@
           v-ripple="hasNextFullscreenPost"
           @click="showNextImage"
         >
-          <v-btn dark large icon :ripple="false" v-if="hasNextFullscreenPost">
-            <v-icon size="50">mdi-chevron-right</v-icon>
-          </v-btn>
+          <v-icon size="50" v-if="hasNextFullscreenPost">
+            mdi-chevron-right
+          </v-icon>
         </div>
       </div>
       <div class="top-right" v-ripple @click.stop="exitFullscreen">
-        <v-btn dark large class="mr-2 mt-2" icon :ripple="false">
-          <v-icon size="40">mdi-close</v-icon>
-        </v-btn>
+        <v-icon size="40" class="ml-2 mt-2">mdi-close</v-icon>
       </div>
       <div
         :class="{
@@ -130,6 +121,7 @@
         }"
       >
         <post-buttons
+          v-if="current"
           :key="current.id"
           :buttons="buttons"
           :post="current"
@@ -330,39 +322,6 @@ export default defineComponent({
 </script>
 
 <style scoped lang="stylus">
-.no-mode-translate-fade-right-enter-active, .no-mode-translate-fade-right-leave-active {
-  transition: all 0.6s ease;
-}
-
-.no-mode-translate-fade-right-enter, .no-mode-translate-fade-right-leave-active {
-  opacity: 0;
-}
-
-.no-mode-translate-fade-right-enter {
-  transform: translateX(100%);
-}
-
-.no-mode-translate-fade-right-leave-active {
-  transform: translateX(-100%);
-}
-
-.no-mode-translate-fade-left-enter-active, .no-mode-translate-fade-left-leave-active {
-  transition: all 0.6s ease;
-}
-
-.no-mode-translate-fade-left-enter, .no-mode-translate-fade-left-leave-active {
-  opacity: 0.9;
-}
-
-.no-mode-translate-fade-left-enter {
-  transform: translateX(-100%);
-}
-
-.no-mode-translate-fade-left-leave-active {
-  transform: translateX(100%);
-}
-
-// ----------------------------
 .centered-in-container {
   display: flex;
   position: absolute;
@@ -456,6 +415,8 @@ export default defineComponent({
     top: 0;
     right: 0;
     z-index: 1005;
+    width: 60px;
+    height: 60px;
 
     button {
       float: right;

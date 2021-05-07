@@ -12,6 +12,11 @@ const log = debug("app:AnalyzeService");
 debug.disable();
 debug.enable("app:AnalyzeService");
 
+
+interface ScoredPost extends Post {
+  __score: number;
+}
+
 export type Counts = {
   // [idx: string]: {
   [K in keyof PostTags]: {
@@ -172,7 +177,107 @@ export class AnalyzeService {
   }
 
   // TODO: get new posts and use favorited tags to score them
+  async suggestPosts(
+    tags: FavoriteTagsResult,
+    weights: {
+      [key in
+        | "general"
+        | "artist"
+        | "copyright"
+        | "character"
+        | "species"
+        | "meta"
+        | "lore"
+        | "invalid"]: number;
+    },
+    limit: number,
+    args: {
+      postsBefore?: number;
+      postsAfter?: number;
+    },
+    onProgress: (event: IProgressEvent) => void,
+  ): Promise<ScoredPost[]> {
+    // fetch `5*limit` posts, sort them by score and display the top `limit` ones
+
+    const service = new ApiService();
+    const posts: ScoredPost[] = [];
+    const direction = args.postsAfter ? "after" : "before";
+    let postsBefore: undefined | number = args.postsBefore || undefined;
+    let postsAfter: undefined | number = args.postsAfter || undefined;
+    // const key = [tags, postLimit].join("");
+    // log("start fetch");
+    let stop = false;
+    while (!stop) {
+      onProgress({progress: Math.random(), message: "fetching posts"}) // TODO: progress
+      const newPosts = await service.getPosts({
+        blacklistMode: BlacklistMode.blur, // TODO: blacklist mode
+        limit: limit,
+        tags: [],
+        postsBefore,
+        postsAfter,
+      });
+
+      if (posts.length) {
+        stop = true;
+      }
+
+      onProgress({indeterminate: true, message: "scoring posts", progress: 0})
+      const scoredNewPosts = scorePosts(tags, weights, newPosts);
+      if (direction === "after") {
+        postsAfter = scoredNewPosts[0]?.id || undefined;
+        posts.unshift(...scoredNewPosts);
+      } else {
+        postsBefore = scoredNewPosts[scoredNewPosts.length - 1]?.id || undefined;
+        posts.push(...scoredNewPosts);
+      }
+    }
+
+    console.log(
+      "post ids",
+      posts.map((p) => p.id),
+    );
+
+    console.log("called suggest posts");
+    return posts;
+  }
 }
+
+const scorePosts = (
+  tags: FavoriteTagsResult,
+  weights: Parameters<AnalyzeService["suggestPosts"]>["1"],
+  posts: Post[],
+) => {
+  const scoredPosts: ScoredPost[] = [];
+  for (const post of posts) {
+  let score = 0;
+  let tagCount = 0;
+    console.log(post);
+    for (const tag of tagIterator(post.tags)) {
+      ++tagCount;
+      const categoryWeight  = Number((weights as any)[tag.category]);
+      if(!categoryWeight) continue;
+      const count = tags.counts[tag.category]?.[tag.tag];
+      if(!count) continue;
+      score += count * categoryWeight;
+    }
+    scoredPosts.push({
+      ...post,
+      __score: Math.round(score / tagCount),
+    });
+  }
+  return scoredPosts;
+};
+
+const tagIterator = function* (tags: PostTags) {
+  for (const [category, arr] of Object.entries(tags)) {
+    for (const tag of arr) {
+      yield {
+        category,
+        tag,
+      };
+    }
+  }
+};
 
 const createCloud = (counts: any, width: number, height: number) => {
   return new Promise<any[]>((resolve) => {
