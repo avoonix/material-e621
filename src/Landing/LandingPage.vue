@@ -6,7 +6,7 @@
       :style="{ height: '85vh' }"
     >
       <v-layout column align-center justify-center fill-height class="">
-        <logo mascot />
+        <logo type="face" size="200" />
         <h1 class="mb-2 display-4 text-xs-center">Material e621</h1>
         <div class="headline">e621 client</div>
         <div class="ma-5">
@@ -58,12 +58,13 @@
   </v-flex>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "@vue/composition-api";
 import ChangelogItem from "../About/ChangelogItem.vue";
 import Logo from "../components/updated/dumb/Logo.vue";
-import changelog from "../config/changelog";
+import changelog from "../config/changelog.json";
 
-export default {
+export default defineComponent({
   inject: ["theme"],
   components: {
     ChangelogItem,
@@ -75,5 +76,5 @@ export default {
       return changes[changes.length - 1];
     },
   },
-};
+});
 </script>

@@ -3,7 +3,7 @@
     <v-container fill-height>
       <v-layout align-center>
         <v-flex text-xs-center>
-          <logo mascot />
+          <logo type="face" />
           <h3 class="display-3">Page not found</h3>
           <v-btn color="primary" large :to="{ path: '/e621' }">
             Start page

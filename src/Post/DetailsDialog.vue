@@ -21,7 +21,7 @@
           <v-tab-item>
             <v-card flat>
               <v-card-text>
-                <suggestions post-specific :tags="tags" />
+                <suggestions :tags="tags" />
               </v-card-text>
             </v-card>
           </v-tab-item>
@@ -63,7 +63,7 @@
 <script lang="ts">
 import Suggestions from "./Suggestions.vue";
 import DText from "../Parser/DText.vue";
-import PostInfoList from "../components/updated/dumb/PostInfoList.vue";
+import PostInfoList from "./PostInfoList.vue";
 import LinkShare from "./LinkShare.vue";
 import PostButtons from "@/Post/PostButtons.vue";
 import { computed, defineComponent, PropType, ref } from "@vue/composition-api";

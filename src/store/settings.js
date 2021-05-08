@@ -18,9 +18,6 @@ const settingsModule = {
     [GETTERS.IS_LOGGED_IN](state) {
       return state.loggedIn;
     },
-    [GETTERS.MASCOT_STYLE](state, getters, rootState) {
-      return rootState.routerModule.query.msct || "default";
-    },
     [GETTERS.POST_COMPACTNESS](state, getters, rootState) {
       return rootState.routerModule.query.compactness || "more";
     },

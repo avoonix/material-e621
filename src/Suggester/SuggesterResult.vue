@@ -24,7 +24,7 @@
           </portal>
         </div>
         <div v-else>
-          <logo loader />
+          <logo type="loader" />
           <span v-if="progress">{{ progress.message }}</span>
           <v-progress-linear
             v-if="progress"

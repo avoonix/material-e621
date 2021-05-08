@@ -1,4 +1,5 @@
 import { state } from "./state";
+import { ISettingsServiceState } from "./types";
 
 class AppearanceService {
   public get primaryColor() {
@@ -69,6 +70,17 @@ class AppearanceService {
   }
   public set navigationType(value) {
     state.appearance.navigationType = value;
+  }
+
+  public get logoStyle() {
+    return state.appearance.logoStyle;
+  }
+  public set logoStyle(value) {
+    state.appearance.logoStyle = value;
+  }
+
+  public get logoStyles(): ISettingsServiceState["appearance"]["logoStyle"][] {
+    return ["face", "text"];
   }
 }
 

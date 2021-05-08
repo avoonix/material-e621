@@ -1,14 +1,12 @@
 <template>
-  <v-chip v-on="$listeners" v-bind="$attrs">
-    <!-- TODO: do propery -->
-    <!-- <v-chip v-on="$listeners" v-bind="$attrs" :class="classes" :title="title"> -->
-    <!-- {{ text }} -->
-    {{ tag.name || tag.text || tag }}
+  <v-chip :color="color" v-on="$listeners" v-bind="$attrs" :title="title">
+    {{ tag.name }}
   </v-chip>
 </template>
 
 <script lang="ts">
-import { PropType } from "@vue/composition-api";
+import { getTagColorFromCategory } from "@/utilities/utilities";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 
 export interface ITag {
   name: string;
@@ -16,18 +14,29 @@ export interface ITag {
   category: string;
 }
 
-export default {
+export default defineComponent({
   inheritAttrs: false,
   props: {
     tag: {
       type: Object as PropType<ITag>,
       required: true,
     },
-    // showNumbers: {
-    //   type: Boolean,
-    //   default: false,
-    // },
   },
+  setup(props, context) {
+    const color = computed(() => getTagColorFromCategory(props.tag.category));
+    const title = computed(() => {
+      const count = props.tag.post_count
+        ? `\nPosts: ${props.tag.post_count}`
+        : "";
+      return `Name: ${props.tag.name}\nCategory: ${props.tag.category}${count}`;
+    });
+
+    return {
+      color,
+      title,
+    };
+  },
+
   computed: {
     // text() {
     //   if (this.isFromApiWorker) {
@@ -58,5 +67,5 @@ export default {
     //   return !!this.tag.created_at;
     // },
   },
-};
+});
 </script>

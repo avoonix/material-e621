@@ -4,7 +4,7 @@ export enum BlacklistMode {
   blackout,
 }
 
-export type ButtonType = "info"|"fullscreen"|"external";
+export type ButtonType = "info" | "fullscreen" | "external";
 
 export interface ISettingsServiceState {
   blacklist: {
@@ -24,6 +24,7 @@ export interface ISettingsServiceState {
   };
     coloredRatingStripe: boolean;
     navigationType: "sidebar" | "toolbar" | "floating";
+    logoStyle: "face" | "text";
   };
   history: {
     entries: string[][];
@@ -31,11 +32,11 @@ export interface ISettingsServiceState {
   };
   snackbar: string | null;
   posts: {
-    buttons: ButtonType[]
-    fullscreenButtons: ButtonType[]
-    detailsButtons: ButtonType[]
+    buttons: ButtonType[];
+    fullscreenButtons: ButtonType[];
+    detailsButtons: ButtonType[];
     hideFullscreenUiOnZoom: boolean;
-  }
+  };
   account: {
     username: string | null;
     apiKey: string | null;

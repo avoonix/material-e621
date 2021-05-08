@@ -5,12 +5,12 @@
         <v-flex md6 xs12 offset-md3 class="my-2">
           <v-card>
             <v-card-title>
-              {{ $appName }} - v{{ version.version }}-{{ version.branch }}-{{
+              {{ appName }} - v{{ version.version }}-{{ version.branch }}-{{
                 version.commitShort
               }}
             </v-card-title>
             <v-card-text>
-              {{ $appName }} is a customizable e621 client.
+              {{ appName }} is a customizable e621 client.
             </v-card-text>
             <v-card-actions>
               <v-spacer />
@@ -74,7 +74,7 @@
             </v-card-text>
           </v-card>
         </v-flex> -->
-        <v-timeline style="width: 100%;" :dense="$vuetify.breakpoint.smAndDown">
+        <v-timeline style="width: 100%" :dense="$vuetify.breakpoint.smAndDown">
           <v-timeline-item
             v-for="(item, index) in timeline"
             :key="index"
@@ -92,17 +92,26 @@
     </v-layout>
   </v-container>
 </template>
-<script>
-import ChangelogItem from "./ChangelogItem.vue";
-import changelog from "../config/changelog";
-import packageJson from "../../package";
 
-export default {
+<script lang="ts">
+import ChangelogItem from "./ChangelogItem.vue";
+import changelog from "../config/changelog.json";
+import packageJson from "../../package.json";
+import { defineComponent } from "@vue/composition-api";
+import { getAppName } from "@/utilities/utilities";
+
+export default defineComponent({
   metaInfo: {
     title: "About",
   },
   components: {
     ChangelogItem,
+  },
+  setup() {
+    const appName = getAppName();
+    return {
+      appName,
+    };
   },
   data() {
     return {
@@ -120,5 +129,5 @@ export default {
     };
   },
   name: "About",
-};
+});
 </script>

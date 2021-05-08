@@ -17,7 +17,7 @@
                 change.text
               }}</span>
               <div v-if="change.description">{{ change.description }}</div>
-              <ul v-if="change.list" style="white-space: pre-line;">
+              <ul v-if="change.list" style="white-space: pre-line">
                 <li v-for="li in change.list" :key="li">{{ li }}</li>
               </ul>
             </li>
@@ -28,8 +28,15 @@
   </v-hover>
 </template>
 
-<script>
-export default {
-  props: ["item"],
-};
+<script lang="ts">
+import { defineComponent } from "@vue/composition-api";
+
+export default defineComponent({
+  props: {
+    item: {
+      type: Object,
+      required: true,
+    },
+  },
+});
 </script>

@@ -54,10 +54,6 @@ export default defineComponent({
     TagLabel,
   },
   props: {
-    // postSpecific: {
-    //   type: Boolean,
-    //   default: false,
-    // },
     tags: {
       type: Array as PropType<ITag[]>,
       required: true,

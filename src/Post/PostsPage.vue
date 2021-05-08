@@ -58,6 +58,7 @@ import { usePostListManager } from "@/Post/postListManager";
 import { useRouterTagManager } from "@/Post/routerTagManager";
 import { useHistory } from "@/Post/historyManager";
 import router from "@/router";
+import { ITag } from "@/components/updated/dumb/TagLabel.vue";
 
 // TODO: reset first post on tag change
 
@@ -129,7 +130,7 @@ export default defineComponent({
       },
     );
 
-    const suggestedTags = ref<any[]>([]);
+    const suggestedTags = ref<ITag[]>([]);
     const settingsSuggestedTagsCount = 20;
     // settingsSuggestedTagsCount() {
     //   return this.$store.getters[GETTERS.SUGGESTION_COUNT];
@@ -144,11 +145,17 @@ export default defineComponent({
       // TODO: handle slicing and mapping in worker
       suggestedTags.value = occurences.sorted
         .slice(0, settingsSuggestedTagsCount)
-        .map((t) => ({
-          text: t.name,
-          count: t.count,
-          color: getTagColorFromCategory(t.category),
-        }));
+        .map(
+          (t) =>
+            ({
+              name: t.name,
+              category: t.category,
+              post_count: t.count,
+              // text: t.name,
+              // count: t.count,
+              // color: getTagColorFromCategory(t.category),
+            } as ITag),
+        );
     };
 
     watch(

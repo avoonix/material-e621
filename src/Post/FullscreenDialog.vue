@@ -86,7 +86,7 @@
                   class="centered-in-container"
                   svg-margin-auto
                   v-if="loading"
-                  :loader="loading"
+                  type="loader"
                 />
               </div>
             </div>

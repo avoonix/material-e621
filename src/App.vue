@@ -13,7 +13,7 @@
       class="pa-2"
       :style="`background-color: ${currentTheme.sidebar} !important; border-color: ${currentTheme.sidebar} !important;`"
     >
-      <logo />
+      <logo :type="logoStyle" @click.native="onLogoClick" />
       <navigation-list />
       <portal-target name="sidebar-suggestions"></portal-target>
     </v-navigation-drawer>
@@ -50,7 +50,7 @@
         ></v-toolbar-side-icon>
       </v-slide-x-transition>
       <v-toolbar-title v-if="navMode != 'floating' || $route.path != '/e621'">
-        {{ $appName }}
+        {{ appName }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <navigation-toolbar v-if="navMode === 'toolbar'" />
@@ -70,6 +70,7 @@ import { computed, defineComponent } from "@vue/composition-api";
 import NavigationList from "./App/NavigationList.vue";
 import NavigationToolbar from "./App/NavigationToolbar.vue";
 import MainContent from "./App/MainContent.vue";
+import { getAppName } from "./utilities/utilities";
 
 const mobileBreakPoint = 1264;
 
@@ -77,17 +78,28 @@ export default defineComponent({
   setup() {
     const { state } = useSettingsServiceState();
 
-    const navMode = computed(() => appearanceService.navigationType)
+    const navMode = computed(() => appearanceService.navigationType);
+
+    const logoStyle = computed(() => appearanceService.logoStyle);
+    const onLogoClick = () => {
+      const availableStyles = appearanceService.logoStyles.filter(
+        (ls) => ls !== logoStyle.value,
+      );
+      appearanceService.logoStyle =
+        availableStyles[Math.floor(availableStyles.length * Math.random())];
+    };
 
     return {
       state,
       navMode,
+      logoStyle,
+      onLogoClick,
     };
   },
   metaInfo() {
     return {
       title: "Landing Page",
-      titleTemplate: `${this.$appName} - %s`,
+      titleTemplate: `${getAppName()} - %s`,
       meta: [
         {
           name: "description",
@@ -109,6 +121,7 @@ export default defineComponent({
     return {
       clipped: false,
       drawer_: true,
+      appName: getAppName(),
     };
   },
   computed: {

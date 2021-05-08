@@ -21,6 +21,7 @@ export const defaultSettings: ISettingsServiceState = {
     },
     coloredRatingStripe: true,
     navigationType: "sidebar",
+    logoStyle: "face",
   },
   history: {
     entries: [],

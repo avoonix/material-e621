@@ -75,11 +75,16 @@
 </template>
 
 <script lang="ts">
-import TagLabel from "../dumb/TagLabel.vue";
+import TagLabel, { ITag } from "../dumb/TagLabel.vue";
 import { debounce, differenceBy } from "lodash";
 import Vue from "vue";
 import { computed, defineComponent, ref, watch } from "@vue/composition-api";
 import { getApiService } from "@/worker/services";
+import { categoryIdToCategoryName } from "@/utilities/utilities";
+
+interface ITagWithText extends ITag {
+  text: string;
+}
 
 export default defineComponent({
   props: {
@@ -97,7 +102,7 @@ export default defineComponent({
   setup(props, context) {
     const search = ref("");
     const tagsLoading = ref(false);
-    const tags = ref<any[]>([]); // TODO@avoo: types
+    const tags = ref<ITag[]>([]); // TODO@avoo: types
     const searchAsTag = computed(() =>
       (search.value || "").replace(/\s/g, "_"),
     );
@@ -145,19 +150,27 @@ export default defineComponent({
         tags.value = [
           ...result[0].map((t) => ({
             ...t,
-            text: t.name,
+            // text: t.name,
             // // color: plugins.getTagColor(t.category),
             // display: t.name,
             // count: t.post_count,
-          })),
+            text: t.name,
+            name: t.name,
+            post_count: t.post_count,
+            category: categoryIdToCategoryName(t.category)
+          } as ITagWithText)),
           ...result[1].map((p) => ({
-            ...p,
             text: `pool:${p.id}`,
+            // text: `pool:${p.id}`,
+            category: "pool",
+            post_count: p.post_count,
+            name: p.name,
+            // TODO: text
             // name: "pool:" + p.id,
             // count: p.post_count,
             // type: "pool",
             // display: `${p.name} (pool)`,
-          })),
+          } as ITagWithText)),
         ];
         tagsLoading.value = false;
       },

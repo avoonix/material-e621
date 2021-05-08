@@ -4,7 +4,7 @@
       <v-flex>
         <v-flex v-if="installPrompt" md6 xs12 offset-md3 class="pa-2">
           <v-card>
-            <v-card-title>Install the {{ $appName }} Web App</v-card-title>
+            <v-card-title>Install the {{ appName }} Web App</v-card-title>
             <v-card-text>
               <div class="mb-3">
                 If you are using Chrome or any other browser that supports PWA
@@ -33,10 +33,10 @@
         >
         <v-flex md6 xs12 offset-md3 class="pa-2">
           <v-card>
-            <v-card-title>Install the {{ $appName }} bookmarklet</v-card-title>
+            <v-card-title>Install the {{ appName }} bookmarklet</v-card-title>
             <v-card-text>
               <div class="mb-3">
-                This bookmarklet opens {{ $appName }} with tags/post parameters
+                This bookmarklet opens {{ appName }} with tags/post parameters
                 from currently open e621 page. I recommend setting
                 <external-link href="https://e621.net/user/edit#user_per_page"
                   >e621 posts per page</external-link
@@ -60,7 +60,7 @@
               <v-spacer />Drag this
               <v-icon>mdi-chevron-double-right</v-icon>
               <a :href="`javascript:(${bookmarkletFunction})();`">{{
-                name.trim() || `Open with ${$appName}`
+                name.trim() || `Open with ${appName}`
               }}</a>
               <v-icon>mdi-chevron-double-left</v-icon>
             </v-card-actions>
@@ -70,13 +70,13 @@
         <v-flex md6 xs12 offset-md3 class="pa-2">
           <v-card>
             <v-card-title
-              >Install the {{ $appName }} link replacer
+              >Install the {{ appName }} link replacer
               bookmarklet</v-card-title
             >
             <v-card-text>
               <div class="mb-3">
                 This bookmarklet replaces all link to e621 with links to
-                {{ $appName }}
+                {{ appName }}
               </div>
               <div class="mb-3">
                 When you are done tweaking the values below, drag the link to
@@ -84,7 +84,7 @@
                 worked by visiting
                 <external-link href="https://e621.net/post">e621</external-link>
                 and clicking the bookmark. After that, click on any post or tag
-                to open it in {{ $appName }}.
+                to open it in {{ appName }}.
               </div>
               <v-text-field
                 label="Bookmarklet name"
@@ -95,7 +95,7 @@
               <v-spacer />Drag this
               <v-icon>mdi-chevron-double-right</v-icon>
               <a :href="`javascript:(${linkReplacerBookmarkletFunction})();`">{{
-                linkReplacerName.trim() || `${$appName} link replacer`
+                linkReplacerName.trim() || `${appName} link replacer`
               }}</a>
               <v-icon>mdi-chevron-double-left</v-icon>
             </v-card-actions>
@@ -107,11 +107,12 @@
 </template>
 
 <script>
-import { GETTERS } from "../store/constants";
+import { getAppName, getBaseUrl } from '@/utilities/utilities';
+import { defineComponent } from '@vue/composition-api';
 
 // this function is converted to string and used for the bookmarklet
 // [[ignorePageBool]] will be replaced by a boolean
-const bookmarkletFunction = function() {
+const bookmarkletFunction = function () {
   let m = /https?:\/\/e621\.net\/post\/show\/(\d+)/.exec(window.location.href),
     a = "";
   if (m) {
@@ -133,7 +134,7 @@ const bookmarkletFunction = function() {
 
 // this function is converted to string and used for the link replacer
 // [[baseUrl]] will be replaced
-const linkReplacerBookmarkletFunction = function() {
+const linkReplacerBookmarkletFunction = function () {
   for (const a of document.querySelectorAll("a")) {
     if (a.href) {
       let match = /https?:\/\/e621\.net\/post\/search.*[?&]tags=(.*)($|&)/.exec(
@@ -152,14 +153,28 @@ const linkReplacerBookmarkletFunction = function() {
         a.href,
       );
       if (match) {
-        a.href = `[[baseUrl]]/#/e621?agree=true&pagination=true&mpages=${match[1] ||
-          1}&page=${match[1] || 1}&tags=${match[3]}`;
+        a.href = `[[baseUrl]]/#/e621?agree=true&pagination=true&mpages=${
+          match[1] || 1
+        }&page=${match[1] || 1}&tags=${match[3]}`;
         continue;
       }
       console.info(a.href, "has not been replaced");
     }
   }
 };
+
+// window.addEventListener("beforeinstallprompt", () => {
+//   if (navigator.storage && navigator.storage.persist)
+//     navigator.storage.persist().then((granted) => {
+//       if (granted) {
+//         console.log(
+//           "Storage will not be cleared except by explicit user action",
+//         );
+//       } else {
+//         console.log("Storage may be cleared by the UA under storage pressure.");
+//       }
+//     });
+// });
 
 let deferredPrompt;
 
@@ -170,17 +185,23 @@ window.addEventListener("beforeinstallprompt", (e) => {
   deferredPrompt = e;
 });
 
-export default {
+export default defineComponent({
   metaInfo: {
     title: "Install",
   },
-  components: {},
+  setup() {
+    const appName = getAppName();
+
+    return {
+      appName,
+    }
+  },
   data() {
     return {
-      name: `${this.$appName} bookmarklet`,
+      name: `${getAppName()} bookmarklet`,
       ignorePage: false,
       installPrompt: false,
-      linkReplacerName: `${this.$appName} link replacer`,
+      linkReplacerName: `${getAppName()} link replacer`,
     };
   },
   mounted() {
@@ -212,14 +233,14 @@ export default {
         .toString()
         .replace(/\n\s+/g, " ")
         .replace(/\[\[ignorePageBool\]\]/g, this.ignorePage ? "true" : "false")
-        .replace(/\[\[baseUrl\]\]/g, this.$baseUrl);
+        .replace(/\[\[baseUrl\]\]/g, getBaseUrl());
     },
     linkReplacerBookmarkletFunction() {
       return linkReplacerBookmarkletFunction
         .toString()
         .replace(/\n\s+/g, " ")
-        .replace(/\[\[baseUrl\]\]/g, this.$baseUrl);
+        .replace(/\[\[baseUrl\]\]/g, getBaseUrl());
     },
   },
-};
+});
 </script>

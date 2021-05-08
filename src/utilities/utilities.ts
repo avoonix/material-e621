@@ -3,32 +3,31 @@ import VueRouter from "vue-router";
 export const getAppName = () => "Material e621";
 export const getBaseUrl = () => document.location.origin;
 
-const tagColorMappingId: { [idx: string]: string | undefined } = {
-  "1": "yellow",
-  "4": "green",
-  "3": "purple",
-  "5": "orange",
-  "0": "grey",
+const tagColorMapping: { [idx: string]: string | undefined } = {
+  character: "light-green",
+  copyright: "purple",
+  general: "blue-grey",
+  invalid: "red",
+  default: "grey",
+  species: "deep-orange",
+  artist: "orange",
+  lore: "green",
+  pool: "pink",
+  meta: "grey",
 };
 
-const tagColorMapping: { [idx: string]: string | undefined } = {
-  artist: "yellow",
-  // "1": "yellow",
-
-  character: "green",
-  // "4": "green",
-
-  copyright: "purple",
-  // "3": "purple",
-
-  species: "orange",
-  // "5": "orange",
-
-  pool: "pink",
-
-  general: "grey",
-  // "0": "grey",
-  default: "grey",
+export const categoryIdToCategoryName = (id: number) => {
+  const categories: { [idx: string]: string | undefined } = {
+    0: "general",
+    1: "artist",
+    3: "copyright",
+    4: "character",
+    5: "species",
+    6: "invalid",
+    7: "meta",
+    8: "lore",
+  };
+  return categories[id] || "invalid";
 };
 
 export const updateRouterQuery = (
@@ -42,8 +41,4 @@ export const updateRouterQuery = (
 
 export const getTagColorFromCategory = (category: string) => {
   return tagColorMapping[category] || tagColorMapping.default!;
-};
-
-export const getTagColorFromCategoryId = (categoryId: number) => {
-  return tagColorMappingId[categoryId] || tagColorMapping.default!;
 };

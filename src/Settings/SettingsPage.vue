@@ -188,15 +188,16 @@
   </v-container>
 </template>
 
-<script>
-import SettingsPageSection from "./SettingsPageSection";
+<script lang="ts">
+import { defineComponent } from "@vue/composition-api";
+import SettingsPageSection from "./SettingsPageSection.vue";
 
-export default {
+export default defineComponent({
   metaInfo: {
     title: "Settings",
   },
   components: {
     SettingsPageSection,
   },
-};
+});
 </script>

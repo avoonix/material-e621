@@ -6,7 +6,7 @@
       <slot name="description" />
     </v-card-text>
     <v-flex class="d-flex" v-if="this.switch">
-      <v-spacer style="flex-grow: 999 !important;" />
+      <v-spacer style="flex-grow: 999 !important" />
       <span class="mr-3">
         <slot />
       </span>
@@ -22,8 +22,10 @@
   </v-card>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "@vue/composition-api";
+
+export default defineComponent({
   props: {
     title: {
       type: String,
@@ -40,5 +42,5 @@ export default {
       default: false,
     },
   },
-};
+});
 </script>

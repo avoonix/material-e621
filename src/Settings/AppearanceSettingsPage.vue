@@ -89,6 +89,15 @@
             hide-details
           />
         </settings-page-item>
+        <settings-page-item title="Logo" select>
+          <v-select
+            :items="logoStyleItems"
+            box
+            solo
+            v-model="logoStyle"
+            hide-details
+          />
+        </settings-page-item>
       </v-flex>
     </v-layout>
   </v-container>
@@ -201,6 +210,15 @@ export default defineComponent({
         },
         set(value) {
           appearanceService.navigationType = value;
+        },
+      }),
+      logoStyleItems: computed(() =>appearanceService.logoStyles),
+      logoStyle: computed<"face" | "text">({
+        get() {
+          return appearanceService.logoStyle;
+        },
+        set(value) {
+          appearanceService.logoStyle = value;
         },
       }),
     };

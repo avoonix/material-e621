@@ -1,3 +1,5 @@
+import "intersection-observer";
+import "typeface-roboto";
 import "./misc/plugins";
 import { store } from "./legacyMain.js";
 import { showConsoleMessage } from "./misc/util/consoleMessage";

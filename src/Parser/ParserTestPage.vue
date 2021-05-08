@@ -8,10 +8,12 @@
     </v-layout>
   </v-container>
 </template>
-<script>
+
+<script lang="ts">
+import { defineComponent } from "@vue/composition-api";
 import DText from "./DText.vue";
 
-export default {
+export default defineComponent({
   metaInfo: {
     title: "Parser Test Page",
   },
@@ -85,6 +87,5 @@ header | header | header
 `,
     };
   },
-  name: "ParserTestPage",
-};
+});
 </script>

@@ -22,7 +22,8 @@
     <v-list-tile>
       <v-list-tile-content>File size</v-list-tile-content>
       <v-list-tile-content class="align-end">
-        {{ post.file.size }} B
+        {{ fileSize }}
+        ({{ post.file.size }} B)
       </v-list-tile-content>
     </v-list-tile>
     <v-list-tile>
@@ -37,6 +38,7 @@
 <script lang="ts">
 import { Post } from "@/worker/api";
 import { computed, defineComponent, PropType } from "@vue/composition-api";
+import prettyBytes from "pretty-bytes";
 
 export default defineComponent({
   props: {
@@ -46,6 +48,7 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const fileSize = computed(() => prettyBytes(props.post.file.size));
     const megapixel = computed(
       () =>
         Math.round(
@@ -54,6 +57,7 @@ export default defineComponent({
     );
     return {
       megapixel,
+      fileSize,
     };
   },
 });
