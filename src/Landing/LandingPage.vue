@@ -10,13 +10,11 @@
         <h1 class="mb-2 display-4 text-xs-center">Material e621</h1>
         <div class="headline">e621 client</div>
         <div class="ma-5">
-          <v-btn
-            large
-            color="accent"
-            :to="{ path: '/e621', query: $store.state.routerModule.query }"
-            >Start browsing</v-btn
-          >
-          <v-btn
+          <v-btn large color="accent" :to="{ path: '/e621' }">
+            Start browsing
+          </v-btn>
+          <!-- TODO: -->
+          <!-- <v-btn
             large
             color="accent"
             :to="{
@@ -25,7 +23,7 @@
             }"
           >
             View the introduction
-          </v-btn>
+          </v-btn> -->
         </div>
       </v-layout>
     </section>
@@ -40,10 +38,7 @@
           <changelog-item class="" :item="latestChange" />
         </v-flex>
         <v-flex xs12>
-          <v-btn
-            large
-            color="primary"
-            :to="{ path: '/about', query: $store.state.routerModule.query }"
+          <v-btn large color="primary" :to="{ path: '/about' }"
             >View all changes</v-btn
           >
         </v-flex>

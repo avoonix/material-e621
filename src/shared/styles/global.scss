@@ -1,0 +1,48 @@
+.blacklist-black {
+  filter: brightness(0.02);
+}
+
+.blacklist-blur {
+  filter: blur(7px) !important;
+  /* // transform: scale(0.99); */
+}
+
+body {
+  user-select: initial !important;
+  background-color: #808080;
+}
+
+html {
+  overflow-y: scroll !important;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e0e0e0;
+}
+
+.scrollbar-color-dark::-webkit-scrollbar-track,
+.scrollbar-color-dark ::-webkit-scrollbar-track {
+  background: #313131;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #9c9c9c;
+}
+
+.scrollbar-color-dark::-webkit-scrollbar-thumb,
+.scrollbar-color-dark ::-webkit-scrollbar-thumb {
+  background: #484848;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5c5c5c;
+}
+
+.scrollbar-color-dark::-webkit-scrollbar-thumb:hover,
+.scrollbar-color-dark ::-webkit-scrollbar-thumb:hover {
+  background: #838383;
+}

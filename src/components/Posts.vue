@@ -90,7 +90,7 @@
 <script>
 import PostList from "../components/PostList.vue";
 // import Pagination from "../components/Pagination.vue";
-import FullscreenDialog from "./dialogs/FullscreenDialog.vue";
+import FullscreenDialog from "../Post/FullscreenDialog.vue";
 import DetailsDialog from "../Post/DetailsDialog.vue";
 import Logo from "./updated/dumb/Logo.vue";
 import { defineComponent } from "@vue/composition-api";

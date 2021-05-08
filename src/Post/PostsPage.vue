@@ -44,15 +44,15 @@
 
 <script lang="ts">
 import Posts from "@/components/Posts.vue";
-import { getApiService, getAnalyzeService } from "../../worker/services";
+import { getApiService, getAnalyzeService } from "../worker/services";
 import {
   updateRouterQuery,
   getTagColorFromCategory,
-} from "../../utilities/utilities";
-import Suggestions from "../updated/dumb/Suggestions.vue";
-import TagSearch from "../updated/smart/TagSearch.vue";
+} from "../utilities/utilities";
+import Suggestions from "../components/updated/dumb/Suggestions.vue";
+import TagSearch from "../components/updated/smart/TagSearch.vue";
 import { blacklistService } from "@/services";
-import HistoryList from "../updated/dumb/HistoryList.vue";
+import HistoryList from "../components/updated/dumb/HistoryList.vue";
 import { defineComponent, onMounted, ref, watch } from "@vue/composition-api";
 import { usePostListManager } from "@/Post/postListManager";
 import { useRouterTagManager } from "@/Post/routerTagManager";

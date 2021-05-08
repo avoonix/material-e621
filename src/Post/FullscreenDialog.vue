@@ -30,20 +30,12 @@
             class="middle black"
             :class="blacklistClasses"
           >
-            <object
-              v-if="current.file_ext == 'swf' && currentFileUrl"
-              class="overflow flash grey"
-            >
-              <param name="movie" :value="current.file_url" />
-              <embed
-                type="application/x-shockwave-flash"
-                :src="current.file_url"
-                allowscriptaccess="never"
-              />
-            </object>
+            <div v-if="current.file_ext == 'swf'" class="overflow flash">
+              flash is not supported
+            </div>
             <video
               v-else-if="current.file_ext == 'webm' && currentFileUrl"
-              class="overflow flash black"
+              class="overflow flash black position-relative"
               controls
               loop
               autoplay
@@ -133,28 +125,27 @@
   </v-dialog>
 </template>
 
-<script>
-import { GETTERS, ACTIONS } from "../../store/constants";
+<script lang="ts">
+import { GETTERS, ACTIONS } from "../store/constants";
 import scrollIntoView from "scroll-into-view";
-import Logo from "../updated/dumb/Logo.vue";
-import { togglePostFavorite } from "../../utilities/mixins";
-import { getTransitionName } from "../../utilities/transitions";
+import Logo from "../components/updated/dumb/Logo.vue";
 import { appearanceService, blacklistService, postService } from "@/services";
-import ZoomPanImage from "../updated/dumb/ZoomPanImage.vue";
-import { useBlacklistClasses } from "../../utilities/blacklist";
+import ZoomPanImage from "./ZoomPanImage.vue";
+import { useBlacklistClasses } from "../utilities/blacklist";
 import { computed, defineComponent } from "@vue/composition-api";
 import PostButtons from "@/Post/PostButtons.vue";
+import { useDirectionalTransitions } from "@/misc/util/directionalTransitions";
 
 export default defineComponent({
   metaInfo() {
     return {
-      title: this.current
-        ? this.current.id
-        : this.$store.state.routerModule.query.tags || "Browsing",
-      titleTemplate:
-        this.current || !this.$store.state.routerModule.query.tags
-          ? `${this.$appName} - %s`
-          : `%s - ${this.$appName} Search`,
+      // title: this.current
+      //   ? this.current.id
+      //   : this.$store.state.routerModule.query.tags || "Browsing",
+      // titleTemplate:
+      //   this.current || !this.$store.state.routerModule.query.tags
+      //     ? `${this.$appName} - %s`
+      //     : `%s - ${this.$appName} Search`,
     };
   },
   components: {
@@ -162,7 +153,6 @@ export default defineComponent({
     PostButtons,
     ZoomPanImage,
   },
-  mixins: [togglePostFavorite],
   props: {
     hasPreviousFullscreenPost: {
       type: Boolean,
@@ -187,15 +177,26 @@ export default defineComponent({
 
     const buttons = computed(() => postService.fullscreenButtons);
 
+    const {
+      enterTransitionName,
+      leaveTransitionName,
+      setTransitionNames,
+    } = useDirectionalTransitions({
+      transitionName() {
+        return appearanceService.fullscreenTransition;
+      },
+    });
+
     return {
       blacklistClasses,
       buttons,
+      enterTransitionName,
+      leaveTransitionName,
+      setTransitionNames,
     };
   },
   data() {
     return {
-      enterTransitionName: "fade",
-      leaveTransitionName: "fade",
       switched: false,
       loading: false,
     };
@@ -226,12 +227,6 @@ export default defineComponent({
         this.exitFullscreen();
       }
     },
-    openDetails() {
-      // TODO
-      this.$store.dispatch(ACTIONS.SET_DETAILS_VIEW, {
-        id: this.current.id,
-      });
-    },
     scrollIntoView() {
       const post = document.getElementById(`post_${this.current.id}`);
       if (post) scrollIntoView(post);
@@ -250,25 +245,17 @@ export default defineComponent({
     exitFullscreen() {
       this.$emit("close");
     },
-    setTransitionNames(right, initial = false) {
-      const { enterTransitionName, leaveTransitionName } = getTransitionName(
-        this.transitionName,
-        right ? "left" : "right",
-      );
-      this.enterTransitionName = enterTransitionName;
-      this.leaveTransitionName = leaveTransitionName;
-    },
     showNextImage() {
       if (!this.hasNextFullscreenPost) return;
       this.loadStart();
       this.$emit("next-post");
-      this.setTransitionNames(false);
+      this.setTransitionNames("right");
     },
     showPreviousImage() {
       if (!this.hasPreviousFullscreenPost) return;
       this.loadStart();
       this.$emit("previous-post");
-      this.setTransitionNames(true);
+      this.setTransitionNames("left");
     },
   },
   watch: {
@@ -287,9 +274,6 @@ export default defineComponent({
     },
   },
   computed: {
-    transitionName() {
-      return appearanceService.fullscreenTransition;
-    },
     prevousNextButtons() {
       const layout = this.$store.getters[
         GETTERS.FULLSCREEN_PREVIOUS_NEXT_LAYOUT
@@ -305,9 +289,9 @@ export default defineComponent({
     // zoomEnabled() {
     //   return !!(this.current && this.current.file_ext !== "swf");
     // },
-    loggedIn() {
-      return this.$store.getters[GETTERS.IS_LOGGED_IN];
-    },
+    // loggedIn() {
+    //   return this.$store.getters[GETTERS.IS_LOGGED_IN];
+    // },
     currentFileUrl() {
       return this.switched ? false : this.current.file_url;
     },
@@ -321,25 +305,16 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="stylus">
+<style scoped lang="scss">
+.position-relative {
+  position: relative;
+}
+
 .centered-in-container {
   display: flex;
   position: absolute;
   width: 100%;
   height: 100%;
-}
-
-.image-left-enter-active, .image-left-leave-active, .image-right-enter-active, .image-right-leave-active {
-  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-  // .3s
-}
-
-.image-left-enter, .image-left-leave-to {
-  transform: translateX(-100vw);
-}
-
-.image-right-enter, .image-right-leave-to {
-  transform: translateX(100vw);
 }
 
 .hidden {
@@ -457,9 +432,9 @@ export default defineComponent({
   }
 }
 
-.flash {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-}
+// .flash {
+//   position: absolute;
+//   height: 100%;
+//   width: 100%;
+// }
 </style>

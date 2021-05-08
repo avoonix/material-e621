@@ -29,7 +29,7 @@ export default new Router({
       component: () =>
         // TODO: uncomment once completed
         import(
-          /* webpackChunkName: "posts" */ "@/components/views/PostsPage.vue"
+          /* webpackChunkName: "posts" */ "@/Post/PostsPage.vue"
         ),
       // import ("@/components/Posts")
     },
