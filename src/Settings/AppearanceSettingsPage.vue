@@ -38,7 +38,7 @@
             solo
             v-model="fullscreenTransition"
             hide-details
-          ></v-select>
+          />
           <transition-preview
             :transition-name="fullscreenTransition"
             :ratio="16 / 9"
@@ -66,7 +66,7 @@
             solo
             v-model="routeTransition"
             hide-details
-          ></v-select>
+          />
           <transition-preview
             :transition-name="routeTransition"
             :ratio="16 / 12"
@@ -74,8 +74,20 @@
             class="mt-3"
           />
         </settings-page-item>
-        <settings-page-item title="Colored stripe indicating post rating" switch>
+        <settings-page-item
+          title="Colored stripe indicating post rating"
+          switch
+        >
           <v-switch v-model="stripe"></v-switch>
+        </settings-page-item>
+        <settings-page-item title="Navigation" select>
+          <v-select
+            :items="navigationTypeItems"
+            box
+            solo
+            v-model="navigationType"
+            hide-details
+          />
         </settings-page-item>
       </v-flex>
     </v-layout>
@@ -180,6 +192,15 @@ export default defineComponent({
         },
         set(value) {
           appearanceService.ratingStripe = value;
+        },
+      }),
+      navigationTypeItems: ["sidebar", "toolbar", "floating"],
+      navigationType: computed<"sidebar" | "toolbar" | "floating">({
+        get() {
+          return appearanceService.navigationType;
+        },
+        set(value) {
+          appearanceService.navigationType = value;
         },
       }),
     };

@@ -1,6 +1,6 @@
 import "./misc/plugins";
 import { store } from "./legacyMain.js";
-import { showConsoleMessage } from "./utilities/consoleMessage";
+import { showConsoleMessage } from "./misc/util/consoleMessage";
 import { registerServiceWorker } from "./worker/serviceWorker/register";
 import Vue from "vue";
 import App from "./App.vue";

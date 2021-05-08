@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import ChangelogItem from "../components/ChangelogItem.vue";
+import ChangelogItem from "../About/ChangelogItem.vue";
 import Logo from "../components/updated/dumb/Logo.vue";
 import changelog from "../config/changelog";
 

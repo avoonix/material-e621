@@ -21,10 +21,10 @@
       :app="!$route.meta.minimalHeader"
       :flat="$route.meta.minimalHeader"
       :clipped-left="clipped"
-      :floating="navMode == 'im'"
+      :floating="navMode == 'floating'"
       :class="{
-        'ma-2': navMode == 'im',
-        'mb-3': navMode == 'im',
+        'ma-2': navMode == 'floating',
+        'mb-3': navMode == 'floating',
         primary: $route.meta.minimalHeader,
       }"
     >
@@ -35,7 +35,7 @@
         attach
         close-delay="0"
         :nudge-width="200"
-        v-if="navMode == 'im' && !$route.meta.minimalHeader"
+        v-if="navMode == 'floating' && !$route.meta.minimalHeader"
       >
         <v-btn slot="activator" icon>
           <v-icon>mdi-menu</v-icon>
@@ -49,7 +49,7 @@
           v-if="navMode == 'sidebar' && !$route.meta.minimalHeader"
         ></v-toolbar-side-icon>
       </v-slide-x-transition>
-      <v-toolbar-title v-if="navMode != 'im' || $route.path != '/e621'">
+      <v-toolbar-title v-if="navMode != 'floating' || $route.path != '/e621'">
         {{ $appName }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -64,11 +64,9 @@
 <script lang="ts">
 import Snackbar from "./App/Snackbar.vue";
 import Logo from "./components/updated/dumb/Logo.vue";
-import { GETTERS } from "./store/constants";
 import { useSettingsServiceState, appearanceService } from "./services";
 import AccountMenu from "./App/AccountMenu.vue";
-import { defineComponent } from "@vue/composition-api";
-import { useDirectionalTransitions } from "./misc/util/directionalTransitions";
+import { computed, defineComponent } from "@vue/composition-api";
 import NavigationList from "./App/NavigationList.vue";
 import NavigationToolbar from "./App/NavigationToolbar.vue";
 import MainContent from "./App/MainContent.vue";
@@ -79,8 +77,11 @@ export default defineComponent({
   setup() {
     const { state } = useSettingsServiceState();
 
+    const navMode = computed(() => appearanceService.navigationType)
+
     return {
       state,
+      navMode,
     };
   },
   metaInfo() {
@@ -125,9 +126,6 @@ export default defineComponent({
       set(val) {
         this.drawer_ = val;
       },
-    },
-    navMode() {
-      return this.$store.getters[GETTERS.NAVIGATION_TYPE];
     },
     isDark() {
       return appearanceService.dark;

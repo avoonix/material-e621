@@ -10,7 +10,7 @@
     <div class="fullscreen grey darken-4">
       <div class="flex">
         <div
-          v-show="prevousNextButtons"
+          v-show="!hideUi"
           class="left"
           v-ripple="hasPreviousFullscreenPost"
           @click="showPreviousImage"
@@ -20,6 +20,7 @@
           </v-icon>
         </div>
         <zoom-pan-image
+          @update-zoomed="isZoomed = $event"
           @swipe-down="!$event.zoomedIn && exitFullscreen()"
           @swipe-right="!$event.zoomedIn && showPreviousImage()"
           @swipe-left="!$event.zoomedIn && showNextImage()"
@@ -92,7 +93,7 @@
           </div>
         </zoom-pan-image>
         <div
-          v-show="prevousNextButtons"
+          v-show="!hideUi"
           class="right"
           v-ripple="hasNextFullscreenPost"
           @click="showNextImage"
@@ -105,13 +106,7 @@
       <div class="top-right" v-ripple @click.stop="exitFullscreen">
         <v-icon size="40" class="ml-2 mt-2">mdi-close</v-icon>
       </div>
-      <div
-        :class="{
-          'bottom-right': buttonLayout.startsWith('br'),
-          'bottom-left': buttonLayout.startsWith('bl'),
-          'top-left': buttonLayout.startsWith('tl'),
-        }"
-      >
+      <div class="bottom-right" v-show="!hideUi">
         <post-buttons
           v-if="current"
           :key="current.id"
@@ -126,13 +121,12 @@
 </template>
 
 <script lang="ts">
-import { GETTERS, ACTIONS } from "../store/constants";
 import scrollIntoView from "scroll-into-view";
 import Logo from "../components/updated/dumb/Logo.vue";
 import { appearanceService, blacklistService, postService } from "@/services";
 import ZoomPanImage from "./ZoomPanImage.vue";
 import { useBlacklistClasses } from "../utilities/blacklist";
-import { computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent, ref } from "@vue/composition-api";
 import PostButtons from "@/Post/PostButtons.vue";
 import { useDirectionalTransitions } from "@/misc/util/directionalTransitions";
 
@@ -167,6 +161,7 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const isZoomed = ref(false);
     const postIsBlacklisted = computed(() =>
       Boolean(props?.current?._postCustom?.isBlacklisted),
     );
@@ -187,12 +182,18 @@ export default defineComponent({
       },
     });
 
+    const hideUi = computed(
+      () => postService.hideFullscreenUiOnZoom && isZoomed.value,
+    );
+
     return {
       blacklistClasses,
       buttons,
       enterTransitionName,
       leaveTransitionName,
       setTransitionNames,
+      hideUi,
+      isZoomed,
     };
   },
   data() {
@@ -274,18 +275,15 @@ export default defineComponent({
     },
   },
   computed: {
-    prevousNextButtons() {
-      const layout = this.$store.getters[
-        GETTERS.FULLSCREEN_PREVIOUS_NEXT_LAYOUT
-      ];
-      return (
-        layout != "never" &&
-        ((!this.zoomedIn && layout == "zoom") || layout == "always")
-      );
-    },
-    buttonLayout() {
-      return this.$store.getters[GETTERS.FULLSCREEN_BUTTONS_LAYOUT];
-    },
+    // prevousNextButtons() {
+    //   const layout = this.$store.getters[
+    //     GETTERS.FULLSCREEN_PREVIOUS_NEXT_LAYOUT
+    //   ];
+    //   return (
+    //     layout != "never" &&
+    //     ((!this.zoomedIn && layout == "zoom") || layout == "always")
+    //   );
+    // },
     // zoomEnabled() {
     //   return !!(this.current && this.current.file_ext !== "swf");
     // },

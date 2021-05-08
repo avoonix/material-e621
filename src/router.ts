@@ -27,11 +27,8 @@ export default new Router({
       path: "/e621",
       name: "Posts",
       component: () =>
-        // TODO: uncomment once completed
-        import(
-          /* webpackChunkName: "posts" */ "@/Post/PostsPage.vue"
-        ),
-      // import ("@/components/Posts")
+        // TODO: uncomment once complete
+        import(/* webpackChunkName: "posts" */ "@/Post/PostsPage.vue"),
     },
     {
       path: "/settings",
@@ -93,16 +90,14 @@ export default new Router({
       path: "/settings/info",
       name: "Infos",
       component: () =>
-        import(
-          /* webpackChunkName: "settings" */ "@/Settings/InfoPage.vue"
-        ),
+        import(/* webpackChunkName: "settings" */ "@/Settings/InfoPage.vue"),
     },
     {
       path: "/parser",
       name: "Parser",
       component: () =>
         import(
-          /* webpackChunkName: "parser" */ "@/components/views/ParserTestPage.vue"
+          /* webpackChunkName: "parser" */ "@/Parser/ParserTestPage.vue"
         ),
     },
     // {
@@ -122,9 +117,7 @@ export default new Router({
       path: "/about",
       name: "About",
       component: () =>
-        import(
-          /* webpackChunkName: "about" */ "@/About/AboutPage.vue"
-        ),
+        import(/* webpackChunkName: "about" */ "@/About/AboutPage.vue"),
     },
     {
       path: "/analyzer",
@@ -162,9 +155,7 @@ export default new Router({
       path: "/404",
       name: "ErrorPage",
       component: () =>
-        import(
-          /* webpackChunkName: "error" */ "@/components/updated/dumb/ErrorPage.vue"
-        ),
+        import(/* webpackChunkName: "error" */ "@/Error/ErrorPage.vue"),
       alias: "*",
     },
   ],

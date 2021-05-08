@@ -63,6 +63,13 @@ class AppearanceService {
   public set ratingStripe(value) {
     state.appearance.coloredRatingStripe = value;
   }
+
+  public get navigationType() {
+    return state.appearance.navigationType;
+  }
+  public set navigationType(value) {
+    state.appearance.navigationType = value;
+  }
 }
 
 export const appearanceService = new AppearanceService();

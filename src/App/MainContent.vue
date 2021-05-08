@@ -1,6 +1,6 @@
 <template>
   <v-content
-    :style="`background-color: ${currentTheme.background} !important; border-color: ${currentTheme.background} !important;`"
+    :style="`background-color: ${backgroundColor} !important; border-color: ${backgroundColor} !important;`"
   >
     <transition
       :enter-active-class="enterTransitionName"
@@ -15,7 +15,7 @@
 <script lang="ts">
 import { useDirectionalTransitions } from "@/misc/util/directionalTransitions";
 import { appearanceService } from "@/services";
-import { defineComponent } from "@vue/composition-api";
+import { computed, defineComponent } from "@vue/composition-api";
 
 export default defineComponent({
   props: {},
@@ -29,10 +29,14 @@ export default defineComponent({
         return appearanceService.routeTransition;
       },
     });
+
+    const backgroundColor = computed(() => appearanceService.backgroundColor);
+
     return {
       enterTransitionName,
       leaveTransitionName,
       setTransitionNames,
+      backgroundColor,
     };
   },
   watch: {
@@ -47,15 +51,6 @@ export default defineComponent({
   computed: {
     routeKey(): string {
       return (this.$route as any).path;
-    },
-    currentTheme() {
-      return {
-        primary: appearanceService.primaryColor,
-        secondary: appearanceService.secondaryColor,
-        accent: appearanceService.accentColor,
-        background: appearanceService.backgroundColor,
-        sidebar: appearanceService.sidebarColor,
-      };
     },
   },
 });

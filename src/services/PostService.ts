@@ -21,6 +21,13 @@ class PostService {
   public set detailsButtons(value) {
     state.posts.detailsButtons = [...value];
   }
+
+  public get hideFullscreenUiOnZoom() {
+    return state.posts.hideFullscreenUiOnZoom;
+  }
+  public set hideFullscreenUiOnZoom(value) {
+    state.posts.hideFullscreenUiOnZoom = value;
+  }
 }
 
 export const postService = new PostService();

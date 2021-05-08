@@ -23,6 +23,7 @@ export interface ISettingsServiceState {
       fullscreen: string;
   };
     coloredRatingStripe: boolean;
+    navigationType: "sidebar" | "toolbar" | "floating";
   };
   history: {
     entries: string[][];
@@ -33,6 +34,7 @@ export interface ISettingsServiceState {
     buttons: ButtonType[]
     fullscreenButtons: ButtonType[]
     detailsButtons: ButtonType[]
+    hideFullscreenUiOnZoom: boolean;
   }
   account: {
     username: string | null;

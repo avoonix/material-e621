@@ -61,8 +61,8 @@
 </template>
 
 <script lang="ts">
-import Suggestions from "../components/updated/dumb/Suggestions.vue";
-import DText from "./DText.vue";
+import Suggestions from "./Suggestions.vue";
+import DText from "../Parser/DText.vue";
 import PostInfoList from "../components/updated/dumb/PostInfoList.vue";
 import LinkShare from "./LinkShare.vue";
 import PostButtons from "@/Post/PostButtons.vue";

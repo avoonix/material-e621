@@ -30,6 +30,7 @@ import {
   defineComponent,
   onMounted,
   reactive,
+  watch,
 } from "@vue/composition-api";
 import Hammer from "hammerjs";
 import clone from "clone";
@@ -236,6 +237,12 @@ export default defineComponent({
     const zoomInfo = computed(() => {
       return { zoomedIn: currentZoom.level > 1 };
     });
+
+    watch(
+      () => zoomInfo.value.zoomedIn,
+      (zoomedIn) => context.emit("update-zoomed", zoomedIn),
+      { immediate: true },
+    );
 
     return {
       onScroll,

@@ -93,7 +93,7 @@
   </v-container>
 </template>
 <script>
-import ChangelogItem from "../components/ChangelogItem.vue";
+import ChangelogItem from "./ChangelogItem.vue";
 import changelog from "../config/changelog";
 import packageJson from "../../package";
 

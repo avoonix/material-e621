@@ -1,8 +1,6 @@
 <template>
   <v-container fluid grid-list-md>
-    <v-btn @click="loadPrevious">
-      load previous
-    </v-btn>
+    <v-btn @click="loadPrevious"> load previous </v-btn>
     <!-- <logo v-if="loading" loader /> -->
     <post-list
       :visible-posts="posts"
@@ -10,9 +8,7 @@
       @open-post-details="$emit('open-post-details', $event)"
     />
     <!-- <logo v-if="loading" loader /> -->
-    <v-btn @click="loadNext">
-      load next
-    </v-btn>
+    <v-btn @click="loadNext"> load next </v-btn>
     <fullscreen-dialog
       :has-previous-fullscreen-post="hasPreviousFullscreenPost"
       :has-next-fullscreen-post="hasNextFullscreenPost"
@@ -22,7 +18,11 @@
       @previous-post="$emit('previous-fullscreen-post')"
       @open-post-details="$emit('open-post-details', $event)"
     />
-    <details-dialog :current="detailsPost" @close="$emit('close-details')" @open-post-fullscreen="$emit('open-post', $event)" />
+    <details-dialog
+      :current="detailsPost"
+      @close="$emit('close-details')"
+      @open-post-fullscreen="$emit('open-post', $event)"
+    />
     <!--
     <div>
       <blacklist-suggestions :suggested-blacklist="ratingTags" />
@@ -89,28 +89,21 @@
 
 <script>
 import PostList from "../components/PostList.vue";
-// import Pagination from "../components/Pagination.vue";
 import FullscreenDialog from "../Post/FullscreenDialog.vue";
 import DetailsDialog from "../Post/DetailsDialog.vue";
 import Logo from "./updated/dumb/Logo.vue";
 import { defineComponent } from "@vue/composition-api";
-// import { GETTERS, ACTIONS } from "../store/constants";
-// import BlacklistSuggestions from "./BlacklistSuggestions.vue";
-// import { ratingTags } from "../config/customTags";
-// import * as plugins from "../utilities/vuePlugin";
 
 export default defineComponent({
   metaInfo: {
     title: "Posts",
   },
   components: {
-    //   TagSearch,
     PostList,
     FullscreenDialog,
     DetailsDialog,
     // Logo,
     //   Pagination,
-    //   BlacklistSuggestions,
   },
   props: {
     //   isPaginated: {
@@ -155,25 +148,6 @@ export default defineComponent({
   // },
   // destroyed() {
   //   this.$store.dispatch("resetPosts");
-  // },
-  // watch: {
-  //   notYetLoadedPost: {
-  //     async handler(val) {
-  //       if (val) {
-  //         const service = await getApiService();
-  //         const posts = await service.getPosts({
-  //           limit: 1,
-  //           tags: `id:${val}`,
-  //         });
-  //         if (posts.length) {
-  //           this.fullscreenPost = posts[0];
-  //         } else {
-  //           console.log("current fullscreen post not found");
-  //         }
-  //       }
-  //     },
-  //     immediate: true,
-  //   },
   // },
   // computed: {
   //   notYetLoadedPost() {
@@ -224,41 +198,6 @@ export default defineComponent({
     loadNext() {
       this.$emit("load-next");
     },
-    //   exitFullscreen() {
-    //     this.$store.dispatch(ACTIONS.SET_FULLSCREEN_POST_ID, false);
-    //     this.fullscreenPost = false;
-    //   },
-    //   async loadPosts() {
-    //     this.postsLoading = true;
-    //     await this.$store.dispatch("loadPosts", { reset: false });
-    //     this.postsLoading = false;
-    //   },
-    //   handleLoadClick() {
-    //     this.$emit("load-posts");
-    //     if (
-    //       this.$store.getters[GETTERS.IS_PAGINATED_MODE] &&
-    //       !this.isControlled
-    //     ) {
-    //       this.$store.dispatch(
-    //         ACTIONS.SET_CURRENT_PAGE_NUMBER,
-    //         this.$store.getters[GETTERS.GET_MAX_PAGE_NUMBER] + 1,
-    //       );
-    //     }
-    //     if (this.isControlled) {
-    //       this.$emit("click", true);
-    //     } else {
-    //       this.postsLoading = true;
-    //       this.$store
-    //         .dispatch("loadPosts", { reset: false })
-    //         .then(() => (this.postsLoading = false)); // TODO:
-    //     }
-    //     this.$nextTick(() => {
-    //       this.$vuetify.goTo(
-    //         window.innerHeight + window.scrollY,
-    //         this.scrollOptions,
-    //       );
-    //     });
-    //   },
     //   onScroll(event) {
     //     this.offsetTop = window.pageYOffset || document.documentElement.scrollTop;
     //     if (!this.$store.getters[GETTERS.IS_BOTTOM_LOAD]) return;

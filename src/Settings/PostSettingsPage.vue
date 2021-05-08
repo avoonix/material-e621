@@ -11,6 +11,9 @@
             :post-buttons.sync="postButtons"
           />
         </settings-page-item>
+        <settings-page-item title="Hide UI while zoomed (fullscreen)" switch>
+          <v-switch v-model="hideFullscreenUiOnZoom"></v-switch>
+        </settings-page-item>
       </v-flex>
     </v-layout>
   </v-container>
@@ -59,12 +62,21 @@ export default defineComponent({
         postService.detailsButtons = value;
       },
     });
+    const hideFullscreenUiOnZoom = computed<boolean>({
+      get() {
+        return postService.hideFullscreenUiOnZoom;
+      },
+      set(value) {
+        postService.hideFullscreenUiOnZoom = value;
+      },
+    });
 
     return {
       availableButtons,
       postButtons,
       fullscreenButtons,
       detailsButtons,
+      hideFullscreenUiOnZoom,
     };
   },
 });

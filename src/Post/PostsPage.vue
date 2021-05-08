@@ -49,7 +49,7 @@ import {
   updateRouterQuery,
   getTagColorFromCategory,
 } from "../utilities/utilities";
-import Suggestions from "../components/updated/dumb/Suggestions.vue";
+import Suggestions from "./Suggestions.vue";
 import TagSearch from "../components/updated/smart/TagSearch.vue";
 import { blacklistService } from "@/services";
 import HistoryList from "../components/updated/dumb/HistoryList.vue";

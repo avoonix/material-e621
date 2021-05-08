@@ -5,6 +5,7 @@ import { BlacklistMode, ISettingsServiceState } from "./types";
 export const defaultSettings: ISettingsServiceState = {
   blacklist: {
     mode: BlacklistMode.blur,
+    // tags: ["rating:explicit", "rating:questionable"],
     tags: [],
   },
   appearance: {
@@ -19,6 +20,7 @@ export const defaultSettings: ISettingsServiceState = {
       route: "fade",
     },
     coloredRatingStripe: true,
+    navigationType: "sidebar",
   },
   history: {
     entries: [],
@@ -33,6 +35,7 @@ export const defaultSettings: ISettingsServiceState = {
     buttons: ["info", "fullscreen", "external"],
     fullscreenButtons: ["external", "info"],
     detailsButtons: ["external"],
+    hideFullscreenUiOnZoom: true,
   },
 };
 
