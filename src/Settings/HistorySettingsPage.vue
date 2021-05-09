@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height>
     <v-layout align-center>
-      <v-flex text-xs-center xs12 md8 offset-md2>
+      <v-flex text-xs-center xs12 sm10 offset-sm1 lg6 offset-lg3>
         <settings-page-title title="History" color="darken-1 green" />
         <settings-page-item title="Max history length" select>
           <v-text-field type="number" v-model.number.lazy="maxLength" />

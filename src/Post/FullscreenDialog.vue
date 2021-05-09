@@ -126,7 +126,16 @@ import Logo from "../components/updated/dumb/Logo.vue";
 import { appearanceService, blacklistService, postService } from "@/services";
 import ZoomPanImage from "./ZoomPanImage.vue";
 import { useBlacklistClasses } from "../utilities/blacklist";
-import { computed, defineComponent, ref } from "@vue/composition-api";
+import {
+  computed,
+  defineComponent,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  Ref,
+  ref,
+  watch,
+} from "@vue/composition-api";
 import PostButtons from "@/Post/PostButtons.vue";
 import { useDirectionalTransitions } from "@/misc/util/directionalTransitions";
 
@@ -157,13 +166,14 @@ export default defineComponent({
       required: true,
     },
     current: {
+      type: null,
       required: true,
     },
   },
-  setup(props) {
+  setup(props, context) {
     const isZoomed = ref(false);
-    const postIsBlacklisted = computed(() =>
-      Boolean(props?.current?._postCustom?.isBlacklisted),
+    const postIsBlacklisted = computed(
+      () => Boolean(props?.current?._postCustom?.isBlacklisted), // TODO: types
     );
     const { classes: blacklistClasses } = useBlacklistClasses({
       mode: blacklistService.mode,
@@ -186,119 +196,104 @@ export default defineComponent({
       () => postService.hideFullscreenUiOnZoom && isZoomed.value,
     );
 
-    return {
-      blacklistClasses,
-      buttons,
-      enterTransitionName,
-      leaveTransitionName,
-      setTransitionNames,
-      hideUi,
-      isZoomed,
+    const exitFullscreen = () => context.emit("close");
+
+    const loadTimeout: Ref<any> = ref(null);
+
+    const loadStart = () => {
+      clearTimeout(loadTimeout.value);
+
+      loadTimeout.value = setTimeout(() => {
+        loading.value = true;
+      }, 10);
     };
-  },
-  data() {
-    return {
-      switched: false,
-      loading: false,
+    const loadEnd = () => {
+      clearTimeout(loadTimeout.value);
+      loading.value = false;
     };
-  },
-  mounted() {
-    window.addEventListener("keydown", this.keyDown);
-  },
-  beforeDestroy() {
-    window.removeEventListener("keydown", this.keyDown);
-  },
-  created() {
-    this.loadTimeout = null;
-  },
-  methods: {
-    keyDown(event) {
-      if (!this.current) return;
+
+    const showNextImage = () => {
+      if (!props.hasNextFullscreenPost) return;
+      loadStart();
+      context.emit("next-post");
+      setTransitionNames("right");
+    };
+    const showPreviousImage = () => {
+      if (!props.hasPreviousFullscreenPost) return;
+      loadStart();
+      context.emit("previous-post");
+      setTransitionNames("left");
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!props.current) return;
       if (event.key == "ArrowLeft" || event.key == "a") {
-        this.showPreviousImage();
+        showPreviousImage();
       }
       if (event.key == "ArrowRight" || event.key == "d") {
-        this.showNextImage();
+        showNextImage();
       }
       if (
         event.key == "Escape" ||
         event.key == "ArrowDown" ||
         event.key == "s"
       ) {
-        this.exitFullscreen();
+        exitFullscreen();
       }
-    },
-    scrollIntoView() {
-      const post = document.getElementById(`post_${this.current.id}`);
-      if (post) scrollIntoView(post);
-    },
-    loadStart() {
-      clearTimeout(this.loadTimeout);
+    };
+    onMounted(() => window.addEventListener("keydown", handleKeyDown));
+    onBeforeUnmount(() => window.removeEventListener("keydown", handleKeyDown));
 
-      this.loadTimeout = setTimeout(() => {
-        this.loading = true;
-      }, 10);
-    },
-    loadEnd() {
-      clearTimeout(this.loadTimeout);
-      this.loading = false;
-    },
-    exitFullscreen() {
-      this.$emit("close");
-    },
-    showNextImage() {
-      if (!this.hasNextFullscreenPost) return;
-      this.loadStart();
-      this.$emit("next-post");
-      this.setTransitionNames("right");
-    },
-    showPreviousImage() {
-      if (!this.hasPreviousFullscreenPost) return;
-      this.loadStart();
-      this.$emit("previous-post");
-      this.setTransitionNames("left");
-    },
-  },
-  watch: {
-    current(val, prev) {
-      if (val && (!prev || val.id != prev.id)) {
-        this.scrollIntoView();
-        this.switched = true;
-        this.$nextTick(() => {
-          this.switched = false;
-          if (val)
-            this.$nextTick(() => {
-              this.loading = true;
-            });
-        });
-      }
-    },
-  },
-  computed: {
-    // prevousNextButtons() {
-    //   const layout = this.$store.getters[
-    //     GETTERS.FULLSCREEN_PREVIOUS_NEXT_LAYOUT
-    //   ];
-    //   return (
-    //     layout != "never" &&
-    //     ((!this.zoomedIn && layout == "zoom") || layout == "always")
-    //   );
-    // },
-    // zoomEnabled() {
-    //   return !!(this.current && this.current.file_ext !== "swf");
-    // },
-    // loggedIn() {
-    //   return this.$store.getters[GETTERS.IS_LOGGED_IN];
-    // },
-    currentFileUrl() {
-      return this.switched ? false : this.current.file_url;
-    },
-    currentSampleFileUrl() {
-      return this.switched ? false : this.current.preview_url;
-    },
-    open() {
-      return !!this.current;
-    },
+    const scrollToPost = () => {
+      const post = document.getElementById(`post_${props.current.id}`);
+      if (post) scrollIntoView(post);
+    };
+
+    const switched = ref(false);
+    const loading = ref(false);
+
+    watch(
+      () => props.current,
+      async (val, prev) => {
+        if (val && (!prev || val.id != prev.id)) {
+          scrollToPost();
+          switched.value = true;
+          await nextTick();
+          switched.value = false;
+          if (val) {
+            await nextTick();
+            loading.value = true;
+          }
+        }
+      },
+    );
+
+    const open = computed(() => !!props.current);
+
+    const currentFileUrl = computed(() =>
+      switched.value ? false : props.current.file_url,
+    );
+    const currentSampleFileUrl = computed(() =>
+      switched.value ? false : props.current.preview_url,
+    );
+
+    return {
+      blacklistClasses,
+      buttons,
+      enterTransitionName,
+      leaveTransitionName,
+      hideUi,
+      isZoomed,
+      loadEnd,
+      currentFileUrl,
+      currentSampleFileUrl,
+      open,
+      showNextImage,
+      showPreviousImage,
+      loading,
+      loadStart,
+      exitFullscreen,
+    };
   },
 });
 </script>
@@ -429,10 +424,4 @@ export default defineComponent({
     }
   }
 }
-
-// .flash {
-//   position: absolute;
-//   height: 100%;
-//   width: 100%;
-// }
 </style>

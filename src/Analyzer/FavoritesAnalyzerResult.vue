@@ -5,7 +5,7 @@
         <div v-if="result">
           <div v-for="cloud in result.wordPositions" :key="cloud.category">
             <h3>
-            {{ cloud.category }}
+              {{ cloud.category }}
             </h3>
             <wordcloud
               :height="args.height"
@@ -16,8 +16,12 @@
         </div>
         <div v-else>
           <logo type="loader" />
-          <span v-if="progress">{{progress.message}}</span>
-          <v-progress-linear v-if="progress" :value="progress.progress * 100" :indeterminate="progress.indeterminate" />
+          <span v-if="progress">{{ progress.message }}</span>
+          <v-progress-linear
+            v-if="progress"
+            :value="progress.progress * 100"
+            :indeterminate="progress.indeterminate"
+          />
         </div>
       </v-flex>
     </v-layout>

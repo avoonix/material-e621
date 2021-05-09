@@ -51,7 +51,7 @@ import {
 } from "../utilities/utilities";
 import Suggestions from "./Suggestions.vue";
 import TagSearch from "../components/updated/smart/TagSearch.vue";
-import { blacklistService } from "@/services";
+import { blacklistService, postService } from "@/services";
 import HistoryList from "../components/updated/dumb/HistoryList.vue";
 import { defineComponent, onMounted, ref, watch } from "@vue/composition-api";
 import { usePostListManager } from "@/Post/postListManager";
@@ -70,8 +70,6 @@ export default defineComponent({
     HistoryList,
   },
   setup(props, context) {
-    const size = 50; // TODO; this.$store.getters[GETTERS.POST_FETCH_COUNT];
-
     const { tags, addTag, removeTag } = useRouterTagManager();
 
     const {
@@ -90,7 +88,7 @@ export default defineComponent({
         return Number(router.currentRoute.query.first_post); // TODO: handle null
       },
       getSettingsPageSize() {
-        return size;
+        return postService.postListFetchLimit;
       },
       saveFirstPostId(id) {
         updateRouterQuery(router, {
@@ -100,7 +98,7 @@ export default defineComponent({
       async loadPosts({ postsBefore, postsAfter }) {
         const service = await getApiService();
         const posts = await service.getPosts({
-          limit: size,
+          limit: postService.postListFetchLimit,
           postsBefore,
           postsAfter,
           tags: tags.value,
@@ -131,11 +129,8 @@ export default defineComponent({
     );
 
     const suggestedTags = ref<ITag[]>([]);
-    const settingsSuggestedTagsCount = 20;
-    // settingsSuggestedTagsCount() {
-    //   return this.$store.getters[GETTERS.SUGGESTION_COUNT];
-    // },
     const suggestTags = async () => {
+      const settingsSuggestedTagsCount = postService.sidebarSuggestionLimit;
       if (!posts.value.length) {
         suggestedTags.value = [];
         return;

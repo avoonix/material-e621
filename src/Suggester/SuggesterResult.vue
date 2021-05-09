@@ -54,6 +54,7 @@ import BaseTags from "./BaseTags.vue";
 import { usePostListManager } from "@/Post/postListManager";
 import { updateRouterQuery } from "@/utilities/utilities";
 import Posts from "@/components/Posts.vue";
+import { postService } from "@/services";
 
 export default defineComponent({
   metaInfo: {
@@ -105,8 +106,6 @@ export default defineComponent({
       await loadNextPage();
     };
 
-    const pageSize = 30; // TODO
-
     const {
       loadPreviousPage,
       loadNextPage,
@@ -123,7 +122,7 @@ export default defineComponent({
         return Number(router.currentRoute.query.first_post); // TODO: handle null
       },
       getSettingsPageSize() {
-        return pageSize;
+        return postService.postListFetchLimit;
       },
       saveFirstPostId(id) {
         updateRouterQuery(router, {
@@ -148,7 +147,7 @@ export default defineComponent({
         const posts = await service.suggestPosts(
           result.value,
           weights.value,
-          pageSize,
+          postService.postListFetchLimit,
           { postsBefore, postsAfter },
           Comlink.proxy((progressEvent) => {
             console.log(progressEvent); // TODO

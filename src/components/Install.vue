@@ -70,8 +70,7 @@
         <v-flex md6 xs12 offset-md3 class="pa-2">
           <v-card>
             <v-card-title
-              >Install the {{ appName }} link replacer
-              bookmarklet</v-card-title
+              >Install the {{ appName }} link replacer bookmarklet</v-card-title
             >
             <v-card-text>
               <div class="mb-3">
@@ -107,8 +106,8 @@
 </template>
 
 <script>
-import { getAppName, getBaseUrl } from '@/utilities/utilities';
-import { defineComponent } from '@vue/composition-api';
+import { getAppName, getBaseUrl } from "@/utilities/utilities";
+import { defineComponent } from "@vue/composition-api";
 
 // this function is converted to string and used for the bookmarklet
 // [[ignorePageBool]] will be replaced by a boolean
@@ -194,7 +193,7 @@ export default defineComponent({
 
     return {
       appName,
-    }
+    };
   },
   data() {
     return {

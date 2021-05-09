@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height>
     <v-layout align-center>
-      <v-flex text-xs-center xs12 md8 offset-md2>
+      <v-flex text-xs-center xs12 sm10 offset-sm1 lg6 offset-lg3>
         <settings-page-title title="Blacklist" color="darken-1 red" />
         <settings-page-item title="Mode" select>
           <v-select :items="modeItems" box solo hide-details v-model="mode" />

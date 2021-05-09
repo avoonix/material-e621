@@ -1,9 +1,8 @@
 import "intersection-observer";
 import "typeface-roboto";
 import "./misc/plugins";
-import { store } from "./legacyMain.js";
 import { showConsoleMessage } from "./misc/util/consoleMessage";
-import { registerServiceWorker } from "./worker/serviceWorker/register";
+import { registerServiceWorker } from "./worker/serviceWorker/registerServiceWorker";
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -21,7 +20,6 @@ persistanceService.persist();
 new (Vue as any)({
   router,
   render: (h: any) => h(App),
-  store,
   metaInfo: {
     titleTemplate: "%s",
     title: "Material e621",

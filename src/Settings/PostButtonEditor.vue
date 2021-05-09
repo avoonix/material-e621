@@ -34,7 +34,7 @@
         </draggable>
       </v-card-text>
     </v-card>
-    <v-card>
+    <v-card class="mb-2">
       <v-card-title> Fullscreen buttons </v-card-title>
       <v-card-text>
         <draggable
@@ -62,9 +62,7 @@
           v-model="detailsButtonsComputed"
           :group="{ name: 'post-button-editor', pull: true, put: true }"
           @add="
-            detailsButtonsComputed = handleSort(detailsButtonsComputed)(
-              $event,
-            )
+            detailsButtonsComputed = handleSort(detailsButtonsComputed)($event)
           "
         >
           <post-button

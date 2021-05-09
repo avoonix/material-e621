@@ -1,7 +1,7 @@
 <template>
   <span class="d-flex">
     <v-combobox
-      style="flex-grow: 999;"
+      style="flex-grow: 999"
       multiple
       small-chips
       dense
@@ -81,6 +81,7 @@ import Vue from "vue";
 import { computed, defineComponent, ref, watch } from "@vue/composition-api";
 import { getApiService } from "@/worker/services";
 import { categoryIdToCategoryName } from "@/utilities/utilities";
+import { postService } from "@/services";
 
 interface ITagWithText extends ITag {
   text: string;
@@ -102,7 +103,7 @@ export default defineComponent({
   setup(props, context) {
     const search = ref("");
     const tagsLoading = ref(false);
-    const tags = ref<ITag[]>([]); // TODO@avoo: types
+    const tags = ref<ITagWithText[]>([]); // TODO@avoo: types
     const searchAsTag = computed(() =>
       (search.value || "").replace(/\s/g, "_"),
     );
@@ -118,59 +119,65 @@ export default defineComponent({
       );
     };
     const items = computed(() => {
+      const tagsValue = inverted.value
+        ? tags.value.map((t) => ({ ...t, text: `-${t.text}` }))
+        : tags.value;
       const arr = [
         {
           header: "Start typing to search",
         },
-        ...tags.value,
+        ...tagsValue,
       ];
-      return inverted.value
-        ? arr.map((t) => ({ ...t, text: `-${t.text}` }))
-        : arr;
+      return arr;
     });
     const fetchTags = debounce(
       async (search: string) => {
-        const count = 30; // TODO@avoo: get value from settings
         tagsLoading.value = true;
         const service = await getApiService();
         const result = await Promise.all([
           // TODO: error handling
           service.getTags({
-            limit: count,
+            limit: postService.tagFetchLimit,
             order: "count",
             query: `*${search}*`,
           }),
           service.getPools({
-            limit: count,
+            limit: postService.tagFetchLimit,
             order: "count",
             query: `*${search}*`,
           }),
         ]);
 
         tags.value = [
-          ...result[0].map((t) => ({
-            ...t,
-            // text: t.name,
-            // // color: plugins.getTagColor(t.category),
-            // display: t.name,
-            // count: t.post_count,
-            text: t.name,
-            name: t.name,
-            post_count: t.post_count,
-            category: categoryIdToCategoryName(t.category)
-          } as ITagWithText)),
-          ...result[1].map((p) => ({
-            text: `pool:${p.id}`,
-            // text: `pool:${p.id}`,
-            category: "pool",
-            post_count: p.post_count,
-            name: p.name,
-            // TODO: text
-            // name: "pool:" + p.id,
-            // count: p.post_count,
-            // type: "pool",
-            // display: `${p.name} (pool)`,
-          } as ITagWithText)),
+          ...result[0].map(
+            (t) =>
+              ({
+                ...t,
+                // text: t.name,
+                // // color: plugins.getTagColor(t.category),
+                // display: t.name,
+                // count: t.post_count,
+                text: t.name,
+                name: t.name,
+                post_count: t.post_count,
+                category: categoryIdToCategoryName(t.category),
+              } as ITagWithText),
+          ),
+          ...result[1].map(
+            (p) =>
+              ({
+                text: `pool:${p.id}`,
+                // text: `pool:${p.id}`,
+                category: "pool",
+                post_count: p.post_count,
+                name: p.name,
+                // TODO: text
+                // name: "pool:" + p.id,
+                // count: p.post_count,
+                // type: "pool",
+                // display: `${p.name} (pool)`,
+              } as ITagWithText),
+          ),
         ];
         tagsLoading.value = false;
       },

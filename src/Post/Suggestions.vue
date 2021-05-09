@@ -39,7 +39,10 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "@vue/composition-api";
-import { ITag, default as TagLabel } from "../components/updated/dumb/TagLabel.vue";
+import {
+  ITag,
+  default as TagLabel,
+} from "../components/updated/dumb/TagLabel.vue";
 
 // const menu = {
 //   remove: "Remove from search",

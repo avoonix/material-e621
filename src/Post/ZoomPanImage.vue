@@ -255,7 +255,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="stylus">
+<style scoped lang="scss">
 .middle {
   position: relative;
   flex-grow: 1;
@@ -270,7 +270,6 @@ export default defineComponent({
       height: 100%;
       width: 100%;
       position: relative;
-
     }
   }
 }

@@ -52,7 +52,6 @@
 
 <script>
 import Post from "../Post/Post.vue";
-import { GETTERS } from "../store/constants";
 
 function isAnyPartOfElementInViewport(el) {
   const rect = el.getBoundingClientRect();
@@ -138,18 +137,19 @@ export default {
         xl3: this.size == "xl",
       };
     },
+    POST_LAYOUT() {
+      return "blog";
+      // return "gridmd"; // blog, feed(sm|md|xl), grid(sm|md|xl)
+    },
     size() {
-      const layout = this.$store.getters[GETTERS.POST_LAYOUT];
+      const layout = this.POST_LAYOUT;
       if (layout.startsWith("grid") || layout.startsWith("feed")) {
         return layout.replace(/(grid|feed)/gi, "");
       }
       return "md";
     },
     layout() {
-      return this.$store.getters[GETTERS.POST_LAYOUT].replace(
-        /(sm|md|xl)$/gi,
-        "",
-      );
+      return this.POST_LAYOUT.replace(/(sm|md|xl)$/gi, "");
     },
   },
   methods: {

@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height>
     <v-layout align-center>
-      <v-flex text-xs-center xs12 md8 offset-md2>
+      <v-flex text-xs-center xs12 sm10 offset-sm1 lg6 offset-lg3>
         <settings-page-title title="Info" color="darken-2 teal" />
         <settings-page-item
           :title="`Storage used: ${usageStr}`"

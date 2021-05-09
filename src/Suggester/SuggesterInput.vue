@@ -18,6 +18,7 @@
 
 <script lang="ts">
 import router from "@/router";
+import { accountService } from "@/services";
 import { computed, defineComponent, ref, reactive } from "@vue/composition-api";
 import { RawLocation } from "vue-router";
 import SliderGroup from "./SliderGroup.vue";
@@ -28,7 +29,7 @@ export default defineComponent({
   },
   components: { SliderGroup },
   setup(props, context) {
-    const username = ref("");
+    const username = ref(accountService.username || "");
     const sliders = reactive({
       general: 5,
       artist: 30,

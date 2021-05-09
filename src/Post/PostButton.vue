@@ -15,6 +15,33 @@ interface IButton {
   onClick: () => void;
 }
 
+// export const togglePostFavorite = {
+//   data() {
+//     return { favoritePostLoading: false, favoritePostLoadingTimeout: 0 };
+//   },
+//   watch: {
+//     post(val, prev) {
+//       if (val.custom_favorited_by_user != prev.custom_favorited_by_user) {
+//         this.favoritePostLoading = false;
+//       }
+//     },
+//   },
+//   methods: {
+//     togglePostFavorite(post) {
+//       this.favoritePostLoading = true;
+//       clearTimeout(this.favoritePostLoadingTimeout);
+//       this.favoritePostLoadingTimeout = setTimeout(() => {
+//         this.favoritePostLoading = false;
+//       }, 30000);
+//       const action = post.custom_favorited_by_user ? "destroy" : "create";
+//       this.$store.dispatch("favoritePost", {
+//         action: action,
+//         postId: post.id,
+//       });
+//     },
+//   },
+// };
+
 export default defineComponent({
   props: {
     type: {
@@ -39,7 +66,7 @@ export default defineComponent({
         icon: "mdi-fullscreen",
         onClick: () => {
           if (props.post) context.emit("open-post-fullscreen", props.post.id);
-        }
+        },
       },
       external: {
         icon: "mdi-open-in-new",

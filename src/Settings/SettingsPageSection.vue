@@ -1,5 +1,5 @@
 <template>
-  <v-flex xs12 sm8 offset-sm2 lg6 offset-lg3 class="my-2">
+  <v-flex class="my-2">
     <v-card>
       <div :class="color">
         <v-icon size="100">{{ icon }}</v-icon>

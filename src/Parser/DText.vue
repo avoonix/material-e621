@@ -297,7 +297,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 .spoiler {
   transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
 

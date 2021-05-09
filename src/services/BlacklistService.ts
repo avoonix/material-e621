@@ -25,10 +25,7 @@ class BlacklistService {
   }
 
   private stripTag(tag: string) {
-    return tag
-      .trim()
-      .toLowerCase()
-      .replaceAll(/^-/g, "");
+    return tag.trim().toLowerCase().replaceAll(/^-/g, "");
   }
 }
 

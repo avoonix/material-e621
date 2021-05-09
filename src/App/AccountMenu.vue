@@ -1,5 +1,5 @@
 <template>
-  <v-menu bottom offset-y left attach close-delay="0" >
+  <v-menu bottom offset-y left attach close-delay="0">
     <v-btn slot="activator" icon>
       <v-icon>mdi-account-circle</v-icon>
     </v-btn>

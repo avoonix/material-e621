@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height>
     <v-layout align-center>
-      <v-flex text-xs-center xs12 md8 offset-md2>
+      <v-flex text-xs-center xs12 sm10 offset-sm1 lg6 offset-lg3>
         <settings-page-title title="Post" color="darken-3 brown" />
         <settings-page-item title="Buttons" select>
           <post-button-editor
@@ -13,6 +13,35 @@
         </settings-page-item>
         <settings-page-item title="Hide UI while zoomed (fullscreen)" switch>
           <v-switch v-model="hideFullscreenUiOnZoom"></v-switch>
+        </settings-page-item>
+        <settings-page-item title="Limits" select>
+          <v-slider
+            color="accent"
+            class="my-0 mx-3"
+            v-model="postListFetchLimit"
+            thumb-label
+            :min="10"
+            :max="320"
+            label="Posts per page"
+          />
+          <v-slider
+            color="accent"
+            class="my-0 mx-3"
+            v-model="tagFetchLimit"
+            thumb-label
+            :min="10"
+            :max="500"
+            label="Tags"
+          />
+          <v-slider
+            color="accent"
+            class="my-0 mx-3"
+            v-model="sidebarSuggestionLimit"
+            thumb-label
+            :min="0"
+            :max="500"
+            label="Suggestions (sidebar)"
+          />
         </settings-page-item>
       </v-flex>
     </v-layout>
@@ -71,12 +100,40 @@ export default defineComponent({
       },
     });
 
+    const sidebarSuggestionLimit = computed<number>({
+      get() {
+        return postService.sidebarSuggestionLimit;
+      },
+      set(value) {
+        postService.sidebarSuggestionLimit = value;
+      },
+    });
+    const tagFetchLimit = computed<number>({
+      get() {
+        return postService.tagFetchLimit;
+      },
+      set(value) {
+        postService.tagFetchLimit = value;
+      },
+    });
+    const postListFetchLimit = computed<number>({
+      get() {
+        return postService.postListFetchLimit;
+      },
+      set(value) {
+        postService.postListFetchLimit = value;
+      },
+    });
+
     return {
       availableButtons,
       postButtons,
       fullscreenButtons,
       detailsButtons,
       hideFullscreenUiOnZoom,
+      sidebarSuggestionLimit,
+      postListFetchLimit,
+      tagFetchLimit,
     };
   },
 });

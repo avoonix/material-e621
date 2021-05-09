@@ -28,6 +28,25 @@ class PostService {
   public set hideFullscreenUiOnZoom(value) {
     state.posts.hideFullscreenUiOnZoom = value;
   }
+
+  public get postListFetchLimit() {
+    return state.posts.postListFetchLimit;
+  }
+  public set postListFetchLimit(value) {
+    state.posts.postListFetchLimit = value;
+  }
+  public get sidebarSuggestionLimit() {
+    return state.posts.sidebarSuggestionLimit;
+  }
+  public set sidebarSuggestionLimit(value) {
+    state.posts.sidebarSuggestionLimit = value;
+  }
+  public get tagFetchLimit() {
+    return state.posts.tagFetchLimit;
+  }
+  public set tagFetchLimit(value) {
+    state.posts.tagFetchLimit = value;
+  }
 }
 
 export const postService = new PostService();

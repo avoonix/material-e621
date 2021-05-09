@@ -17,6 +17,7 @@
 
 <script lang="ts">
 import router from "@/router";
+import { accountService } from "@/services";
 import { computed, defineComponent, ref } from "@vue/composition-api";
 import { RawLocation } from "vue-router";
 
@@ -26,7 +27,7 @@ export default defineComponent({
   },
   components: {},
   setup(props, context) {
-    const username = ref("");
+    const username = ref(accountService.username || "");
     const query = computed<RawLocation>(() => ({
       name: "FavoritesAnalyzerResult",
       query: { name: username.value },

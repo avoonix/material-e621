@@ -36,6 +36,9 @@ export interface ISettingsServiceState {
     fullscreenButtons: ButtonType[];
     detailsButtons: ButtonType[];
     hideFullscreenUiOnZoom: boolean;
+    sidebarSuggestionLimit: number;
+    postListFetchLimit: number;
+    tagFetchLimit: number;
   };
   account: {
     username: string | null;

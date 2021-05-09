@@ -37,6 +37,9 @@ export const defaultSettings: ISettingsServiceState = {
     fullscreenButtons: ["external", "info"],
     detailsButtons: ["external"],
     hideFullscreenUiOnZoom: true,
+    postListFetchLimit: 30,
+    sidebarSuggestionLimit: 40,
+    tagFetchLimit: 30,
   },
 };
 

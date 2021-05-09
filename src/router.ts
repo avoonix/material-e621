@@ -96,9 +96,7 @@ export default new Router({
       path: "/parser",
       name: "Parser",
       component: () =>
-        import(
-          /* webpackChunkName: "parser" */ "@/Parser/ParserTestPage.vue"
-        ),
+        import(/* webpackChunkName: "parser" */ "@/Parser/ParserTestPage.vue"),
     },
     // {
     //   path: "/suggester",

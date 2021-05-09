@@ -126,7 +126,7 @@ export default defineComponent({
   },
   computed: {
     isMobile() {
-      return this.$vuetify.breakpoint.width < parseInt(mobileBreakPoint, 10);
+      return this.$vuetify.breakpoint.width < mobileBreakPoint;
     },
     drawer: {
       get() {

@@ -1,10 +1,4 @@
-import {
-  e621,
-  ITagsListArgs,
-  IPoolsArgs,
-  Post,
-  Tag,
-} from "./api";
+import { e621, ITagsListArgs, IPoolsArgs, Post, Tag } from "./api";
 import { isPostBlacklisted } from "./blacklist";
 import debug from "debug";
 import { createTagQuery } from "@/utilities/createTagQuery";

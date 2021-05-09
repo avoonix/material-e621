@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height>
     <v-layout align-center>
-      <v-flex text-xs-center xs12 md8 offset-md2>
+      <v-flex text-xs-center xs12 sm10 offset-sm1 lg6 offset-lg3>
         <settings-page-title title="Appearance" color="darken-1 pink" />
         <settings-page-item title="Primary color" select>
           <!-- description="The primary theme color" -->
@@ -212,7 +212,7 @@ export default defineComponent({
           appearanceService.navigationType = value;
         },
       }),
-      logoStyleItems: computed(() =>appearanceService.logoStyles),
+      logoStyleItems: computed(() => appearanceService.logoStyles),
       logoStyle: computed<"face" | "text">({
         get() {
           return appearanceService.logoStyle;
