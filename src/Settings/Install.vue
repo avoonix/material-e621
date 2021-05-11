@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { getAppName, getBaseUrl } from "@/utilities/utilities";
+import { getAppName, getBaseUrl } from "@/misc/util/utilities";
 import { computed, defineComponent, ref } from "@vue/composition-api";
 
 const bookmarklet = `function bookmarklet() {

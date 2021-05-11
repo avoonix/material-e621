@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { snackbarService } from "@/services";
-import { getAppName, getBaseUrl } from "@/utilities/utilities";
+import { getAppName, getBaseUrl } from "@/misc/util/utilities";
 import { computed, defineComponent, ref } from "@vue/composition-api";
 import copyToClipboard from "clipboard-copy";
 

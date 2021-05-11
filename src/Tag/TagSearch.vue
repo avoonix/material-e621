@@ -67,13 +67,13 @@
 </template>
 
 <script lang="ts">
-import TagLabel, { ITag } from "../dumb/TagLabel.vue";
+import TagLabel, { ITag } from "./TagLabel.vue";
 import { debounce, differenceBy } from "lodash";
 import Vue from "vue";
 import { computed, defineComponent, ref, watch } from "@vue/composition-api";
 import { getApiService } from "@/worker/services";
-import { categoryIdToCategoryName } from "@/utilities/utilities";
 import { postService } from "@/services";
+import { categoryIdToCategoryName } from "@/misc/util/utilities";
 
 interface ITagWithText extends ITag {
   text: string;

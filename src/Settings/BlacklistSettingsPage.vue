@@ -29,11 +29,11 @@
 <script lang="ts">
 import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
-import BlacklistSuggestions from "../components/updated/dumb/BlacklistSuggestions.vue";
+import BlacklistSuggestions from "./BlacklistSuggestions.vue";
 import { blacklistService } from "@/services";
 import { computed, defineComponent } from "@vue/composition-api";
-import blacklistSuggestions from "@/config/blacklistSuggestions.json";
-import TagSearch from "../components/updated/smart/TagSearch.vue";
+import blacklistSuggestions from "@/misc/data/blacklistSuggestions.json";
+import TagSearch from "../Tag/TagSearch.vue";
 import { BlacklistMode } from "@/services/types";
 
 export default defineComponent({

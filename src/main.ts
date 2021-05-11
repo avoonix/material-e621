@@ -5,7 +5,7 @@ import { showConsoleMessage } from "./misc/util/consoleMessage";
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
-import ExternalLink from "./components/updated/dumb/ExternalLink.vue";
+import ExternalLink from "./App/ExternalLink.vue";
 import { persistanceService, snackbarService } from "./services";
 import {
   registerServiceWorker,

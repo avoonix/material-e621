@@ -56,19 +56,19 @@
 </template>
 
 <script lang="ts">
-import Posts from "@/components/Posts.vue";
+import Posts from "@/Post/Posts.vue";
 import { getApiService, getAnalyzeService } from "../worker/services";
-import { removeRouterQuery, updateRouterQuery } from "../utilities/utilities";
+import { removeRouterQuery, updateRouterQuery } from "../misc/util/utilities";
 import Suggestions from "./Suggestions.vue";
-import TagSearch from "../components/updated/smart/TagSearch.vue";
+import TagSearch from "../Tag/TagSearch.vue";
 import { blacklistService, postService } from "@/services";
-import HistoryList from "../components/updated/dumb/HistoryList.vue";
+import HistoryList from "../Tag/HistoryList.vue";
 import { defineComponent, onMounted, ref, watch } from "@vue/composition-api";
 import { usePostListManager } from "@/Post/postListManager";
 import { useRouterTagManager } from "@/Post/routerTagManager";
 import { useHistory } from "@/Post/historyManager";
 import router from "@/router";
-import { ITag } from "@/components/updated/dumb/TagLabel.vue";
+import { ITag } from "@/Tag/TagLabel.vue";
 import { useRoute } from "@/misc/util/router";
 
 export default defineComponent({

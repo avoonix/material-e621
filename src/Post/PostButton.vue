@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { ButtonType } from "@/services/types";
-import { openE6PostInStandaloneWindow } from "@/shared/utils/url";
+import { openE6PostInStandaloneWindow } from "@/misc/util/url";
 import { Post } from "@/worker/api";
 import { computed, defineComponent, PropType } from "@vue/composition-api";
 

@@ -79,12 +79,12 @@
 </template>
 
 <script lang="ts">
-import PostList from "../components/PostList.vue";
-import FullscreenDialog from "../Post/FullscreenDialog.vue";
-import DetailsDialog from "../Post/DetailsDialog.vue";
+import FullscreenDialog from "./FullscreenDialog.vue";
+import DetailsDialog from "./DetailsDialog.vue";
 import Logo from "../App/Logo.vue";
 import { defineComponent } from "@vue/composition-api";
 import Post from "@/Post/Post.vue";
+import PostList from "@/Post/PostList.vue";
 
 export default defineComponent({
   metaInfo: {
@@ -96,13 +96,8 @@ export default defineComponent({
     DetailsDialog,
     Post,
     Logo,
-    //   Pagination,
   },
   props: {
-    //   isPaginated: {
-    //     type: Boolean,
-    //     required: true,
-    //   },
     fullscreenPost: { type: Object },
     detailsPost: { type: Object },
     posts: { type: Array, required: true },

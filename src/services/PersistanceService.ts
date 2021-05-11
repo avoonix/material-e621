@@ -23,6 +23,9 @@ class PersistanceService {
     const savedState = await this.getFromLocalStorage<ISettingsServiceState>(
       "state",
     );
+    if (savedState?.snackbar) {
+      savedState.snackbar = null;
+    }
     if (savedState) {
       Object.assign(state, savedState);
     }

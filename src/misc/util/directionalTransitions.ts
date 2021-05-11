@@ -1,5 +1,5 @@
-import { getTransitionName } from "@/utilities/transitions";
 import { ref } from "@vue/composition-api";
+import { getTransitionName } from "./transitions";
 
 export type Direction = "left" | "right" | "none";
 

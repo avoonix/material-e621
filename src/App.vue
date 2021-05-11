@@ -74,7 +74,7 @@ import NavigationList from "./App/NavigationList.vue";
 import NavigationToolbar from "./App/NavigationToolbar.vue";
 import MainContent from "./App/MainContent.vue";
 import InstallMenu from "./App/InstallMenu.vue";
-import { getAppName } from "./utilities/utilities";
+import { getAppName } from "./misc/util/utilities";
 
 const mobileBreakPoint = 1264;
 
@@ -208,6 +208,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "./shared/styles/animate.scss";
-@import "./shared/styles/global.scss";
+@import "@/misc/styles/animate.scss";
+@import "@/misc/styles/global.scss";
 </style>

@@ -113,7 +113,7 @@ import TransitionPreview from "./TransitionPreview.vue";
 import { computed, defineComponent } from "@vue/composition-api";
 import ColorChooser from "./ColorChooser.vue";
 import { appearanceService } from "@/services";
-import transitions from "../config/transitions.json";
+import transitions from "@/misc/data/transitions.json";
 
 export default defineComponent({
   metaInfo: {

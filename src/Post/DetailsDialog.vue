@@ -69,7 +69,7 @@ import PostButtons from "@/Post/PostButtons.vue";
 import { computed, defineComponent, PropType, ref } from "@vue/composition-api";
 import { postService } from "@/services";
 import { Post } from "@/worker/api";
-import { ITag } from "../components/updated/dumb/TagLabel.vue";
+import { ITag } from "../Tag/TagLabel.vue";
 
 export default defineComponent({
   components: {

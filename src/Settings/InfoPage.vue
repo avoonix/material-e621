@@ -28,7 +28,7 @@ import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
 import { computed, defineComponent, reactive } from "@vue/composition-api";
 import prettyBytes from "pretty-bytes";
-import Install from "@/components/Install.vue";
+import Install from "@/Settings/Install.vue";
 
 export default defineComponent({
   metaInfo: {

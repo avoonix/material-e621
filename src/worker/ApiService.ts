@@ -1,9 +1,8 @@
 import { e621, ITagsListArgs, IPoolsArgs, Post, Tag } from "./api";
 import { isPostBlacklisted } from "./blacklist";
 import debug from "debug";
-import { createTagQuery } from "@/utilities/createTagQuery";
 import { BlacklistMode } from "@/services/types";
-// import { getTagColor } from "@/utilities/utilities";
+import { createTagQuery } from "@/misc/util/createTagQuery";
 
 debug.disable();
 // debug.enable("app:*");

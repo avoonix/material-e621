@@ -1,5 +1,5 @@
 <script lang="ts">
-import { getTagColorFromCategory } from "@/utilities/utilities";
+import { getTagColorFromCategory } from "@/misc/util/utilities";
 import { computed, defineComponent } from "@vue/composition-api";
 import { CreateElement } from "vue";
 

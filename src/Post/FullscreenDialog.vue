@@ -125,7 +125,7 @@ import scrollIntoView from "scroll-into-view";
 import Logo from "../App/Logo.vue";
 import { appearanceService, blacklistService, postService } from "@/services";
 import ZoomPanImage from "./ZoomPanImage.vue";
-import { useBlacklistClasses } from "../utilities/blacklist";
+import { useBlacklistClasses } from "../misc/util/blacklist";
 import {
   computed,
   defineComponent,

@@ -21,7 +21,7 @@
 <script lang="ts">
 import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
-import HistoryList from "../components/updated/dumb/HistoryList.vue";
+import HistoryList from "../Tag/HistoryList.vue";
 import { computed, defineComponent } from "@vue/composition-api";
 import { historyService } from "@/services";
 import router from "@/router";

@@ -95,10 +95,10 @@
 
 <script lang="ts">
 import ChangelogItem from "./ChangelogItem.vue";
-import changelog from "../config/changelog.json";
+import changelog from "@/misc/data/changelog.json";
 import packageJson from "../../package.json";
 import { defineComponent } from "@vue/composition-api";
-import { getAppName } from "@/utilities/utilities";
+import { getAppName } from "@/misc/util/utilities";
 
 export default defineComponent({
   metaInfo: {

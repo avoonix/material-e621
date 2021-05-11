@@ -28,7 +28,7 @@
 <script lang="ts">
 import { blacklistService, postService } from "@/services";
 import { computed, defineComponent, PropType } from "@vue/composition-api";
-import { useBlacklistClasses } from "@/utilities/blacklist";
+import { useBlacklistClasses } from "@/misc/util/blacklist";
 import FixedAspectRatioBox from "./FixedAspectRatioBox.vue";
 import PostPreview from "./PostPreview.vue";
 import PostText from "./PostText.vue";

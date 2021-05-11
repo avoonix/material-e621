@@ -1,4 +1,4 @@
-import transitions from "../config/transitions.json";
+import transitions from "../data/transitions.json";
 
 export const getTransitionName = (type: string, direction: string) => {
   // direction = "none" | "right" | "left"

@@ -62,7 +62,7 @@
 import { defineComponent } from "@vue/composition-api";
 import ChangelogItem from "../About/ChangelogItem.vue";
 import Logo from "../App/Logo.vue";
-import changelog from "../config/changelog.json";
+import changelog from "@/misc/data/changelog.json";
 
 export default defineComponent({
   inject: ["theme"],

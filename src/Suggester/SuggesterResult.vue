@@ -52,8 +52,8 @@ import Logo from "../App/Logo.vue";
 import * as Comlink from "comlink";
 import BaseTags from "./BaseTags.vue";
 import { usePostListManager } from "@/Post/postListManager";
-import { updateRouterQuery } from "@/utilities/utilities";
-import Posts from "@/components/Posts.vue";
+import { updateRouterQuery } from "@/misc/util/utilities";
+import Posts from "@/Post/Posts.vue";
 import { postService } from "@/services";
 import { useRoute } from "@/misc/util/router";
 

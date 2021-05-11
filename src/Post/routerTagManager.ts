@@ -1,6 +1,6 @@
 import { useRoute } from "@/misc/util/router";
 import router from "@/router";
-import { updateRouterQuery } from "@/utilities/utilities";
+import { updateRouterQuery } from "@/misc/util/utilities";
 import { computed } from "@vue/composition-api";
 
 export const useRouterTagManager = () => {
