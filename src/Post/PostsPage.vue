@@ -1,23 +1,36 @@
 <template>
   <div>
-    <tag-search :tags="tags" @add-tag="addTag" @remove-tag="removeTag" />
-    <v-menu
-      bottom
-      left
-      max-height="300"
-      lazy
-      offset-y
-      transition="slide-y-transition"
-    >
-      <v-btn slot="activator" dark icon>
-        <v-icon>mdi-history</v-icon>
-      </v-btn>
-      <history-list
-        :entries="historyEntries"
-        @delete-entry="removeHistoryEntry($event)"
-        @click-entry="tags = $event"
-      />
-    </v-menu>
+    <portal to="toolbar">
+      <v-flex style="display: flex; align-items: center">
+        <tag-search
+          style="flex: 1 1 auto"
+          :tags="tags"
+          @add-tag="addTag"
+          @remove-tag="removeTag"
+          label="Tags"
+        />
+        <v-btn icon @click="onSearchClick" :loading="loading">
+          <v-icon>mdi-magnify</v-icon>
+        </v-btn>
+        <v-menu
+          bottom
+          left
+          max-height="300"
+          lazy
+          offset-y
+          transition="slide-y-transition"
+        >
+          <v-btn slot="activator" icon>
+            <v-icon>mdi-history</v-icon>
+          </v-btn>
+          <history-list
+            :entries="historyEntries"
+            @delete-entry="removeHistoryEntry($event)"
+            @click-entry="onHistoryEntryClick"
+          />
+        </v-menu>
+      </v-flex>
+    </portal>
     <posts
       :posts="posts"
       :loading="loading"
@@ -45,10 +58,7 @@
 <script lang="ts">
 import Posts from "@/components/Posts.vue";
 import { getApiService, getAnalyzeService } from "../worker/services";
-import {
-  updateRouterQuery,
-  getTagColorFromCategory,
-} from "../utilities/utilities";
+import { removeRouterQuery, updateRouterQuery } from "../utilities/utilities";
 import Suggestions from "./Suggestions.vue";
 import TagSearch from "../components/updated/smart/TagSearch.vue";
 import { blacklistService, postService } from "@/services";
@@ -59,8 +69,7 @@ import { useRouterTagManager } from "@/Post/routerTagManager";
 import { useHistory } from "@/Post/historyManager";
 import router from "@/router";
 import { ITag } from "@/components/updated/dumb/TagLabel.vue";
-
-// TODO: reset first post on tag change
+import { useRoute } from "@/misc/util/router";
 
 export default defineComponent({
   components: {
@@ -71,6 +80,8 @@ export default defineComponent({
   },
   setup(props, context) {
     const { tags, addTag, removeTag } = useRouterTagManager();
+
+    const route = useRoute();
 
     const {
       loadPreviousPage,
@@ -85,12 +96,16 @@ export default defineComponent({
       openPreviousFullscreenPost,
     } = usePostListManager({
       getSavedFirstPostId() {
-        return Number(router.currentRoute.query.first_post); // TODO: handle null
+        return Number(route.query.first_post); // TODO: handle null
       },
       getSettingsPageSize() {
         return postService.postListFetchLimit;
       },
       saveFirstPostId(id) {
+        if (!id) {
+          removeRouterQuery(router, ["first_post"]);
+          return;
+        }
         updateRouterQuery(router, {
           first_post: String(id),
         });
@@ -119,14 +134,9 @@ export default defineComponent({
       removeHistoryEntry,
     } = useHistory();
 
-    watch(
-      () => tags.value.length,
-      () => {
-        posts.value = [];
-        loadNextPage();
-        addHistoryEntry(tags.value);
-      },
-    );
+    watch(posts, () => {
+      addHistoryEntry(tags.value);
+    });
 
     const suggestedTags = ref<ITag[]>([]);
     const suggestTags = async () => {
@@ -146,9 +156,6 @@ export default defineComponent({
               name: t.name,
               category: t.category,
               post_count: t.count,
-              // text: t.name,
-              // count: t.count,
-              // color: getTagColorFromCategory(t.category),
             } as ITag),
         );
     };
@@ -160,7 +167,20 @@ export default defineComponent({
       },
     );
 
+    const onSearchClick = () => {
+      removeRouterQuery(router, ["first_post"]);
+      posts.value = [];
+      loadNextPage();
+    };
+
+    const onHistoryEntryClick = (entry: string[]) => {
+      tags.value = [...entry];
+      onSearchClick();
+    };
+
     return {
+      onHistoryEntryClick,
+      onSearchClick,
       suggestedTags,
       loadPreviousPage,
       loadNextPage,

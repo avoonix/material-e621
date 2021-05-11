@@ -98,6 +98,9 @@
             hide-details
           />
         </settings-page-item>
+        <settings-page-item title="Hide install prompt" switch>
+          <v-switch v-model="hideInstallPrompt"></v-switch>
+        </settings-page-item>
       </v-flex>
     </v-layout>
   </v-container>
@@ -219,6 +222,14 @@ export default defineComponent({
         },
         set(value) {
           appearanceService.logoStyle = value;
+        },
+      }),
+      hideInstallPrompt: computed<boolean>({
+        get() {
+          return appearanceService.hideInstallPrompt;
+        },
+        set(value) {
+          appearanceService.hideInstallPrompt = value;
         },
       }),
     };

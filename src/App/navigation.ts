@@ -4,7 +4,7 @@ export const navigationItems = [
     name: "Home",
     exact: false,
     to: {
-      path: "/e621",
+      path: "/posts",
     },
   },
   {

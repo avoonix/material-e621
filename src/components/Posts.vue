@@ -6,8 +6,17 @@
       :visible-posts="posts"
       @open-post="$emit('open-post', $event)"
       @open-post-details="$emit('open-post-details', $event)"
-    />
-    <!-- <logo v-if="loading" loader /> -->
+    >
+      <template #post="{ post }">
+        <!-- :layout="layout" -->
+        <post
+          :post="post"
+          @open-post="$emit('open-post', $event)"
+          @open-post-details="$emit('open-post-details', $event)"
+        />
+      </template>
+    </post-list>
+    <logo v-if="loading" type="loader" />
     <v-btn @click="loadNext"> load next </v-btn>
     <fullscreen-dialog
       :has-previous-fullscreen-post="hasPreviousFullscreenPost"
@@ -87,12 +96,13 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
 import PostList from "../components/PostList.vue";
 import FullscreenDialog from "../Post/FullscreenDialog.vue";
 import DetailsDialog from "../Post/DetailsDialog.vue";
 import Logo from "./updated/dumb/Logo.vue";
 import { defineComponent } from "@vue/composition-api";
+import Post from "@/Post/Post.vue";
 
 export default defineComponent({
   metaInfo: {
@@ -102,7 +112,8 @@ export default defineComponent({
     PostList,
     FullscreenDialog,
     DetailsDialog,
-    // Logo,
+    Post,
+    Logo,
     //   Pagination,
   },
   props: {

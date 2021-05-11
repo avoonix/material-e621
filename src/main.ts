@@ -2,14 +2,26 @@ import "intersection-observer";
 import "typeface-roboto";
 import "./misc/plugins";
 import { showConsoleMessage } from "./misc/util/consoleMessage";
-import { registerServiceWorker } from "./worker/serviceWorker/registerServiceWorker";
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import ExternalLink from "./components/updated/dumb/ExternalLink.vue";
 import { persistanceService } from "./services";
+import {
+  registerServiceWorker,
+  unregister,
+} from "./worker/serviceWorker/register";
 
-registerServiceWorker();
+window.addEventListener("load", async () => {
+  if (process.env.NODE_ENV === "development") {
+    await unregister();
+    console.log("skipped service worker registration");
+  } else {
+    await registerServiceWorker();
+    await navigator.serviceWorker.ready;
+    console.log("service worker ready");
+  }
+});
 
 Vue.component("external-link", ExternalLink);
 

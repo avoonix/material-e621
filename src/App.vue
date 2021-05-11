@@ -15,7 +15,7 @@
     >
       <logo :type="logoStyle" @click.native="onLogoClick" />
       <navigation-list />
-      <portal-target name="sidebar-suggestions"></portal-target>
+      <portal-target name="sidebar-suggestions" />
     </v-navigation-drawer>
     <v-toolbar
       :app="!$route.meta.minimalHeader"
@@ -49,12 +49,15 @@
           v-if="navMode == 'sidebar' && !$route.meta.minimalHeader"
         ></v-toolbar-side-icon>
       </v-slide-x-transition>
-      <v-toolbar-title v-if="navMode != 'floating' || $route.path != '/e621'">
-        {{ appName }}
-      </v-toolbar-title>
+      <portal-target name="toolbar" style="width: 100%">
+        <v-toolbar-title>
+          {{ appName }}
+        </v-toolbar-title>
+      </portal-target>
       <v-spacer></v-spacer>
       <navigation-toolbar v-if="navMode === 'toolbar'" />
-      <account-menu />
+      <account-menu v-if="!$route.meta.minimalHeader" />
+      <install-menu v-if="!$route.meta.minimalHeader" />
     </v-toolbar>
     <main-content />
     <snackbar />
@@ -66,10 +69,11 @@ import Snackbar from "./App/Snackbar.vue";
 import Logo from "./components/updated/dumb/Logo.vue";
 import { useSettingsServiceState, appearanceService } from "./services";
 import AccountMenu from "./App/AccountMenu.vue";
-import { computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent, watch } from "@vue/composition-api";
 import NavigationList from "./App/NavigationList.vue";
 import NavigationToolbar from "./App/NavigationToolbar.vue";
 import MainContent from "./App/MainContent.vue";
+import InstallMenu from "./App/InstallMenu.vue";
 import { getAppName } from "./utilities/utilities";
 
 const mobileBreakPoint = 1264;
@@ -116,6 +120,7 @@ export default defineComponent({
     NavigationList,
     NavigationToolbar,
     MainContent,
+    InstallMenu,
   },
   data() {
     return {

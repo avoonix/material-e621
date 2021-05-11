@@ -7,7 +7,7 @@
     scrollable
     persistent
   >
-    <div class="fullscreen grey darken-4">
+    <div class="fullscreen grey darken-4" ref="dialog">
       <div class="flex">
         <div
           v-show="!hideUi"
@@ -139,6 +139,12 @@ import {
 import PostButtons from "@/Post/PostButtons.vue";
 import { useDirectionalTransitions } from "@/misc/util/directionalTransitions";
 
+const appIsFullscreen = ref(!!document.fullscreenElement);
+
+document.querySelector("#app")?.addEventListener("fullscreenchange", () => {
+  appIsFullscreen.value = !!document.fullscreenElement;
+});
+
 export default defineComponent({
   metaInfo() {
     return {
@@ -171,6 +177,8 @@ export default defineComponent({
     },
   },
   setup(props, context) {
+    const dialog = ref<Vue>();
+    const lastFullscreenId = ref<number | null>();
     const isZoomed = ref(false);
     const postIsBlacklisted = computed(
       () => Boolean(props?.current?._postCustom?.isBlacklisted), // TODO: types
@@ -244,9 +252,12 @@ export default defineComponent({
     onMounted(() => window.addEventListener("keydown", handleKeyDown));
     onBeforeUnmount(() => window.removeEventListener("keydown", handleKeyDown));
 
-    const scrollToPost = () => {
-      const post = document.getElementById(`post_${props.current.id}`);
-      if (post) scrollIntoView(post);
+    const scrollToPost = (postId: number) => {
+      const post = document.getElementById(`post_${postId}`);
+      if (post)
+        scrollIntoView(post, {
+          time: 100,
+        });
     };
 
     const switched = ref(false);
@@ -255,8 +266,9 @@ export default defineComponent({
     watch(
       () => props.current,
       async (val, prev) => {
+        if (val) lastFullscreenId.value = val.id;
         if (val && (!prev || val.id != prev.id)) {
-          scrollToPost();
+          scrollToPost(props.current.id);
           switched.value = true;
           await nextTick();
           switched.value = false;
@@ -277,6 +289,24 @@ export default defineComponent({
       switched.value ? false : props.current.preview_url,
     );
 
+    watch(open, () => {
+      if (open.value && postService.goFullscreen) {
+        // dialog.value?.requestFullscreen();
+        document.querySelector("#app")?.requestFullscreen();
+      } else {
+        if (document.fullscreenElement) document.exitFullscreen();
+        if (lastFullscreenId.value) {
+          scrollToPost(lastFullscreenId.value);
+        }
+      }
+    });
+
+    watch(appIsFullscreen, () => {
+      if (!appIsFullscreen.value && open.value) {
+        exitFullscreen();
+      }
+    });
+
     return {
       blacklistClasses,
       buttons,
@@ -293,6 +323,7 @@ export default defineComponent({
       loading,
       loadStart,
       exitFullscreen,
+      dialog,
     };
   },
 });

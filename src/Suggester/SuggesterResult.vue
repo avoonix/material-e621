@@ -55,6 +55,7 @@ import { usePostListManager } from "@/Post/postListManager";
 import { updateRouterQuery } from "@/utilities/utilities";
 import Posts from "@/components/Posts.vue";
 import { postService } from "@/services";
+import { useRoute } from "@/misc/util/router";
 
 export default defineComponent({
   metaInfo: {
@@ -66,11 +67,10 @@ export default defineComponent({
     Posts,
   },
   setup(props, context) {
+    const route = useRoute();
     const progress = ref<IProgressEvent>();
 
-    const username = computed<string>(() =>
-      router.currentRoute.query?.name?.toString(),
-    );
+    const username = computed<string>(() => route.query?.name?.toString());
 
     const keys = [
       "general",
@@ -83,9 +83,8 @@ export default defineComponent({
       "invalid",
     ];
 
-    // TODO: use weights
     const weights = computed<any>(() => {
-      const entries: any[] = Object.entries((router as any).currentRoute.query);
+      const entries: any[] = Object.entries((route as any).query);
       const newEntries = entries
         .filter(([key]) => keys.includes(key))
         .map(([key, value]) => [key, Number(value) || 0]);
@@ -119,7 +118,7 @@ export default defineComponent({
       openPreviousFullscreenPost,
     } = usePostListManager({
       getSavedFirstPostId() {
-        return Number(router.currentRoute.query.first_post); // TODO: handle null
+        return Number(route.query.first_post); // TODO: handle null
       },
       getSettingsPageSize() {
         return postService.postListFetchLimit;

@@ -55,6 +55,7 @@
     "lodash.chunk": "^4.2.0",
     "lodash.debounce": "^4.0.8",
     "lodash.groupby": "^4.6.0",
+    "lodash.isequal": "^4.5.0",
     "lodash.uniq": "^4.5.0",
     "node-sass": "^4.14.1",
     "portal-vue": "^2.1.7",
@@ -80,7 +81,9 @@
     "vue2-animate": "^2.1.4",
     "vuedraggable": "^2.24.3",
     "vuetify": "^1.5.24",
-    "worker-loader": "^2.0.0"
+    "worker-loader": "^2.0.0",
+    "@types/lodash.isequal": "^4.5.5"
   },
-  "devDependencies": {}
+  "devDependencies": {
+  }
 }

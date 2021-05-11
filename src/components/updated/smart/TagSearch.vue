@@ -2,10 +2,10 @@
   <span class="d-flex">
     <v-combobox
       style="flex-grow: 999"
+      solo
       multiple
-      small-chips
-      dense
       attach
+      flat
       hide-selected
       autofocus
       clearable
@@ -17,15 +17,7 @@
       :search-input.sync="search"
       :label="label"
       :loading="tagsLoading ? 'accent' : false"
-      :menu-props="{
-        closeOnClick: false,
-        closeOnContentClick: false,
-        openOnClick: false,
-        maxHeight: 500,
-        offsetY: true,
-        offsetOverflow: true,
-        transition: 'slide-y-reverse-transition',
-      }"
+      hide-details
     >
       <template slot="no-data">
         <v-list-tile>
@@ -87,6 +79,8 @@ interface ITagWithText extends ITag {
   text: string;
 }
 
+type ListItem = ITagWithText | { header: string };
+
 export default defineComponent({
   props: {
     label: {
@@ -109,11 +103,11 @@ export default defineComponent({
     );
     const inverted = computed(() => searchAsTag.value.startsWith("-"));
     const stripSymbols = (str?: string) => (str || "").replace(/\W+/g, "");
-    const filter = (item: any, queryText: string, itemText: string) => {
-      if (item.header) return false;
+    const filter = (item: ListItem, queryText: string, itemText: string) => {
+      if ("header" in item) return false;
       const text = stripSymbols(itemText);
       const query = stripSymbols(queryText);
-      const display = stripSymbols(item.display);
+      const display = stripSymbols(item.name);
       return (
         `${text}\n${display}`.toLowerCase().indexOf(query.toLowerCase()) !== -1
       );
@@ -122,7 +116,7 @@ export default defineComponent({
       const tagsValue = inverted.value
         ? tags.value.map((t) => ({ ...t, text: `-${t.text}` }))
         : tags.value;
-      const arr = [
+      const arr: ListItem[] = [
         {
           header: "Start typing to search",
         },
@@ -152,11 +146,6 @@ export default defineComponent({
           ...result[0].map(
             (t) =>
               ({
-                ...t,
-                // text: t.name,
-                // // color: plugins.getTagColor(t.category),
-                // display: t.name,
-                // count: t.post_count,
                 text: t.name,
                 name: t.name,
                 post_count: t.post_count,
@@ -167,15 +156,9 @@ export default defineComponent({
             (p) =>
               ({
                 text: `pool:${p.id}`,
-                // text: `pool:${p.id}`,
                 category: "pool",
                 post_count: p.post_count,
                 name: p.name,
-                // TODO: text
-                // name: "pool:" + p.id,
-                // count: p.post_count,
-                // type: "pool",
-                // display: `${p.name} (pool)`,
               } as ITagWithText),
           ),
         ];

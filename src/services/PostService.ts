@@ -47,6 +47,13 @@ class PostService {
   public set tagFetchLimit(value) {
     state.posts.tagFetchLimit = value;
   }
+
+  public get goFullscreen() {
+    return state.posts.goFullscreen;
+  }
+  public set goFullscreen(value) {
+    state.posts.goFullscreen = value;
+  }
 }
 
 export const postService = new PostService();

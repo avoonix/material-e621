@@ -5,9 +5,7 @@
         <v-flex text-xs-center>
           <logo type="face" />
           <h3 class="display-3">Page not found</h3>
-          <v-btn color="primary" large :to="{ path: '/e621' }">
-            Start page
-          </v-btn>
+          <v-btn color="primary" large :to="{ path: '/' }"> Start page </v-btn>
         </v-flex>
       </v-layout>
     </v-container>

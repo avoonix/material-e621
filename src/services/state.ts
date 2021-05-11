@@ -22,6 +22,7 @@ export const defaultSettings: ISettingsServiceState = {
     coloredRatingStripe: true,
     navigationType: "sidebar",
     logoStyle: "face",
+    hideInstallPrompt: false,
   },
   history: {
     entries: [],
@@ -40,6 +41,7 @@ export const defaultSettings: ISettingsServiceState = {
     postListFetchLimit: 30,
     sidebarSuggestionLimit: 40,
     tagFetchLimit: 30,
+    goFullscreen: false,
   },
 };
 

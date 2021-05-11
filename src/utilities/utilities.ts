@@ -39,6 +39,18 @@ export const updateRouterQuery = (
   });
 };
 
+export const removeRouterQuery = (router: VueRouter, keys: string[]) => {
+  router.push({
+    query: {
+      ...Object.fromEntries(
+        Object.entries(router.currentRoute.query).filter(
+          (e) => !keys.includes(e[0]),
+        ),
+      ),
+    },
+  });
+};
+
 export const getTagColorFromCategory = (category: string) => {
   return tagColorMapping[category] || tagColorMapping.default!;
 };

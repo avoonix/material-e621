@@ -1,9 +1,14 @@
 import { readonly } from "@vue/composition-api";
+import { isEqual } from "lodash";
 import { state } from "./state";
 
 class HistoryService {
   public addEntry(tags: string[]) {
+    if (isEqual(tags, state.history.entries[0])) {
+      return;
+    }
     state.history.entries.unshift([...tags]);
+
     if (state.history.entries.length > this.maxLength) {
       state.history.entries.splice(
         this.maxLength,

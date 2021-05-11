@@ -1,12 +1,12 @@
 {
   "name": "Material e621",
   "short_name": "M e621",
-  "start_url": "/#e621",
+  "start_url": "/#/posts",
   "scope": "/",
   "display": "fullscreen",
   "background_color": "#102442",
   "theme_color": "#212121",
-  "description": "This is a customizable client for e621.",
+  "description": "A customizable e621 client.",
   "orientation": "any",
   "lang": "en-US",
   "icons": [

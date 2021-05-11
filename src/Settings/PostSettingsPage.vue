@@ -14,6 +14,9 @@
         <settings-page-item title="Hide UI while zoomed (fullscreen)" switch>
           <v-switch v-model="hideFullscreenUiOnZoom"></v-switch>
         </settings-page-item>
+        <settings-page-item title="Go fullscreen when viewing posts" switch>
+          <v-switch v-model="goFullscreen"></v-switch>
+        </settings-page-item>
         <settings-page-item title="Limits" select>
           <v-slider
             color="accent"
@@ -124,8 +127,17 @@ export default defineComponent({
         postService.postListFetchLimit = value;
       },
     });
+    const goFullscreen = computed<boolean>({
+      get() {
+        return postService.goFullscreen;
+      },
+      set(value) {
+        postService.goFullscreen = value;
+      },
+    });
 
     return {
+      goFullscreen,
       availableButtons,
       postButtons,
       fullscreenButtons,

@@ -82,6 +82,13 @@ class AppearanceService {
   public get logoStyles(): ISettingsServiceState["appearance"]["logoStyle"][] {
     return ["face", "text"];
   }
+
+  public get hideInstallPrompt() {
+    return state.appearance.hideInstallPrompt;
+  }
+  public set hideInstallPrompt(value) {
+    state.appearance.hideInstallPrompt = value;
+  }
 }
 
 export const appearanceService = new AppearanceService();

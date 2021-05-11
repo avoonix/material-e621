@@ -25,6 +25,7 @@ export interface ISettingsServiceState {
     coloredRatingStripe: boolean;
     navigationType: "sidebar" | "toolbar" | "floating";
     logoStyle: "face" | "text";
+    hideInstallPrompt: boolean;
   };
   history: {
     entries: string[][];
@@ -39,6 +40,7 @@ export interface ISettingsServiceState {
     sidebarSuggestionLimit: number;
     postListFetchLimit: number;
     tagFetchLimit: number;
+    goFullscreen: boolean;
   };
   account: {
     username: string | null;

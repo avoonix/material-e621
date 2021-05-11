@@ -10,7 +10,7 @@
         <h1 class="mb-2 display-4 text-xs-center">Material e621</h1>
         <div class="headline">e621 client</div>
         <div class="ma-5">
-          <v-btn large color="accent" :to="{ path: '/e621' }">
+          <v-btn large color="accent" :to="{ path: '/posts' }">
             Start browsing
           </v-btn>
           <!-- TODO: -->
@@ -49,8 +49,8 @@
         <v-flex xs12>
           <v-spacer />
           <div class="white--text ml-3">
-            Made with <v-icon size="20" class="red--text">mdi-heart</v-icon>and
-            <v-icon size="20" class="green--text">mdi-vuejs</v-icon>
+            Made with <v-icon size="18" class="red--text">mdi-heart</v-icon> and
+            <v-icon title="Vue" size="18" class="green--text">mdi-vuejs</v-icon>
           </div>
         </v-flex>
       </v-layout>

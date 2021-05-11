@@ -70,8 +70,8 @@ export const usePostListManager = ({
     }
   };
 
-  watch([posts], ([posts]) => {
-    saveFirstPostId(posts[0]?.id || null);
+  watch(posts, () => {
+    saveFirstPostId(posts.value[0]?.id || null);
   });
 
   const openPostDetails = (postId: number) => {

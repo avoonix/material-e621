@@ -24,7 +24,8 @@ export default new Router({
       },
     },
     {
-      path: "/e621",
+      path: "/posts",
+      // alias: "/e621",
       name: "Posts",
       component: () =>
         // TODO: uncomment once complete

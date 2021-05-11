@@ -1,14 +1,16 @@
+import { useRoute } from "@/misc/util/router";
 import router from "@/router";
 import { updateRouterQuery } from "@/utilities/utilities";
 import { computed } from "@vue/composition-api";
 
 export const useRouterTagManager = () => {
+  const route = useRoute();
   const tags = computed<string[]>({
     get() {
-      if (!router.currentRoute.query.tags) {
+      if (!route.query.tags) {
         return [];
       }
-      const tags = router.currentRoute.query.tags as any;
+      const tags = route.query.tags as any;
       return tags.split(" ").filter((t: any) => t);
     },
     set(value) {

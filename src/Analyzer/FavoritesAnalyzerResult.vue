@@ -44,6 +44,7 @@ import debounce from "lodash.debounce";
 import { cloneDeep } from "lodash";
 import Logo from "../components/updated/dumb/Logo.vue";
 import * as Comlink from "comlink";
+import { useRoute } from "@/misc/util/router";
 
 export default defineComponent({
   metaInfo: {
@@ -54,13 +55,14 @@ export default defineComponent({
     Logo,
   },
   setup(props, context) {
+    const route = useRoute();
     const container = ref();
     const progress = ref<IProgressEvent>();
 
     const width = ref(700);
 
     const args = computed<IAnalyzeTagsArgs>(() => {
-      const username = router.currentRoute.query?.name?.toString();
+      const username = route.query?.name?.toString();
       return {
         width: width.value,
         height: window.innerHeight * 0.66,
