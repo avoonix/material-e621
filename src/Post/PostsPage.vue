@@ -61,7 +61,7 @@ import { getApiService, getAnalyzeService } from "../worker/services";
 import { removeRouterQuery, updateRouterQuery } from "../misc/util/utilities";
 import Suggestions from "./Suggestions.vue";
 import TagSearch from "../Tag/TagSearch.vue";
-import { blacklistService, postService } from "@/services";
+import { accountService, blacklistService, postService } from "@/services";
 import HistoryList from "../Tag/HistoryList.vue";
 import { defineComponent, onMounted, ref, watch } from "@vue/composition-api";
 import { usePostListManager } from "@/Post/postListManager";
@@ -119,6 +119,7 @@ export default defineComponent({
           tags: tags.value,
           blacklist: blacklistService.tags,
           blacklistMode: blacklistService.mode,
+          auth: accountService.auth,
         });
         return posts;
       },

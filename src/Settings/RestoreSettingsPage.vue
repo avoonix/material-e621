@@ -3,8 +3,11 @@
     <v-layout align-center>
       <v-flex text-xs-center xs12 sm10 offset-sm1 lg6 offset-lg3>
         <settings-page-title title="Backup and restore" color="darken-1 blue" />
-        <settings-page-item title="Backup settings" switch>
-          <!-- description="Download your settings as JSON file." -->
+        <settings-page-item
+          title="Backup settings"
+          description="Download your settings as JSON file. This file contains your API Keys (if you have added them) - so you shouldn't share it with anyone. "
+          switch
+        >
           <v-btn flat color="accent" class="mb-3" @click="download">
             download
           </v-btn>

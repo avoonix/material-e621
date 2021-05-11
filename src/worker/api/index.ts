@@ -17,7 +17,7 @@ export * from "./requestTypes";
 const axios = ax.create({
   responseType: "json",
   params: {
-    _client: "MaterialE621/0.0.0",
+    _client: "MaterialE621/0.0.0 (by Avoonix on e621)",
   },
 });
 
@@ -34,18 +34,20 @@ export const e621 = {
       if (args.page !== undefined) {
         page = args.page;
       }
+      const auth = args?.auth || {};
       return axios.get<Posts>("https://e621.net/posts.json", {
         params: {
           tags: args.tags || "",
           limit: args.limit,
           page,
+          ...auth,
         },
       });
     },
   },
   tags: {
     list(args: ITagsListArgs) {
-      return axios.get<Tag[]>("https://e621.net/tags.json", {
+      return axios.get<Tag[] | { tags: [] }>("https://e621.net/tags.json", {
         params: {
           limit: args.limit,
           "search[order]": args.order,

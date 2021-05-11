@@ -1,4 +1,11 @@
-import { e621, ITagsListArgs, IPoolsArgs, Post, Tag } from "./api";
+import {
+  e621,
+  ITagsListArgs,
+  IPoolsArgs,
+  Post,
+  Tag,
+  IPostsListArgs,
+} from "./api";
 import { isPostBlacklisted } from "./blacklist";
 import debug from "debug";
 import { BlacklistMode } from "@/services/types";
@@ -24,6 +31,7 @@ export class ApiService {
     tags: string[];
     blacklist?: string[];
     blacklistMode: BlacklistMode;
+    auth?: IPostsListArgs["auth"];
   }) {
     log(args);
     const posts = (
@@ -62,29 +70,15 @@ export class ApiService {
   }
 
   async getTags(args: ITagsListArgs) {
-    return (await e621.tags.list(args)).data.map<EnhancedTag>((tag) => ({
-      ...tag,
-      // other: {
-      //   color: getTagColor(tag.category)
-      // }
-    }));
+    const { data } = await e621.tags.list(args);
+    if (Array.isArray(data)) {
+      return data;
+    } else {
+      return data.tags;
+    }
   }
 
   async getPools(args: IPoolsArgs) {
     return (await e621.pools.list(args)).data;
   }
-  // private _counter = 0;
-
-  // constructor(init = 0) {
-  //   console.log(init);
-  //   this._counter = init;
-  // }
-
-  // get counter() {
-  //   return this._counter;
-  // }
-
-  // increment(delta = 1) {
-  //   this._counter += delta;
-  // }
 }

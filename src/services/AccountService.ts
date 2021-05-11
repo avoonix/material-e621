@@ -14,6 +14,15 @@ class AccountService {
   public set apiKey(value) {
     state.account.apiKey = value;
   }
+
+  public get auth() {
+    return state.account.apiKey && state.account.username
+      ? {
+          login: state.account.username,
+          api_key: state.account.apiKey,
+        }
+      : undefined;
+  }
 }
 
 
