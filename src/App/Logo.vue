@@ -1,12 +1,12 @@
 <template>
-  <div :style="{ height: size }">
+  <div :style="{ height: `${size}px` }">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
       viewBox="0 0 1000 1000"
       class="margin-auto"
       :class="{ loader: type === 'loader' }"
-      :style="{ height: size }"
+      :style="{ height: `${size}px` }"
     >
       <g class="tail" v-if="type === 'face'">
         <path

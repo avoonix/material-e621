@@ -70,7 +70,13 @@
 import TagLabel, { ITag } from "./TagLabel.vue";
 import { debounce, differenceBy } from "lodash";
 import Vue from "vue";
-import { computed, defineComponent, ref, watch } from "@vue/composition-api";
+import {
+  computed,
+  defineComponent,
+  PropType,
+  ref,
+  watch,
+} from "@vue/composition-api";
 import { getApiService } from "@/worker/services";
 import { postService } from "@/services";
 import { categoryIdToCategoryName } from "@/misc/util/utilities";
@@ -87,7 +93,7 @@ export default defineComponent({
       type: String,
     },
     tags: {
-      type: Array,
+      type: Array as PropType<string[]>,
       required: true,
     },
   },
@@ -179,15 +185,16 @@ export default defineComponent({
       },
     );
 
-    const model = computed<any[]>({
-      // TODO: types
+    const model = computed<ITagWithText[]>({
       get() {
-        return props.tags.map((str) => {
+        return props.tags.map<ITagWithText>((str) => {
           {
             return {
               text: str,
-              // color: this.getTagColor(str), // FIXME: 350 ms js profiler
-              // count
+              name: str,
+              // TODO: find right category + post_count
+              category: "general",
+              post_count: 0,
             };
           }
         });
