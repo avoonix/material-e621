@@ -8,7 +8,6 @@
     <div
       ref="overflow"
       class="overflow"
-      @mousemove="onMouseMove"
       @mousedown.prevent="onMouseDown"
       @mouseup="onMouseUp"
     >
@@ -57,7 +56,6 @@ export default defineComponent({
     let hammer: HammerManager | null = null;
 
     const enableTouchRecognizer = () => {
-      // if (!this.zoomEnabled || !this.$refs.zoom || !this.$refs.middle) return;
       if (hammer) {
         hammer.destroy();
         hammer = null;
@@ -103,7 +101,6 @@ export default defineComponent({
     };
 
     const constrainZoom = () => {
-      // if (!this.zoomEnabled || !this.$refs.zoom || !this.$refs.middle) return;
       const padding = 0;
       const constraints = {
         left: {
@@ -133,7 +130,6 @@ export default defineComponent({
     };
 
     const onScroll = (event: any) => {
-      // if (!this.zoomEnabled || !this.$refs.zoom || !this.$refs.middle) return;
       const oldLevel = currentZoom.level;
       if (event.type == "pinchin" || event.type == "pinchout") {
         event.clientX = event.center.x;
@@ -180,11 +176,6 @@ export default defineComponent({
     };
 
     const onPan = (event: any) => {
-      // if (!this.zoomEnabled || !this.$refs.zoom || !this.$refs.middle) return;
-      // if (!this.zoom.mouseDown) return;
-      // if (!(event.buttons & 1)) return;
-      // const x = event.screenX,
-      //   y = event.screenY;
       const { x, y } = event.center;
       const dx = x - currentZoom.startX,
         dy = y - currentZoom.startY;
@@ -198,26 +189,11 @@ export default defineComponent({
       constrainZoom();
     };
 
-    const onMouseMove = (event: any) => {
-      // if (!this.zoomEnabled || !this.$refs.zoom || !this.$refs.middle) return;
-      // if (!this.zoom.mouseDown) return;
-      // if (!(event.buttons & 1)) return;
-      // const x = event.screenX,
-      //   y = event.screenY;
-      // const dx = x - this.zoom.startX,
-      //   dy = y - this.zoom.startY;
-      // this.zoom.left -= dx;
-      // this.zoom.top -= dy;
-      // this.zoom.startX = x;
-      // this.zoom.startY = y;
-      // this.constrainZoom();
-    };
     const onMouseUp = () => {
       currentZoom.mouseDown = false;
     };
 
     const containerStyle = computed(() => {
-      // const zoom = this.loading || !this.current ? this.initialZoom : this.zoom;
       const zoom = currentZoom;
       const style = {
         "transform-origin": "top left",
@@ -230,8 +206,6 @@ export default defineComponent({
     });
     const onMouseDown = (event: any) => {
       currentZoom.mouseDown = true;
-      // this.zoom.startX = event.screenX;
-      // this.zoom.startY = event.screenY;
     };
 
     const zoomInfo = computed(() => {
@@ -246,7 +220,6 @@ export default defineComponent({
 
     return {
       onScroll,
-      onMouseMove,
       onMouseUp,
       onMouseDown,
       containerStyle,

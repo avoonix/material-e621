@@ -24,7 +24,7 @@ module.exports = {
     devtool: "source-map",
     plugins: [
       new ServiceWorkerWebpackPlugin({
-        entry: path.join(__dirname, "src/worker/serviceWorker/index.ts"),
+        entry: path.join(__dirname, "src/misc/serviceWorker/index.ts"),
       }),
     ],
   },

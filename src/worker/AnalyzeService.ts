@@ -5,7 +5,6 @@ import cloud from "d3-cloud";
 import { ApiService } from "./ApiService";
 import { BlacklistMode } from "@/services/types";
 import * as d3 from "d3";
-// import objectHash from "object-hash";
 
 const log = debug("app:AnalyzeService");
 
@@ -17,7 +16,6 @@ export interface ScoredPost extends Post {
 }
 
 export type Counts = {
-  // [idx: string]: {
   [K in keyof PostTags]: {
     [idx: string]: number;
   };
@@ -42,10 +40,6 @@ export interface IProgressEvent {
   progress: number;
   indeterminate?: boolean;
 }
-
-// const objectToHash = (obj: any) => {
-// const cacheName = objectHash.sha1(obj);
-// }
 
 export class AnalyzeService {
   async getTagOccurrences(posts: Post[]) {
@@ -159,7 +153,6 @@ export class AnalyzeService {
     };
   }
 
-  // display most favorited tags to user
   async getFavoriteTags(
     username: string,
     onProgress: (event: IProgressEvent) => void,
@@ -175,7 +168,6 @@ export class AnalyzeService {
     return { counts };
   }
 
-  // TODO: get new posts and use favorited tags to score them
   async suggestPosts(
     tags: FavoriteTagsResult,
     weights: {
@@ -204,8 +196,6 @@ export class AnalyzeService {
     const direction = args.postsAfter ? "after" : "before";
     let postsBefore: undefined | number = args.postsBefore || undefined;
     let postsAfter: undefined | number = args.postsAfter || undefined;
-    // const key = [tags, postLimit].join("");
-    // log("start fetch");
     while (1) {
       onProgress({
         progress: Math.min(1, posts.length / toFetch),
@@ -293,7 +283,6 @@ const createCloud = (counts: any, width: number, height: number) => {
     }));
 
     const sizes = words.map((w) => w.size as number);
-
     // const fontSize = d3.scaleLinear([6, 60]);
     // const fontSize = d3.scaleLog([6, 60]);
     const fontSize = d3.scaleSqrt([6, 60]);
@@ -313,13 +302,7 @@ const createCloud = (counts: any, width: number, height: number) => {
       })
       .font("sans-serif")
       .fontSize((d: any) => fontSize(d.size))
-      // .fontSize(function (d: any) {
-      //   // return Math.log(d.size);
-      //   // return Math.sqrt(d.size);
-      //   // return Math.sqrt(d.value);
-      //   return d.size;
-      // })
-      .spiral("archimedean") // archimedean
+      .spiral("archimedean")
       .on("end", (wordPositions: any) => {
         resolve(wordPositions);
       });

@@ -10,7 +10,7 @@ import { persistanceService, snackbarService } from "./services";
 import {
   registerServiceWorker,
   unregister,
-} from "./worker/serviceWorker/register";
+} from "./misc/serviceWorker/register";
 
 window.addEventListener("load", async () => {
   if (process.env.NODE_ENV === "development") {
