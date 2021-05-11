@@ -15,6 +15,9 @@
             :value="usagePercentage"
           />
         </settings-page-item>
+        <settings-page-item title="Bookmarklet">
+          <install />
+        </settings-page-item>
       </v-flex>
     </v-layout>
   </v-container>
@@ -25,6 +28,7 @@ import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
 import { computed, defineComponent, reactive } from "@vue/composition-api";
 import prettyBytes from "pretty-bytes";
+import Install from "@/components/Install.vue";
 
 export default defineComponent({
   metaInfo: {
@@ -33,6 +37,7 @@ export default defineComponent({
   components: {
     SettingsPageTitle,
     SettingsPageItem,
+    Install,
   },
   setup() {
     const storage = reactive({

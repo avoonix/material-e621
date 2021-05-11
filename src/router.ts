@@ -98,20 +98,6 @@ export default new Router({
       component: () =>
         import(/* webpackChunkName: "parser" */ "@/Parser/ParserTestPage.vue"),
     },
-    // {
-    //   path: "/suggester",
-    //   name: "PostSuggester",
-    //   component: () =>
-    //     import(
-    //       /* webpackChunkName: "suggester" */ "@/components/PostSuggester.vue"
-    //     ),
-    // },
-    {
-      path: "/install",
-      name: "Install",
-      component: () =>
-        import(/* webpackChunkName: "about" */ "@/components/Install.vue"),
-    },
     {
       path: "/about",
       name: "About",
