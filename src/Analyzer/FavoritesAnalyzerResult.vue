@@ -36,13 +36,12 @@ import {
   watch,
   watchEffect,
 } from "@vue/composition-api";
-import router from "@/router";
 import Wordcloud from "./Wordcloud.vue";
 import { IAnalyzeTagsArgs, IProgressEvent } from "@/worker/AnalyzeService";
 import { getAnalyzeService } from "@/worker/services";
 import debounce from "lodash.debounce";
 import { cloneDeep } from "lodash";
-import Logo from "../components/updated/dumb/Logo.vue";
+import Logo from "../App/Logo.vue";
 import * as Comlink from "comlink";
 import { useRoute } from "@/misc/util/router";
 

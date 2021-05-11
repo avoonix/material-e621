@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Install from "@/components/Install.vue";
 
 // workaround for errors in console
 const originalPush = Router.prototype.push;
@@ -110,7 +109,8 @@ export default new Router({
     {
       path: "/install",
       name: "Install",
-      component: Install,
+      component: () =>
+        import(/* webpackChunkName: "about" */ "@/components/Install.vue"),
     },
     {
       path: "/about",

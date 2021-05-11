@@ -61,7 +61,7 @@
 <script lang="ts">
 import { defineComponent } from "@vue/composition-api";
 import ChangelogItem from "../About/ChangelogItem.vue";
-import Logo from "../components/updated/dumb/Logo.vue";
+import Logo from "../App/Logo.vue";
 import changelog from "../config/changelog.json";
 
 export default defineComponent({

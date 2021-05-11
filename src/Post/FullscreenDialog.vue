@@ -122,7 +122,7 @@
 
 <script lang="ts">
 import scrollIntoView from "scroll-into-view";
-import Logo from "../components/updated/dumb/Logo.vue";
+import Logo from "../App/Logo.vue";
 import { appearanceService, blacklistService, postService } from "@/services";
 import ZoomPanImage from "./ZoomPanImage.vue";
 import { useBlacklistClasses } from "../utilities/blacklist";

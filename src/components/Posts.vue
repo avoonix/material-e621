@@ -54,12 +54,6 @@
         </v-chip>
       </v-slide-x-transition>
     </div>
-    <div class="text-xs-center mb-3" v-if="!isControlled">
-      <pagination :loading="loading" @load-posts="loadPosts" />
-    </div>
-    <div class="text-xs-center my-3" v-if="posts.length && !isControlled">
-      <pagination :loading="loading" @load-posts="loadPosts" />
-    </div>
     <div class="text-xs-center" v-scroll="onScroll">
       <v-btn
         @click="handleLoadClick"
@@ -80,19 +74,7 @@
           : "No results for this query"
       }}</v-btn>
     </div>
-    <v-fab-transition>
-      <v-btn
-        v-show="fabVisible"
-        color="secondary"
-        fixed
-        bottom
-        right
-        fab
-        @click="$vuetify.goTo(0, scrollOptions)"
-      >
-        <v-icon>mdi-chevron-up</v-icon>
-      </v-btn>
-    </v-fab-transition> -->
+    -->
   </v-container>
 </template>
 
@@ -100,7 +82,7 @@
 import PostList from "../components/PostList.vue";
 import FullscreenDialog from "../Post/FullscreenDialog.vue";
 import DetailsDialog from "../Post/DetailsDialog.vue";
-import Logo from "./updated/dumb/Logo.vue";
+import Logo from "../App/Logo.vue";
 import { defineComponent } from "@vue/composition-api";
 import Post from "@/Post/Post.vue";
 

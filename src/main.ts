@@ -6,7 +6,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import ExternalLink from "./components/updated/dumb/ExternalLink.vue";
-import { persistanceService } from "./services";
+import { persistanceService, snackbarService } from "./services";
 import {
   registerServiceWorker,
   unregister,
@@ -37,3 +37,8 @@ new (Vue as any)({
     title: "Material e621",
   },
 }).$mount("#app");
+
+Vue.config.errorHandler = (err, vm, info) => {
+  console.error(err, vm, info);
+  snackbarService.addMessage(`Error: ${err.message}`);
+};

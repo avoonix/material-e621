@@ -48,7 +48,7 @@ import {
 import router from "@/router";
 import { FavoriteTagsResult, IProgressEvent } from "@/worker/AnalyzeService";
 import { getAnalyzeService } from "@/worker/services";
-import Logo from "../components/updated/dumb/Logo.vue";
+import Logo from "../App/Logo.vue";
 import * as Comlink from "comlink";
 import BaseTags from "./BaseTags.vue";
 import { usePostListManager } from "@/Post/postListManager";

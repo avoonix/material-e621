@@ -66,7 +66,7 @@
 
 <script lang="ts">
 import Snackbar from "./App/Snackbar.vue";
-import Logo from "./components/updated/dumb/Logo.vue";
+import Logo from "./App/Logo.vue";
 import { useSettingsServiceState, appearanceService } from "./services";
 import AccountMenu from "./App/AccountMenu.vue";
 import { computed, defineComponent, watch } from "@vue/composition-api";
