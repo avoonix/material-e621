@@ -1,75 +1,28 @@
 # Material e621
 
-> Most things don't work right now
+> WIP - many things still don't work right now
 
-## some goals for this project
+![screenshot](./screenshot.png)
 
-- rewrite everything using typescript, vue3 function api and vuetify 3; with more focus on performance
-- more customizability, re-add features removed during rewriting
-- create a desktop application
+## Usage
 
-```plaintext
-                .,ccc,
-               .cdxxxo.
-              .',;codd;
-             ..''''',;,
-             ..........
-       .:oooooooooooooooo:.        ..
-      'xWMMMMMMMMMMMMMMMMNd. .....':ll:.
-     ,OWMMMMMMMMMMMMMMMMMMWx'...'''cxdc.
-    ;0WMMMMMMMMMMMMMMMMMMMMWO, ...,lo;.
-  .:KMMMMMMMMMMMMMMMMMMMMMMMW0; ..',.
- .cXMMMMMMMMMMMMMMMMMMMMMMMMMMK:..
-.oNMMMMMMMMMMMMMMMMMMMMMMMMMMMMXc.
-:XMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMK,
-.oNMMMMMMMMMMMMMMMMMMMMMMMMMMMMXl.
- .lXMMMMMMMMMMMMMMMMMMMMMMMMMMK:.
-  .:KMMMMMMMMMMMMMMMMMMMMMMMW0;
-    ;0WMMMMMMMMMMMMMMMMMMMMWO,
-     ,OWMMMMMMMMMMMMMMMMMMWx'
-      'kWMMMMMMMMMMMMMMMMNd.
-       'xKKKKKKKKKKKKKKKKd.
+### Hosted
 
+Latest version (master) hosted on [Vercel](https://material-e621.vercel.app/).
 
-███╗   ███╗ █████╗ ████████╗███████╗██████╗ ██╗ █████╗ ██╗
-████╗ ████║██╔══██╗╚══██╔══╝██╔════╝██╔══██╗██║██╔══██╗██║
-██╔████╔██║███████║   ██║   █████╗  ██████╔╝██║███████║██║
-██║╚██╔╝██║██╔══██║   ██║   ██╔══╝  ██╔══██╗██║██╔══██║██║
-██║ ╚═╝ ██║██║  ██║   ██║   ███████╗██║  ██║██║██║  ██║███████╗
-╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚══════╝
-███████╗ ██████╗ ██████╗  ██╗
-██╔════╝██╔════╝ ╚════██╗███║
-█████╗  ███████╗  █████╔╝╚██║
-██╔══╝  ██╔═══██╗██╔═══╝  ██║
-███████╗╚██████╔╝███████╗ ██║
-╚══════╝ ╚═════╝ ╚══════╝ ╚═╝
-```
+### Local
 
-## Project setup
-
-```
+```bash
 npm install
-```
-
-### Compiles and hot-reloads for development
-
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-
-```
 npm run build
 ```
 
-### Lints and fixes files
+Serve the contents of `dist` on a http server. ([handy list](https://gist.github.com/willurd/5720255))
 
-```
-npm run lint
-npm run format
-```
+## Some goals
 
-### Customize configuration
+- rewrite everything using typescript, vue3 function api and vuetify 3; with more focus on performance (than the previous version)
+- more customizability, re-add features removed during rewriting
+- create a desktop application
 
-See [Configuration Reference](https://cli.vuejs.org/config/).
+<!-- [Configuration Reference](https://cli.vuejs.org/config/) -->
