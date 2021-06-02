@@ -4,7 +4,10 @@ export interface File {
   ext: string;
   size: number;
   md5: string;
-  url: string;
+  /**
+   * might be null if tags are on the "Global Blacklist"
+   */
+  url: string | null;
 }
 
 export interface Preview {

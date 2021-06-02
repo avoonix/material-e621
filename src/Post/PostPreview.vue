@@ -1,6 +1,21 @@
 <template>
-  <fragment>
-    <img v-if="isImage || isVideo" :src="imageSrc" class="clickable" />
+  <fixed-aspect-ratio-box
+    @click.native="handleClick"
+    :ratio="file.height / file.width"
+    v-ripple="true"
+  >
+    <img
+      v-if="(isImage || isVideo) && imageSrc"
+      :src="imageSrc"
+      class="clickable"
+    />
+    <div v-else-if="isImage || isVideo" class="centered clickable play-button">
+      <v-chip color="red" text-color="white">Global Blacklist</v-chip>
+      <p class="pa-3">
+        This post is on the server-side blacklist for unauthenticated users. Log
+        in to view.
+      </p>
+    </div>
     <div v-if="isSwf" class="centered clickable" v-ripple>
       <v-icon size="100">mdi-flash</v-icon>
       <div>Flash</div>
@@ -8,52 +23,17 @@
     <div v-else-if="isVideo" class="centered clickable play-button">
       <v-icon size="100">mdi-play</v-icon>
     </div>
-  </fragment>
-  <!-- <video
-                  v-if="post.file_ext == 'webm' && clicked"
-                  controls
-                  loop
-                  :autoplay="true"
-                  preload="none"
-                >
-                  <source :src="post.file_url" type="video/webm" />
-                  Video type not supported by your browser
-                </video>
-                <div
-                  v-else-if="post.file_ext == 'swf'"
-                  class="centered clickable"
-                  v-ripple
-                >
-                  <v-icon size="100">mdi-flash</v-icon>
-                  <div>Flash</div>
-                </div>
-                <img
-                  v-else-if="fastLoad || clicked"
-                  :src="imageSrc"
-                  :alt="allTags"
-                />
-                <img
-                  v-else
-                  v-lazy="{
-                    src: imageSrc,
-                    loading: post.preview_url,
-                    error: post.preview_url,
-                  }"
-                  :alt="allTags"
-                />
-                <div
-                  v-if="post.file_ext == 'webm' && !clicked"
-                  class="centered clickable play-button"
-                >
-                  <v-icon size="100">mdi-play</v-icon>
-                </div> -->
+  </fixed-aspect-ratio-box>
 </template>
 
 <script lang="ts">
+import router from "@/router";
 import { File, Preview, Sample } from "@/worker/api";
 import { computed, defineComponent, PropType } from "@vue/composition-api";
+import FixedAspectRatioBox from "./FixedAspectRatioBox.vue";
 
 export default defineComponent({
+  components: { FixedAspectRatioBox },
   props: {
     file: {
       type: Object as PropType<File>,
@@ -73,7 +53,16 @@ export default defineComponent({
     const isVideo = computed(() => props.file.ext === "webm");
     const isImage = computed(() => !isSwf.value && !isVideo.value);
 
+    const handleClick = () => {
+      if (imageSrc.value) {
+        context.emit("open-post");
+      } else {
+        router.push({ name: "AccountSettings" });
+      }
+    };
+
     const imageSrc = computed(() => {
+      // TODO: low res mode for mobile
       if (isSwf.value) {
         return props.preview.url;
       }
@@ -81,21 +70,6 @@ export default defineComponent({
         return props.sample.url;
       }
       return props.file.url;
-      // imageSrc() {
-      //   if (this.$store.getters[GETTERS.IS_LOW_RESOLUTION_MODE]) {
-      //     if (this.clicked) {
-      //       return this.post.file_url;
-      //     }
-      //     return this.post.preview_url;
-      //   }
-      //   if (this.post.file_ext == "webm") {
-      //     return this.post.sample_url;
-      //   }
-      //   if (this.post.file_ext == "swf") {
-      //     return this.post.preview_url;
-      //   }
-      //   return this.post.file_url;
-      // },
     });
 
     return {
@@ -103,6 +77,7 @@ export default defineComponent({
       isVideo,
       isImage,
       imageSrc,
+      handleClick,
     };
   },
 });

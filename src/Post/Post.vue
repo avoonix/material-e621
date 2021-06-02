@@ -1,13 +1,12 @@
 <template>
   <v-card :id="'post_' + post.id" color="">
-    <div @click="setClicked" v-ripple="true" :class="[blacklistClasses]">
-      <fixed-aspect-ratio-box :ratio="post.file.height / post.file.width">
-        <post-preview
-          :file="post.file"
-          :preview="post.preview"
-          :sample="post.sample"
-        />
-      </fixed-aspect-ratio-box>
+    <div :class="[blacklistClasses]">
+      <post-preview
+        :file="post.file"
+        :preview="post.preview"
+        :sample="post.sample"
+        @open-post="setClicked"
+      />
     </div>
     <v-card-title primary-title>
       <post-text :post="post" />
@@ -35,6 +34,7 @@ import PostText from "./PostText.vue";
 import { useStripeColor } from "./stripeColor";
 import { Post } from "@/worker/api";
 import PostButtons from "./PostButtons.vue";
+import { EnhancedPost } from "@/worker/ApiService";
 
 export default defineComponent({
   components: {
@@ -45,13 +45,13 @@ export default defineComponent({
   },
   props: {
     post: {
-      type: Object as PropType<Post>,
+      type: Object as PropType<EnhancedPost>,
       required: true,
     },
   },
   setup(props, context) {
     const postIsBlacklisted = computed(
-      () => Boolean((props as any).post?._postCustom?.isBlacklisted), // TODO: types
+      () => Boolean(props.post?.__meta.isBlacklisted), // TODO: types
     );
     const { classes: blacklistClasses } = useBlacklistClasses({
       mode: blacklistService.mode,

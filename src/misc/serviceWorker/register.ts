@@ -1,5 +1,6 @@
 import runtime from "serviceworker-webpack-plugin/lib/runtime";
 import { snackbarService } from "@/services";
+import { getAppName } from "../util/utilities";
 
 export const registerServiceWorker = async () => {
   if (!("serviceWorker" in navigator)) {
@@ -21,7 +22,7 @@ export const registerServiceWorker = async () => {
     installingWorker.onstatechange = () => {
       if (installingWorker.state === "installed") {
         if (navigator.serviceWorker.controller) {
-          snackbarService.addMessage("Update available, refresh to apply.");
+          snackbarService.addMessage(`${getAppName()} has been updated :3`);
         } else {
           console.log("new content cached");
         }

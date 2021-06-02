@@ -16,10 +16,10 @@ debug.disable();
 
 const log = debug("app:ApiService");
 
-export interface EnhancedTag extends Tag {
-  // other: {
-  //   color: string;
-  // };
+export interface EnhancedPost extends Post {
+  __meta: {
+    isBlacklisted: boolean;
+  };
 }
 
 export class ApiService {
@@ -45,25 +45,13 @@ export class ApiService {
       })
     ).data.posts;
 
-    // extra fields for compatibility with legacy api
-    // todo: remove extra fields
-    return posts.map<Post>((post) => ({
+    return posts.map<EnhancedPost>((post) => ({
       ...post,
-      preview_height: post.preview.height,
-      preview_width: post.preview.width,
-      preview_url: post.preview.url,
-      sample_height: post.sample.height,
-      sample_width: post.sample.width,
-      sample_url: post.sample.url,
-      file_ext: post.file.ext,
-      height: post.file.height,
-      width: post.file.width,
-      md5: post.file.md5,
-      file_size: post.file.size || 0,
-      file_url: post.file.url,
-      // score: post.score.total,
-
-      _postCustom: {
+      score: {
+        ...post.score,
+        down: Math.abs(post.score.down), // shouldn't be negative imo
+      },
+      __meta: {
         isBlacklisted: isPostBlacklisted(post, args.blacklist || []),
       },
     }));

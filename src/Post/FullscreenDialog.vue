@@ -31,18 +31,18 @@
             class="middle black"
             :class="blacklistClasses"
           >
-            <div v-if="current.file_ext == 'swf'" class="overflow flash">
+            <div v-if="current.file.ext == 'swf'" class="overflow flash">
               flash is not supported
             </div>
             <video
-              v-else-if="current.file_ext == 'webm' && currentFileUrl"
+              v-else-if="current.file.ext == 'webm' && currentFileUrl"
               class="overflow flash black position-relative"
               controls
               loop
               autoplay
               preload=""
             >
-              <source :src="current.file_url" type="video/webm" />
+              <source :src="current.file.url" type="video/webm" />
               Video type not supported by your browser
             </video>
             <div v-else class="overflow">
@@ -132,12 +132,15 @@ import {
   nextTick,
   onBeforeUnmount,
   onMounted,
+  PropType,
   Ref,
   ref,
   watch,
 } from "@vue/composition-api";
 import PostButtons from "@/Post/PostButtons.vue";
 import { useDirectionalTransitions } from "@/misc/util/directionalTransitions";
+import { Post } from "@/worker/api";
+import { EnhancedPost } from "@/worker/ApiService";
 
 const appIsFullscreen = ref(!!document.fullscreenElement);
 
@@ -172,7 +175,7 @@ export default defineComponent({
       required: true,
     },
     current: {
-      type: null,
+      type: (null as unknown) as PropType<null | EnhancedPost>,
       required: true,
     },
   },
@@ -180,8 +183,8 @@ export default defineComponent({
     const dialog = ref<Vue>();
     const lastFullscreenId = ref<number | null>();
     const isZoomed = ref(false);
-    const postIsBlacklisted = computed(
-      () => Boolean(props?.current?._postCustom?.isBlacklisted), // TODO: types
+    const postIsBlacklisted = computed(() =>
+      Boolean(props?.current?.__meta.isBlacklisted),
     );
     const { classes: blacklistClasses } = useBlacklistClasses({
       mode: blacklistService.mode,
@@ -249,7 +252,10 @@ export default defineComponent({
         exitFullscreen();
       }
     };
-    onMounted(() => window.addEventListener("keydown", handleKeyDown));
+    onMounted(() => {
+      setTransitionNames("none");
+      window.addEventListener("keydown", handleKeyDown);
+    });
     onBeforeUnmount(() => window.removeEventListener("keydown", handleKeyDown));
 
     const scrollToPost = (postId: number) => {
@@ -268,7 +274,7 @@ export default defineComponent({
       async (val, prev) => {
         if (val) lastFullscreenId.value = val.id;
         if (val && (!prev || val.id != prev.id)) {
-          scrollToPost(props.current.id);
+          scrollToPost(props.current!.id);
           switched.value = true;
           await nextTick();
           switched.value = false;
@@ -283,13 +289,16 @@ export default defineComponent({
     const open = computed(() => !!props.current);
 
     const currentFileUrl = computed(() =>
-      switched.value ? false : props.current.file_url,
+      switched.value ? false : props.current?.file.url,
     );
     const currentSampleFileUrl = computed(() =>
-      switched.value ? false : props.current.preview_url,
+      switched.value ? false : props.current?.preview.url,
     );
 
     watch(open, () => {
+      if (!open.value) {
+        setTransitionNames("none");
+      }
       if (open.value && postService.goFullscreen) {
         // dialog.value?.requestFullscreen();
         document.querySelector("#app")?.requestFullscreen();

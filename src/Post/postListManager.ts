@@ -1,11 +1,11 @@
-import { Post } from "@/worker/api";
+import { EnhancedPost } from "@/worker/ApiService";
 import { computed, ref, watch } from "@vue/composition-api";
 
 interface IUsePostListManagerArgs {
   loadPosts(args: {
     postsBefore?: number | undefined;
     postsAfter?: number | undefined;
-  }): Promise<Post[]>;
+  }): Promise<EnhancedPost[]>;
 
   getSettingsPageSize(): number;
 
@@ -19,9 +19,9 @@ export const usePostListManager = ({
   saveFirstPostId,
   getSettingsPageSize,
 }: IUsePostListManagerArgs) => {
-  const posts = ref<Post[]>([]);
-  const fullscreenPost = ref<Post | null>(null);
-  const detailsPost = ref<Post | null>(null);
+  const posts = ref<EnhancedPost[]>([]);
+  const fullscreenPost = ref<EnhancedPost | null>(null);
+  const detailsPost = ref<EnhancedPost | null>(null);
   const loading = ref(false);
 
   const getPostCountToRemove = () => posts.value.length - getSettingsPageSize();
@@ -77,9 +77,20 @@ export const usePostListManager = ({
   const openPostDetails = (postId: number) => {
     detailsPost.value = posts.value.find((p) => p.id === postId) || null;
   };
+  const isValidNextPost = (post: EnhancedPost) => {
+    return !!post.file.url;
+  };
   const _openFullscreenPost = (offset: number) => (postId: number) => {
     const idx = posts.value.findIndex((p) => p.id === postId);
-    fullscreenPost.value = posts.value[idx + offset] || null;
+    let nextPostIdx = idx;
+    do {
+      nextPostIdx += offset;
+    } while (
+      posts.value[nextPostIdx] &&
+      !isValidNextPost(posts.value[nextPostIdx]) &&
+      offset
+    );
+    fullscreenPost.value = posts.value[nextPostIdx] || null;
     // this.fullscreenPost =
     //   this.posts.find((p) => p.id === postId) ||
     //   (await (async () => {

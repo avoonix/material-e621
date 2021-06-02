@@ -1,7 +1,7 @@
 <template>
   <v-menu bottom offset-y left attach close-delay="0">
     <v-btn v-show="showInstallPrompt" slot="activator" icon>
-      <v-badge color="primary" overlap right>
+      <v-badge color="primary" overlap left>
         <template #badge>
           <v-icon>mdi-exclamation-thick</v-icon>
         </template>

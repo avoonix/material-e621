@@ -27,6 +27,7 @@
         'mb-3': navMode == 'floating',
         primary: $route.meta.minimalHeader,
       }"
+      class="padded-toolbar"
     >
       <v-menu
         bottom
@@ -56,7 +57,6 @@
       </portal-target>
       <v-spacer></v-spacer>
       <navigation-toolbar v-if="navMode === 'toolbar'" />
-      <account-menu v-if="!$route.meta.minimalHeader" />
       <install-menu v-if="!$route.meta.minimalHeader" />
     </v-toolbar>
     <main-content />
@@ -68,8 +68,7 @@
 import Snackbar from "./App/Snackbar.vue";
 import Logo from "./App/Logo.vue";
 import { useSettingsServiceState, appearanceService } from "./services";
-import AccountMenu from "./App/AccountMenu.vue";
-import { computed, defineComponent, watch } from "@vue/composition-api";
+import { computed, defineComponent } from "@vue/composition-api";
 import NavigationList from "./App/NavigationList.vue";
 import NavigationToolbar from "./App/NavigationToolbar.vue";
 import MainContent from "./App/MainContent.vue";
@@ -116,7 +115,6 @@ export default defineComponent({
   components: {
     Logo,
     Snackbar,
-    AccountMenu,
     NavigationList,
     NavigationToolbar,
     MainContent,
@@ -210,4 +208,11 @@ export default defineComponent({
 <style lang="scss">
 @import "@/misc/styles/animate.scss";
 @import "@/misc/styles/global.scss";
+</style>
+
+<style scoped>
+.padded-toolbar >>> .v-toolbar__content {
+  /* padding-right: 4px;
+  padding-left: 8px; */
+}
 </style>
