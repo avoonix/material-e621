@@ -1,10 +1,17 @@
 <template>
   <v-card>
     <v-card-title>
-      {{ date }}
+      <div>
+        <h3 class="headline">
+          {{ entry.message.subject }}
+        </h3>
+        <div class="caption">
+          {{ date }}
+        </div>
+      </div>
     </v-card-title>
-    <v-card-text>
-      {{ entry.message }}
+    <v-card-text v-if="entry.message.body" class="pre body-1">
+      {{ entry.message.body }}
     </v-card-text>
     <v-card-actions>
       <v-spacer />
@@ -42,3 +49,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.pre {
+  white-space: pre-wrap;
+}
+</style>

@@ -1,7 +1,10 @@
 export interface IGitCommit {
   hash: string;
   date: Date;
-  message: string;
+  message: {
+    subject: string;
+    body: string | null;
+  };
 }
 
 export const getGitInfo = (): IGitCommit[] =>
@@ -10,9 +13,16 @@ export const getGitInfo = (): IGitCommit[] =>
     .filter((s) => s)
     .map((commitStr) => {
       const parts = commitStr.split(";");
+      const text = parts[2].trim();
+      const hasBody = text.indexOf("\n") !== -1;
+      const subject = hasBody ? text.substring(0, text.indexOf("\n")) : text;
+      const body = hasBody ? text.substr(text.indexOf("\n") + 1) : null;
       return {
         hash: parts[0].trim(),
         date: new Date(parts[1].trim()),
-        message: parts[2].trim(),
+        message: {
+          subject,
+          body,
+        },
       };
     });

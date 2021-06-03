@@ -11,8 +11,14 @@
             :post-buttons.sync="postButtons"
           />
         </settings-page-item>
-        <settings-page-item title="Hide UI while zoomed (fullscreen)" switch>
-          <v-switch v-model="hideFullscreenUiOnZoom"></v-switch>
+        <settings-page-item title="Fullscreen arrow buttons" select>
+          <v-select
+            :items="fullscreenZoomUiModeItems"
+            box
+            solo
+            hide-details
+            v-model="fullscreenZoomUiMode"
+          />
         </settings-page-item>
         <settings-page-item title="Go fullscreen when viewing posts" switch>
           <v-switch v-model="goFullscreen"></v-switch>
@@ -55,7 +61,7 @@
 import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
 import { computed, defineComponent } from "@vue/composition-api";
-import { ButtonType } from "@/services/types";
+import { ButtonType, FullscreenZoomUiMode } from "@/services/types";
 import { postService } from "@/services";
 import PostButtonEditor from "./PostButtonEditor.vue";
 
@@ -94,14 +100,6 @@ export default defineComponent({
         postService.detailsButtons = value;
       },
     });
-    const hideFullscreenUiOnZoom = computed<boolean>({
-      get() {
-        return postService.hideFullscreenUiOnZoom;
-      },
-      set(value) {
-        postService.hideFullscreenUiOnZoom = value;
-      },
-    });
 
     const sidebarSuggestionLimit = computed<number>({
       get() {
@@ -136,16 +134,41 @@ export default defineComponent({
       },
     });
 
+    const fullscreenZoomUiModeItems = computed(() => [
+      {
+        text: "Always hide",
+        value: FullscreenZoomUiMode.alwaysHide,
+      },
+      {
+        text: "Always show",
+        value: FullscreenZoomUiMode.neverHide,
+      },
+      {
+        text: "Hide while zoomed in",
+        value: FullscreenZoomUiMode.hideWhileZoomed,
+      },
+    ]);
+
+    const fullscreenZoomUiMode = computed<FullscreenZoomUiMode>({
+      get() {
+        return postService.fullscreenZoomUiMode;
+      },
+      set(value) {
+        postService.fullscreenZoomUiMode = value;
+      },
+    });
+
     return {
       goFullscreen,
       availableButtons,
       postButtons,
       fullscreenButtons,
       detailsButtons,
-      hideFullscreenUiOnZoom,
       sidebarSuggestionLimit,
       postListFetchLimit,
       tagFetchLimit,
+      fullscreenZoomUiMode,
+      fullscreenZoomUiModeItems,
     };
   },
 });

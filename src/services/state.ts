@@ -1,6 +1,11 @@
+import { isMobile } from "@/misc/util/mobile";
 import { computed, reactive, readonly } from "@vue/composition-api";
 import clone from "clone";
-import { BlacklistMode, ISettingsServiceState } from "./types";
+import {
+  BlacklistMode,
+  FullscreenZoomUiMode,
+  ISettingsServiceState,
+} from "./types";
 
 export const defaultSettings: ISettingsServiceState = {
   blacklist: {
@@ -37,7 +42,9 @@ export const defaultSettings: ISettingsServiceState = {
     buttons: ["info", "fullscreen", "external"],
     fullscreenButtons: ["external", "info"],
     detailsButtons: ["external"],
-    hideFullscreenUiOnZoom: true,
+    fullscreenZoomUiMode: isMobile
+      ? FullscreenZoomUiMode.alwaysHide
+      : FullscreenZoomUiMode.hideWhileZoomed,
     postListFetchLimit: 30,
     sidebarSuggestionLimit: 40,
     tagFetchLimit: 30,

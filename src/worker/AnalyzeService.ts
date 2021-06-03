@@ -2,7 +2,7 @@ import { expose } from "comlink";
 import { PostTags, Post } from "./api";
 import { debug } from "debug";
 import cloud from "d3-cloud";
-import { ApiService } from "./ApiService";
+import { ApiService, EnhancedPost } from "./ApiService";
 import { BlacklistMode } from "@/services/types";
 import * as d3 from "d3";
 
@@ -11,7 +11,7 @@ const log = debug("app:AnalyzeService");
 debug.disable();
 debug.enable("app:AnalyzeService");
 
-export interface ScoredPost extends Post {
+export interface ScoredPost extends EnhancedPost {
   __score: number;
 }
 
@@ -242,7 +242,7 @@ export class AnalyzeService {
 const scorePosts = (
   tags: FavoriteTagsResult,
   weights: Parameters<AnalyzeService["suggestPosts"]>["1"],
-  posts: Post[],
+  posts: EnhancedPost[],
 ) => {
   const scoredPosts: ScoredPost[] = [];
   for (const post of posts) {

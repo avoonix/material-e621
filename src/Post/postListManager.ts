@@ -80,7 +80,7 @@ export const usePostListManager = ({
   const isValidNextPost = (post: EnhancedPost) => {
     return !!post.file.url;
   };
-  const _openFullscreenPost = (offset: number) => (postId: number) => {
+  const _openFullscreenPost = (offset: number) => async (postId: number) => {
     const idx = posts.value.findIndex((p) => p.id === postId);
     let nextPostIdx = idx;
     do {
@@ -91,6 +91,14 @@ export const usePostListManager = ({
       offset
     );
     fullscreenPost.value = posts.value[nextPostIdx] || null;
+
+    if (!fullscreenPost.value) {
+      if (offset > 0) {
+        await loadNextPage();
+      } else if (offset < 0) {
+        await loadPreviousPage();
+      }
+    }
     // this.fullscreenPost =
     //   this.posts.find((p) => p.id === postId) ||
     //   (await (async () => {

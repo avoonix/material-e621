@@ -6,6 +6,12 @@ export enum BlacklistMode {
 
 export type ButtonType = "info" | "fullscreen" | "external";
 
+export enum FullscreenZoomUiMode {
+  alwaysHide,
+  neverHide,
+  hideWhileZoomed,
+}
+
 export interface ISettingsServiceState {
   blacklist: {
     mode: BlacklistMode;
@@ -36,7 +42,7 @@ export interface ISettingsServiceState {
     buttons: ButtonType[];
     fullscreenButtons: ButtonType[];
     detailsButtons: ButtonType[];
-    hideFullscreenUiOnZoom: boolean;
+    fullscreenZoomUiMode: FullscreenZoomUiMode;
     sidebarSuggestionLimit: number;
     postListFetchLimit: number;
     tagFetchLimit: number;

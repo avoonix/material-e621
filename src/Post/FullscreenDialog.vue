@@ -139,8 +139,8 @@ import {
 } from "@vue/composition-api";
 import PostButtons from "@/Post/PostButtons.vue";
 import { useDirectionalTransitions } from "@/misc/util/directionalTransitions";
-import { Post } from "@/worker/api";
 import { EnhancedPost } from "@/worker/ApiService";
+import { FullscreenZoomUiMode } from "@/services/types";
 
 const appIsFullscreen = ref(!!document.fullscreenElement);
 
@@ -203,9 +203,16 @@ export default defineComponent({
       },
     });
 
-    const hideUi = computed(
-      () => postService.hideFullscreenUiOnZoom && isZoomed.value,
-    );
+    const hideUi = computed(() => {
+      switch (postService.fullscreenZoomUiMode) {
+        case FullscreenZoomUiMode.hideWhileZoomed:
+          return isZoomed.value;
+        case FullscreenZoomUiMode.neverHide:
+          return false;
+        case FullscreenZoomUiMode.alwaysHide:
+          return true;
+      }
+    });
 
     const exitFullscreen = () => context.emit("close");
 

@@ -22,11 +22,11 @@ class PostService {
     state.posts.detailsButtons = [...value];
   }
 
-  public get hideFullscreenUiOnZoom() {
-    return state.posts.hideFullscreenUiOnZoom;
+  public get fullscreenZoomUiMode() {
+    return state.posts.fullscreenZoomUiMode;
   }
-  public set hideFullscreenUiOnZoom(value) {
-    state.posts.hideFullscreenUiOnZoom = value;
+  public set fullscreenZoomUiMode(value) {
+    state.posts.fullscreenZoomUiMode = value;
   }
 
   public get postListFetchLimit() {
