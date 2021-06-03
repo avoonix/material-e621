@@ -27,23 +27,18 @@
         </div>
       </v-layout>
     </section>
-    <section>
-      <v-layout column wrap="" class="my-5 py-5" align-center>
-        <v-flex xs12 class="">
+    <section class="ma-1">
+      <v-layout justify-center row wrap>
+        <v-flex xs12 class="pt-5">
           <div class="text-xs-center">
             <h2 class="headline">Latest update</h2>
           </div>
         </v-flex>
-        <v-flex class="ma-5">
+        <v-flex xs12 md6 xl4 class="py-5">
           <!-- <changelog-item class="" :item="latestChange" /> -->
           <commit-timeline dense :limit="1" />
           <v-btn block class="mt-0" color="primary" to="/about"> more </v-btn>
         </v-flex>
-        <!-- <v-flex xs12>
-          <v-btn large color="primary" :to="{ path: '/about' }">
-            View all changes
-          </v-btn>
-        </v-flex> -->
       </v-layout>
     </section>
     <v-footer class="primary">
