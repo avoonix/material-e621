@@ -15,6 +15,9 @@
             :value="usagePercentage"
           />
         </settings-page-item>
+        <settings-page-item title="About" select>
+          <v-btn color="accent" flat to="/about" block> About </v-btn>
+        </settings-page-item>
         <settings-page-item title="Bookmarklet">
           <install />
         </settings-page-item>

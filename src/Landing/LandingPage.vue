@@ -31,17 +31,19 @@
       <v-layout column wrap="" class="my-5 py-5" align-center>
         <v-flex xs12 class="">
           <div class="text-xs-center">
-            <h2 class="headline">Latest news</h2>
+            <h2 class="headline">Latest update</h2>
           </div>
         </v-flex>
         <v-flex class="ma-5">
-          <changelog-item class="" :item="latestChange" />
+          <!-- <changelog-item class="" :item="latestChange" /> -->
+          <commit-timeline dense :limit="1" />
+          <v-btn block class="mt-0" color="primary" to="/about"> more </v-btn>
         </v-flex>
-        <v-flex xs12>
-          <v-btn large color="primary" :to="{ path: '/about' }"
-            >View all changes</v-btn
-          >
-        </v-flex>
+        <!-- <v-flex xs12>
+          <v-btn large color="primary" :to="{ path: '/about' }">
+            View all changes
+          </v-btn>
+        </v-flex> -->
       </v-layout>
     </section>
     <v-footer class="primary">
@@ -60,21 +62,14 @@
 
 <script lang="ts">
 import { defineComponent } from "@vue/composition-api";
-import ChangelogItem from "../About/ChangelogItem.vue";
 import Logo from "../App/Logo.vue";
-import changelog from "@/misc/data/changelog.json";
+import CommitTimeline from "@/About/CommitTimeline.vue";
 
 export default defineComponent({
   inject: ["theme"],
   components: {
-    ChangelogItem,
     Logo,
-  },
-  computed: {
-    latestChange() {
-      const changes = changelog.filter((c) => c.large);
-      return changes[changes.length - 1];
-    },
+    CommitTimeline,
   },
 });
 </script>

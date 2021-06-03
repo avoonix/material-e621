@@ -1,7 +1,7 @@
 <template>
   <v-card class="ma-3">
     <v-card-title>{{ title }}</v-card-title>
-    <v-card-text class="text-xs-left grey--text">
+    <v-card-text class="text-xs-left grey--text" v-if="description">
       {{ description }}
       <slot name="description" />
     </v-card-text>

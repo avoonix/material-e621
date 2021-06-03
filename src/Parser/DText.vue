@@ -2,6 +2,7 @@
 import { getTagColorFromCategory } from "@/misc/util/utilities";
 import { computed, defineComponent } from "@vue/composition-api";
 import { CreateElement } from "vue";
+import ExternalLink from "@/App/ExternalLink.vue";
 
 const validBbElements = [
   "b",
@@ -262,6 +263,9 @@ const fixEmojis = (text: string) => {
 };
 
 export default defineComponent({
+  components: {
+    ExternalLink,
+  },
   props: {
     text: {
       type: String,

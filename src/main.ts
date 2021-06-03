@@ -23,8 +23,6 @@ window.addEventListener("load", async () => {
   }
 });
 
-Vue.component("external-link", ExternalLink);
-
 process.env.NODE_ENV !== "development" && showConsoleMessage();
 
 persistanceService.persist();
