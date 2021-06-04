@@ -110,6 +110,9 @@ export default defineComponent({
             dataSaverInfo.value.type === "ethernet" ||
             dataSaverInfo.value.type === "wifi"
           ) {
+            if (dataSaverInfo.value.saveData) {
+              return imageSrcPerQuality.value.medium;
+            }
             return imageSrcPerQuality.value.high;
           }
           return imageSrcPerQuality.value.medium;

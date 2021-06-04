@@ -66,8 +66,6 @@ export interface ISettingsServiceState {
   //     | "grid_md"
   //     | "grid_sm";
   //   paginated: boolean;
-  //   listImageResolution: "low" | "medium" | "high";
-  //   groupSuggestions: boolean;
   // };
   // post: {
   //   fullscreenButtonPosition:

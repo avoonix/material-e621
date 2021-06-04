@@ -12,20 +12,18 @@ export interface INetworkInfo {
     | "wimax"
     | "other"
     | "unknown";
-  //   saveData?: boolean;
+  saveData: boolean;
 
   typeSupported: boolean;
-  //   saveDataSupported: boolean;
 }
 
 const nav = navigator as any;
 
 const getInfo = (): INetworkInfo => {
-  const saveData = nav.connection.saveData;
-  const type = nav.connection.type;
+  const saveData = nav.connection?.saveData;
+  const type = nav.connection?.type;
   return {
-    // saveDataSupported: typeof saveData === "boolean",
-    // saveData,
+    saveData: saveData || false,
     typeSupported: typeof type === "string",
     type: type || "unknown",
   };
@@ -51,7 +49,7 @@ const handleChange = () => {
 };
 
 // event not supported for all browsers
-nav.connection.onchange = handleChange();
-nav.connection.addEventListener("change", handleChange);
+(nav.connection || {}).onchange = handleChange();
+nav.connection?.addEventListener("change", handleChange);
 
 handleChange();
