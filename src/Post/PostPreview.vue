@@ -27,7 +27,10 @@
 </template>
 
 <script lang="ts">
+import { useDataSaverInfo } from "@/misc/util/dataSaver";
 import router from "@/router";
+import { postService } from "@/services";
+import { DataSaverType } from "@/services/types";
 import { File, Preview, Sample } from "@/worker/api";
 import { computed, defineComponent, PropType } from "@vue/composition-api";
 import FixedAspectRatioBox from "./FixedAspectRatioBox.vue";
@@ -61,15 +64,56 @@ export default defineComponent({
       }
     };
 
-    const imageSrc = computed(() => {
-      // TODO: low res mode for mobile
+    const { dataSaverInfo } = useDataSaverInfo();
+
+    const imageSrcPerQuality = computed(() => {
       if (isSwf.value) {
-        return props.preview.url;
+        return {
+          high: props.preview.url,
+          medium: props.preview.url,
+          low: props.preview.url,
+        };
       }
       if (isVideo.value) {
-        return props.sample.url;
+        return {
+          high: props.sample.url || props.preview.url,
+          medium: props.sample.url || props.preview.url,
+          low: props.preview.url,
+        };
       }
-      return props.file.url;
+      return {
+        high: props.file.url || props.sample.url || props.preview.url,
+        medium: props.sample.url || props.preview.url,
+        low: props.preview.url,
+      };
+    });
+
+    const imageSrc = computed(() => {
+      switch (postService.dataSaver) {
+        case DataSaverType.lowest:
+          return imageSrcPerQuality.value.low;
+        case DataSaverType.medium:
+          return imageSrcPerQuality.value.medium;
+        case DataSaverType.highest:
+          return imageSrcPerQuality.value.high;
+        case DataSaverType.auto:
+          if (!dataSaverInfo.value.typeSupported) {
+            return imageSrcPerQuality.value.medium;
+          }
+          if (
+            dataSaverInfo.value.type === "bluetooth" ||
+            dataSaverInfo.value.type === "cellular"
+          ) {
+            return imageSrcPerQuality.value.low;
+          }
+          if (
+            dataSaverInfo.value.type === "ethernet" ||
+            dataSaverInfo.value.type === "wifi"
+          ) {
+            return imageSrcPerQuality.value.high;
+          }
+          return imageSrcPerQuality.value.medium;
+      }
     });
 
     return {

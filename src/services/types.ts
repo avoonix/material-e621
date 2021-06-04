@@ -12,6 +12,13 @@ export enum FullscreenZoomUiMode {
   hideWhileZoomed,
 }
 
+export enum DataSaverType {
+  auto,
+  highest,
+  medium,
+  lowest,
+}
+
 export interface ISettingsServiceState {
   blacklist: {
     mode: BlacklistMode;
@@ -27,7 +34,7 @@ export interface ISettingsServiceState {
     transition: {
       route: string;
       fullscreen: string;
-  };
+    };
     coloredRatingStripe: boolean;
     navigationType: "sidebar" | "toolbar" | "floating";
     logoStyle: "face" | "text";
@@ -47,10 +54,35 @@ export interface ISettingsServiceState {
     postListFetchLimit: number;
     tagFetchLimit: number;
     goFullscreen: boolean;
+    dataSaver: DataSaverType;
   };
+  // postList: {
+  //   postLayout:
+  //     | "blog"
+  //     | "feed_xl"
+  //     | "feed_md"
+  //     | "feed_sm"
+  //     | "grid_xl"
+  //     | "grid_md"
+  //     | "grid_sm";
+  //   paginated: boolean;
+  //   listImageResolution: "low" | "medium" | "high";
+  //   groupSuggestions: boolean;
+  // };
+  // post: {
+  //   fullscreenButtonPosition:
+  //     | "top_left"
+  //     | "top_right"
+  //     | "bottom_left"
+  //     | "bottom_right";
+  // };
+  // download: {
+  //   filenameTemplate: string;
+  //   concurrency: number;
+  // };
   account: {
+    //   loggedIn: boolean;
     username: string | null;
     apiKey: string | null;
   };
 }
-

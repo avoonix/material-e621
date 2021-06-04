@@ -10,9 +10,11 @@
         </div>
       </div>
     </v-card-title>
-    <v-card-text v-if="entry.message.body" class="pre body-1">
-      {{ entry.message.body }}
-    </v-card-text>
+    <v-card-text
+      v-if="entry.message.body"
+      class="pre body-1"
+      v-text="entry.message.body"
+    />
     <v-card-actions>
       <v-spacer />
       <v-btn

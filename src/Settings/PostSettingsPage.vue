@@ -52,6 +52,24 @@
             label="Suggestions (sidebar)"
           />
         </settings-page-item>
+        <settings-page-item
+          title="Data saver"
+          select
+          description="Viewing posts in fullscreen will still show highest-quality images."
+        >
+          <template #description>
+            <v-expand-transition>
+              <automatic-data-saver-info v-if="showAutomaticDataSaverInfo" />
+            </v-expand-transition>
+          </template>
+          <v-select
+            :items="dataSaverItems"
+            box
+            solo
+            hide-details
+            v-model="dataSaver"
+          />
+        </settings-page-item>
       </v-flex>
     </v-layout>
   </v-container>
@@ -61,9 +79,14 @@
 import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
 import { computed, defineComponent } from "@vue/composition-api";
-import { ButtonType, FullscreenZoomUiMode } from "@/services/types";
+import {
+  ButtonType,
+  DataSaverType,
+  FullscreenZoomUiMode,
+} from "@/services/types";
 import { postService } from "@/services";
 import PostButtonEditor from "./PostButtonEditor.vue";
+import AutomaticDataSaverInfo from "./AutomaticDataSaverInfo.vue";
 
 export default defineComponent({
   metaInfo: {
@@ -73,6 +96,7 @@ export default defineComponent({
     SettingsPageTitle,
     SettingsPageItem,
     PostButtonEditor,
+    AutomaticDataSaverInfo,
   },
   setup() {
     const availableButtons: ButtonType[] = ["info", "fullscreen", "external"];
@@ -158,6 +182,38 @@ export default defineComponent({
       },
     });
 
+    const dataSaverItems = computed(() => [
+      {
+        text: "Automatic",
+        value: DataSaverType.auto,
+      },
+      {
+        text: "Highest quality previews",
+        value: DataSaverType.highest,
+      },
+      {
+        text: "Medium quality previews",
+        value: DataSaverType.medium,
+      },
+      {
+        text: "Lowest quality previews",
+        value: DataSaverType.lowest,
+      },
+    ]);
+
+    const dataSaver = computed<DataSaverType>({
+      get() {
+        return postService.dataSaver;
+      },
+      set(value) {
+        postService.dataSaver = value;
+      },
+    });
+
+    const showAutomaticDataSaverInfo = computed(
+      () => postService.dataSaver === DataSaverType.auto,
+    );
+
     return {
       goFullscreen,
       availableButtons,
@@ -169,6 +225,9 @@ export default defineComponent({
       tagFetchLimit,
       fullscreenZoomUiMode,
       fullscreenZoomUiModeItems,
+      dataSaver,
+      dataSaverItems,
+      showAutomaticDataSaverInfo,
     };
   },
 });

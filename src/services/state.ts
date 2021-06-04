@@ -3,6 +3,7 @@ import { computed, reactive, readonly } from "@vue/composition-api";
 import clone from "clone";
 import {
   BlacklistMode,
+  DataSaverType,
   FullscreenZoomUiMode,
   ISettingsServiceState,
 } from "./types";
@@ -49,6 +50,7 @@ export const defaultSettings: ISettingsServiceState = {
     sidebarSuggestionLimit: 40,
     tagFetchLimit: 30,
     goFullscreen: false,
+    dataSaver: DataSaverType.auto,
   },
 };
 

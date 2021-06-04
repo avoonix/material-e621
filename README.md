@@ -4,6 +4,8 @@
 
 ![screenshot](./screenshot.png)
 
+https://e621.net/forum_topics/29483
+
 ## Usage
 
 ### Hosted

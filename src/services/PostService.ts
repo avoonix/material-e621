@@ -1,4 +1,6 @@
 import { state } from "./state";
+import { DataSaverType, FullscreenZoomUiMode } from "./types";
+import { withFallback } from "./fallback";
 
 class PostService {
   public get buttons() {
@@ -23,7 +25,10 @@ class PostService {
   }
 
   public get fullscreenZoomUiMode() {
-    return state.posts.fullscreenZoomUiMode;
+    return withFallback(
+      state.posts.fullscreenZoomUiMode,
+      FullscreenZoomUiMode.hideWhileZoomed,
+    );
   }
   public set fullscreenZoomUiMode(value) {
     state.posts.fullscreenZoomUiMode = value;
@@ -53,6 +58,13 @@ class PostService {
   }
   public set goFullscreen(value) {
     state.posts.goFullscreen = value;
+  }
+
+  public get dataSaver() {
+    return withFallback(state.posts.dataSaver, DataSaverType.auto);
+  }
+  public set dataSaver(value) {
+    state.posts.dataSaver = value;
   }
 }
 

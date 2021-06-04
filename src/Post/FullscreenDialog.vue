@@ -175,7 +175,7 @@ export default defineComponent({
       required: true,
     },
     current: {
-      type: (null as unknown) as PropType<null | EnhancedPost>,
+      type: null as unknown as PropType<null | EnhancedPost>,
       required: true,
     },
   },
@@ -193,15 +193,12 @@ export default defineComponent({
 
     const buttons = computed(() => postService.fullscreenButtons);
 
-    const {
-      enterTransitionName,
-      leaveTransitionName,
-      setTransitionNames,
-    } = useDirectionalTransitions({
-      transitionName() {
-        return appearanceService.fullscreenTransition;
-      },
-    });
+    const { enterTransitionName, leaveTransitionName, setTransitionNames } =
+      useDirectionalTransitions({
+        transitionName() {
+          return appearanceService.fullscreenTransition;
+        },
+      });
 
     const hideUi = computed(() => {
       switch (postService.fullscreenZoomUiMode) {
