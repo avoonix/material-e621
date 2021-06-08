@@ -32,6 +32,37 @@
         {{ post.file.width }}x{{ post.file.height }} ({{ megapixel }} Megapixel)
       </v-list-tile-content>
     </v-list-tile>
+    <v-list-tile>
+      <v-list-tile-content>Hash</v-list-tile-content>
+      <v-list-tile-content class="align-end">
+        {{ post.file.md5 }}
+      </v-list-tile-content>
+    </v-list-tile>
+    <v-list-tile>
+      <v-list-tile-content>Artist</v-list-tile-content>
+      <v-list-tile-content class="align-end">
+        {{ post.tags.artist.join(", ") }}
+      </v-list-tile-content>
+    </v-list-tile>
+    <v-list-tile>
+      <v-list-tile-content>Rating</v-list-tile-content>
+      <v-list-tile-content class="align-end">
+        {{ post.rating }}
+      </v-list-tile-content>
+    </v-list-tile>
+    <v-list-tile>
+      <v-list-tile-content>Sources</v-list-tile-content>
+      <v-list-tile-content class="align-end">
+        <a
+          target="_blank"
+          :href="source"
+          v-for="(source, idx) in post.sources"
+          :key="idx"
+        >
+          {{ source }}
+        </a>
+      </v-list-tile-content>
+    </v-list-tile>
   </v-list>
 </template>
 

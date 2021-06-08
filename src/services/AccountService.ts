@@ -23,7 +23,8 @@ class AccountService {
         }
       : undefined;
   }
-}
 
+  // TODO: favorites?
+}
 
 export const accountService = new AccountService();

@@ -46,8 +46,12 @@
         <v-flex xs12>
           <v-spacer />
           <div class="white--text ml-3">
-            Made with <v-icon size="18" class="red--text">mdi-heart</v-icon> and
+            Made with
+            <v-icon title="cum" size="18" class="white--text">mdi-water</v-icon>
+            and
             <v-icon title="Vue" size="18" class="green--text">mdi-vuejs</v-icon>
+            by
+            <a href="https://github.com/avoonix/" class="white--text">Avoo</a>
           </div>
         </v-flex>
       </v-layout>

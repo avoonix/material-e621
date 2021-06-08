@@ -17,7 +17,6 @@ import { Post } from "@/worker/api";
 import { defineComponent, PropType } from "@vue/composition-api";
 import PostButton from "./PostButton.vue";
 
-
 export default defineComponent({
   components: { PostButton },
   props: {

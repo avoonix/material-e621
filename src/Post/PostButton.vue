@@ -74,6 +74,8 @@ export default defineComponent({
           if (props.post) openE6PostInStandaloneWindow(props.post.id);
         },
       },
+      // TODO:
+      // fav/unfav, download
     };
 
     const button = computed(() => buttons[props.type]);
