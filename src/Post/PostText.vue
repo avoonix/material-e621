@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-xs-left">
     <div class="headline">
       <v-icon>mdi-thumbs-up-down</v-icon>
       {{ post.score.total }} &bull;

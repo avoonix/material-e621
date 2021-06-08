@@ -129,11 +129,8 @@ export default defineComponent({
       loadNextPage();
     });
 
-    const {
-      historyEntries,
-      addHistoryEntry,
-      removeHistoryEntry,
-    } = useHistory();
+    const { historyEntries, addHistoryEntry, removeHistoryEntry } =
+      useHistory();
 
     watch(posts, () => {
       addHistoryEntry(tags.value);

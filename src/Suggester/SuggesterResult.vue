@@ -20,17 +20,12 @@
             @close-details="detailsPost = null"
           />
           <portal to="sidebar-suggestions">
+            <progress-message v-if="listProgress" :value="listProgress" />
             <base-tags :counts="result.counts" />
           </portal>
         </div>
         <div v-else>
-          <logo type="loader" />
-          <span v-if="progress">{{ progress.message }}</span>
-          <v-progress-linear
-            v-if="progress"
-            :value="progress.progress * 100"
-            :indeterminate="progress.indeterminate"
-          />
+          <progress-message :value="progress" />
         </div>
       </v-flex>
     </v-layout>
@@ -44,6 +39,7 @@ import {
   nextTick,
   ref,
   watchEffect,
+  watch,
 } from "@vue/composition-api";
 import router from "@/router";
 import { FavoriteTagsResult, IProgressEvent } from "@/worker/AnalyzeService";
@@ -56,6 +52,7 @@ import { updateRouterQuery } from "@/misc/util/utilities";
 import Posts from "@/Post/Posts.vue";
 import { postService } from "@/services";
 import { useRoute } from "@/misc/util/router";
+import ProgressMessage from "./ProgressMessage.vue";
 
 export default defineComponent({
   metaInfo: {
@@ -65,10 +62,12 @@ export default defineComponent({
     Logo,
     BaseTags,
     Posts,
+    ProgressMessage,
   },
   setup(props, context) {
     const route = useRoute();
     const progress = ref<IProgressEvent>();
+    const listProgress = ref<IProgressEvent | null>(null);
 
     const username = computed<string>(() => route.query?.name?.toString());
 
@@ -132,36 +131,43 @@ export default defineComponent({
         if (!result.value) {
           throw new Error("no tags available");
         }
-        // const service = await getApiService();
-        // const posts = await service.getPosts({
-        //   limit: size,
-        //   postsBefore,
-        //   postsAfter,
-        //   tags: tags.value,
-        //   blacklist: blacklistService.tags,
-        //   blacklistMode: blacklistService.mode,
-        // });
-        // return posts;
-        const service = await getAnalyzeService();
-        const posts = await service.suggestPosts(
-          result.value,
-          weights.value,
-          postService.postListFetchLimit,
-          { postsBefore, postsAfter },
-          Comlink.proxy((progressEvent) => {
-            console.log(progressEvent); // TODO
-            // progress.value = progressEvent;
-          }),
-        );
-        return posts;
+        try {
+          const service = await getAnalyzeService();
+          const posts = await service.suggestPosts(
+            result.value,
+            weights.value,
+            postService.postListFetchLimit,
+            { postsBefore, postsAfter },
+            Comlink.proxy((progressEvent) => {
+              listProgress.value = progressEvent;
+            }),
+          );
+          return posts;
+        } finally {
+          listProgress.value = null;
+        }
       },
     });
 
+    watch(
+      username,
+      () => {
+        analyze(username.value);
+      },
+      {
+        immediate: true,
+      },
+    );
+
     watchEffect(() => {
-      analyze(username.value);
+      console.log(
+        posts.value,
+        posts.value.map((p) => p.id),
+      );
     });
 
     return {
+      listProgress,
       result,
       progress,
       loadPreviousPage,

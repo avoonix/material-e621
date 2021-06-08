@@ -50,19 +50,6 @@
         <!-- <v-list-tile-action>{{ item.count }}</v-list-tile-action> -->
       </template>
     </v-combobox>
-    <!-- <v-btn
-      style="flex-grow: 0 !important; flex-shrink: 0 !important;"
-      icon
-      @click="searchPosts"
-    > -->
-    <!-- v-if="!blacklistMode && !standalone" -->
-    <!-- <v-icon>mdi-magnify</v-icon>
-    </v-btn> -->
-    <!-- <recent-queries
-      @item-selected="searchPosts"
-      v-if="!blacklistMode && !standalone"
-      style="flex-grow: 0 !important; flex-shrink: 0 !important;"
-    /> -->
   </span>
 </template>
 

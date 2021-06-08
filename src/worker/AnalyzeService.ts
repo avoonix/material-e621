@@ -110,7 +110,7 @@ export class AnalyzeService {
         posts.push(...newPosts);
         onProgress({
           message: `got ${posts.length} of ${postLimit} posts`,
-          progress: Math.min(1, posts.length / postLimit) * 0.5,
+          progress: Math.min(1, posts.length / postLimit),
         });
         if (newPosts.length !== 320 || posts.length >= postLimit) {
           break;
@@ -159,7 +159,7 @@ export class AnalyzeService {
   ): Promise<FavoriteTagsResult> {
     const posts = await this.fetchPostsCached(
       [`fav:${username}`],
-      1000,
+      320 * 6,
       onProgress,
     );
 
@@ -187,9 +187,9 @@ export class AnalyzeService {
       postsAfter?: number;
     },
     onProgress: (event: IProgressEvent) => void,
-  ): Promise<ScoredPost[]> {
+  ) {
     // fetch posts, sort them by score and display the top `limit` ones
-    const toFetch = limit * 30;
+    const toFetch = limit * 40;
 
     const service = new ApiService();
     const posts: ScoredPost[] = [];
@@ -200,7 +200,7 @@ export class AnalyzeService {
       onProgress({
         progress: Math.min(1, posts.length / toFetch),
         message: `got ${posts.length} of ${toFetch} posts`,
-      }); // TODO: progress
+      });
       const newPosts = await service.getPosts({
         blacklistMode: BlacklistMode.blur, // TODO: blacklist mode
         limit: 320,
@@ -209,11 +209,6 @@ export class AnalyzeService {
         postsAfter,
       });
 
-      onProgress({
-        indeterminate: true,
-        message: "scoring posts",
-        progress: 0,
-      });
       const scoredNewPosts = scorePosts(tags, weights, newPosts);
       if (direction === "after") {
         postsAfter = scoredNewPosts[0]?.id || undefined;
@@ -228,7 +223,7 @@ export class AnalyzeService {
         break;
       }
     }
-    const bestPostIds = posts
+    const bestPostIds = [...posts]
       .sort((a, b) => b.__score - a.__score)
       .slice(0, limit)
       .map((p) => p.id);
