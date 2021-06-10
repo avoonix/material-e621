@@ -19,8 +19,8 @@
             <v-btn slot="activator" icon>
               <v-icon>mdi-dots-vertical</v-icon>
             </v-btn>
-            <v-card>
-              <v-list>
+            <v-card color="primary">
+              <v-list class="secondary">
                 <v-list-tile
                   v-for="(item, i) in getItems(tag)"
                   :key="i"

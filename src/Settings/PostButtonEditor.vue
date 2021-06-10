@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="mb-2">
+    <v-card class="mb-2" color="secondary">
       <v-card-title> All buttons (drag to add/remove) </v-card-title>
       <v-card-text>
         <draggable
@@ -17,7 +17,7 @@
         </draggable>
       </v-card-text>
     </v-card>
-    <v-card class="mb-2">
+    <v-card class="mb-2" color="secondary">
       <v-card-title> Post buttons </v-card-title>
       <v-card-text>
         <draggable
@@ -34,7 +34,7 @@
         </draggable>
       </v-card-text>
     </v-card>
-    <v-card class="mb-2">
+    <v-card class="mb-2" color="secondary">
       <v-card-title> Fullscreen buttons </v-card-title>
       <v-card-text>
         <draggable
@@ -55,7 +55,7 @@
         </draggable>
       </v-card-text>
     </v-card>
-    <v-card>
+    <v-card color="secondary">
       <v-card-title> Details buttons </v-card-title>
       <v-card-text>
         <draggable

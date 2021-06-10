@@ -1,5 +1,5 @@
 <template>
-  <v-card class="ma-3">
+  <v-card class="ma-3" color="secondary">
     <v-card-title>{{ title }}</v-card-title>
     <v-card-text class="text-xs-left grey--text" v-if="description">
       {{ description }}

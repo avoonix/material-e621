@@ -27,10 +27,10 @@
           color="darken-1 green"
         ></settings-page-section>
         <settings-page-section
-          section="restore"
-          title="Backup and restore"
-          icon="mdi-backup-restore"
-          color="darken-1 blue"
+          section="posts"
+          title="Posts"
+          icon="mdi-format-list-text"
+          color="darken-3 brown"
         ></settings-page-section>
         <settings-page-section
           section="account"
@@ -39,10 +39,10 @@
           color="darken-3 yellow"
         ></settings-page-section>
         <settings-page-section
-          section="posts"
-          title="Posts"
-          icon="mdi-format-list-text"
-          color="darken-3 brown"
+          section="restore"
+          title="Backup and restore"
+          icon="mdi-backup-restore"
+          color="darken-1 blue"
         ></settings-page-section>
       </v-flex>
     </v-layout>

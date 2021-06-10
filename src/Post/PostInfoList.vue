@@ -1,5 +1,5 @@
 <template>
-  <v-list dense>
+  <v-list dense class="secondary">
     <v-list-tile>
       <v-list-tile-content>ID</v-list-tile-content>
       <v-list-tile-content class="align-end">

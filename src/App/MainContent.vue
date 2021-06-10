@@ -20,15 +20,12 @@ import { computed, defineComponent } from "@vue/composition-api";
 export default defineComponent({
   props: {},
   setup(props, context) {
-    const {
-      enterTransitionName,
-      leaveTransitionName,
-      setTransitionNames,
-    } = useDirectionalTransitions({
-      transitionName() {
-        return appearanceService.routeTransition;
-      },
-    });
+    const { enterTransitionName, leaveTransitionName, setTransitionNames } =
+      useDirectionalTransitions({
+        transitionName() {
+          return appearanceService.routeTransition;
+        },
+      });
 
     const backgroundColor = computed(() => appearanceService.backgroundColor);
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="elevation-0">
+    <v-card class="elevation-0" color="secondary">
       <v-responsive :aspect-ratio="this.ratio">
         <transition
           :enter-active-class="enterTransitionName"
@@ -64,10 +64,8 @@ export default defineComponent({
     });
 
     const setTransitionNames = (transitionDirection: string) => {
-      const {
-        enterTransitionName: enter,
-        leaveTransitionName: leave,
-      } = getTransitionName(props.transitionName || "", transitionDirection);
+      const { enterTransitionName: enter, leaveTransitionName: leave } =
+        getTransitionName(props.transitionName || "", transitionDirection);
       direction.value = transitionDirection;
       enterTransitionName.value = enter;
       leaveTransitionName.value = leave;

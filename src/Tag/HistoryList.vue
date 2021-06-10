@@ -1,14 +1,10 @@
 <template>
-  <v-list>
+  <v-list class="secondary">
     <v-list-tile
       v-for="(item, i) in entries"
       :key="i"
       @click="$emit('click-entry', item)"
     >
-      <!-- avatar
-        
-        @click="setSearch(item)" -->
-      <!-- <tag-list-display v-if="item" :tags="item" /> -->
       <v-list-tile-title>
         {{ item }}
       </v-list-tile-title>

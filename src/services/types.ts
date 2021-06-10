@@ -30,6 +30,7 @@ export interface ISettingsServiceState {
     accent: string;
     background: string;
     sidebar: string;
+    toolbar: string;
     dark: boolean;
     transition: {
       route: string;

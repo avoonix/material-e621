@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card color="secondary">
     <v-card-title>Third party libraries</v-card-title>
     <v-card-text>
       <div class="body-1 mb-2">

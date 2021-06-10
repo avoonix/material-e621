@@ -1,6 +1,7 @@
 import { state } from "./state";
 import { DataSaverType, FullscreenZoomUiMode } from "./types";
 import { withFallback } from "./fallback";
+import Vue from "vue";
 
 class PostService {
   public get buttons() {
@@ -31,7 +32,7 @@ class PostService {
     );
   }
   public set fullscreenZoomUiMode(value) {
-    state.posts.fullscreenZoomUiMode = value;
+    Vue.set(state.posts, "fullscreenZoomUiMode", value);
   }
 
   public get postListFetchLimit() {
@@ -64,7 +65,7 @@ class PostService {
     return withFallback(state.posts.dataSaver, DataSaverType.auto);
   }
   public set dataSaver(value) {
-    state.posts.dataSaver = value;
+    Vue.set(state.posts, "dataSaver", value);
   }
 }
 

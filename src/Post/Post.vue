@@ -1,5 +1,5 @@
 <template>
-  <v-card :id="'post_' + post.id" color="">
+  <v-card :id="'post_' + post.id" color="secondary">
     <div :class="[blacklistClasses]">
       <post-preview
         :file="post.file"

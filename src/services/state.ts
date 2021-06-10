@@ -16,10 +16,11 @@ export const defaultSettings: ISettingsServiceState = {
   },
   appearance: {
     primary: "#1976d2",
-    secondary: "#424242",
+    secondary: "#001325",
     accent: "#82b1ff",
     background: "#102442",
     sidebar: "#001325",
+    toolbar: "#020c1c",
     dark: true,
     transition: {
       fullscreen: "slide",

@@ -110,10 +110,18 @@ const customBbElementGenerator: {
         props: { popout: true, value: expanded ? 0 : -1 },
       },
       [
-        h("v-expansion-panel-content", { class: "elevation-8" }, [
-          h("div", { slot: "header" }, title),
-          h("v-card", {}, [h("v-card-text", {}, createTree(h, innerText))]),
-        ]),
+        h(
+          "v-expansion-panel-content",
+          {
+            class: "elevation-8 secondary",
+          },
+          [
+            h("div", { slot: "header" }, title),
+            h("v-card", { props: { color: "secondary" } }, [
+              h("v-card-text", {}, createTree(h, innerText)),
+            ]),
+          ],
+        ),
       ],
     );
   },
@@ -197,7 +205,8 @@ const customMatchers: Array<{
   },
   {
     name: "URLs",
-    regex: /("(.+?)":)?(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*))/,
+    regex:
+      /("(.+?)":)?(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*))/,
     render({ h, match }) {
       return h(
         "external-link",

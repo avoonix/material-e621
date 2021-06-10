@@ -18,6 +18,7 @@
       <portal-target name="sidebar-suggestions" />
     </v-navigation-drawer>
     <v-toolbar
+      :color="currentTheme.toolbar"
       :app="!$route.meta.minimalHeader"
       :flat="$route.meta.minimalHeader"
       :clipped-left="clipped"
@@ -153,6 +154,7 @@ export default defineComponent({
         accent: appearanceService.accentColor,
         background: appearanceService.backgroundColor,
         sidebar: appearanceService.sidebarColor,
+        toolbar: appearanceService.toolbarColor,
       };
     },
   },
@@ -167,20 +169,6 @@ export default defineComponent({
     this.applyTheme();
   },
   watch: {
-    isDark: {
-      immediate: true,
-      handler(val) {
-        if (val) {
-          if (document.body.className.indexOf("scrollbar-color-dark") < 0)
-            document.body.className += "scrollbar-color-dark";
-        } else {
-          document.body.className = document.body.className.replace(
-            "scrollbar-color-dark",
-            "",
-          );
-        }
-      },
-    },
     isMobile(val, prevVal) {
       if (this.navMode == "sidebar" && val) {
         this.drawer = false;

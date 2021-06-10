@@ -1,8 +1,8 @@
 <template>
   <v-dialog v-model="dialog" scrollable max-width="600px">
-    <v-card v-if="current">
+    <v-card v-if="current" color="secondary">
       <v-card-title class="mt-0 pt-0 mx-0 px-0">
-        <v-tabs v-model="tabs">
+        <v-tabs v-model="tabs" color="secondary">
           <v-tab ripple>Overview</v-tab>
           <v-tab ripple>Tags</v-tab>
           <v-tab ripple>Description</v-tab>
@@ -12,21 +12,21 @@
       <v-card-text>
         <v-tabs-items v-model="tabs">
           <v-tab-item>
-            <v-card flat>
+            <v-card flat color="secondary">
               <v-card-text>
                 <post-info-list :post="current" />
               </v-card-text>
             </v-card>
           </v-tab-item>
           <v-tab-item>
-            <v-card flat>
+            <v-card flat color="secondary">
               <v-card-text>
                 <suggestions :tags="tags" />
               </v-card-text>
             </v-card>
           </v-tab-item>
           <v-tab-item>
-            <v-card flat>
+            <v-card flat color="secondary">
               <v-card-text>
                 <div class="body-1">
                   <d-text :text="current.description || 'No description'" />
@@ -35,7 +35,7 @@
             </v-card>
           </v-tab-item>
           <v-tab-item>
-            <v-card flat>
+            <v-card flat color="secondary">
               <v-card-text>
                 <link-share
                   :postId="current.id"

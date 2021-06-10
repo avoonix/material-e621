@@ -1,6 +1,10 @@
 <template>
   <v-container fluid grid-list-md>
-    <v-btn @click="loadPrevious" :loading="loading"> load previous </v-btn>
+    <div class="text-xs-center">
+      <v-btn @click="loadPrevious" :loading="loading" color="accent" flat>
+        load previous
+      </v-btn>
+    </div>
     <!-- <logo v-if="loading" loader /> -->
     <post-list
       :visible-posts="posts"
@@ -17,7 +21,11 @@
       </template>
     </post-list>
     <logo v-if="loading" type="loader" />
-    <v-btn @click="loadNext" :loading="loading"> load next </v-btn>
+    <div class="text-xs-center">
+      <v-btn @click="loadNext" :loading="loading" color="accent" flat>
+        load next
+      </v-btn>
+    </div>
     <fullscreen-dialog
       :has-previous-fullscreen-post="hasPreviousFullscreenPost"
       :has-next-fullscreen-post="hasNextFullscreenPost"

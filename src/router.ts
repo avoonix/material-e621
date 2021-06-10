@@ -71,6 +71,12 @@ export default new Router({
         ),
     },
     {
+      path: "/settings/appearance/themes",
+      name: "Themes",
+      component: () =>
+        import(/* webpackChunkName: "themes" */ "@/Settings/ThemePage.vue"),
+    },
+    {
       path: "/settings/history",
       name: "HistorySettings",
       component: () =>

@@ -1,6 +1,7 @@
 <template>
   <span class="d-flex">
     <v-combobox
+      background-color="secondary"
       style="flex-grow: 999"
       solo
       multiple
@@ -18,6 +19,7 @@
       :label="label"
       :loading="tagsLoading ? 'accent' : false"
       hide-details
+      class="combobox-with-background"
     >
       <template slot="no-data">
         <v-list-tile>
@@ -234,3 +236,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.combobox-with-background >>> .v-list {
+  background-color: var(--v-secondary-base);
+}
+</style>

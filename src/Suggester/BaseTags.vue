@@ -1,9 +1,9 @@
 <template>
-  <v-card>
+  <v-card color="secondary">
     <v-card-title>Your suggestions are based on these tags</v-card-title>
     <v-card-text>
       <template v-for="(item, i) in data">
-        <v-card :key="i">
+        <v-card :key="i" color="secondary">
           <v-card-title>{{ item.category }}</v-card-title>
           <v-card-text>
             {{ item.tags }}

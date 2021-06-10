@@ -1,0 +1,92 @@
+[
+  {
+    "name": "Default",
+    "primary": "#1976d2",
+    "secondary": "#001325",
+    "accent": "#82b1ff",
+    "background": "#102442",
+    "sidebar": "#001325",
+    "toolbar": "#020c1c",
+    "dark": true
+  },
+  {
+    "name": "Pony",
+    "primary": "#ab47bc",
+    "secondary": "#453269",
+    "accent": "#ff4081",
+    "background": "#2F175C",
+    "sidebar": "#250D51",
+    "toolbar": "#1d0a40",
+    "dark": true
+  },
+  {
+    "name": "Bloodlust",
+    "primary": "#F68B00",
+    "secondary": "#003346",
+    "accent": "#C21D00",
+    "background": "#222222",
+    "sidebar": "#080808",
+    "toolbar": "#734100",
+    "dark": true
+  },
+  {
+    "name": "Serpent",
+    "primary": "#007061",
+    "secondary": "#91f591",
+    "accent": "#558b2f",
+    "background": "#FFDD9E",
+    "sidebar": "#85FF85",
+    "toolbar": "#7BD07B",
+    "dark": false
+  },
+  {
+    "name": "Hot Dog",
+    "primary": "#FF0000",
+    "secondary": "#FF8D00",
+    "accent": "#FF2E00",
+    "background": "#FFFF00",
+    "sidebar": "#ffaa00",
+    "toolbar": "#ff8c00",
+    "dark": true
+  },
+  {
+    "name": "Dark Pink",
+    "primary": "#ff55c8",
+    "secondary": "#000000",
+    "accent": "#ffd4f1",
+    "background": "#000000",
+    "sidebar": "#000000",
+    "toolbar": "#000000",
+    "dark": true
+  },
+  {
+    "name": "Light Pink",
+    "primary": "#ff55c8",
+    "secondary": "#ffbae9",
+    "accent": "#e34486",
+    "background": "#fff7fd",
+    "sidebar": "#ffe6f7",
+    "toolbar": "#ffc2eb",
+    "dark": false
+  },
+  {
+    "name": "Dark Grey",
+    "primary": "#607d8b",
+    "secondary": "#141414",
+    "accent": "#616161",
+    "background": "#000000",
+    "sidebar": "#0A0A0A",
+    "toolbar": "#0A0A0A",
+    "dark": true
+  },
+  {
+    "name": "Light Grey",
+    "primary": "#848484",
+    "secondary": "#cccccc",
+    "accent": "#616161",
+    "background": "#FFFFFF",
+    "sidebar": "#F5F5F5",
+    "toolbar": "#b8b8b8",
+    "dark": false
+  }
+]

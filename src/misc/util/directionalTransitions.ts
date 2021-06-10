@@ -10,10 +10,8 @@ export const useDirectionalTransitions = (args: {
   const leaveTransitionName = ref("fade");
 
   const setTransitionNames = (direction: Direction) => {
-    const {
-      enterTransitionName: e,
-      leaveTransitionName: l,
-    } = getTransitionName(args.transitionName(), direction);
+    const { enterTransitionName: e, leaveTransitionName: l } =
+      getTransitionName(args.transitionName(), direction);
     enterTransitionName.value = e;
     leaveTransitionName.value = l;
   };

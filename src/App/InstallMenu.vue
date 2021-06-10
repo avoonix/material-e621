@@ -8,7 +8,7 @@
         <v-icon>mdi-download</v-icon>
       </v-badge>
     </v-btn>
-    <v-card max-width="400">
+    <v-card max-width="400" color="secondary">
       <v-card-text>
         You are using a browser that supports installing progressive web apps.
         After installing, a shortcut will be added to your app drawer and the

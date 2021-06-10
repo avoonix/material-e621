@@ -3,29 +3,23 @@
     <v-layout align-center>
       <v-flex text-xs-center xs12 sm10 offset-sm1 lg6 offset-lg3>
         <settings-page-title title="Appearance" color="darken-1 pink" />
-        <settings-page-item title="Primary color" select>
-          <!-- description="The primary theme color" -->
-          <color-chooser :color.sync="primary" />
-        </settings-page-item>
-        <settings-page-item title="Secondary color" select>
-          <!-- description="The secondary theme color" -->
-          <color-chooser :color.sync="secondary" />
-        </settings-page-item>
-        <settings-page-item title="Accent color" select>
-          <!-- description="The accent theme color" -->
-          <color-chooser :color.sync="accent" />
-        </settings-page-item>
-        <settings-page-item title="Dark" switch>
-          <!-- description="The card and text color" -->
-          <v-switch v-model="dark"></v-switch>
-        </settings-page-item>
-        <settings-page-item title="Background color" select>
-          <!-- description="The background color" -->
-          <color-chooser :color.sync="background" />
-        </settings-page-item>
-        <settings-page-item title="Sidebar color" select>
-          <!-- description="The sidebar color" -->
-          <color-chooser :color.sync="sidebar" />
+        <settings-page-item title="Colors" select>
+          <v-btn
+            outline
+            block
+            large
+            color="primary"
+            to="/settings/appearance/themes"
+          >
+            Browse themes
+          </v-btn>
+          <color-chooser label="Primary" :color.sync="primary" />
+          <color-chooser label="Secondary" :color.sync="secondary" />
+          <color-chooser label="Accent" :color.sync="accent" />
+          <color-chooser label="Background" :color.sync="background" />
+          <color-chooser label="Sidebar" :color.sync="sidebar" />
+          <color-chooser label="Toolbar" :color.sync="toolbar" />
+          <v-switch label="Dark" v-model="dark"></v-switch>
         </settings-page-item>
         <settings-page-item
           title="Fullscreen image transitions"
@@ -41,7 +35,7 @@
           />
           <transition-preview
             :transition-name="fullscreenTransition"
-            :ratio="16 / 9"
+            :ratio="2"
             :directions="[
               'left',
               'right',
@@ -69,7 +63,7 @@
           />
           <transition-preview
             :transition-name="routeTransition"
-            :ratio="16 / 12"
+            :ratio="2"
             :directions="['none', 'right', 'left', 'none']"
             class="mt-3"
           />
@@ -180,6 +174,14 @@ export default defineComponent({
         },
         set(value) {
           appearanceService.dark = value;
+        },
+      }),
+      toolbar: computed<string>({
+        get() {
+          return appearanceService.toolbarColor;
+        },
+        set(value) {
+          appearanceService.toolbarColor = value;
         },
       }),
       fullscreenTransition: computed<string>({

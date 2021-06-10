@@ -1,3 +1,5 @@
+import Vue from "vue";
+import { withFallback } from "./fallback";
 import { state } from "./state";
 import { ISettingsServiceState } from "./types";
 
@@ -28,6 +30,13 @@ class AppearanceService {
   }
   public set backgroundColor(value) {
     state.appearance.background = value;
+  }
+
+  public get toolbarColor() {
+    return withFallback(state.appearance.toolbar, "#020c1c");
+  }
+  public set toolbarColor(value) {
+    Vue.set(state.appearance, "toolbar", value);
   }
 
   public get sidebarColor() {
@@ -89,6 +98,30 @@ class AppearanceService {
   public set hideInstallPrompt(value) {
     state.appearance.hideInstallPrompt = value;
   }
+
+  applyTheme(theme: Theme) {
+    this.primaryColor = theme.primary;
+    this.secondaryColor = theme.secondary;
+    this.accentColor = theme.accent;
+    this.backgroundColor = theme.background;
+    this.sidebarColor = theme.sidebar;
+    this.toolbarColor = theme.toolbar;
+    this.dark = theme.dark;
+  }
+
+  public get theme() {
+    return {
+      primary: this.primaryColor,
+      secondary: this.secondaryColor,
+      accent: this.accentColor,
+      background: this.backgroundColor,
+      sidebar: this.sidebarColor,
+      toolbar: this.toolbarColor,
+      dark: this.dark,
+    };
+  }
 }
+
+export type Theme = AppearanceService["theme"];
 
 export const appearanceService = new AppearanceService();

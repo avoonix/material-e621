@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card color="secondary">
     <v-card-title>
       <div>
         <h3 class="headline">

@@ -1,3 +1,5 @@
+import qs from "qs";
+
 export interface IGitCommit {
   hash: string;
   date: Date;
@@ -26,3 +28,6 @@ export const getGitInfo = (): IGitCommit[] =>
         },
       };
     });
+
+export const createIssueLink = (args: { title: string; body: string }) =>
+  `https://github.com/avoonix/material-e621/issues/new?${qs.stringify(args)}`;

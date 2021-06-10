@@ -1,6 +1,6 @@
 <template>
   <v-flex class="my-2">
-    <v-card>
+    <v-card color="secondary">
       <div :class="color">
         <v-icon size="100">{{ icon }}</v-icon>
       </div>

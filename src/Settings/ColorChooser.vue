@@ -1,14 +1,17 @@
 <template>
   <v-layout>
     <v-select
-      :background-color="currentColor"
       :items="colors"
-      label="Choose"
+      :label="label"
       box
-      solo
       hide-details
       v-model="currentColor"
     >
+      <template #prepend>
+        <v-avatar :color="currentColor">
+          <v-icon>mdi-palette</v-icon>
+        </v-avatar>
+      </template>
       <template
         slot="selection"
         slot-scope="{ item, selected, disabled, index }"
@@ -62,6 +65,10 @@ const colors = Object.entries(vuetifyColors).reduce<
 export default defineComponent({
   props: {
     color: {
+      type: String,
+      required: true,
+    },
+    label: {
       type: String,
       required: true,
     },
