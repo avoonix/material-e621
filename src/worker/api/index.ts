@@ -17,7 +17,7 @@ export * from "./requestTypes";
 const axios = ax.create({
   responseType: "json",
   params: {
-    _client: "MaterialE621/0.0.0 (by Avoonix on e621)",
+    _client: "Material e621/0.0.0 (by Avoonix on e621)",
   },
 });
 
@@ -76,6 +76,48 @@ export const e621 = {
           "search[name_matches]": args.query,
         },
       });
+    },
+  },
+};
+
+export interface IPostFavoriteArgs {
+  postId: number;
+  auth: {
+    login: string;
+    api_key: string;
+  };
+}
+
+export const custom = {
+  posts: {
+    favorite(args: IPostFavoriteArgs) {
+      return axios.post(
+        "https://material-e621-proxy.vercel.app/api/favorites",
+        { post_id: args.postId },
+        {
+          headers: {
+            "content-type": "application/json",
+          },
+          auth: {
+            username: args.auth.login,
+            password: args.auth.api_key,
+          },
+        },
+      );
+    },
+    unfavorite(args: IPostFavoriteArgs) {
+      return axios.delete(
+        `https://material-e621-proxy.vercel.app/api/favorites/${args.postId}`,
+        {
+          headers: {
+            "content-type": "application/json",
+          },
+          auth: {
+            username: args.auth.login,
+            password: args.auth.api_key,
+          },
+        },
+      );
     },
   },
 };

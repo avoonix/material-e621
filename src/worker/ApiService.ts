@@ -3,8 +3,9 @@ import {
   ITagsListArgs,
   IPoolsArgs,
   Post,
-  Tag,
   IPostsListArgs,
+  IPostFavoriteArgs,
+  custom,
 } from "./api";
 import { isPostBlacklisted } from "./blacklist";
 import debug from "debug";
@@ -19,6 +20,7 @@ const log = debug("app:ApiService");
 export interface EnhancedPost extends Post {
   __meta: {
     isBlacklisted: boolean;
+    isFavoriteLoading?: boolean;
   };
 }
 
@@ -68,5 +70,31 @@ export class ApiService {
 
   async getPools(args: IPoolsArgs) {
     return (await e621.pools.list(args)).data;
+  }
+
+  async favoritePost(args: IPostFavoriteArgs) {
+    try {
+      await custom.posts.favorite(args);
+      return true;
+    } catch (error) {
+      const message = error?.response?.data?.message;
+      if (message) {
+        throw new Error(message);
+      }
+      throw error;
+    }
+  }
+
+  async unfavoritePost(args: IPostFavoriteArgs) {
+    try {
+      await custom.posts.unfavorite(args);
+      return true;
+    } catch (error) {
+      const message = error?.response?.data?.message;
+      if (message) {
+        throw new Error(message);
+      }
+      throw error;
+    }
   }
 }

@@ -186,6 +186,12 @@ export class AnalyzeService {
       postsBefore?: number;
       postsAfter?: number;
     },
+    auth:
+      | {
+          login: string;
+          api_key: string;
+        }
+      | undefined,
     onProgress: (event: IProgressEvent) => void,
   ) {
     // fetch posts, sort them by score and display the top `limit` ones
@@ -207,6 +213,7 @@ export class AnalyzeService {
         tags: [],
         postsBefore,
         postsAfter,
+        auth,
       });
 
       const scoredNewPosts = scorePosts(tags, weights, newPosts);

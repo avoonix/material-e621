@@ -18,6 +18,7 @@
         :post="post"
         @open-post-details="$emit('open-post-details', $event)"
         @open-post-fullscreen="setClicked"
+        @set-post-favorite="$emit('set-post-favorite', $event)"
       />
     </v-card-actions>
     <div :class="stripeColor" :style="{ height: '5px' }" />

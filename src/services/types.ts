@@ -4,7 +4,7 @@ export enum BlacklistMode {
   blackout,
 }
 
-export type ButtonType = "info" | "fullscreen" | "external";
+export type ButtonType = "info" | "fullscreen" | "external" | "favorite";
 
 export enum FullscreenZoomUiMode {
   alwaysHide,

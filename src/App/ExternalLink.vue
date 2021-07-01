@@ -1,6 +1,5 @@
 <template>
   <a
-    :is="component"
     :href="href"
     v-on="$listeners"
     v-bind="$attrs"
@@ -21,10 +20,6 @@ export default defineComponent({
     href: {
       type: String,
       default: "",
-    },
-    component: {
-      type: String,
-      default: "a",
     },
   },
 });

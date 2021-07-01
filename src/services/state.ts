@@ -41,9 +41,9 @@ export const defaultSettings: ISettingsServiceState = {
     username: null,
   },
   posts: {
-    buttons: ["info", "fullscreen", "external"],
-    fullscreenButtons: ["external", "info"],
-    detailsButtons: ["external"],
+    buttons: ["info", "fullscreen", "external", "favorite"],
+    fullscreenButtons: ["external", "info", "favorite"],
+    detailsButtons: ["external", "favorite"],
     fullscreenZoomUiMode: isMobile
       ? FullscreenZoomUiMode.alwaysHide
       : FullscreenZoomUiMode.hideWhileZoomed,

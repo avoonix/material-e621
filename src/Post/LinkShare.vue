@@ -73,7 +73,7 @@ export default defineComponent({
     const url = computed(() => {
       switch (urlType.value) {
         case UrlTypes.materialE621:
-          return `${getBaseUrl()}/#/post/${props.postId}`; // TODO: update url
+          return `${getBaseUrl()}/#/posts?first_post=${props.postId}`;
         case UrlTypes.e621:
           return `https://e621.net/posts/${props.postId}`;
         case UrlTypes.image:
@@ -140,26 +140,12 @@ export default defineComponent({
           icon: "mdi-telegram",
         },
         {
-          name: "Google+",
-          color: "#D64A37",
-          dark: true,
-          url: `https://plus.google.com/share?url=${encodedUrl}`,
-          icon: "mdi-google-plus",
-        },
-        {
           name: "Email",
           color: "#b2b2b2",
           dark: false,
           url: `mailto:?&subject=${text}&body=${encodedUrl}`,
           icon: "mdi-email",
           noPopup: true,
-        },
-        {
-          name: "Tumblr",
-          color: "#2F4155",
-          dark: true,
-          url: `http://www.tumblr.com/share/link?url=${encodedUrl}&name=${text}&description=${text}`,
-          icon: "mdi-alpha-t-box",
         },
         {
           name: "Copy to clipboard",
@@ -175,22 +161,6 @@ export default defineComponent({
           dark: false,
           url: `https://www.google.com/searchbyimage?image_url=${rawUrl}`,
           icon: "mdi-google",
-        },
-        {
-          name: "Copy DText link",
-          color: "#152f56",
-          dark: true,
-          url: `"${unencodedText}":${url.value}`,
-          icon: "mdi-code-brackets",
-          clipboard: true,
-        },
-        {
-          name: "Copy IFrame embed",
-          color: "#f6b73c",
-          dark: false,
-          url: `<iframe title="${unencodedText}" src="${url.value}"></iframe>`,
-          icon: "mdi-code-tags",
-          clipboard: true,
         },
       ];
     });

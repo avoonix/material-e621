@@ -51,7 +51,9 @@
             and
             <v-icon title="Vue" size="18" class="green--text">mdi-vuejs</v-icon>
             by
-            <a href="https://github.com/avoonix/" class="white--text">Avoo</a>
+            <a href="https://avoonix.com/" class="white--text" title="Avoonix">
+              Avoo
+            </a>
           </div>
         </v-flex>
       </v-layout>

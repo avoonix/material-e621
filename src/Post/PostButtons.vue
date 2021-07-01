@@ -7,6 +7,7 @@
       :type="button"
       @open-post-details="$emit('open-post-details', $event)"
       @open-post-fullscreen="$emit('open-post-fullscreen', $event)"
+      @set-post-favorite="$emit('set-post-favorite', $event)"
     />
   </div>
 </template>

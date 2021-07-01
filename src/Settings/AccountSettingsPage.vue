@@ -20,6 +20,15 @@
             @click:append="showPassword = !showPassword"
             autocomplete="password"
           />
+          <p class="text-xs-left">
+            Material e621 uses the regular e621 API as much as possible, but the
+            favorites endpoints don't have the required cross origin resource
+            sharing headers in order to use them directly in the browser. This
+            is why adding and removing favorites uses this API:
+            <external-link
+              href="https://github.com/avoonix/material-e621-proxy"
+            />
+          </p>
         </settings-page-item>
       </v-flex>
     </v-layout>
@@ -31,6 +40,7 @@ import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
 import { computed, defineComponent, ref } from "@vue/composition-api";
 import { accountService } from "@/services";
+import ExternalLink from "@/App/ExternalLink.vue";
 
 export default defineComponent({
   metaInfo: {
@@ -39,6 +49,7 @@ export default defineComponent({
   components: {
     SettingsPageTitle,
     SettingsPageItem,
+    ExternalLink,
   },
   setup() {
     const showPassword = ref(false);

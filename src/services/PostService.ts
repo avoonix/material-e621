@@ -1,5 +1,5 @@
 import { state } from "./state";
-import { DataSaverType, FullscreenZoomUiMode } from "./types";
+import { ButtonType, DataSaverType, FullscreenZoomUiMode } from "./types";
 import { withFallback } from "./fallback";
 import Vue from "vue";
 
@@ -23,6 +23,10 @@ class PostService {
   }
   public set detailsButtons(value) {
     state.posts.detailsButtons = [...value];
+  }
+
+  public get allButtonTypes() {
+    return ["info", "fullscreen", "external", "favorite"] as ButtonType[];
   }
 
   public get fullscreenZoomUiMode() {

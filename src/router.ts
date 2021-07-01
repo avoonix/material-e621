@@ -15,9 +15,7 @@ export default new Router({
       path: "/",
       name: "LandingPage",
       component: () =>
-        import(
-          /* webpackChunkName: "landing-page" */ "@/Landing/LandingPage.vue"
-        ),
+        import(/* webpackChunkName: "misc" */ "@/Landing/LandingPage.vue"),
       meta: {
         minimalHeader: true,
       },
@@ -27,8 +25,7 @@ export default new Router({
       // alias: "/e621",
       name: "Posts",
       component: () =>
-        // TODO: uncomment once complete
-        import(/* webpackChunkName: "posts" */ "@/Post/PostsPage.vue"),
+        import(/* webpackChunkName: "misc" */ "@/Post/PostsPage.vue"),
     },
     {
       path: "/settings",
@@ -74,7 +71,7 @@ export default new Router({
       path: "/settings/appearance/themes",
       name: "Themes",
       component: () =>
-        import(/* webpackChunkName: "themes" */ "@/Settings/ThemePage.vue"),
+        import(/* webpackChunkName: "settings" */ "@/Settings/ThemePage.vue"),
     },
     {
       path: "/settings/history",
@@ -102,13 +99,13 @@ export default new Router({
       path: "/parser",
       name: "Parser",
       component: () =>
-        import(/* webpackChunkName: "parser" */ "@/Parser/ParserTestPage.vue"),
+        import(/* webpackChunkName: "misc" */ "@/Parser/ParserTestPage.vue"),
     },
     {
       path: "/about",
       name: "About",
       component: () =>
-        import(/* webpackChunkName: "about" */ "@/About/AboutPage.vue"),
+        import(/* webpackChunkName: "misc" */ "@/About/AboutPage.vue"),
     },
     {
       path: "/analyzer",
@@ -131,7 +128,7 @@ export default new Router({
       name: "Suggester",
       component: () =>
         import(
-          /* webpackChunkName: "suggester" */ "@/Suggester/SuggesterInput.vue"
+          /* webpackChunkName: "analyzer" */ "@/Suggester/SuggesterInput.vue"
         ),
     },
     {
@@ -139,14 +136,14 @@ export default new Router({
       name: "SuggesterResult",
       component: () =>
         import(
-          /* webpackChunkName: "suggester" */ "@/Suggester/SuggesterResult.vue"
+          /* webpackChunkName: "analyzer" */ "@/Suggester/SuggesterResult.vue"
         ),
     },
     {
       path: "/404",
       name: "ErrorPage",
       component: () =>
-        import(/* webpackChunkName: "error" */ "@/Error/ErrorPage.vue"),
+        import(/* webpackChunkName: "misc" */ "@/Error/ErrorPage.vue"),
       alias: "*",
     },
   ],

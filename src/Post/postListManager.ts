@@ -1,5 +1,9 @@
+import router from "@/router";
+import { accountService, snackbarService } from "@/services";
 import { EnhancedPost } from "@/worker/ApiService";
+import { getApiService } from "@/worker/services";
 import { computed, ref, watch } from "@vue/composition-api";
+import Vue from "vue";
 
 interface IUsePostListManagerArgs {
   loadPosts(args: {
@@ -23,6 +27,41 @@ export const usePostListManager = ({
   const fullscreenPost = ref<EnhancedPost | null>(null);
   const detailsPost = ref<EnhancedPost | null>(null);
   const loading = ref(false);
+
+  const setPostFavorite = async (args: {
+    postId: number;
+    favorited: boolean;
+  }) => {
+    const post = posts.value.find((p) => p.id === args.postId);
+    if (!post) {
+      return;
+    }
+
+    if (!accountService.auth) {
+      snackbarService.addMessage("Not logged in");
+      router.push({ name: "AccountSettings" });
+      return;
+    }
+    const service = await getApiService();
+    const serviceArgs = {
+      postId: post.id,
+      auth: accountService.auth,
+    };
+    try {
+      Vue.set(post.__meta, "isFavoriteLoading", true);
+      if (args.favorited) {
+        await service.favoritePost(serviceArgs);
+      } else {
+        await service.unfavoritePost(serviceArgs);
+      }
+    } catch (error) {
+      const errorMessage = error.message || String(error);
+      snackbarService.addMessage(errorMessage);
+    } finally {
+      Vue.set(post.__meta, "isFavoriteLoading", false);
+    }
+    Vue.set(post, "is_favorited", args.favorited);
+  };
 
   const getPostCountToRemove = () => posts.value.length - getSettingsPageSize();
 
@@ -99,17 +138,6 @@ export const usePostListManager = ({
         await loadPreviousPage();
       }
     }
-    // this.fullscreenPost =
-    //   this.posts.find((p) => p.id === postId) ||
-    //   (await (async () => {
-    //     const service = await getApiService();
-    //     const posts = await service.getPosts({
-    //       limit: 1,
-    //       tags: [`id:${postId}`],
-    //       removeBlacklisted: false,
-    //     });
-    //     return posts[0] || null;
-    //   })());
   };
 
   const openFullscreenPost = _openFullscreenPost(0);
@@ -130,5 +158,6 @@ export const usePostListManager = ({
     openFullscreenPost,
     openNextFullscreenPost,
     openPreviousFullscreenPost,
+    setPostFavorite,
   };
 };

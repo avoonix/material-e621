@@ -1,5 +1,5 @@
 <template>
-  <v-btn icon @click="button.onClick">
+  <v-btn icon @click="button.onClick" :loading="button.loading">
     <v-icon>{{ button.icon }}</v-icon>
   </v-btn>
 </template>
@@ -7,40 +7,16 @@
 <script lang="ts">
 import { ButtonType } from "@/services/types";
 import { openE6PostInStandaloneWindow } from "@/misc/util/url";
-import { Post } from "@/worker/api";
 import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { postService } from "@/services";
+import { usePostListManager } from "./postListManager";
+import { EnhancedPost } from "@/worker/ApiService";
 
 interface IButton {
   icon: string;
   onClick: () => void;
+  loading?: boolean;
 }
-
-// export const togglePostFavorite = {
-//   data() {
-//     return { favoritePostLoading: false, favoritePostLoadingTimeout: 0 };
-//   },
-//   watch: {
-//     post(val, prev) {
-//       if (val.custom_favorited_by_user != prev.custom_favorited_by_user) {
-//         this.favoritePostLoading = false;
-//       }
-//     },
-//   },
-//   methods: {
-//     togglePostFavorite(post) {
-//       this.favoritePostLoading = true;
-//       clearTimeout(this.favoritePostLoadingTimeout);
-//       this.favoritePostLoadingTimeout = setTimeout(() => {
-//         this.favoritePostLoading = false;
-//       }, 30000);
-//       const action = post.custom_favorited_by_user ? "destroy" : "create";
-//       this.$store.dispatch("favoritePost", {
-//         action: action,
-//         postId: post.id,
-//       });
-//     },
-//   },
-// };
 
 export default defineComponent({
   props: {
@@ -48,14 +24,14 @@ export default defineComponent({
       type: String as PropType<ButtonType>,
       required: true,
       validator: (v: any): v is ButtonType =>
-        (["external", "info", "fullscreen"] as ButtonType[]).indexOf(v) !== -1,
+        postService.allButtonTypes.indexOf(v) !== -1,
     },
     post: {
-      type: Object as PropType<Post>,
+      type: Object as PropType<EnhancedPost>,
     },
   },
   setup(props, context) {
-    const buttons: { [key in ButtonType]: IButton } = {
+    const buttons = computed<{ [key in ButtonType]: IButton }>(() => ({
       info: {
         icon: "mdi-information",
         onClick: () => {
@@ -74,11 +50,21 @@ export default defineComponent({
           if (props.post) openE6PostInStandaloneWindow(props.post.id);
         },
       },
-      // TODO:
-      // fav/unfav, download
-    };
+      favorite: {
+        icon: props.post?.is_favorited ? "mdi-heart" : "mdi-heart-outline",
+        loading: props.post?.__meta.isFavoriteLoading || false,
+        onClick: async () => {
+          if (!props.post) return;
+          context.emit("set-post-favorite", {
+            postId: props.post.id,
+            favorited: !props.post.is_favorited,
+          } as Parameters<ReturnType<typeof usePostListManager>["setPostFavorite"]>["0"]);
+        },
+      },
+      // TODO: download?
+    }));
 
-    const button = computed(() => buttons[props.type]);
+    const button = computed(() => buttons.value[props.type]);
 
     return {
       button,

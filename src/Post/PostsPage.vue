@@ -46,6 +46,7 @@
       :details-post="detailsPost"
       @open-post-details="openPostDetails"
       @close-details="detailsPost = null"
+      @set-post-favorite="setPostFavorite($event)"
     />
     <!-- TODO: set has-(next|previous)-fullscreen-post -->
     <portal to="sidebar-suggestions">
@@ -94,6 +95,7 @@ export default defineComponent({
       openFullscreenPost,
       openNextFullscreenPost,
       openPreviousFullscreenPost,
+      setPostFavorite,
     } = usePostListManager({
       getSavedFirstPostId() {
         return Number(route.query.first_post); // TODO: handle null
@@ -196,6 +198,7 @@ export default defineComponent({
       openPreviousFullscreenPost,
       addTag,
       removeTag,
+      setPostFavorite,
     };
   },
 });

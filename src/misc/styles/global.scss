@@ -4,16 +4,16 @@
 
 .blacklist-blur {
   filter: blur(7px) !important;
-  /* // transform: scale(0.99); */
 }
 
 body {
   user-select: initial !important;
-  background-color: #808080;
+  background-color: #000000;
+  background-color: var(--v-secondary-base);
 }
 
 html {
-  overflow-y: scroll !important;
+  overflow-y: auto !important;
 }
 
 * {
@@ -36,4 +36,8 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--v-secondary-lighten1);
+}
+
+.v-select-list .v-list {
+  background-color: var(--v-secondary-base);
 }

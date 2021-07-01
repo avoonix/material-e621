@@ -17,6 +17,7 @@
           :post="post"
           @open-post="$emit('open-post', $event)"
           @open-post-details="$emit('open-post-details', $event)"
+          @set-post-favorite="$emit('set-post-favorite', $event)"
         />
       </template>
     </post-list>
@@ -34,11 +35,13 @@
       @next-post="$emit('next-fullscreen-post')"
       @previous-post="$emit('previous-fullscreen-post')"
       @open-post-details="$emit('open-post-details', $event)"
+      @set-post-favorite="$emit('set-post-favorite', $event)"
     />
     <details-dialog
       :current="detailsPost"
       @close="$emit('close-details')"
       @open-post-fullscreen="$emit('open-post', $event)"
+      @set-post-favorite="$emit('set-post-favorite', $event)"
     />
     <!--
     <div>

@@ -99,7 +99,8 @@ export default defineComponent({
     AutomaticDataSaverInfo,
   },
   setup() {
-    const availableButtons: ButtonType[] = ["info", "fullscreen", "external"];
+    const availableButtons = computed(() => postService.allButtonTypes);
+
     const postButtons = computed<ButtonType[]>({
       get() {
         return postService.buttons;

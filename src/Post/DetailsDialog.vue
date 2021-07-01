@@ -53,6 +53,7 @@
           :post="current"
           @open-post-details="dialog = false"
           @open-post-fullscreen="$emit('open-post-fullscreen', $event)"
+          @set-post-favorite="$emit('set-post-favorite', $event)"
         />
         <v-btn color="primary" flat @click.native="dialog = false">Close</v-btn>
       </v-card-actions>

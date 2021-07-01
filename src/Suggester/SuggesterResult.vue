@@ -18,6 +18,7 @@
             :details-post="detailsPost"
             @open-post-details="openPostDetails"
             @close-details="detailsPost = null"
+            @set-post-favorite="setPostFavorite($event)"
           />
           <portal to="sidebar-suggestions">
             <progress-message v-if="listProgress" :value="listProgress" />
@@ -50,7 +51,7 @@ import BaseTags from "./BaseTags.vue";
 import { usePostListManager } from "@/Post/postListManager";
 import { updateRouterQuery } from "@/misc/util/utilities";
 import Posts from "@/Post/Posts.vue";
-import { postService } from "@/services";
+import { accountService, postService } from "@/services";
 import { useRoute } from "@/misc/util/router";
 import ProgressMessage from "./ProgressMessage.vue";
 
@@ -115,6 +116,7 @@ export default defineComponent({
       openFullscreenPost,
       openNextFullscreenPost,
       openPreviousFullscreenPost,
+      setPostFavorite,
     } = usePostListManager({
       getSavedFirstPostId() {
         return Number(route.query.first_post); // TODO: handle null
@@ -138,6 +140,7 @@ export default defineComponent({
             weights.value,
             postService.postListFetchLimit,
             { postsBefore, postsAfter },
+            accountService.auth,
             Comlink.proxy((progressEvent) => {
               listProgress.value = progressEvent;
             }),
@@ -180,6 +183,7 @@ export default defineComponent({
       openFullscreenPost,
       openNextFullscreenPost,
       openPreviousFullscreenPost,
+      setPostFavorite,
     };
   },
 });
