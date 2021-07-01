@@ -134,10 +134,10 @@ export default defineComponent({
     },
     drawer: {
       get() {
-        return (
+        return Boolean(
           this.navMode == "sidebar" &&
-          (this.drawer_ || !this.isMobile) &&
-          !this.$route.meta.minimalHeader
+            (this.drawer_ || !this.isMobile) &&
+            !(this as any).$route.meta.minimalHeader,
         );
       },
       set(val) {
