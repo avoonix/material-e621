@@ -3,7 +3,6 @@
     class="text"
     :style="{
       width,
-      height,
       backgroundColor: color,
     }"
   >
@@ -28,7 +27,7 @@ export default defineComponent({
     },
     color: {
       type: String,
-      required: true,
+      default: "grey",
     },
   },
   setup(props, context) {

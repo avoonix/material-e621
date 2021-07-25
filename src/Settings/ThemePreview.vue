@@ -22,7 +22,7 @@
             :color="color"
             style="margin-top: 4px; margin-left: 4px"
             v-for="(color, i) in sidebar"
-            :key="i"
+            :key="`${i}_sidebar`"
           />
           <div style="padding: 2px" />
           <theme-text
@@ -31,7 +31,7 @@
             :class="color"
             style="margin-top: 4px; margin-left: 4px; border-radius: 30px"
             v-for="(color, i) in tags"
-            :key="i"
+            :key="`${i}_tags`"
           />
         </v-card>
       </v-flex>
