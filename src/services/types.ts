@@ -20,6 +20,7 @@ export enum DataSaverType {
 }
 
 export interface ISettingsServiceState {
+  configVersion: undefined | 1;
   blacklist: {
     mode: BlacklistMode;
     tags: string[];

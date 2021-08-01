@@ -9,6 +9,7 @@ import {
 } from "./types";
 
 export const defaultSettings: ISettingsServiceState = {
+  configVersion: 1,
   blacklist: {
     mode: BlacklistMode.blur,
     // tags: ["rating:explicit", "rating:questionable"],

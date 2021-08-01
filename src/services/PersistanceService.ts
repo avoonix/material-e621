@@ -27,7 +27,7 @@ class PersistanceService {
       savedState.snackbar = null;
     }
     if (savedState) {
-      Object.assign(state, savedState);
+      this.setState(savedState);
     }
   }
   public async stateToFile() {
@@ -46,7 +46,7 @@ class PersistanceService {
         }
         const settings = JSON.parse(fileContent);
         // TODO: test if correct
-        Object.assign(state, settings);
+        this.setState(settings);
         return resolve();
       };
 
@@ -61,11 +61,19 @@ class PersistanceService {
   }
 
   public resetStateToDefault() {
-    Object.assign(state, clone(defaultSettings));
+    this.setState(clone(defaultSettings));
   }
 
   private serializeState() {
     return JSON.stringify(state);
+  }
+
+  private setState(newState: ISettingsServiceState) {
+    if (!newState.configVersion) {
+      newState.configVersion = 1;
+    }
+    // TODO: apply migrations
+    Object.assign(state, newState);
   }
 
   private saveToLocalStorage<T>(key: string, value: T): Promise<T> {
@@ -78,5 +86,12 @@ class PersistanceService {
     return localforage.removeItem(key);
   }
 }
+
+// const migrations = {
+//   2: (state: ISettingsServiceState) => {
+//     // other migrations
+//     state.configVersion = 2;
+//   },
+// } as const;
 
 export const persistanceService = new PersistanceService();
