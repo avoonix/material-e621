@@ -16,10 +16,21 @@
       :key="post.id"
       xs12
       class="mb-5"
-      v-for="post in visiblePosts"
+      v-for="(post, idx) in visiblePosts"
       ref="posts"
     >
-      <slot name="post" :post="post" />
+      <intersect
+        @enter="triggerLoad(idx, 'enter', $event)"
+        @leave="triggerLoad(idx, 'leave', $event)"
+        :threshold="[0]"
+        :root="null"
+        root-margin="0px 0px 0px 0px"
+        v-if="shouldHaveIntersectionObserver(idx)"
+      >
+        <!-- @change="say('change', $event)" -->
+        <slot name="post" :post="post" />
+      </intersect>
+      <slot v-else name="post" :post="post" />
     </v-flex>
   </v-flex>
 </template>
@@ -35,8 +46,8 @@ import {
   nextTick,
   computed,
   PropType,
-  watchEffect,
 } from "@vue/composition-api";
+import Intersect from "vue-intersect";
 
 const isAnyPartOfElementInViewport = (el: Element) => {
   const rect = el.getBoundingClientRect();
@@ -67,9 +78,16 @@ const getOffset = (el: Element) => {
 };
 
 export default defineComponent({
+  components: {
+    Intersect,
+  },
   props: {
     visiblePosts: {
       type: Array as PropType<Post[]>,
+      required: true,
+    },
+    loading: {
+      type: Boolean,
       required: true,
     },
   },
@@ -77,6 +95,14 @@ export default defineComponent({
     const layout = ref<"list" | "grid">("list");
     const size = ref<"sm" | "md" | "lg">("md");
     const firstVisibleElement = ref<Element | null>(null);
+    const lastLoad = ref<number>(0);
+
+    watch(
+      () => props.loading,
+      () => {
+        lastLoad.value = performance.now();
+      },
+    );
 
     const handleScroll = (event: Event) => {
       if (!props.visiblePosts.length || !context.refs.posts) return;
@@ -114,15 +140,10 @@ export default defineComponent({
 
     const visiblePostIds = computed(() => props.visiblePosts.map((p) => p.id));
 
-    // watchEffect(() => {
-    //   console.log(
-    //     firstVisibleElement.value && getOffset(firstVisibleElement.value),
-    //   );
-    // });
-
     watch(
       () => visiblePostIds.value,
       async () => {
+        hasLeftElementThatTriggersPreviousPage.value = false;
         if (firstVisibleElement.value) {
           const el = firstVisibleElement.value;
           const oldScroll = getOffset(el);
@@ -133,9 +154,52 @@ export default defineComponent({
       },
     );
 
+    const indexThatTriggersPreviousPage = computed(() =>
+      props.visiblePosts.length > 2 ? 1 : 0,
+    );
+    const indexThatTriggersNextPage = computed(() =>
+      props.visiblePosts.length > 2
+        ? props.visiblePosts.length - 2
+        : props.visiblePosts.length - 1,
+    );
+
+    const triggerLoad = (
+      index: number,
+      name: "enter" | "leave",
+      event: IntersectionObserverEntry,
+    ) => {
+      console.log("TODO: trigger load");
+      if (true as unknown) {
+        return;
+      }
+      if (props.loading || lastLoad.value + 1000 > performance.now()) return; // limit to 1 load per second
+      if (index === indexThatTriggersNextPage.value && name === "enter") {
+        context.emit("load-next-page");
+      } else if (index === indexThatTriggersPreviousPage.value) {
+        if (name === "enter") {
+          if (hasLeftElementThatTriggersPreviousPage.value) {
+            context.emit("load-previous-page");
+          }
+        } else {
+          hasLeftElementThatTriggersPreviousPage.value = true;
+        }
+      }
+    };
+
+    const shouldHaveIntersectionObserver = (index: number) => {
+      return (
+        index === indexThatTriggersPreviousPage.value ||
+        index === indexThatTriggersNextPage.value
+      );
+    };
+
+    const hasLeftElementThatTriggersPreviousPage = ref(false);
+
     return {
       layout,
       size,
+      triggerLoad,
+      shouldHaveIntersectionObserver,
     };
   },
 });

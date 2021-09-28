@@ -8,8 +8,9 @@
     <!-- <logo v-if="loading" loader /> -->
     <post-list
       :visible-posts="posts"
-      @open-post="$emit('open-post', $event)"
-      @open-post-details="$emit('open-post-details', $event)"
+      :loading="loading"
+      @load-next-page="loadNext"
+      @load-previous-page="loadPrevious"
     >
       <template #post="{ post }">
         <!-- :layout="layout" -->
