@@ -13,7 +13,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["vite-plugin-pwa/client", "@types/offscreencanvas"]
+    "types": ["vite-plugin-pwa/client", "@types/offscreencanvas", "node"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }],
