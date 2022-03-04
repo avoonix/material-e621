@@ -13,6 +13,7 @@ const updateSW = registerSW({
       }, intervalMS);
   },
   onNeedRefresh() {
+    wait(1000);
     snackbarService.addMessage("Update available - refreshing in 10 seconds!");
     wait(10 * 1000);
     snackbarService.addMessage(
