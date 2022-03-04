@@ -3,7 +3,7 @@
     <template v-for="tag in tags">
       <v-btn
         :key="tag"
-        outline
+        outlined
         @click="toggleBlacklisted(tag)"
         :color="isBlacklisted(tag) ? 'red' : 'green'"
       >
@@ -17,16 +17,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent, PropType } from "@vue/composition-api";
 
 export default defineComponent({
   props: {
     tags: {
-      type: Array,
+      type: Array as PropType<string[]>,
       required: true,
     },
     blacklisted: {
-      type: Array,
+      type: Array as PropType<string[]>,
       required: true,
     },
   },

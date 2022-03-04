@@ -44,8 +44,8 @@
           >
             {{ theme.name }}
           </v-toolbar>
-          <v-layout align-center row wrap>
-            <v-flex xs12 class="text-xs-center">
+          <v-layout align-center wrap>
+            <v-flex xs12 class="text-center">
               <theme-text
                 width="15%"
                 :ratio="0.25"
@@ -83,7 +83,7 @@
 
 <script lang="ts">
 import { getTagColorFromCategory } from "@/misc/util/utilities";
-import { Theme } from "@/services";
+import { Theme, ThemeItem } from "@/services";
 import { computed, defineComponent, PropType } from "@vue/composition-api";
 import imageSrc from "./image.jpg";
 import ThemeText from "./ThemeText.vue";
@@ -94,7 +94,7 @@ export default defineComponent({
   },
   props: {
     theme: {
-      type: Object as PropType<Theme>,
+      type: Object as PropType<ThemeItem>,
       required: true,
     },
   },

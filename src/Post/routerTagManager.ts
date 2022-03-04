@@ -14,7 +14,7 @@ export const useRouterTagManager = () => {
       return tags.split(" ").filter((t: any) => t);
     },
     set(value) {
-      updateRouterQuery(router, {
+      updateRouterQuery({
         tags: value.join(" "),
       });
     },

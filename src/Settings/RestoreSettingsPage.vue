@@ -1,14 +1,14 @@
 <template>
   <v-container fill-height>
     <v-layout align-center>
-      <v-flex text-xs-center xs12 sm10 offset-sm1 lg6 offset-lg3>
+      <v-flex text-center xs12 sm10 offset-sm1 lg6 offset-lg3>
         <settings-page-title title="Backup and restore" color="darken-1 blue" />
         <settings-page-item
           title="Backup settings"
           description="Download your settings as JSON file. This file contains your API Keys (if you have added them) - so you shouldn't share it with anyone. "
           switch
         >
-          <v-btn flat color="accent" class="mb-3" @click="download">
+          <v-btn text color="accent" class="mb-3" @click="download">
             download
           </v-btn>
         </settings-page-item>
@@ -22,17 +22,12 @@
               class="file-btn"
               name="file"
               type="file"
-              @change="restore($event.target.files[0])"
+              @change="restore()"
             />
-            <v-btn
-              flat
-              color="accent"
-              class="mb-3"
-              @click="() => $refs.fileInput.click()"
-            >
+            <v-btn text color="accent" class="mb-3" @click="openFileInput">
               upload
             </v-btn>
-            <v-btn flat color="accent" class="mb-3" @click="reset">
+            <v-btn text color="accent" class="mb-3" @click="reset">
               reset to default
             </v-btn>
           </settings-page-item>
@@ -45,7 +40,7 @@
 <script lang="ts">
 import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
-import { computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent, ref } from "@vue/composition-api";
 import { persistanceService, snackbarService } from "@/services";
 import downloadjs from "downloadjs";
 
@@ -58,11 +53,14 @@ export default defineComponent({
     SettingsPageItem,
   },
   setup(props, context) {
+    const fileInput = ref<HTMLInputElement>();
     const download = async () => {
       const file = await persistanceService.stateToFile();
       downloadjs(file, file.name, file.type);
     };
-    const restore = async (file: File) => {
+    const restore = async () => {
+      const file = fileInput.value?.files?.[0];
+      if(!file) return;
       await persistanceService.loadStateFromFile(file);
       snackbarService.addMessage("successfully restored settings");
     };
@@ -70,10 +68,15 @@ export default defineComponent({
       persistanceService.resetStateToDefault();
       snackbarService.addMessage("successfully reset settings");
     };
+    const openFileInput = () => {
+      fileInput.value?.click();
+    };
     return {
       download,
       restore,
       reset,
+      openFileInput,
+      fileInput
     };
   },
 });

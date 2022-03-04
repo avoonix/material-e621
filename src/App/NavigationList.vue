@@ -1,21 +1,20 @@
 <template>
   <v-list subheader class="pa-0 mt-3">
-    <v-list-tile
+    <v-list-item
       v-for="(option, index) in navigationItems"
       :key="index"
       ripple
       router
       :to="option.to"
       :exact="option.exact"
-      avatar
     >
-      <v-list-tile-action>
+      <v-list-item-action>
         <v-icon>{{ option.icon }}</v-icon>
-      </v-list-tile-action>
-      <v-list-tile-content>
-        <v-list-tile-title>{{ option.name }}</v-list-tile-title>
-      </v-list-tile-content>
-    </v-list-tile>
+      </v-list-item-action>
+      <v-list-item-content>
+        <v-list-item-title>{{ option.name }}</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
   </v-list>
 </template>
 

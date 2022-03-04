@@ -1,5 +1,5 @@
 <template>
-  <v-app :dark="isDark" :class="`theme--${isDark ? 'dark' : 'light'}`">
+  <v-app :class="`theme--${currentTheme.dark ? 'dark' : 'light'}`">
     <v-navigation-drawer
       persistent
       :clipped="clipped"
@@ -13,20 +13,20 @@
       class="pa-2"
       :style="`background-color: ${currentTheme.sidebar} !important; border-color: ${currentTheme.sidebar} !important;`"
     >
-      <logo :type="logoStyle" @click.native="onLogoClick" />
+      <app-logo :type="logoStyle" @click.native="onLogoClick" />
       <navigation-list />
       <portal-target name="sidebar-suggestions" />
     </v-navigation-drawer>
-    <v-toolbar
+    <v-app-bar
       :color="currentTheme.toolbar"
-      :app="!$route.meta.minimalHeader"
-      :flat="$route.meta.minimalHeader"
+      :app="!minimalHeader"
+      :flat="minimalHeader"
       :clipped-left="clipped"
       :floating="navMode == 'floating'"
       :class="{
         'ma-2': navMode == 'floating',
         'mb-3': navMode == 'floating',
-        primary: $route.meta.minimalHeader,
+        primary: minimalHeader,
       }"
       class="padded-toolbar"
     >
@@ -37,44 +37,45 @@
         attach
         close-delay="0"
         :nudge-width="200"
-        v-if="navMode == 'floating' && !$route.meta.minimalHeader"
+        v-if="navMode == 'floating' && !minimalHeader"
       >
-        <v-btn slot="activator" icon>
-          <v-icon>mdi-menu</v-icon>
-        </v-btn>
+        <template #activator="{ on }">
+          <v-btn v-on="on" icon>
+            <v-icon>mdi-menu</v-icon>
+          </v-btn>
+        </template>
         <navigation-list />
       </v-menu>
       <v-slide-x-transition>
-        <v-toolbar-side-icon
+        <v-app-bar-nav-icon
           @click.stop="drawer = !drawer"
           class="hidden-lg-and-up"
-          v-if="navMode == 'sidebar' && !$route.meta.minimalHeader"
-        ></v-toolbar-side-icon>
+          v-if="navMode == 'sidebar' && !minimalHeader"
+        />
       </v-slide-x-transition>
       <portal-target name="toolbar" style="width: 100%">
-        <v-toolbar-title>
-          {{ appName }}
-        </v-toolbar-title>
+        <v-toolbar-title>{{ appName }}</v-toolbar-title>
       </portal-target>
-      <v-spacer></v-spacer>
+      <v-spacer />
       <navigation-toolbar v-if="navMode === 'toolbar'" />
-      <install-menu v-if="!$route.meta.minimalHeader" />
-    </v-toolbar>
+      <install-menu v-if="!minimalHeader" />
+    </v-app-bar>
     <main-content />
-    <snackbar />
+    <app-snackbar />
   </v-app>
 </template>
 
 <script lang="ts">
-import Snackbar from "./App/Snackbar.vue";
-import Logo from "./App/Logo.vue";
+import AppLogo from "./App/AppLogo.vue";
 import { useSettingsServiceState, appearanceService } from "./services";
-import { computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent, watch } from "@vue/composition-api";
 import NavigationList from "./App/NavigationList.vue";
 import NavigationToolbar from "./App/NavigationToolbar.vue";
 import MainContent from "./App/MainContent.vue";
 import InstallMenu from "./App/InstallMenu.vue";
 import { getAppName } from "./misc/util/utilities";
+import AppSnackbar from "./App/AppSnackbar.vue";
+import { shortcutService } from "./services/ShortcutService";
 
 const mobileBreakPoint = 1264;
 
@@ -93,6 +94,14 @@ export default defineComponent({
         availableStyles[Math.floor(availableStyles.length * Math.random())];
     };
 
+    watch(
+      shortcutService.shortcuts,
+      () => {
+        shortcutService.setUpShortcuts();
+      },
+      { immediate: true, deep: true },
+    );
+
     return {
       state,
       navMode,
@@ -102,7 +111,7 @@ export default defineComponent({
   },
   metaInfo() {
     return {
-      title: "Landing Page",
+      title: "Welcome",
       titleTemplate: `${getAppName()} - %s`,
       meta: [
         {
@@ -114,12 +123,12 @@ export default defineComponent({
     };
   },
   components: {
-    Logo,
-    Snackbar,
+    AppLogo,
     NavigationList,
     NavigationToolbar,
     MainContent,
     InstallMenu,
+    AppSnackbar,
   },
   data() {
     return {
@@ -129,6 +138,9 @@ export default defineComponent({
     };
   },
   computed: {
+    minimalHeader() {
+      return !!this.$route.meta?.minimalHeader;
+    },
     isMobile() {
       return this.$vuetify.breakpoint.width < mobileBreakPoint;
     },
@@ -137,15 +149,12 @@ export default defineComponent({
         return Boolean(
           this.navMode == "sidebar" &&
             (this.drawer_ || !this.isMobile) &&
-            !(this as any).$route.meta.minimalHeader,
+            !this.minimalHeader,
         );
       },
       set(val) {
         this.drawer_ = val;
       },
-    },
-    isDark() {
-      return appearanceService.dark;
     },
     currentTheme() {
       return {
@@ -155,14 +164,16 @@ export default defineComponent({
         background: appearanceService.backgroundColor,
         sidebar: appearanceService.sidebarColor,
         toolbar: appearanceService.toolbarColor,
+        dark: appearanceService.dark,
       };
     },
   },
   methods: {
     applyTheme() {
-      this.$vuetify.theme.primary = this.currentTheme.primary;
-      this.$vuetify.theme.secondary = this.currentTheme.secondary;
-      this.$vuetify.theme.accent = this.currentTheme.accent;
+      this.$vuetify.theme.currentTheme.primary = this.currentTheme.primary;
+      this.$vuetify.theme.currentTheme.secondary = this.currentTheme.secondary;
+      this.$vuetify.theme.currentTheme.accent = this.currentTheme.accent;
+      this.$vuetify.theme.dark = this.currentTheme.dark;
     },
   },
   async mounted() {

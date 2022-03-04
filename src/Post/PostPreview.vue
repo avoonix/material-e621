@@ -56,11 +56,12 @@ export default defineComponent({
     const isVideo = computed(() => props.file.ext === "webm");
     const isImage = computed(() => !isSwf.value && !isVideo.value);
 
-    const handleClick = () => {
+    const handleClick = async () => {
       if (imageSrc.value) {
         context.emit("open-post");
       } else {
-        router.push({ name: "AccountSettings" });
+        const { appRouter } = await import("@/misc/util/router");
+        appRouter.push({ name: "AccountSettings" });
       }
     };
 
@@ -96,6 +97,7 @@ export default defineComponent({
           return imageSrcPerQuality.value.medium;
         case DataSaverType.highest:
           return imageSrcPerQuality.value.high;
+        default:
         case DataSaverType.auto:
           if (!dataSaverInfo.value.typeSupported) {
             return imageSrcPerQuality.value.medium;

@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height>
     <v-layout align-center>
-      <v-flex text-xs-center xs12 sm10 offset-sm1 lg6 offset-lg3>
+      <v-flex text-center xs12 sm10 offset-sm1 lg6 offset-lg3>
         <settings-page-title title="Post" color="darken-3 brown" />
         <settings-page-item title="Buttons" select>
           <post-button-editor
@@ -14,14 +14,14 @@
         <settings-page-item title="Fullscreen arrow buttons" select>
           <v-select
             :items="fullscreenZoomUiModeItems"
-            box
+            filled
             solo
             hide-details
             v-model="fullscreenZoomUiMode"
           />
         </settings-page-item>
         <settings-page-item title="Go fullscreen when viewing posts" switch>
-          <v-switch v-model="goFullscreen"></v-switch>
+          <v-switch v-model="goFullscreen"/>
         </settings-page-item>
         <settings-page-item title="Limits" select>
           <v-slider
@@ -64,7 +64,7 @@
           </template>
           <v-select
             :items="dataSaverItems"
-            box
+            filled
             solo
             hide-details
             v-model="dataSaver"

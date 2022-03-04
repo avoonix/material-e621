@@ -1,12 +1,14 @@
 <template>
-  <v-flex>
+  <v-list dense>
     <template v-for="(tag, index) in tags">
-      <v-list-tile dense :key="index">
-        <v-list-tile-content>
-          <tag-label :tag="tag" />
-        </v-list-tile-content>
+      <v-list-item dense :key="index">
+        <v-list-item-content>
+          <div>
+            <tag-label :tag="tag" />
+          </div>
+        </v-list-item-content>
         {{ tag.post_count }}
-        <v-list-tile-action>
+        <v-list-item-action>
           <v-menu
             bottom
             offset-y
@@ -16,25 +18,27 @@
             close-on-click
             close-delay="0"
           >
-            <v-btn slot="activator" icon>
-              <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
+            <template #activator="{ on }">
+              <v-btn v-on="on" icon>
+                <v-icon>mdi-dots-vertical</v-icon>
+              </v-btn>
+            </template>
             <v-card color="primary">
               <v-list class="secondary">
-                <v-list-tile
+                <v-list-item
                   v-for="(item, i) in getItems(tag)"
                   :key="i"
                   @click.stop="item.action"
                 >
-                  <v-list-tile-title>{{ item.text }}</v-list-tile-title>
-                </v-list-tile>
+                  <v-list-item-title>{{ item.text }}</v-list-item-title>
+                </v-list-item>
               </v-list>
             </v-card>
           </v-menu>
-        </v-list-tile-action>
-      </v-list-tile>
+        </v-list-item-action>
+      </v-list-item>
     </template>
-  </v-flex>
+  </v-list>
 </template>
 
 <script lang="ts">

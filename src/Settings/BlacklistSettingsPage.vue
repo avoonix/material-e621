@@ -1,10 +1,10 @@
 <template>
   <v-container fill-height>
     <v-layout align-center>
-      <v-flex text-xs-center xs12 sm10 offset-sm1 lg6 offset-lg3>
+      <v-flex text-center xs12 sm10 offset-sm1 lg6 offset-lg3>
         <settings-page-title title="Blacklist" color="darken-1 red" />
         <settings-page-item title="Mode" select>
-          <v-select :items="modeItems" box solo hide-details v-model="mode" />
+          <v-select :items="modeItems" filled solo hide-details v-model="mode" />
         </settings-page-item>
         <settings-page-item title="Frequently blacklisted tags" select>
           <blacklist-suggestions

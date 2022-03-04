@@ -1,6 +1,6 @@
 <template>
-  <div class="text-xs-left">
-    <div class="headline">
+  <div class="text-left">
+    <div class="text-h5">
       <v-icon>mdi-thumbs-up-down</v-icon>
       {{ post.score.total }} &bull;
       <v-icon>mdi-heart</v-icon>
@@ -22,7 +22,7 @@
 import { ScoredPost } from "@/worker/AnalyzeService";
 import { Post } from "@/worker/api";
 import { computed, defineComponent, PropType } from "@vue/composition-api";
-import { distanceInWordsToNow, format, parse } from "date-fns";
+import { formatDistanceToNow, format, parse, parseISO } from "date-fns";
 import prettyBytes from "pretty-bytes";
 
 const isScoredPost = (post: any): post is ScoredPost => !!post.__score;
@@ -36,12 +36,12 @@ export default defineComponent({
   },
   setup(props, context) {
     const fileSize = computed(() => prettyBytes(props.post.file.size));
-    const date = computed(() => parse(props.post.created_at));
+    const date = computed(() => parseISO(props.post.created_at));
     const relativeUploadDate = computed(() =>
-      distanceInWordsToNow(date.value, { addSuffix: true }),
+      formatDistanceToNow(date.value, { addSuffix: true }),
     );
     const uploadDate = computed(() =>
-      format(date.value, "MMMM D, YYYY h:mm A"),
+      format(date.value, "PP p"),
     );
     // post.__score
     const score = computed(() => {

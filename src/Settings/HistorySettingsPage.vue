@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height>
     <v-layout align-center>
-      <v-flex text-xs-center xs12 sm10 offset-sm1 lg6 offset-lg3>
+      <v-flex text-center xs12 sm10 offset-sm1 lg6 offset-lg3>
         <settings-page-title title="History" color="darken-1 green" />
         <settings-page-item title="Max history length" select>
           <v-text-field type="number" v-model.number.lazy="maxLength" />
@@ -36,8 +36,9 @@ export default defineComponent({
     HistoryList,
   },
   setup(props, context) {
-    const openSearch = (tags: string[]) => {
-      router.push({
+    const openSearch = async (tags: string[]) => {
+      const { appRouter } = await import("@/misc/util/router");
+      appRouter.push({
         name: "Posts",
         query: {
           tags: tags.join(" "),

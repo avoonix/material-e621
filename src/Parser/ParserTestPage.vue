@@ -2,7 +2,7 @@
   <v-container fill-height>
     <v-layout>
       <v-flex>
-        <v-textarea :rows="20" v-model="testText" label="Edit me"></v-textarea>
+        <v-textarea :rows="20" v-model="testText" label="Edit me"/>
         <d-text :text="testText" />
       </v-flex>
     </v-layout>

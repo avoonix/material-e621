@@ -39,7 +39,8 @@ export const usePostListManager = ({
 
     if (!accountService.auth) {
       snackbarService.addMessage("Not logged in");
-      router.push({ name: "AccountSettings" });
+      const { appRouter } = await import("@/misc/util/router");
+      appRouter.push({ name: "AccountSettings" });
       return;
     }
     const service = await getApiService();
@@ -54,7 +55,7 @@ export const usePostListManager = ({
       } else {
         await service.unfavoritePost(serviceArgs);
       }
-    } catch (error) {
+    } catch (error: any) {
       const errorMessage = error.message || String(error);
       snackbarService.addMessage(errorMessage);
     } finally {

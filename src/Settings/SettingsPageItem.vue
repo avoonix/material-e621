@@ -1,20 +1,20 @@
 <template>
   <v-card class="ma-3" color="secondary">
     <v-card-title>{{ title }}</v-card-title>
-    <v-card-text class="text-xs-left grey--text" v-if="description">
+    <v-card-text class="text-left grey--text" v-if="description">
       {{ description }}
       <slot name="description" />
     </v-card-text>
-    <v-flex class="d-flex" v-if="this.switch">
+    <v-flex class="d-flex" v-if="isSwitch">
       <v-spacer style="flex-grow: 999 !important" />
       <span class="mr-3">
         <slot />
       </span>
     </v-flex>
-    <v-flex class="d-flex" v-else-if="this.select">
-      <span class="ma-3">
+    <v-flex class="d-flex" v-else-if="isSelect">
+      <div class="ma-3 fill-width">
         <slot />
-      </span>
+      </div>
     </v-flex>
     <span v-else>
       <slot />
@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { computed, defineComponent } from "@vue/composition-api";
 
 export default defineComponent({
   props: {
@@ -42,5 +42,19 @@ export default defineComponent({
       default: false,
     },
   },
+  setup(props) {
+    const isSwitch = computed(() => props.switch);
+    const isSelect = computed(() => props.select);
+    return {
+      isSwitch,
+      isSelect,
+    };
+  },
 });
 </script>
+
+<style scoped>
+.fill-width {
+  width: 100%;
+}
+</style>

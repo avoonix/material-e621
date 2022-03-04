@@ -1,15 +1,15 @@
 <template>
   <div>
     <v-card class="elevation-0" color="secondary">
-      <v-responsive :aspect-ratio="this.ratio">
+      <v-responsive :aspect-ratio="ratio">
         <transition
           :enter-active-class="enterTransitionName"
           :leave-active-class="leaveTransitionName"
           mode="out-in"
         >
           <v-responsive
-            class="text-xs-center align-middle elevation-10 ma-4"
-            :aspect-ratio="this.ratio"
+            class="text-center align-middle elevation-10 ma-4"
+            :aspect-ratio="ratio"
             :key="pageKey"
             style=""
             :class="color"

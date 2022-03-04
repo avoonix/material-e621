@@ -14,7 +14,7 @@
       <div
         :style="containerStyle"
         ref="zoom"
-        class="zoom-container text-xs-center"
+        class="zoom-container text-center"
         style="position: relative"
       >
         <slot />

@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height>
     <v-layout align-center>
-      <v-flex text-xs-center xs12 md8 offset-md2>
+      <v-flex text-center xs12 md8 offset-md2>
         <v-form @submit="submit">
           <v-text-field
             v-model="username"
@@ -32,8 +32,9 @@ export default defineComponent({
       name: "FavoritesAnalyzerResult",
       query: { name: username.value },
     }));
-    const submit = () => {
-      router.push(query.value);
+    const submit = async () => {
+      const { appRouter } = await import("@/misc/util/router");
+      appRouter.push(query.value);
     };
     return {
       username,

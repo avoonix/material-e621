@@ -63,7 +63,11 @@ export const showConsoleMessage = () => {
     `%cWarning
 %cThis browser feature is for developers only. Please do not copy-paste any code or run any scripts here. It may cause your account to be compromised.
 For more information, visit http://en.wikipedia.org/wiki/Self-XSS`,
-    "background: #222; color: #ff9d00; font-size: 28px;",
+    "background: #222; color: #ff9d00; font-size: 2.5em;",
     "background: #222; color: #a86700;",
   );
+  console.log(
+    `%cProject page: https://github.com/avoonix/material-e621`,
+    "color: #E831FD; font-size: 1.2em;"
+  )
 };

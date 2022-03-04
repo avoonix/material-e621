@@ -9,7 +9,34 @@ import {
 } from "./types";
 
 export const defaultSettings: ISettingsServiceState = {
-  configVersion: 1,
+  configVersion: 2,
+  shortcuts: [
+    // { action: "favorite_post", sequence: "f p" },
+    // { action: "toggle_fullscreen", sequence: "t f" },
+    // { action: "toggle_infos", sequence: "t i" },
+    // { action: "go_to_next_post", sequence: "n p" },
+    // { action: "go_to_previous_post", sequence: "p p" },
+    // { action: "open_on_e621_net", sequence: "o e" },
+
+    { action: "go_to_posts", sequence: "g p" },
+    { action: "go_to_settings", sequence: "g s" },
+
+    { action: "focus_search", sequence: "f s" },
+
+    { action: "fullscreen_exit", sequence: "esc" },
+
+    { action: "fullscreen_exit", sequence: "down" },
+    { action: "fullscreen_next_post", sequence: "right" },
+    { action: "fullscreen_previous_post", sequence: "left" },
+
+    { action: "fullscreen_exit", sequence: "s" },
+    { action: "fullscreen_next_post", sequence: "d" },
+    { action: "fullscreen_previous_post", sequence: "a" },
+
+    { action: "fullscreen_exit", sequence: "j" },
+    { action: "fullscreen_next_post", sequence: "l" },
+    { action: "fullscreen_previous_post", sequence: "h" },
+  ],
   blacklist: {
     mode: BlacklistMode.blur,
     // tags: ["rating:explicit", "rating:questionable"],

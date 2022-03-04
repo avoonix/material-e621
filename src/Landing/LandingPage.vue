@@ -1,14 +1,14 @@
 <template>
   <v-flex>
     <section
-      :class="`theme--${theme.isDark ? 'dark' : 'light'}`"
+      :class="`theme--${isDark ? 'dark' : 'light'}`"
       class="v-toolbar elevation-2 primary d-flex"
       :style="{ height: '85vh' }"
     >
       <v-layout column align-center justify-center fill-height class="">
-        <logo type="face" size="200" />
-        <h1 class="mb-2 display-4 text-xs-center">Material e621</h1>
-        <div class="headline">e621 client</div>
+        <app-logo type="face" size="200" />
+        <h1 class="mb-2 text-h1 text-center">Material e621</h1>
+        <div class="text-h5">e621 client</div>
         <div class="ma-5">
           <v-btn large color="accent" :to="{ path: '/posts' }">
             Start browsing
@@ -28,10 +28,10 @@
       </v-layout>
     </section>
     <section class="ma-1">
-      <v-layout justify-center row wrap>
+      <v-layout justify-center wrap>
         <v-flex xs12 class="pt-5">
-          <div class="text-xs-center">
-            <h2 class="headline">Latest update</h2>
+          <div class="text-center">
+            <h2 class="text-h5">Latest update</h2>
           </div>
         </v-flex>
         <v-flex xs12 md6 xl4 class="py-5">
@@ -42,13 +42,11 @@
       </v-layout>
     </section>
     <v-footer class="primary">
-      <v-layout row wrap="" align-center>
+      <v-layout wrap="" align-center>
         <v-flex xs12>
           <v-spacer />
           <div class="white--text ml-3">
             Made with
-            <v-icon title="cum" size="18" class="white--text">mdi-water</v-icon>
-            and
             <v-icon title="Vue" size="18" class="green--text">mdi-vuejs</v-icon>
             by
             <a href="https://avoonix.com/" class="white--text" title="Avoonix">
@@ -62,15 +60,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
-import Logo from "../App/Logo.vue";
+import { computed, defineComponent, inject } from "@vue/composition-api";
+import AppLogo from "../App/AppLogo.vue";
 import CommitTimeline from "@/About/CommitTimeline.vue";
 
 export default defineComponent({
-  inject: ["theme"],
   components: {
-    Logo,
+    AppLogo,
     CommitTimeline,
+  },
+  setup() {
+    const theme = inject<{ isDark: boolean }>("theme");
+    const isDark = computed(() => !!theme?.isDark);
+    return {
+      isDark,
+    };
   },
 });
 </script>

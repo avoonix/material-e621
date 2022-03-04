@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" scrollable max-width="600px">
     <v-card v-if="current" color="secondary">
       <v-card-title class="mt-0 pt-0 mx-0 px-0">
-        <v-tabs v-model="tabs" color="secondary">
+        <v-tabs v-model="tabs">
           <v-tab ripple>Overview</v-tab>
           <v-tab ripple>Tags</v-tab>
           <v-tab ripple>Description</v-tab>
@@ -12,35 +12,39 @@
       <v-card-text>
         <v-tabs-items v-model="tabs">
           <v-tab-item>
-            <v-card flat color="secondary">
+            <v-card text color="secondary">
               <v-card-text>
                 <post-info-list :post="current" />
               </v-card-text>
             </v-card>
           </v-tab-item>
           <v-tab-item>
-            <v-card flat color="secondary">
+            <v-card text color="secondary">
               <v-card-text>
-                <suggestions :tags="tags" />
+                <suggestions class="secondary" :tags="tags" />
               </v-card-text>
             </v-card>
           </v-tab-item>
           <v-tab-item>
-            <v-card flat color="secondary">
+            <v-card text color="secondary">
               <v-card-text>
-                <div class="body-1">
+                <div class="text-body-1">
                   <d-text :text="current.description || 'No description'" />
                 </div>
               </v-card-text>
             </v-card>
           </v-tab-item>
           <v-tab-item>
-            <v-card flat color="secondary">
+            <v-card text color="secondary">
               <v-card-text>
                 <link-share
-                  :postId="current.id"
-                  :rawFileUrl="current.file.url"
+                  v-if="current.file.url"
+                  :post-id="current.id"
+                  :raw-file-url="current.file.url"
                 />
+                <div v-else>
+                  Post can't be shared at this time.
+                </div>
               </v-card-text>
             </v-card>
           </v-tab-item>
@@ -55,7 +59,7 @@
           @open-post-fullscreen="$emit('open-post-fullscreen', $event)"
           @set-post-favorite="$emit('set-post-favorite', $event)"
         />
-        <v-btn color="primary" flat @click.native="dialog = false">Close</v-btn>
+        <v-btn color="primary" text @click.native="dialog = false">Close</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -71,6 +75,7 @@ import { computed, defineComponent, PropType, ref } from "@vue/composition-api";
 import { postService } from "@/services";
 import { Post } from "@/worker/api";
 import { ITag } from "../Tag/TagLabel.vue";
+import { EnhancedPost } from "@/worker/ApiService";
 
 export default defineComponent({
   components: {
@@ -82,7 +87,7 @@ export default defineComponent({
   },
   props: {
     current: {
-      type: Object as PropType<Post>,
+      type: Object as PropType<EnhancedPost>,
       required: false,
     },
   },

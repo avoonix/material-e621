@@ -1,6 +1,7 @@
-import router from "@/router";
 import { reactive, readonly } from "@vue/composition-api";
 import { isEqual, pick } from "lodash";
+
+const { router } = await import("@/main");
 
 // workaround for vue2 router
 
@@ -30,3 +31,5 @@ router.afterEach((to, from) => {
 export const useRoute = () => {
   return readonly(currentRoute);
 };
+
+export const appRouter = router; // I used to be able to use the router from "@/router", but since switching to vite it behaves weird

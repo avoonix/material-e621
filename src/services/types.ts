@@ -19,8 +19,22 @@ export enum DataSaverType {
   lowest,
 }
 
+export type Action =
+  | "fullscreen_next_post"
+  | "fullscreen_previous_post"
+  | "fullscreen_exit"
+  | "go_to_posts"
+  | "go_to_settings"
+  | "focus_search";
+
+export interface Shortcut {
+  sequence: string;
+  action: Action;
+}
+
 export interface ISettingsServiceState {
-  configVersion: undefined | 1;
+  configVersion: undefined | 1 | 2;
+  shortcuts: Shortcut[];
   blacklist: {
     mode: BlacklistMode;
     tags: string[];

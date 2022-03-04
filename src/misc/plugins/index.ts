@@ -3,7 +3,8 @@ import VueCompositionAPI from "@vue/composition-api";
 import PortalVue from "portal-vue";
 import Meta from "vue-meta";
 import "./vue";
-import "./vuetify";
+export * from "./vuetify";
+import "./mousetrap";
 
 Vue.use(VueCompositionAPI);
 Vue.use(PortalVue);

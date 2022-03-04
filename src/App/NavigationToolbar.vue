@@ -1,10 +1,9 @@
 <template>
   <v-toolbar-items>
     <v-btn
-      flat
+      text
       v-for="(option, index) in navigationItems"
       :key="index"
-      :loading="option.loading"
       :to="option.to"
     >
       {{ option.name }}

@@ -3,7 +3,7 @@
     <v-select
       :items="colors"
       :label="label"
-      box
+      filled
       hide-details
       v-model="currentColor"
     >
@@ -12,19 +12,16 @@
           <v-icon>mdi-palette</v-icon>
         </v-avatar>
       </template>
-      <template
-        slot="selection"
-        slot-scope="{ item, selected, disabled, index }"
-      >
+      <template #selection="{ item, selected, disabled, index }">
         {{ item.name }}
       </template>
-      <template slot="item" slot-scope="{ item, title }">
-        <v-list-tile-avatar>
+      <template #item="{ item, title }">
+        <v-list-item-avatar>
           <v-avatar size="36" :color="item.value">
             <v-icon size="20">mdi-palette</v-icon>
           </v-avatar>
-        </v-list-tile-avatar>
-        <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+        </v-list-item-avatar>
+        <v-list-item-title>{{ item.name }}</v-list-item-title>
       </template>
     </v-select>
   </v-layout>

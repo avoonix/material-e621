@@ -16,13 +16,14 @@
           bottom
           left
           max-height="300"
-          lazy
           offset-y
           transition="slide-y-transition"
         >
-          <v-btn slot="activator" icon>
-            <v-icon>mdi-history</v-icon>
-          </v-btn>
+          <template #activator="{ on }">
+            <v-btn v-on="on" icon>
+              <v-icon>mdi-history</v-icon>
+            </v-btn>
+          </template>
           <history-list
             :entries="historyEntries"
             @delete-entry="removeHistoryEntry($event)"
@@ -37,13 +38,13 @@
       @load-previous="loadPreviousPage()"
       @load-next="loadNextPage()"
       @open-post="openFullscreenPost"
-      :fullscreen-post="fullscreenPost"
+      :fullscreen-post="fullscreenPost || undefined"
       @exit-fullscreen="fullscreenPost = null"
       @next-fullscreen-post="openNextFullscreenPost()"
       @previous-fullscreen-post="openPreviousFullscreenPost()"
       :has-previous-fullscreen-post="true"
       :has-next-fullscreen-post="true"
-      :details-post="detailsPost"
+      :details-post="detailsPost || undefined"
       @open-post-details="openPostDetails"
       @close-details="detailsPost = null"
       @set-post-favorite="setPostFavorite($event)"
@@ -105,10 +106,10 @@ export default defineComponent({
       },
       saveFirstPostId(id) {
         if (!id) {
-          removeRouterQuery(router, ["first_post"]);
+          removeRouterQuery(["first_post"]);
           return;
         }
-        updateRouterQuery(router, {
+        updateRouterQuery({
           first_post: String(id),
         });
       },
@@ -167,8 +168,8 @@ export default defineComponent({
       },
     );
 
-    const onSearchClick = () => {
-      removeRouterQuery(router, ["first_post"]);
+    const onSearchClick = async () => {
+      await removeRouterQuery(["first_post"]);
       posts.value = [];
       loadNextPage();
     };

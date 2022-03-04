@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height>
     <v-layout align-center>
-      <v-flex text-xs-center ref="container">
+      <v-flex text-center ref="container">
         <div v-if="result">
           <posts
             :posts="posts"
@@ -9,13 +9,13 @@
             @load-previous="loadPreviousPage()"
             @load-next="loadNextPage()"
             @open-post="openFullscreenPost"
-            :fullscreen-post="fullscreenPost"
+            :fullscreen-post="fullscreenPost || undefined"
             @exit-fullscreen="fullscreenPost = null"
             @next-fullscreen-post="openNextFullscreenPost()"
             @previous-fullscreen-post="openPreviousFullscreenPost()"
             :has-previous-fullscreen-post="true"
             :has-next-fullscreen-post="true"
-            :details-post="detailsPost"
+            :details-post="detailsPost || undefined"
             @open-post-details="openPostDetails"
             @close-details="detailsPost = null"
             @set-post-favorite="setPostFavorite($event)"
@@ -45,7 +45,6 @@ import {
 import router from "@/router";
 import { FavoriteTagsResult, IProgressEvent } from "@/worker/AnalyzeService";
 import { getAnalyzeService } from "@/worker/services";
-import Logo from "../App/Logo.vue";
 import * as Comlink from "comlink";
 import BaseTags from "./BaseTags.vue";
 import { usePostListManager } from "@/Post/postListManager";
@@ -60,7 +59,6 @@ export default defineComponent({
     title: "Suggestions",
   },
   components: {
-    Logo,
     BaseTags,
     Posts,
     ProgressMessage,
@@ -125,7 +123,7 @@ export default defineComponent({
         return postService.postListFetchLimit;
       },
       saveFirstPostId(id) {
-        updateRouterQuery(router, {
+        updateRouterQuery({
           first_post: String(id),
         });
       },

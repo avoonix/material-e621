@@ -14,7 +14,7 @@ const resizeImages = async (sizes: number[]) => {
 };
 
 const generateIco = (sizes: number[]) => {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     fs.readFile(`${__dirname}/icon.png`, (err: Error, data: Buffer) => {
       if (err) return reject(err);
       toIco(data, {
@@ -37,7 +37,7 @@ const generateIco = (sizes: number[]) => {
 (async () => {
   try {
     await fs.mkdirSync(`${__dirname}/../public/static`);
-  } catch (error) {
+  } catch (error: any) {
     console.log(error.message);
   }
   await generateIco([16, 24, 32, 48, 64, 128]);

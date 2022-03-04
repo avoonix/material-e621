@@ -30,20 +30,21 @@ export const categoryIdToCategoryName = (id: number) => {
   return categories[id] || "invalid";
 };
 
-export const updateRouterQuery = (
-  router: VueRouter,
-  newQuery: { [idx: string]: string | undefined },
-) => {
-  router.push({
-    query: { ...router.currentRoute.query, ...newQuery },
+export const updateRouterQuery = async (newQuery: {
+  [idx: string]: string | undefined;
+}) => {
+  const { appRouter } = await import("@/misc/util/router");
+  appRouter.push({
+    query: { ...appRouter.currentRoute.query, ...newQuery },
   });
 };
 
-export const removeRouterQuery = (router: VueRouter, keys: string[]) => {
-  router.push({
+export const removeRouterQuery = async (keys: string[]) => {
+  const { appRouter } = await import("@/misc/util/router");
+  appRouter.push({
     query: {
       ...Object.fromEntries(
-        Object.entries(router.currentRoute.query).filter(
+        Object.entries(appRouter.currentRoute.query).filter(
           (e) => !keys.includes(e[0]),
         ),
       ),

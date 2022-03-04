@@ -1,5 +1,5 @@
 <template>
-  <div class="text-xs-left">
+  <div class="text-left">
     <v-card-text>
       <div class="mb-3">
         This bookmarklet opens {{ appName }} with tags/post parameters from the

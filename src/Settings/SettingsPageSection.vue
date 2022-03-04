@@ -5,14 +5,14 @@
         <v-icon size="100">{{ icon }}</v-icon>
       </div>
       <v-card-title primary-title>
-        <div class="title">{{ title }}</div>
+        <div class="text-h6">{{ title }}</div>
       </v-card-title>
-      <v-card-text class="grey--text text-xs-left">
+      <v-card-text class="grey--text text-left">
         <slot />
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn flat color="accent" :to="{ path: '/settings/' + section }">
+        <v-btn text color="accent" :to="{ path: '/settings/' + section }">
           Edit
           <v-icon right>mdi-chevron-right</v-icon>
         </v-btn>

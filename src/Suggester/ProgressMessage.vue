@@ -1,6 +1,6 @@
 <template>
   <div>
-    <logo type="loader" />
+    <app-logo type="loader" />
     <span v-if="value">{{ value.message }} </span>
     <v-progress-linear
       v-if="value"
@@ -11,11 +11,11 @@
 </template>
 
 <script lang="ts">
-import Logo from "@/App/Logo.vue";
+import AppLogo from "@/App/AppLogo.vue";
 import { defineComponent } from "@vue/composition-api";
 
 export default defineComponent({
-  components: { Logo },
+  components: { AppLogo },
   props: {
     value: {
       type: Object,

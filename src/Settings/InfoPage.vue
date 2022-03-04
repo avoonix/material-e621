@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height>
     <v-layout align-center>
-      <v-flex text-xs-center xs12 sm10 offset-sm1 lg6 offset-lg3>
+      <v-flex text-center xs12 sm10 offset-sm1 lg6 offset-lg3>
         <settings-page-title title="Info" color="darken-2 teal" />
         <settings-page-item
           :title="`Storage used: ${usageStr}`"
@@ -16,7 +16,7 @@
           />
         </settings-page-item>
         <settings-page-item title="About" select>
-          <v-btn color="accent" flat to="/about" block> About </v-btn>
+          <v-btn color="accent" text to="/about" block> About </v-btn>
         </settings-page-item>
         <settings-page-item title="Bookmarklet">
           <install />

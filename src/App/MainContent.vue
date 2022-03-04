@@ -1,5 +1,5 @@
 <template>
-  <v-content
+  <v-main
     :style="`background-color: ${backgroundColor} !important; border-color: ${backgroundColor} !important;`"
   >
     <transition
@@ -9,7 +9,7 @@
     >
       <router-view :key="routeKey" />
     </transition>
-  </v-content>
+  </v-main>
 </template>
 
 <script lang="ts">

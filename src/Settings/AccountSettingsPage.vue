@@ -1,18 +1,18 @@
 <template>
   <v-container fill-height>
     <v-layout align-center>
-      <v-flex text-xs-center xs12 sm10 offset-sm1 lg6 offset-lg3>
+      <v-flex text-center xs12 sm10 offset-sm1 lg6 offset-lg3>
         <settings-page-title title="Account" color="darken-3 yellow" />
         <settings-page-item title="Credentials" select>
           <v-text-field
-            box
+            filled
             label="e621 username"
             type="text"
             v-model="username"
             autocomplete="username"
           />
           <v-text-field
-            box
+            filled
             :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
             :type="showPassword ? 'text' : 'password'"
             label="e621 API key"
@@ -20,7 +20,7 @@
             @click:append="showPassword = !showPassword"
             autocomplete="password"
           />
-          <p class="text-xs-left">
+          <p class="text-left">
             Material e621 uses the regular e621 API as much as possible, but the
             favorites endpoints don't have the required cross origin resource
             sharing headers in order to use them directly in the browser. This

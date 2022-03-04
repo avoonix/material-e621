@@ -1,6 +1,6 @@
 <template>
   <!-- grid -->
-  <v-layout v-if="layout === 'grid'" row wrap="">
+  <!-- <v-layout v-if="layout === 'grid'" wrap="">
     <v-flex
       v-for="post in visiblePosts"
       :key="post.id"
@@ -9,9 +9,10 @@
     >
       <slot name="post" :post="post" />
     </v-flex>
-  </v-layout>
+  </v-layout> -->
   <!-- blog/feed -->
-  <v-flex v-else xs12 lg6 md8 offset-lg3 offset-md2 wrap="">
+  <!-- v-else -->
+  <v-flex xs12 lg6 md8 offset-lg3 offset-md2 wrap="">
     <v-flex
       :key="post.id"
       xs12
@@ -26,6 +27,7 @@
 
 <script lang="ts">
 import { Post } from "@/worker/api";
+import { EnhancedPost } from "@/worker/ApiService";
 import {
   defineComponent,
   ref,
@@ -69,7 +71,7 @@ const getOffset = (el: Element) => {
 export default defineComponent({
   props: {
     visiblePosts: {
-      type: Array as PropType<Post[]>,
+      type: Array as PropType<EnhancedPost[]>,
       required: true,
     },
   },

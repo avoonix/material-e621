@@ -2,7 +2,7 @@
   <div>
     <div class="ma-2">
       <v-btn
-        outline
+        outlined
         block
         large
         color="primary"
@@ -14,7 +14,7 @@
       </v-btn>
     </div>
     <v-container fill-height>
-      <v-layout align-center row wrap>
+      <v-layout align-center wrap>
         <v-flex xs12 sm6 md4 lg3 :key="idx" v-for="(theme, idx) in themes">
           <theme-preview @apply-theme="applyTheme(theme)" :theme="theme" />
         </v-flex>
@@ -22,7 +22,7 @@
     </v-container>
     <div class="ma-2">
       <v-btn
-        outline
+        outlined
         block
         large
         color="primary"

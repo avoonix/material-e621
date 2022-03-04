@@ -2,9 +2,9 @@
   <v-responsive height="100%">
     <v-container fill-height>
       <v-layout align-center>
-        <v-flex text-xs-center>
-          <logo type="face" />
-          <h3 class="display-3">Page not found</h3>
+        <v-flex text-center>
+          <app-logo type="face" />
+          <h3 class="text-h2">Page not found</h3>
           <v-btn color="primary" large :to="{ path: '/' }"> Start page </v-btn>
         </v-flex>
       </v-layout>
@@ -14,11 +14,11 @@
 
 <script lang="ts">
 import { defineComponent } from "@vue/composition-api";
-import Logo from "../App/Logo.vue";
+import AppLogo from "../App/AppLogo.vue";
 
 export default defineComponent({
   components: {
-    Logo,
+    AppLogo,
   },
 });
 </script>

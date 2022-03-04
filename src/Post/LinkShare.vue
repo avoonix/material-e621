@@ -9,15 +9,9 @@
         :value="option.type"
       />
     </v-radio-group>
-    <div class="body-1">
-      <v-layout row wrap="">
-        <v-flex
-          class="pa-1"
-          v-for="(button, index) in shareButtons"
-          :key="index"
-          xs12
-          md6
-        >
+    <div class="text-body-1">
+      <v-layout wrap>
+        <v-flex class="pa-1" v-for="(button, index) in shareButtons" :key="index" xs12 md6>
           <v-btn
             class="ma-0"
             :dark="button.dark"
@@ -77,6 +71,7 @@ export default defineComponent({
         case UrlTypes.e621:
           return `https://e621.net/posts/${props.postId}`;
         case UrlTypes.image:
+        default:
           return props.rawFileUrl;
       }
     });
@@ -112,7 +107,7 @@ export default defineComponent({
       snackbarService.addMessage("Link copied");
     };
 
-    const shareButtons = computed(() => {
+    const shareButtons = computed<IButton[]>(() => {
       const encodedUrl = encodeURIComponent(url.value);
       const unencodedText = "Check out this awesome post!";
       const text = encodeURIComponent(unencodedText);

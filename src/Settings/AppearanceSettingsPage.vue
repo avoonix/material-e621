@@ -1,11 +1,11 @@
 <template>
   <v-container fill-height>
     <v-layout align-center>
-      <v-flex text-xs-center xs12 sm10 offset-sm1 lg6 offset-lg3>
+      <v-flex text-center xs12 sm10 offset-sm1 lg6 offset-lg3>
         <settings-page-title title="Appearance" color="darken-1 pink" />
         <settings-page-item title="Colors" select>
           <v-btn
-            outline
+            outlined
             block
             large
             color="primary"
@@ -19,7 +19,7 @@
           <color-chooser label="Background" :color.sync="background" />
           <color-chooser label="Sidebar" :color.sync="sidebar" />
           <color-chooser label="Toolbar" :color.sync="toolbar" />
-          <v-switch label="Dark" v-model="dark"></v-switch>
+          <v-switch label="Dark" v-model="dark"/>
         </settings-page-item>
         <settings-page-item
           title="Fullscreen image transitions"
@@ -28,7 +28,7 @@
         >
           <v-select
             :items="transitionItems"
-            box
+            filled
             solo
             v-model="fullscreenTransition"
             hide-details
@@ -56,7 +56,7 @@
         >
           <v-select
             :items="transitionItems"
-            box
+            filled
             solo
             v-model="routeTransition"
             hide-details
@@ -72,12 +72,12 @@
           title="Colored stripe indicating post rating"
           switch
         >
-          <v-switch v-model="stripe"></v-switch>
+          <v-switch v-model="stripe"/>
         </settings-page-item>
         <settings-page-item title="Navigation" select>
           <v-select
             :items="navigationTypeItems"
-            box
+            filled
             solo
             v-model="navigationType"
             hide-details
@@ -86,14 +86,14 @@
         <settings-page-item title="Logo" select>
           <v-select
             :items="logoStyleItems"
-            box
+            filled
             solo
             v-model="logoStyle"
             hide-details
           />
         </settings-page-item>
         <settings-page-item title="Hide install prompt" switch>
-          <v-switch v-model="hideInstallPrompt"></v-switch>
+          <v-switch v-model="hideInstallPrompt"/>
         </settings-page-item>
       </v-flex>
     </v-layout>

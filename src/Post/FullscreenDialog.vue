@@ -11,7 +11,7 @@
       <div class="flex">
         <div
           v-show="!hideUi"
-          class="left"
+          class="float-left d-flex"
           v-ripple="hasPreviousFullscreenPost"
           @click="showPreviousImage"
         >
@@ -40,14 +40,14 @@
               controls
               loop
               autoplay
-              preload=""
+              preload="metadata"
             >
-              <source :src="current.file.url" type="video/webm" />
+              <source v-if="current.file.url" :src="current.file.url" type="video/webm" />
               Video type not supported by your browser
             </video>
             <div v-else class="overflow">
               <div
-                class="zoom-container text-xs-center"
+                class="zoom-container text-center"
                 style="position: relative"
               >
                 <transition
@@ -56,7 +56,7 @@
                   mode="in-out"
                 >
                   <div
-                    :key="currentFileUrl"
+                    :key="currentFileUrl || 0"
                     style="
                       position: absolute;
                       width: 100%;
@@ -82,7 +82,7 @@
                     />
                   </div>
                 </transition>
-                <logo
+                <app-logo
                   class="centered-in-container"
                   svg-margin-auto
                   v-if="loading"
@@ -94,7 +94,7 @@
         </zoom-pan-image>
         <div
           v-show="!hideUi"
-          class="right"
+          class="float-right d-flex"
           v-ripple="hasNextFullscreenPost"
           @click="showNextImage"
         >
@@ -123,7 +123,7 @@
 
 <script lang="ts">
 import scrollIntoView from "scroll-into-view";
-import Logo from "../App/Logo.vue";
+import AppLogo from "../App/AppLogo.vue";
 import { appearanceService, blacklistService, postService } from "@/services";
 import ZoomPanImage from "./ZoomPanImage.vue";
 import { useBlacklistClasses } from "../misc/util/blacklist";
@@ -142,6 +142,7 @@ import PostButtons from "@/Post/PostButtons.vue";
 import { useDirectionalTransitions } from "@/misc/util/directionalTransitions";
 import { EnhancedPost } from "@/worker/ApiService";
 import { FullscreenZoomUiMode } from "@/services/types";
+import { shortcutService } from "@/services/ShortcutService";
 
 const appIsFullscreen = ref(!!document.fullscreenElement);
 
@@ -162,7 +163,7 @@ export default defineComponent({
     };
   },
   components: {
-    Logo,
+    AppLogo,
     PostButtons,
     ZoomPanImage,
   },
@@ -203,12 +204,13 @@ export default defineComponent({
 
     const hideUi = computed(() => {
       switch (postService.fullscreenZoomUiMode) {
-        case FullscreenZoomUiMode.hideWhileZoomed:
-          return isZoomed.value;
         case FullscreenZoomUiMode.neverHide:
           return false;
         case FullscreenZoomUiMode.alwaysHide:
           return true;
+        default:
+        case FullscreenZoomUiMode.hideWhileZoomed:
+          return isZoomed.value;
       }
     });
 
@@ -241,27 +243,16 @@ export default defineComponent({
       setTransitionNames("left");
     };
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (!props.current) return;
-      if (event.key == "ArrowLeft" || event.key == "a") {
-        showPreviousImage();
-      }
-      if (event.key == "ArrowRight" || event.key == "d") {
-        showNextImage();
-      }
-      if (
-        event.key == "Escape" ||
-        event.key == "ArrowDown" ||
-        event.key == "s"
-      ) {
-        exitFullscreen();
-      }
-    };
-    onMounted(() => {
-      setTransitionNames("none");
-      window.addEventListener("keydown", handleKeyDown);
+    onBeforeUnmount(() => {
+      shortcutService.emitter.off("fullscreenNext", showNextImage);
+      shortcutService.emitter.off("fullscreenPrevious", showPreviousImage);
+      shortcutService.emitter.off("fullscreenExit", exitFullscreen);
     });
-    onBeforeUnmount(() => window.removeEventListener("keydown", handleKeyDown));
+    onMounted(() => {
+      shortcutService.emitter.on("fullscreenNext", showNextImage);
+      shortcutService.emitter.on("fullscreenPrevious", showPreviousImage);
+      shortcutService.emitter.on("fullscreenExit", exitFullscreen);
+    });
 
     const scrollToPost = (postId: number) => {
       const post = document.getElementById(`post_${postId}`);

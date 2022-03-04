@@ -1,40 +1,27 @@
-import runtime from "serviceworker-webpack-plugin/lib/runtime";
 import { snackbarService } from "@/services";
-import { getAppName } from "../util/utilities";
+import { registerSW } from "virtual:pwa-register";
 
-export const registerServiceWorker = async () => {
-  if (!("serviceWorker" in navigator)) {
-    return;
-  }
-  const registration = await runtime.register();
-  if (!registration) {
-    return;
-  }
-  if (registration.waiting) {
-    snackbarService.addMessage("Update available, refresh to apply.");
-  }
-  registration.onupdatefound = () => {
-    console.log("update found");
-    const installingWorker = registration.installing;
-    if (!installingWorker) {
-      return;
-    }
-    installingWorker.onstatechange = () => {
-      if (installingWorker.state === "installed") {
-        if (navigator.serviceWorker.controller) {
-          snackbarService.addMessage(`${getAppName()} has been updated :3`);
-        } else {
-          console.log("new content cached");
-        }
-      }
-    };
-  };
-};
+const intervalMS = 60 * 60 * 1000;
 
-export const unregister = async () => {
-  if (!("serviceWorker" in navigator)) {
-    return;
-  }
-  const registration = await navigator.serviceWorker.ready;
-  await registration.unregister();
-};
+const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+const updateSW = registerSW({
+  onRegistered(r) {
+    r &&
+      setInterval(() => {
+        r.update();
+      }, intervalMS);
+  },
+  onNeedRefresh() {
+    snackbarService.addMessage("Update available - refreshing in 10 seconds!");
+    wait(10 * 1000);
+    snackbarService.addMessage(
+      "Go to Settings > Info > About to see what changed",
+    );
+    wait(100);
+    updateSW();
+  },
+  onOfflineReady() {
+    console.log("offline ready");
+  },
+});

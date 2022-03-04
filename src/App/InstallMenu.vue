@@ -1,13 +1,15 @@
 <template>
   <v-menu bottom offset-y left attach close-delay="0">
-    <v-btn v-show="showInstallPrompt" slot="activator" icon>
-      <v-badge color="primary" overlap left>
-        <template #badge>
-          <v-icon>mdi-exclamation-thick</v-icon>
-        </template>
-        <v-icon>mdi-download</v-icon>
-      </v-badge>
-    </v-btn>
+    <template #activator="{ on }">
+      <v-btn v-show="showInstallPrompt" v-on="on" icon>
+        <v-badge color="primary" overlap left>
+          <template #badge>
+            <v-icon>mdi-exclamation-thick</v-icon>
+          </template>
+          <v-icon>mdi-download</v-icon>
+        </v-badge>
+      </v-btn>
+    </template>
     <v-card max-width="400" color="secondary">
       <v-card-text>
         You are using a browser that supports installing progressive web apps.
@@ -16,8 +18,8 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn flat color="" @click="hide"> Never show again </v-btn>
-        <v-btn flat color="primary" @click="install"> Install </v-btn>
+        <v-btn text color @click="hide">Never show again</v-btn>
+        <v-btn text color="primary" @click="install">Install</v-btn>
       </v-card-actions>
     </v-card>
   </v-menu>

@@ -12,7 +12,7 @@
       <post-text :post="post" />
     </v-card-title>
     <v-card-actions>
-      <v-spacer></v-spacer>
+      <v-spacer/>
       <post-buttons
         :buttons="buttons"
         :post="post"
@@ -26,21 +26,18 @@
 </template>
 
 <script lang="ts">
-import { blacklistService, postService } from "@/services";
-import { computed, defineComponent, PropType } from "@vue/composition-api";
 import { useBlacklistClasses } from "@/misc/util/blacklist";
-import FixedAspectRatioBox from "./FixedAspectRatioBox.vue";
+import { blacklistService, postService } from "@/services";
+import { EnhancedPost } from "@/worker/ApiService";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
+import PostButtons from "./PostButtons.vue";
 import PostPreview from "./PostPreview.vue";
 import PostText from "./PostText.vue";
 import { useStripeColor } from "./stripeColor";
-import { Post } from "@/worker/api";
-import PostButtons from "./PostButtons.vue";
-import { EnhancedPost } from "@/worker/ApiService";
 
 export default defineComponent({
   components: {
     PostButtons,
-    FixedAspectRatioBox,
     PostPreview,
     PostText,
   },

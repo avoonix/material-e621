@@ -15,6 +15,7 @@
 <script lang="ts">
 import { ButtonType } from "@/services/types";
 import { Post } from "@/worker/api";
+import { EnhancedPost } from "@/worker/ApiService";
 import { defineComponent, PropType } from "@vue/composition-api";
 import PostButton from "./PostButton.vue";
 
@@ -26,7 +27,7 @@ export default defineComponent({
       required: true,
     },
     post: {
-      type: Object as PropType<Post>,
+      type: Object as PropType<EnhancedPost>,
       required: true,
     },
   },

@@ -8,7 +8,6 @@
       attach
       flat
       hide-selected
-      autofocus
       clearable
       ref="combobox"
       v-model="model"
@@ -22,20 +21,19 @@
       class="combobox-with-background"
     >
       <template slot="no-data">
-        <v-list-tile>
+        <v-list-item>
           <span class="subheading">
             <kbd class="primary">Enter</kbd> to add
           </span>
           <v-chip color="blue-grey lighten-2" label small>
             {{ searchAsTag }}
           </v-chip>
-        </v-list-tile>
+        </v-list-item>
       </template>
       <!-- Tags within input -->
       <template
+        #selection="{ item, parent, selected }"
         v-if="item === Object(item)"
-        slot="selection"
-        slot-scope="{ item, parent, selected }"
       >
         <!-- TODO: close button -->
         <tag-label
@@ -45,11 +43,11 @@
         />
       </template>
       <!-- Tags within dropdown -->
-      <template slot="item" slot-scope="{ index, item, parent }">
-        <v-list-tile-content>
+      <template #item="{ index, item, parent }">
+        <v-list-item-content>
           <tag-label :tag="item" />
-        </v-list-tile-content>
-        <!-- <v-list-tile-action>{{ item.count }}</v-list-tile-action> -->
+        </v-list-item-content>
+        <!-- <v-list-item-action>{{ item.count }}</v-list-item-action> -->
       </template>
     </v-combobox>
   </span>
@@ -62,6 +60,8 @@ import Vue from "vue";
 import {
   computed,
   defineComponent,
+  onBeforeUnmount,
+  onMounted,
   PropType,
   ref,
   watch,
@@ -69,6 +69,7 @@ import {
 import { getApiService } from "@/worker/services";
 import { postService } from "@/services";
 import { categoryIdToCategoryName } from "@/misc/util/utilities";
+import { shortcutService } from "@/services/ShortcutService";
 
 interface ITagWithText extends ITag {
   text: string;
@@ -225,7 +226,20 @@ export default defineComponent({
       },
     });
 
+    onBeforeUnmount(() => {
+      shortcutService.emitter.off("focusSearch", focusSearch);
+    });
+    onMounted(() => {
+      shortcutService.emitter.on("focusSearch", focusSearch);
+    });
+    const focusSearch = () => {
+      combobox.value.focus();
+    };
+
+    const combobox = ref<any>();
+
     return {
+      combobox,
       search,
       searchAsTag,
       filter,

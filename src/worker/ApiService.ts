@@ -76,7 +76,7 @@ export class ApiService {
     try {
       await custom.posts.favorite(args);
       return true;
-    } catch (error) {
+    } catch (error: any) {
       const message = error?.response?.data?.message;
       if (message) {
         throw new Error(message);
@@ -89,7 +89,7 @@ export class ApiService {
     try {
       await custom.posts.unfavorite(args);
       return true;
-    } catch (error) {
+    } catch (error: any) {
       const message = error?.response?.data?.message;
       if (message) {
         throw new Error(message);

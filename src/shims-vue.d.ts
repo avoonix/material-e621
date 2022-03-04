@@ -8,8 +8,3 @@ declare module "*.js" {
   export default a;
   export const store: any;
 }
-
-declare module "worker-loader*" {
-  const a: any;
-  export default a;
-}

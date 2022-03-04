@@ -96,6 +96,14 @@ export default new Router({
         import(/* webpackChunkName: "settings" */ "@/Settings/InfoPage.vue"),
     },
     {
+      path: "/settings/shortcuts",
+      name: "ShortcutSettings",
+      component: () =>
+        import(
+          /* webpackChunkName: "settings" */ "@/Settings/ShortcutSettingsPage.vue"
+        ),
+    },
+    {
       path: "/parser",
       name: "Parser",
       component: () =>

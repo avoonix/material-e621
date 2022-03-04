@@ -123,5 +123,6 @@ class AppearanceService {
 }
 
 export type Theme = AppearanceService["theme"];
+export type ThemeItem = Theme & { name: string };
 
 export const appearanceService = new AppearanceService();

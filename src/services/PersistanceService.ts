@@ -69,10 +69,14 @@ class PersistanceService {
   }
 
   private setState(newState: ISettingsServiceState) {
+    // migrations
     if (!newState.configVersion) {
       newState.configVersion = 1;
     }
-    // TODO: apply migrations
+    if (newState.configVersion < 2) {
+      newState.shortcuts = clone(defaultSettings.shortcuts);
+      newState.configVersion = 2;
+    }
     Object.assign(state, newState);
   }
 

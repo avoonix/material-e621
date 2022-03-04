@@ -24,14 +24,14 @@ import { computed, defineComponent, PropType } from "@vue/composition-api";
 export default defineComponent({
   props: {
     counts: {
-      type: Object as PropType<FavoriteTagsResult>,
+      type: Object as PropType<FavoriteTagsResult["counts"]>,
       required: true,
     },
   },
   setup(props, context) {
     const data = computed(() => {
       return Object.entries(props.counts).map(([category, counts]) => {
-        const data = Object.keys(counts);
+        const data = Object.keys(counts!);
         return {
           category,
           tags: data.slice(0, 10),

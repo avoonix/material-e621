@@ -58,8 +58,8 @@ export interface Relationships {
 
 export interface Post {
   id: number;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
   file: File;
   preview: Preview;
   sample: Sample;

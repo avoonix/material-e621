@@ -1,34 +1,20 @@
 import "intersection-observer";
 import "typeface-roboto";
-import "./misc/plugins";
+import { vuetify } from "./misc/plugins";
 import { showConsoleMessage } from "./misc/util/consoleMessage";
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
-import ExternalLink from "./App/ExternalLink.vue";
 import { persistanceService, snackbarService } from "./services";
-import {
-  registerServiceWorker,
-  unregister,
-} from "./misc/serviceWorker/register";
+import "./misc/serviceWorker/register";
 
-window.addEventListener("load", async () => {
-  if (process.env.NODE_ENV === "development") {
-    await unregister();
-    console.log("skipped service worker registration");
-  } else {
-    await registerServiceWorker();
-    await navigator.serviceWorker.ready;
-    console.log("service worker ready");
-  }
-});
-
-process.env.NODE_ENV !== "development" && showConsoleMessage();
+if (import.meta.env.PROD) showConsoleMessage();
 
 persistanceService.persist();
 
 new (Vue as any)({
   router,
+  vuetify,
   render: (h: any) => h(App),
   metaInfo: {
     titleTemplate: "%s",
@@ -40,3 +26,5 @@ Vue.config.errorHandler = (err, vm, info) => {
   console.error(err, vm, info);
   snackbarService.addMessage(`Error: ${err.message}`);
 };
+
+export { router };

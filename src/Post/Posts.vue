@@ -1,11 +1,11 @@
 <template>
   <v-container fluid grid-list-md>
-    <div class="text-xs-center">
-      <v-btn @click="loadPrevious" :loading="loading" color="accent" flat>
+    <div class="text-center">
+      <v-btn @click="loadPrevious" :loading="loading" color="accent" text>
         load previous
       </v-btn>
     </div>
-    <!-- <logo v-if="loading" loader /> -->
+    <!-- <app-logo v-if="loading" loader /> -->
     <post-list
       :visible-posts="posts"
       @open-post="$emit('open-post', $event)"
@@ -21,16 +21,16 @@
         />
       </template>
     </post-list>
-    <logo v-if="loading" type="loader" />
-    <div class="text-xs-center">
-      <v-btn @click="loadNext" :loading="loading" color="accent" flat>
+    <app-logo v-if="loading" type="loader" />
+    <div class="text-center">
+      <v-btn @click="loadNext" :loading="loading" color="accent" text>
         load next
       </v-btn>
     </div>
     <fullscreen-dialog
       :has-previous-fullscreen-post="hasPreviousFullscreenPost"
       :has-next-fullscreen-post="hasNextFullscreenPost"
-      :current="fullscreenPost"
+      :current="fullscreenPost || null"
       @close="$emit('exit-fullscreen')"
       @next-post="$emit('next-fullscreen-post')"
       @previous-post="$emit('previous-fullscreen-post')"
@@ -92,10 +92,12 @@
 <script lang="ts">
 import FullscreenDialog from "./FullscreenDialog.vue";
 import DetailsDialog from "./DetailsDialog.vue";
-import Logo from "../App/Logo.vue";
-import { defineComponent } from "@vue/composition-api";
+import AppLogo from "../App/AppLogo.vue";
+import { defineComponent, PropType } from "@vue/composition-api";
 import Post from "@/Post/Post.vue";
 import PostList from "@/Post/PostList.vue";
+import { Post as PostType } from "@/worker/api";
+import { EnhancedPost } from "@/worker/ApiService";
 
 export default defineComponent({
   metaInfo: {
@@ -106,12 +108,12 @@ export default defineComponent({
     FullscreenDialog,
     DetailsDialog,
     Post,
-    Logo,
+    AppLogo,
   },
   props: {
-    fullscreenPost: { type: Object },
-    detailsPost: { type: Object },
-    posts: { type: Array, required: true },
+    fullscreenPost: { type: Object as PropType<EnhancedPost> },
+    detailsPost: { type: Object as PropType<EnhancedPost> },
+    posts: { type: Array as PropType<EnhancedPost[]>, required: true },
     loading: { type: Boolean, required: true },
     hasPreviousFullscreenPost: { type: Boolean, required: true },
     hasNextFullscreenPost: { type: Boolean, required: true },

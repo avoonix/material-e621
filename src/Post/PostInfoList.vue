@@ -1,58 +1,58 @@
 <template>
   <v-list dense class="secondary">
-    <v-list-tile>
-      <v-list-tile-content>ID</v-list-tile-content>
-      <v-list-tile-content class="align-end">
+    <v-list-item>
+      <v-list-item-content>ID</v-list-item-content>
+      <v-list-item-content class="align-end">
         {{ post.id }}
-      </v-list-tile-content>
-    </v-list-tile>
-    <v-list-tile>
-      <v-list-tile-content>Score</v-list-tile-content>
-      <v-list-tile-content class="align-end">
+      </v-list-item-content>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-content>Score</v-list-item-content>
+      <v-list-item-content class="align-end">
         {{ post.score.total }}
         ({{ post.score.up }} up - {{ post.score.down }} down)
-      </v-list-tile-content>
-    </v-list-tile>
-    <v-list-tile>
-      <v-list-tile-content>Favorites</v-list-tile-content>
-      <v-list-tile-content class="align-end">
+      </v-list-item-content>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-content>Favorites</v-list-item-content>
+      <v-list-item-content class="align-end">
         {{ post.fav_count }}
-      </v-list-tile-content>
-    </v-list-tile>
-    <v-list-tile>
-      <v-list-tile-content>File size</v-list-tile-content>
-      <v-list-tile-content class="align-end">
+      </v-list-item-content>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-content>File size</v-list-item-content>
+      <v-list-item-content class="align-end">
         {{ fileSize }}
         ({{ post.file.size }} B)
-      </v-list-tile-content>
-    </v-list-tile>
-    <v-list-tile>
-      <v-list-tile-content>Dimensions</v-list-tile-content>
-      <v-list-tile-content class="align-end">
+      </v-list-item-content>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-content>Dimensions</v-list-item-content>
+      <v-list-item-content class="align-end">
         {{ post.file.width }}x{{ post.file.height }} ({{ megapixel }} Megapixel)
-      </v-list-tile-content>
-    </v-list-tile>
-    <v-list-tile>
-      <v-list-tile-content>Hash</v-list-tile-content>
-      <v-list-tile-content class="align-end">
+      </v-list-item-content>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-content>Hash</v-list-item-content>
+      <v-list-item-content class="align-end">
         {{ post.file.md5 }}
-      </v-list-tile-content>
-    </v-list-tile>
-    <v-list-tile>
-      <v-list-tile-content>Artist</v-list-tile-content>
-      <v-list-tile-content class="align-end">
+      </v-list-item-content>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-content>Artist</v-list-item-content>
+      <v-list-item-content class="align-end">
         {{ post.tags.artist.join(", ") }}
-      </v-list-tile-content>
-    </v-list-tile>
-    <v-list-tile>
-      <v-list-tile-content>Rating</v-list-tile-content>
-      <v-list-tile-content class="align-end">
+      </v-list-item-content>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-content>Rating</v-list-item-content>
+      <v-list-item-content class="align-end">
         {{ post.rating }}
-      </v-list-tile-content>
-    </v-list-tile>
-    <v-list-tile>
-      <v-list-tile-content>Sources</v-list-tile-content>
-      <v-list-tile-content class="align-end">
+      </v-list-item-content>
+    </v-list-item>
+    <v-list-item>
+      <v-list-item-content>Sources</v-list-item-content>
+      <v-list-item-content class="align-end">
         <a
           target="_blank"
           :href="source"
@@ -61,8 +61,8 @@
         >
           {{ source }}
         </a>
-      </v-list-tile-content>
-    </v-list-tile>
+      </v-list-item-content>
+    </v-list-item>
   </v-list>
 </template>
 
