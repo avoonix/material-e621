@@ -19,6 +19,7 @@
       :loading="tagsLoading ? 'accent' : false"
       hide-details
       class="combobox-with-background"
+      @keydown.enter="onEnterPressed"
     >
       <template slot="no-data">
         <v-list-item>
@@ -30,24 +31,24 @@
           </v-chip>
         </v-list-item>
       </template>
-      <!-- Tags within input -->
-      <template
-        #selection="{ item, parent, selected }"
-        v-if="item === Object(item)"
-      >
-        <!-- TODO: close button -->
+      <template #selection="{ item, parent, selected, attrs }">
         <tag-label
+          v-if="item === Object(item)"
+          v-bind="attrs"
           :tag="item"
+          close
+          close-icon="mdi-delete"
           @click="parent.selectItem(item)"
-          :selected="selected"
+          @click:close="parent.selectItem(item)"
+          :input-value="selected"
         />
       </template>
-      <!-- Tags within dropdown -->
-      <template #item="{ index, item, parent }">
-        <v-list-item-content>
-          <tag-label :tag="item" />
-        </v-list-item-content>
-        <!-- <v-list-item-action>{{ item.count }}</v-list-item-action> -->
+      <template #item="{ item, attrs, on }">
+        <v-list-item v-bind="attrs" v-on="on">
+          <v-list-item-content>
+            <tag-label :tag="item" />
+          </v-list-item-content>
+        </v-list-item>
       </template>
     </v-combobox>
   </span>
@@ -93,7 +94,7 @@ export default defineComponent({
   setup(props, context) {
     const search = ref("");
     const tagsLoading = ref(false);
-    const tags = ref<ITagWithText[]>([]); // TODO@avoo: types
+    const tags = ref<ITagWithText[]>([]);
     const searchAsTag = computed(() =>
       (search.value || "").replace(/\s/g, "_"),
     );
@@ -114,7 +115,7 @@ export default defineComponent({
         : tags.value;
       const arr: ListItem[] = [
         {
-          header: "Start typing to search",
+          header: "Press enter to confirm, or start typing to search",
         },
         ...tagsValue,
       ];
@@ -167,10 +168,6 @@ export default defineComponent({
     watch(
       () => search.value,
       (cur, prev) => {
-        if (cur === null && prev !== null)
-          Vue.nextTick(() => {
-            search.value = prev;
-          });
         if (searchAsTag.value) fetchTags(searchAsTag.value.replace(/^\-/, ""));
       },
     );
@@ -197,7 +194,7 @@ export default defineComponent({
         }
         const removedItems = differenceBy(
           props.tags,
-          val.map((v) => v.text),
+          val.map((v) => v.text).filter((v) => v),
         );
         if (removedItems.length) {
           for (const item of removedItems) {
@@ -205,7 +202,7 @@ export default defineComponent({
           }
         }
         const addedItems = differenceBy(
-          val.map((v) => v.text),
+          val.map((v) => v.text).filter((v) => v),
           props.tags,
         );
         if (addedItems.length) {
@@ -213,16 +210,6 @@ export default defineComponent({
             context.emit("add-tag", item);
           }
         }
-        // val = val.map((v) => {
-        //   if (typeof v === "string") {
-        //     v = {
-        //       text: v.replace(/\s/g, "_"),
-        //       color: "blue-grey",
-        //     };
-        //   }
-        //   return v;
-        // });
-        // this.syncedTagString = str;
       },
     });
 
@@ -238,6 +225,13 @@ export default defineComponent({
 
     const combobox = ref<any>();
 
+    const onEnterPressed = () => {
+      if (!search.value) {
+        combobox.value.blur();
+        context.emit("confirm-search");
+      }
+    };
+
     return {
       combobox,
       search,
@@ -246,6 +240,7 @@ export default defineComponent({
       items,
       tagsLoading,
       model,
+      onEnterPressed,
     };
   },
 });

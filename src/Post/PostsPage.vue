@@ -7,6 +7,7 @@
           :tags="tags"
           @add-tag="addTag"
           @remove-tag="removeTag"
+          @confirm-search="onSearchClick"
           label="Tags"
         />
         <v-btn icon @click="onSearchClick" :loading="loading">

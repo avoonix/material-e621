@@ -126,11 +126,13 @@ export default defineComponent({
       () => visiblePostIds.value,
       async () => {
         if (firstVisibleElement.value) {
+          // get the offset between the first visible post and the top of the viewport (before the dom update)
           const el = firstVisibleElement.value;
-          const oldScroll = getOffset(el);
+          const oldScrollOffset = getOffset(el) - window.scrollY;
           await nextTick();
-          const newScroll = getOffset(el);
-          window.scrollBy(0, newScroll - oldScroll);
+          // the dom has now been updated - scroll the view so the offset to the first post is the same as before the dom update
+          const newScroll = getOffset(el) - oldScrollOffset;
+          window.scrollTo({ top: newScroll });
         }
       },
     );

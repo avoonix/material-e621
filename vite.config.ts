@@ -27,10 +27,11 @@ export default defineConfig({
     }),
     VitePWA({
       devOptions: {
-        enabled: true,
+        // enabled: true,
       },
       workbox: {
         sourcemap: true,
+        // cleanupOutdatedCaches: true,
       },
       includeAssets: ["favicon.ico", "robots.txt"],
       manifest: {
