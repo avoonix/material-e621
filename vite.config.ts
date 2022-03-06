@@ -26,12 +26,9 @@ export default defineConfig({
       fix: true,
     }),
     VitePWA({
-      devOptions: {
-        // enabled: true,
-      },
+      registerType: "autoUpdate",
       workbox: {
         sourcemap: true,
-        // cleanupOutdatedCaches: true,
       },
       includeAssets: ["favicon.ico", "robots.txt"],
       manifest: {

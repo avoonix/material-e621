@@ -12,16 +12,16 @@ const updateSW = registerSW({
         r.update();
       }, intervalMS);
   },
-  onNeedRefresh() {
-    wait(1000);
-    snackbarService.addMessage("Update available - refreshing in 10 seconds!");
-    wait(10 * 1000);
-    snackbarService.addMessage(
-      "Go to Settings > Info > About to see what changed",
-    );
-    wait(100);
-    updateSW();
-  },
+  // onNeedRefresh() {
+  //   wait(1000);
+  //   snackbarService.addMessage("Update available - refreshing in 10 seconds!");
+  //   wait(10 * 1000);
+  //   snackbarService.addMessage(
+  //     "Go to Settings > Info > About to see what changed",
+  //   );
+  //   wait(100);
+  //   updateSW();
+  // },
   onOfflineReady() {
     console.log("offline ready");
   },
