@@ -52,7 +52,7 @@
     />
     <!-- TODO: set has-(next|previous)-fullscreen-post -->
     <portal to="sidebar-suggestions">
-      <v-subheader v-if="suggestedTags.length > 0">Tag suggestions</v-subheader>
+      <v-subheader v-if="suggestedTags.length > 0">Tags on this page</v-subheader>
       <suggestions :tags="suggestedTags" />
     </portal>
   </div>

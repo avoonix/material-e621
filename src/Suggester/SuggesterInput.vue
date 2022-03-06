@@ -25,7 +25,7 @@ import SliderGroup from "./SliderGroup.vue";
 
 export default defineComponent({
   metaInfo: {
-    title: "Post suggester",
+    title: "Post Suggester",
   },
   components: { SliderGroup },
   setup(props, context) {

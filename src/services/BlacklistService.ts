@@ -27,6 +27,10 @@ class BlacklistService {
   private stripTag(tag: string) {
     return tag.trim().toLowerCase().replaceAll(/^-/g, "");
   }
+
+  public tagIsBlacklisted(tag: string) {
+    return state.blacklist.tags.includes(this.stripTag(tag));
+  }
 }
 
 export const blacklistService = new BlacklistService();

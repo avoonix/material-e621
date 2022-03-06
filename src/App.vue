@@ -94,9 +94,12 @@ export default defineComponent({
         availableStyles[Math.floor(availableStyles.length * Math.random())];
     };
 
+    const shortcuts = computed(() => shortcutService.shortcuts);
+
     watch(
-      shortcutService.shortcuts,
+      shortcuts,
       () => {
+        console.log("setting up shortcuts");
         shortcutService.setUpShortcuts();
       },
       { immediate: true, deep: true },

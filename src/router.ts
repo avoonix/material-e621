@@ -154,6 +154,12 @@ export default new Router({
         import(/* webpackChunkName: "misc" */ "@/Error/ErrorPage.vue"),
       alias: "*",
     },
+    {
+      path: "/favorites",
+      name: "Favorites",
+      component: () =>
+        import(/* webpackChunkName: "favorites" */ "@/Favorites/FavoritesPage.vue"),
+    },
   ],
   mode: "hash",
 });

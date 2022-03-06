@@ -32,8 +32,13 @@ export interface Shortcut {
   action: Action;
 }
 
+// export interface FavoritedSearch {
+//   tags: string[];
+//   firstPost?: number;
+// }
+
 export interface ISettingsServiceState {
-  configVersion: undefined | 1 | 2;
+  configVersion: undefined | 1 | 2 | 3;
   shortcuts: Shortcut[];
   blacklist: {
     mode: BlacklistMode;
@@ -72,6 +77,12 @@ export interface ISettingsServiceState {
     goFullscreen: boolean;
     dataSaver: DataSaverType;
   };
+  favorites: {
+    // searches: FavoritedSearch[];
+    tags: {
+      [category: string]: { [tag: string]: true | string };
+    };
+  };
   // postList: {
   //   postLayout:
   //     | "blog"
@@ -95,7 +106,6 @@ export interface ISettingsServiceState {
   //   concurrency: number;
   // };
   account: {
-    //   loggedIn: boolean;
     username: string | null;
     apiKey: string | null;
   };

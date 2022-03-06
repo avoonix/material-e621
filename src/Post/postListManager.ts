@@ -120,33 +120,48 @@ export const usePostListManager = ({
   const isValidNextPost = (post: EnhancedPost) => {
     return !!post.file.url;
   };
-  const _openFullscreenPost = (offset: number) => async (postId: number) => {
-    const idx = posts.value.findIndex((p) => p.id === postId);
-    let nextPostIdx = idx;
-    do {
-      nextPostIdx += offset;
-    } while (
-      posts.value[nextPostIdx] &&
-      !isValidNextPost(posts.value[nextPostIdx]) &&
-      offset
-    );
-    fullscreenPost.value = posts.value[nextPostIdx] || null;
-
-    if (!fullscreenPost.value) {
-      if (offset > 0) {
-        await loadNextPage();
-      } else if (offset < 0) {
-        await loadPreviousPage();
+  const _openFullscreenPost =
+    (offset: number) =>
+    async (postId: number, depth: number): Promise<boolean> => {
+      // returns whether post has been opened successfully
+      const idx = posts.value.findIndex((p) => p.id === postId);
+      let nextPostIdx = idx;
+      do {
+        nextPostIdx += offset;
+      } while (
+        posts.value[nextPostIdx] &&
+        !isValidNextPost(posts.value[nextPostIdx]) &&
+        offset
+      );
+      const nextPost = posts.value[nextPostIdx];
+      if (nextPost) {
+        fullscreenPost.value = nextPost;
+        return true;
+      } else {
+        if (offset > 0) {
+          await loadNextPage();
+        } else if (offset < 0) {
+          await loadPreviousPage();
+        }
+        if (depth <= 0) {
+          const success = await _openFullscreenPost(offset)(postId, depth + 1);
+          if (!success) {
+            fullscreenPost.value = null; // no further posts
+          }
+          return success;
+        } else {
+          return false;
+        }
       }
-    }
-  };
+    };
 
   const openFullscreenPost = _openFullscreenPost(0);
   const openNextFullscreenPost = () =>
-    fullscreenPost.value?.id && _openFullscreenPost(1)(fullscreenPost.value.id);
+    fullscreenPost.value?.id &&
+    _openFullscreenPost(1)(fullscreenPost.value.id, 0);
   const openPreviousFullscreenPost = () =>
     fullscreenPost.value?.id &&
-    _openFullscreenPost(-1)(fullscreenPost.value.id);
+    _openFullscreenPost(-1)(fullscreenPost.value.id, 0);
 
   return {
     loadPreviousPage,

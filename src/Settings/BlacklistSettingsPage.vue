@@ -4,19 +4,25 @@
       <v-flex text-center xs12 sm10 offset-sm1 lg6 offset-lg3>
         <settings-page-title title="Blacklist" color="darken-1 red" />
         <settings-page-item title="Mode" select>
-          <v-select :items="modeItems" filled solo hide-details v-model="mode" />
-        </settings-page-item>
-        <settings-page-item title="Frequently blacklisted tags" select>
-          <blacklist-suggestions
-            :tags="suggestions"
-            :blacklisted="blacklist"
-            @add-tag="addTag"
-            @remove-tag="removeTag"
+          <v-select
+            :items="modeItems"
+            filled
+            solo
+            hide-details
+            v-model="mode"
           />
         </settings-page-item>
         <settings-page-item title="Custom tags" select>
           <tag-search
             :tags="blacklist"
+            @add-tag="addTag"
+            @remove-tag="removeTag"
+          />
+        </settings-page-item>
+        <settings-page-item title="Frequently blacklisted tags" select>
+          <blacklist-suggestions
+            :tags="suggestions"
+            :blacklisted="blacklist"
             @add-tag="addTag"
             @remove-tag="removeTag"
           />

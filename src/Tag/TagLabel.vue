@@ -10,8 +10,8 @@ import { computed, defineComponent, PropType } from "@vue/composition-api";
 
 export interface ITag {
   name: string;
-  post_count: number;
-  category: string;
+  post_count?: number;
+  category?: string;
 }
 
 export default defineComponent({

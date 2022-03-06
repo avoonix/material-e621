@@ -1,4 +1,9 @@
-export const navigationItems = [
+import { favoriteService } from "@/services/FavoriteService";
+import { computed } from "@vue/composition-api";
+
+const hasFavorites = computed(() => favoriteService.hasFavorites)
+
+export const navigationItems = computed(() => [
   {
     icon: "mdi-home",
     name: "Home",
@@ -17,7 +22,7 @@ export const navigationItems = [
   },
   {
     icon: "mdi-braille",
-    name: "Post suggester",
+    name: "Post Suggester",
     exact: true,
     to: {
       path: "/suggester",
@@ -31,4 +36,16 @@ export const navigationItems = [
       path: "/analyzer",
     },
   },
-];
+  ...(hasFavorites.value
+    ? [
+        {
+          icon: "mdi-star",
+          name: "Favorites",
+          exact: true,
+          to: {
+            path: "/favorites",
+          },
+        },
+      ]
+    : []),
+]);

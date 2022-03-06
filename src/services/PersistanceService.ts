@@ -3,7 +3,7 @@ import localforage from "localforage";
 import { ISettingsServiceState } from "./types";
 import debug from "debug";
 import clone from "clone";
-import { watch } from "@vue/composition-api";
+import { reactive, watch } from "@vue/composition-api";
 
 localforage.config({
   description: "",
@@ -74,8 +74,12 @@ class PersistanceService {
       newState.configVersion = 1;
     }
     if (newState.configVersion < 2) {
-      newState.shortcuts = clone(defaultSettings.shortcuts);
+      newState.shortcuts = reactive(clone(defaultSettings.shortcuts));
       newState.configVersion = 2;
+    }
+    if (newState.configVersion < 3) {
+      newState.favorites = reactive(clone(defaultSettings.favorites));
+      newState.configVersion = 3;
     }
     Object.assign(state, newState);
   }

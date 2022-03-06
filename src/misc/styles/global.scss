@@ -46,3 +46,6 @@ html {
   background-color: var(--v-secondary-base);
 }
 
+.no-before-content::before {
+  content: none !important;
+}

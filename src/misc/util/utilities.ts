@@ -52,6 +52,8 @@ export const removeRouterQuery = async (keys: string[]) => {
   });
 };
 
-export const getTagColorFromCategory = (category: string) => {
-  return tagColorMapping[category] || tagColorMapping.default!;
+export const getTagColorFromCategory = (category?: string) => {
+  return category
+    ? tagColorMapping[category] || tagColorMapping.default!
+    : tagColorMapping.default!;
 };

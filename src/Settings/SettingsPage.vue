@@ -40,13 +40,13 @@
         />
         <settings-page-section
           section="restore"
-          title="Backup and restore"
+          title="Backup and Restore"
           icon="mdi-backup-restore"
           color="darken-1 blue"
         />
         <settings-page-section
           section="shortcuts"
-          title="Keyboard shortcuts"
+          title="Keyboard Shortcuts"
           icon="mdi-keyboard"
           color="black"
         />

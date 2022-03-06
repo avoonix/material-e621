@@ -5,8 +5,11 @@
       :key="i"
       @click="$emit('click-entry', item)"
     >
-      <v-list-item-title>
-        {{ item }}
+      <v-list-item-title v-if="item.length">
+        <TagLabel class="mx-1" :tag="{ name: tag }" v-for="(tag, idx) in item" :key="idx" />
+      </v-list-item-title>
+      <v-list-item-title v-else>
+        <i>Empty query</i>
       </v-list-item-title>
       <v-list-item-action>
         <v-btn icon @click.stop="$emit('delete-entry', i)">
@@ -19,13 +22,15 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "@vue/composition-api";
+import TagLabel from "./TagLabel.vue";
 
 export default defineComponent({
   props: {
     entries: {
-      type: Array as PropType< readonly (readonly string[])[]>,
+      type: Array as PropType<readonly (readonly string[])[]>,
       required: true,
     },
   },
+  components: { TagLabel },
 });
 </script>

@@ -2,7 +2,7 @@
   <v-container fill-height>
     <v-layout align-center>
       <v-flex text-center xs12 sm10 offset-sm1 lg6 offset-lg3>
-        <settings-page-title title="Backup and restore" color="darken-1 blue" />
+        <settings-page-title title="Backup and Restore" color="darken-1 blue" />
         <settings-page-item
           title="Backup settings"
           description="Download your settings as JSON file. This file contains your API Keys (if you have added them) - so you shouldn't share it with anyone. "
@@ -46,7 +46,7 @@ import downloadjs from "downloadjs";
 
 export default defineComponent({
   metaInfo: {
-    title: "Backup and restore settings",
+    title: "Backup and Restore",
   },
   components: {
     SettingsPageTitle,

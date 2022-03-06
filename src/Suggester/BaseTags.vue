@@ -1,25 +1,38 @@
 <template>
   <v-card color="secondary">
-    <v-card-title>Your suggestions are based on these tags</v-card-title>
-    <v-card-text>
+    <v-subheader>Suggestions based on</v-subheader>
+    <div>
       <template v-for="(item, i) in data">
-        <v-card :key="i" color="secondary">
-          <v-card-title>{{ item.category }}</v-card-title>
-          <v-card-text>
-            {{ item.tags }}
-            <span class="grey--text" v-if="item.more">
+        <div :key="i" color="secondary">
+          <!-- <v-card-title>{{ item.category }}</v-card-title> -->
+          <v-subheader>{{ item.category }}</v-subheader>
+          <div class="ml-10">
+
+          <div v-if="item.tags.length">
+            <TagLabel
+              v-for="(name, idx) in item.tags"
+              :key="idx"
+              :tag="{ name, category: item.category }"
+              class="ma-1"
+            />
+            <span class="grey--text more" v-if="item.more">
               + {{ item.more }} more
             </span>
-          </v-card-text>
-        </v-card>
+          </div>
+          <div v-else>
+            <i class="grey--text">None</i>
+          </div>
+          </div>
+        </div>
       </template>
-    </v-card-text>
+    </div>
   </v-card>
 </template>
 
 <script lang="ts">
 import { FavoriteTagsResult } from "@/worker/AnalyzeService";
 import { computed, defineComponent, PropType } from "@vue/composition-api";
+import TagLabel from "@/Tag/TagLabel.vue";
 
 export default defineComponent({
   props: {
@@ -43,5 +56,12 @@ export default defineComponent({
       data,
     };
   },
+  components: { TagLabel },
 });
 </script>
+
+<style scoped>
+.more {
+  white-space: nowrap;
+}
+</style>

@@ -81,6 +81,9 @@ export const defaultSettings: ISettingsServiceState = {
     goFullscreen: false,
     dataSaver: DataSaverType.auto,
   },
+  favorites: {
+    tags: {},
+  },
 };
 
 export const state = reactive<ISettingsServiceState>(clone(defaultSettings));

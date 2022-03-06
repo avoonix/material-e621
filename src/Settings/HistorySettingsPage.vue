@@ -24,11 +24,10 @@ import SettingsPageItem from "./SettingsPageItem.vue";
 import HistoryList from "../Tag/HistoryList.vue";
 import { computed, defineComponent } from "@vue/composition-api";
 import { historyService } from "@/services";
-import router from "@/router";
 
 export default defineComponent({
   metaInfo: {
-    title: "History Settings",
+    title: "History",
   },
   components: {
     SettingsPageTitle,

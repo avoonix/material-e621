@@ -1,12 +1,18 @@
 <template>
   <div class="text-left">
     <div class="text-h5">
-      <v-icon>mdi-thumbs-up-down</v-icon>
-      {{ post.score.total }} &bull;
-      <v-icon>mdi-heart</v-icon>
-      {{ post.fav_count }} &bull;
-      <v-icon>mdi-file</v-icon>
-      {{ post.file.ext.toUpperCase() }} ({{ fileSize }})
+      <v-chip outlined class="no-before-content">
+        <v-icon>mdi-thumbs-up-down</v-icon>
+        <span class="ml-3">
+          {{ post.score.total }}
+        </span>
+      </v-chip>
+      <v-chip outlined class="ml-2 no-before-content">
+        <v-icon>mdi-heart</v-icon>
+        <span class="ml-3">
+          {{ post.fav_count }}
+        </span>
+      </v-chip>
       <span v-if="score">
         <v-icon>mdi-counter</v-icon>
         {{ score }}
@@ -40,9 +46,7 @@ export default defineComponent({
     const relativeUploadDate = computed(() =>
       formatDistanceToNow(date.value, { addSuffix: true }),
     );
-    const uploadDate = computed(() =>
-      format(date.value, "PP p"),
-    );
+    const uploadDate = computed(() => format(date.value, "PP p"));
     // post.__score
     const score = computed(() => {
       if (isScoredPost(props.post)) {

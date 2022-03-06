@@ -1,5 +1,10 @@
 <template>
-  <v-data-table disable-sort :headers="headers" :items="shortcuts" class="secondary">
+  <v-data-table
+    disable-sort
+    :headers="headers"
+    :items="shortcuts"
+    class="secondary"
+  >
     <template #top>
       <div class="pa-2">
         <v-dialog v-model="dialog" max-width="500px">
@@ -53,9 +58,7 @@
             </v-card-title>
             <v-card-actions>
               <v-spacer />
-              <v-btn color="primary" text @click="closeDelete">
-                Cancel
-              </v-btn>
+              <v-btn color="primary" text @click="closeDelete"> Cancel </v-btn>
               <v-btn color="primary" text @click="deleteItemConfirm">
                 OK
               </v-btn>

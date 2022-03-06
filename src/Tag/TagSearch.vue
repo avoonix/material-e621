@@ -45,9 +45,22 @@
       </template>
       <template #item="{ item, attrs, on }">
         <v-list-item v-bind="attrs" v-on="on">
-          <v-list-item-content>
-            <tag-label :tag="item" />
+          <v-list-item-content class="d-flex">
+            <span>
+              <span v-if="item.text.startsWith('-')">Exclude</span>
+              <tag-label :tag="item" />
+            </span>
           </v-list-item-content>
+          <v-list-item-action class="grey--text text-caption mr-2">
+            {{ item.post_count }} posts
+          </v-list-item-action>
+          <v-list-item-action class="ma-0">
+            <tag-favorite-button
+              :category="item.category"
+              :name="item.text"
+              :display-text="item.name"
+            />
+          </v-list-item-action>
         </v-list-item>
       </template>
     </v-combobox>
@@ -71,6 +84,8 @@ import { getApiService } from "@/worker/services";
 import { postService } from "@/services";
 import { categoryIdToCategoryName } from "@/misc/util/utilities";
 import { shortcutService } from "@/services/ShortcutService";
+import TagFavoriteButton from "./TagFavoriteButton.vue";
+import { favoriteService } from "@/services/FavoriteService";
 
 interface ITagWithText extends ITag {
   text: string;
@@ -90,6 +105,7 @@ export default defineComponent({
   },
   components: {
     TagLabel,
+    TagFavoriteButton,
   },
   setup(props, context) {
     const search = ref("");
@@ -109,10 +125,24 @@ export default defineComponent({
         `${text}\n${display}`.toLowerCase().indexOf(query.toLowerCase()) !== -1
       );
     };
+    const favorites = computed(() => {
+      const result: ITagWithText[] = [];
+      for (const [category, tags] of Object.entries(favoriteService.tags)) {
+        for (const [tag, display] of Object.entries(tags)) {
+          result.push({
+            category,
+            name: typeof display === "string" ? display : tag,
+            text: tag,
+          });
+        }
+      }
+      return result;
+    });
     const items = computed(() => {
+      const list = tags.value.length ? tags.value : favorites.value;
       const tagsValue = inverted.value
-        ? tags.value.map((t) => ({ ...t, text: `-${t.text}` }))
-        : tags.value;
+        ? list.map((t) => ({ ...t, text: `-${t.text}` }))
+        : list;
       const arr: ListItem[] = [
         {
           header: "Press enter to confirm, or start typing to search",
@@ -241,6 +271,7 @@ export default defineComponent({
       tagsLoading,
       model,
       onEnterPressed,
+      inverted,
     };
   },
 });
