@@ -14,8 +14,7 @@
         <settings-page-item title="Fullscreen arrow buttons" select>
           <v-select
             :items="fullscreenZoomUiModeItems"
-            filled
-            solo
+            outlined
             hide-details
             v-model="fullscreenZoomUiMode"
           />
@@ -64,8 +63,7 @@
           </template>
           <v-select
             :items="dataSaverItems"
-            filled
-            solo
+            outlined
             hide-details
             v-model="dataSaver"
           />

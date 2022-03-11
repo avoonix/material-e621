@@ -10,6 +10,7 @@
             large
             color="primary"
             to="/settings/appearance/themes"
+            class="mb-2"
           >
             Browse themes
           </v-btn>
@@ -19,7 +20,7 @@
           <color-chooser label="Background" :color.sync="background" />
           <color-chooser label="Sidebar" :color.sync="sidebar" />
           <color-chooser label="Toolbar" :color.sync="toolbar" />
-          <v-switch label="Dark" v-model="dark"/>
+          <v-switch label="Dark" v-model="dark" />
         </settings-page-item>
         <settings-page-item
           title="Fullscreen image transitions"
@@ -28,8 +29,7 @@
         >
           <v-select
             :items="transitionItems"
-            filled
-            solo
+            outlined
             v-model="fullscreenTransition"
             hide-details
           />
@@ -56,8 +56,7 @@
         >
           <v-select
             :items="transitionItems"
-            filled
-            solo
+            outlined
             v-model="routeTransition"
             hide-details
           />
@@ -72,13 +71,12 @@
           title="Colored stripe indicating post rating"
           switch
         >
-          <v-switch v-model="stripe"/>
+          <v-switch v-model="stripe" />
         </settings-page-item>
         <settings-page-item title="Navigation" select>
           <v-select
             :items="navigationTypeItems"
-            filled
-            solo
+            outlined
             v-model="navigationType"
             hide-details
           />
@@ -86,14 +84,13 @@
         <settings-page-item title="Logo" select>
           <v-select
             :items="logoStyleItems"
-            filled
-            solo
+            outlined
             v-model="logoStyle"
             hide-details
           />
         </settings-page-item>
         <settings-page-item title="Hide install prompt" switch>
-          <v-switch v-model="hideInstallPrompt"/>
+          <v-switch v-model="hideInstallPrompt" />
         </settings-page-item>
       </v-flex>
     </v-layout>

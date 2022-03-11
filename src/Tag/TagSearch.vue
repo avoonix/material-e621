@@ -8,7 +8,7 @@
       attach
       flat
       hide-selected
-      clearable
+      append-icon=""
       ref="combobox"
       v-model="model"
       :filter="filter"
@@ -51,7 +51,10 @@
               <tag-label :tag="item" />
             </span>
           </v-list-item-content>
-          <v-list-item-action class="grey--text text-caption mr-2">
+          <v-list-item-action
+            v-if="isFinite(item.post_count)"
+            class="grey--text text-caption mr-2"
+          >
             {{ item.post_count }} posts
           </v-list-item-action>
           <v-list-item-action class="ma-0">
@@ -133,13 +136,14 @@ export default defineComponent({
             category,
             name: typeof display === "string" ? display : tag,
             text: tag,
+            post_count: Infinity, // should show first
           });
         }
       }
       return result;
     });
     const items = computed(() => {
-      const list = tags.value.length ? tags.value : favorites.value;
+      const list = [...favorites.value, ...tags.value];
       const tagsValue = inverted.value
         ? list.map((t) => ({ ...t, text: `-${t.text}` }))
         : list;

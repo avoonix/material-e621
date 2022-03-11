@@ -1,6 +1,7 @@
 import qs from "qs";
 
 declare const VUE_APP_GIT_COMMIT_INFO: string;
+declare const VUE_APP_GIT_BRANCH: string;
 
 export interface IGitCommit {
   hash: string;
@@ -10,6 +11,8 @@ export interface IGitCommit {
     body: string | null;
   };
 }
+
+export const getGitBranchInfo = () => String(VUE_APP_GIT_BRANCH);
 
 export const getGitInfo = (): IGitCommit[] =>
   String(VUE_APP_GIT_COMMIT_INFO)

@@ -1,63 +1,22 @@
 <template>
-  <v-layout>
-    <v-select
-      :items="colors"
-      :label="label"
-      filled
-      hide-details
-      v-model="currentColor"
-    >
-      <template #prepend>
-        <v-avatar :color="currentColor">
-          <v-icon>mdi-palette</v-icon>
-        </v-avatar>
+  <div class="d-flex align-center">
+    <v-avatar class="ma-2" :color="currentColor">
+      <v-icon>mdi-palette</v-icon>
+    </v-avatar>
+    <v-menu offset-y :close-on-content-click="false">
+      <template #activator="{ on, attrs }">
+        <v-btn color="primary" class="grow" outlined v-bind="attrs" v-on="on">
+          {{ label }}
+        </v-btn>
       </template>
-      <template #selection="{ item, selected, disabled, index }">
-        {{ item.name }}
-      </template>
-      <template #item="{ item, title }">
-        <v-list-item-avatar>
-          <v-avatar size="36" :color="item.value">
-            <v-icon size="20">mdi-palette</v-icon>
-          </v-avatar>
-        </v-list-item-avatar>
-        <v-list-item-title>{{ item.name }}</v-list-item-title>
-      </template>
-    </v-select>
-  </v-layout>
+
+      <v-color-picker elevation="16" hide-mode-switch v-model="currentColor" />
+    </v-menu>
+  </div>
 </template>
 
 <script lang="ts">
-import vuetifyColors from "vuetify/es5/util/colors";
 import { computed, defineComponent } from "@vue/composition-api";
-
-const colorOrder = [
-  "darken4",
-  "darken3",
-  "darken2",
-  "darken1",
-  "base",
-  "lighten1",
-  "lighten2",
-  "lighten3",
-  "lighten4",
-  "accent1",
-  "accent2",
-  "accent3",
-];
-
-const colors = Object.entries(vuetifyColors).reduce<
-  { name: string; value: any }[]
->(
-  (prev, [color, cur]) => [
-    ...prev,
-    ...Object.entries(cur as any)
-      .filter(([k, _]) => colorOrder.indexOf(k) !== -1)
-      .sort(([k1], [k2]) => colorOrder.indexOf(k2) - colorOrder.indexOf(k1))
-      .map(([k, c]) => ({ name: `${color} ${k}`, value: c })),
-  ],
-  [],
-);
 
 export default defineComponent({
   props: {
@@ -81,7 +40,6 @@ export default defineComponent({
     });
     return {
       currentColor,
-      colors,
     };
   },
 });

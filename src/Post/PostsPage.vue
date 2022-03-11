@@ -19,6 +19,7 @@
           max-height="300"
           offset-y
           transition="slide-y-transition"
+          v-if="$vuetify.breakpoint.mdAndUp"
         >
           <template #activator="{ on }">
             <v-btn v-on="on" icon>

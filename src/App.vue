@@ -1,5 +1,5 @@
 <template>
-  <v-app :class="`theme--${currentTheme.dark ? 'dark' : 'light'}`">
+  <v-app :class="`theme--${theme.dark ? 'dark' : 'light'}`">
     <v-navigation-drawer
       persistent
       :clipped="clipped"
@@ -11,14 +11,14 @@
       app
       width="400"
       class="pa-2"
-      :style="`background-color: ${currentTheme.sidebar} !important; border-color: ${currentTheme.sidebar} !important;`"
+      :style="`background-color: ${theme.sidebar} !important; border-color: ${theme.sidebar} !important;`"
     >
       <app-logo :type="logoStyle" @click.native="onLogoClick" />
       <navigation-list />
       <portal-target name="sidebar-suggestions" />
     </v-navigation-drawer>
     <v-app-bar
-      :color="currentTheme.toolbar"
+      :color="theme.toolbar"
       :app="!minimalHeader"
       :flat="minimalHeader"
       :clipped-left="clipped"
@@ -105,11 +105,14 @@ export default defineComponent({
       { immediate: true, deep: true },
     );
 
+    const theme = computed(() => appearanceService.theme);
+
     return {
       state,
       navMode,
       logoStyle,
       onLogoClick,
+      theme,
     };
   },
   metaInfo() {
@@ -159,24 +162,16 @@ export default defineComponent({
         this.drawer_ = val;
       },
     },
-    currentTheme() {
-      return {
-        primary: appearanceService.primaryColor,
-        secondary: appearanceService.secondaryColor,
-        accent: appearanceService.accentColor,
-        background: appearanceService.backgroundColor,
-        sidebar: appearanceService.sidebarColor,
-        toolbar: appearanceService.toolbarColor,
-        dark: appearanceService.dark,
-      };
-    },
   },
   methods: {
     applyTheme() {
-      this.$vuetify.theme.currentTheme.primary = this.currentTheme.primary;
-      this.$vuetify.theme.currentTheme.secondary = this.currentTheme.secondary;
-      this.$vuetify.theme.currentTheme.accent = this.currentTheme.accent;
-      this.$vuetify.theme.dark = this.currentTheme.dark;
+      this.$vuetify.theme.themes.dark.primary = this.theme.primary;
+      this.$vuetify.theme.themes.light.primary = this.theme.primary;
+      this.$vuetify.theme.themes.dark.secondary = this.theme.secondary;
+      this.$vuetify.theme.themes.light.secondary = this.theme.secondary;
+      this.$vuetify.theme.themes.dark.accent = this.theme.accent;
+      this.$vuetify.theme.themes.light.accent = this.theme.accent;
+      this.$vuetify.theme.dark = this.theme.dark;
     },
   },
   async mounted() {
@@ -196,7 +191,7 @@ export default defineComponent({
         });
       }
     },
-    currentTheme: {
+    theme: {
       deep: true,
       immediate: true,
       handler() {

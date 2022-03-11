@@ -43,6 +43,8 @@ export default defineComponent({
       this.setTransitionNames(
         toDepth < fromDepth ? "left" : toDepth === fromDepth ? "none" : "right",
       );
+
+      // snackbarService.clearMessage();
     },
   },
   computed: {

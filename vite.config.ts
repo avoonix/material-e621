@@ -10,11 +10,19 @@ const VUE_APP_GIT_COMMIT_INFO = execSync(
 )
   .toString()
   .trim();
+const VUE_APP_GIT_BRANCH = execSync(
+  'git branch --show-current',
+)
+  .toString()
+  .trim();
+
+  
 
 // https://vitejs.dev/config/
 export default defineConfig({
   define: {
     VUE_APP_GIT_COMMIT_INFO: JSON.stringify(VUE_APP_GIT_COMMIT_INFO),
+    VUE_APP_GIT_BRANCH: JSON.stringify(VUE_APP_GIT_BRANCH),
   },
   build: {
     target: "esnext",

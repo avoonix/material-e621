@@ -1,9 +1,10 @@
-import { state, defaultSettings } from "./state";
+import { state } from "./state";
 import localforage from "localforage";
 import { ISettingsServiceState } from "./types";
 import debug from "debug";
 import clone from "clone";
 import { reactive, watch } from "@vue/composition-api";
+import { defaultSettings } from "./defaultSettings";
 
 localforage.config({
   description: "",

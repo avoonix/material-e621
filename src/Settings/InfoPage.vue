@@ -3,6 +3,21 @@
     <v-layout align-center>
       <v-flex text-center xs12 sm10 offset-sm1 lg6 offset-lg3>
         <settings-page-title title="Info" color="darken-2 teal" />
+        <settings-page-item title="Version Info" select>
+          You are running {{ appName }}, which was last changed with commit
+          <a
+            :href="`https://github.com/avoonix/material-e621/commit/${commit.hash}`"
+            target="_blank"
+            >{{ commit.hash.substring(0, 7) }}</a
+          >
+          on <b>{{ commitDate }}</b> (this was <b>{{ commitDateRelative }}</b
+          >) from branch <b>{{ branch }}</b
+          >.
+          <v-btn color="accent" text @click="forceUpdate" block>
+            Force Update
+          </v-btn>
+          <v-btn color="accent" text to="/about" block> View Commits </v-btn>
+        </settings-page-item>
         <settings-page-item
           :title="`Storage used: ${usageStr}`"
           description="Shows the storage used for cached files, settings and cached tags."
@@ -14,9 +29,6 @@
             indeterminante
             :value="usagePercentage"
           />
-        </settings-page-item>
-        <settings-page-item title="About" select>
-          <v-btn color="accent" text to="/about" block> About </v-btn>
         </settings-page-item>
         <settings-page-item title="Bookmarklet">
           <install />
@@ -32,6 +44,9 @@ import SettingsPageItem from "./SettingsPageItem.vue";
 import { computed, defineComponent, reactive } from "@vue/composition-api";
 import prettyBytes from "pretty-bytes";
 import Install from "@/Settings/Install.vue";
+import { getGitInfo, getGitBranchInfo } from "@/misc/util/git";
+import { getAppName } from "@/misc/util/utilities";
+import { format, formatDistanceToNow } from "date-fns";
 
 export default defineComponent({
   metaInfo: {
@@ -57,9 +72,31 @@ export default defineComponent({
       storage.used = estimate.usage || 0;
       storage.total = estimate.quota || 0;
     });
+    const commit = getGitInfo()[0];
+    const branch = getGitBranchInfo();
+    const commitDate = computed(() => format(commit.date, "PP p"));
+    const commitDateRelative = computed(() =>
+      formatDistanceToNow(commit.date, { addSuffix: true }),
+    );
+    const forceUpdate = () => {
+      navigator.serviceWorker
+        .getRegistrations()
+        .then((re) => re.map((r) => r.unregister()))
+        .then((p) => Promise.all(p))
+        .then(() => caches.keys())
+        .then((keys) => keys.map((key) => caches.delete(key)))
+        .then((p) => Promise.all(p))
+        .then(() => location.reload());
+    };
     return {
       usageStr,
       usagePercentage,
+      commit,
+      appName: getAppName(),
+      branch,
+      commitDate,
+      commitDateRelative,
+      forceUpdate,
     };
   },
 });

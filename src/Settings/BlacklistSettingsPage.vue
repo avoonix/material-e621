@@ -6,8 +6,7 @@
         <settings-page-item title="Mode" select>
           <v-select
             :items="modeItems"
-            filled
-            solo
+            outlined
             hide-details
             v-model="mode"
           />
