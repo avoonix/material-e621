@@ -125,14 +125,8 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-# Misc
-*.secret
 *.log
 public/static/*.png
 public/favicon.ico
-package-lock.json
-todo*
 
 .vscode/settings.json
-
-dev-dist
