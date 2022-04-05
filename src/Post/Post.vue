@@ -8,11 +8,11 @@
         @open-post="setClicked"
       />
     </div>
-    <v-card-title primary-title>
+    <v-card-text>
       <post-text :post="post" />
-    </v-card-title>
+    </v-card-text>
     <v-card-actions>
-      <v-spacer/>
+      <v-spacer />
       <post-buttons
         :buttons="buttons"
         :post="post"

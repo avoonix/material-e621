@@ -40,10 +40,10 @@ export const navigationItems = computed(() => [
     ? [
         {
           icon: "mdi-star",
-          name: "Favorites",
+          name: "Starred",
           exact: true,
           to: {
-            path: "/favorites",
+            name: "Starred"
           },
         },
       ]

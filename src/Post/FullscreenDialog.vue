@@ -1,5 +1,6 @@
 <template>
   <v-dialog
+    dark
     :value="open"
     fullscreen
     hide-overlay
@@ -11,7 +12,7 @@
       <div class="flex">
         <div
           v-show="!hideUi"
-          class="float-left d-flex"
+          class="float-left"
           v-ripple="hasPreviousFullscreenPost"
           @click="showPreviousImage"
         >
@@ -42,7 +43,11 @@
               autoplay
               preload="metadata"
             >
-              <source v-if="current.file.url" :src="current.file.url" type="video/webm" />
+              <source
+                v-if="current.file.url"
+                :src="current.file.url"
+                type="video/webm"
+              />
               Video type not supported by your browser
             </video>
             <div v-else class="overflow">
@@ -94,7 +99,7 @@
         </zoom-pan-image>
         <div
           v-show="!hideUi"
-          class="float-right d-flex"
+          class="float-right"
           v-ripple="hasNextFullscreenPost"
           @click="showNextImage"
         >
@@ -459,5 +464,9 @@ export default defineComponent({
       float: left;
     }
   }
+}
+
+.float-left, .float-right {
+  display: flex;
 }
 </style>

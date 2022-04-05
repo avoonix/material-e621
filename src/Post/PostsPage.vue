@@ -7,10 +7,14 @@
           :tags="tags"
           @add-tag="addTag"
           @remove-tag="removeTag"
-          @confirm-search="onSearchClick"
+          @confirm-search="updateQuery() && onSearchClick()"
           label="Tags"
         />
-        <v-btn icon @click="onSearchClick" :loading="loading">
+        <v-btn
+          icon
+          @click="updateQuery() && onSearchClick()"
+          :loading="loading"
+        >
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
         <v-menu
@@ -53,7 +57,9 @@
     />
     <!-- TODO: set has-(next|previous)-fullscreen-post -->
     <portal to="sidebar-suggestions">
-      <v-subheader v-if="suggestedTags.length > 0">Tags on this page</v-subheader>
+      <v-subheader v-if="suggestedTags.length > 0"
+        >Tags on this page</v-subheader
+      >
       <suggestions :tags="suggestedTags" />
     </portal>
   </div>
@@ -74,6 +80,7 @@ import { useHistory } from "@/Post/historyManager";
 import router from "@/router";
 import { ITag } from "@/Tag/TagLabel.vue";
 import { useRoute } from "@/misc/util/router";
+import { debounce, isEqual } from "lodash";
 
 export default defineComponent({
   components: {
@@ -83,7 +90,8 @@ export default defineComponent({
     HistoryList,
   },
   setup(props, context) {
-    const { tags, addTag, removeTag } = useRouterTagManager();
+    const { tags, addTag, removeTag, updateQuery, query, setTags } =
+      useRouterTagManager();
 
     const route = useRoute();
 
@@ -170,18 +178,33 @@ export default defineComponent({
       },
     );
 
-    const onSearchClick = async () => {
-      await removeRouterQuery(["first_post"]);
-      posts.value = [];
-      loadNextPage();
-    };
+    const onSearchClick = debounce(async () => {
+      console.log("on search click");
+      if (!loading.value) {
+        await removeRouterQuery(["first_post"]);
+        posts.value = [];
+        loadNextPage();
+      }
+    }, 50);
+
+    watch(
+      query,
+      (cur, prev) => {
+        if (!isEqual(cur, prev)) {
+          console.log("query updated", { prev, cur });
+          onSearchClick();
+        }
+      },
+      { immediate: false },
+    );
 
     const onHistoryEntryClick = (entry: string[]) => {
-      tags.value = [...entry];
-      onSearchClick();
+      setTags(entry);
+      updateQuery();
     };
 
     return {
+      updateQuery,
       onHistoryEntryClick,
       onSearchClick,
       suggestedTags,

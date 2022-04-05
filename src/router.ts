@@ -155,8 +155,9 @@ export default new Router({
       alias: "*",
     },
     {
-      path: "/favorites",
-      name: "Favorites",
+      alias: ["/favorites"],
+      path: "/starred",
+      name: "Starred",
       component: () =>
         import(/* webpackChunkName: "favorites" */ "@/Favorites/FavoritesPage.vue"),
     },

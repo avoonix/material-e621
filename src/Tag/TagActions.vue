@@ -7,7 +7,9 @@
 </template>
 
 <script lang="ts">
+import { updateRouterQuery } from "@/misc/util/utilities";
 import { blacklistService } from "@/services";
+import { favoriteService } from "@/services/FavoriteService";
 import { computed, defineComponent } from "@vue/composition-api";
 
 // const menu = {
@@ -37,6 +39,18 @@ export default defineComponent({
       blacklistService.tagIsBlacklisted(props.name),
     );
 
+    const isFavorited = computed(() =>
+      favoriteService.isFavorited(props.name, props.category),
+    );
+    const toggleFavorite = () => {
+      favoriteService.setFavorite(
+        props.name,
+        props.category,
+        !isFavorited.value,
+        // props.displayText, // TODO: might be needed in the future
+      );
+    };
+
     const items = computed(() => {
       return [
         {
@@ -58,18 +72,20 @@ export default defineComponent({
             }
           },
         },
-        // {
-        //   text: "Search",
-        //   action: async () => {
-        //     const { appRouter } = await import("@/misc/util/router");
-        //     appRouter.push({
-        //       name: "Posts",
-        //       query: {
-        //         tags: props.name,
-        //       },
-        //     });
-        //   },
-        // },
+        {
+          text: isFavorited.value ? "Unstar" : "Star",
+          action: () => {
+            toggleFavorite();
+          },
+        },
+        {
+          text: "Search",
+          action: async () => {
+            updateRouterQuery({
+              tags: props.name,
+            });
+          },
+        },
       ];
     });
 

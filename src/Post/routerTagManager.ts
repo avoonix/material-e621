@@ -1,10 +1,10 @@
 import { useRoute } from "@/misc/util/router";
-import router from "@/router";
 import { updateRouterQuery } from "@/misc/util/utilities";
-import { computed } from "@vue/composition-api";
+import { computed, ref, watch } from "@vue/composition-api";
 
 export const useRouterTagManager = () => {
   const route = useRoute();
+  const tempTags = ref<string[]>([]);
   const tags = computed<string[]>({
     get() {
       if (!route.query.tags) {
@@ -19,15 +19,23 @@ export const useRouterTagManager = () => {
       });
     },
   });
+  watch(tags, () => (tempTags.value = [...tags.value]), { immediate: true });
+  const updateQuery = () => (tags.value = [...tempTags.value]);
   const addTag = (tag: string) => {
-    tags.value = [...tags.value, tag];
+    tempTags.value = [...tempTags.value, (tag)];
   };
   const removeTag = (tag: string) => {
-    tags.value = tags.value.filter((t) => t !== tag);
+    tempTags.value = tempTags.value.filter((t) => t !== tag);
+  };
+  const setTags = (tags: string[]) => {
+    tempTags.value = [...tags];
   };
   return {
-    tags,
+    tags: tempTags,
+    query: tags,
     addTag,
     removeTag,
+    updateQuery,
+    setTags,
   };
 };

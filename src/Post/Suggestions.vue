@@ -17,22 +17,7 @@
           <tag-favorite-button :category="tag.category" :name="tag.name" />
         </v-list-item-action>
         <v-list-item-action v-if="tag.category" class="ma-0">
-          <v-menu
-            bottom
-            offset-y
-            left
-            attach
-            close-on-content-click
-            close-on-click
-            close-delay="0"
-          >
-            <template #activator="{ on }">
-              <v-btn v-on="on" icon>
-                <v-icon>mdi-dots-vertical</v-icon>
-              </v-btn>
-            </template>
-            <tag-actions :category="tag.category" :name="tag.name" />
-          </v-menu>
+          <tag-menu :tag="tag" />
         </v-list-item-action>
       </v-list-item>
     </template>
@@ -43,13 +28,13 @@
 import { defineComponent, PropType } from "@vue/composition-api";
 import { ITag, default as TagLabel } from "../Tag/TagLabel.vue";
 import TagFavoriteButton from "@/Tag/TagFavoriteButton.vue";
-import TagActions from "@/Tag/TagActions.vue";
+import TagMenu from "@/Tag/TagMenu.vue";
 
 export default defineComponent({
   components: {
     TagLabel,
     TagFavoriteButton,
-    TagActions,
+    TagMenu,
   },
   props: {
     tags: {
