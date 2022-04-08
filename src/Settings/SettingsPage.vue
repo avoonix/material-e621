@@ -1,62 +1,112 @@
 <template>
   <v-container fill-height>
     <v-layout align-center>
-      <v-flex text-center xs12 sm10 offset-sm1 lg6 offset-lg3>
-        <settings-page-section
-          section="info"
-          title="Info"
-          icon="mdi-information"
-          color="darken-2 teal"
-        />
-        <settings-page-section
-          section="blacklist"
-          title="Blacklist"
-          icon="mdi-playlist-remove"
-          color="darken-1 red"
-        />
-        <settings-page-section
-          section="appearance"
-          title="Appearance"
-          icon="mdi-palette"
-          color="darken-1 pink"
-        />
-        <settings-page-section
-          section="history"
-          title="History"
-          icon="mdi-format-list-bulleted"
-          color="darken-1 green"
-        />
-        <settings-page-section
-          section="posts"
-          title="Posts"
-          icon="mdi-format-list-text"
-          color="darken-3 brown"
-        />
-        <settings-page-section
-          section="account"
-          title="Account"
-          icon="mdi-account"
-          color="darken-3 yellow"
-        />
-        <settings-page-section
-          section="restore"
-          title="Backup and Restore"
-          icon="mdi-backup-restore"
-          color="darken-1 blue"
-        />
-        <settings-page-section
-          section="shortcuts"
-          title="Keyboard Shortcuts"
-          icon="mdi-keyboard"
-          color="black"
-        />
+      <v-flex xs12 sm10 offset-sm1 lg6 offset-lg3>
+        <v-card>
+          <v-list class="secondary">
+            <settings-page-section
+              section="info"
+              title="Info"
+              icon="mdi-information"
+              color="darken-2 teal"
+            >
+              <v-list-item-subtitle>
+                Last update was {{ lastUpdated }}
+              </v-list-item-subtitle>
+            </settings-page-section>
+            <settings-page-section
+              section="blacklist"
+              title="Blacklist"
+              icon="mdi-playlist-remove"
+              color="darken-1 red"
+            >
+              <v-list-item-subtitle>
+                {{ blacklistCount }}
+                {{ blacklistCount === 1 ? "tag" : "tags" }} blacklisted
+              </v-list-item-subtitle>
+            </settings-page-section>
+            <settings-page-section
+              section="appearance"
+              title="Appearance"
+              icon="mdi-palette"
+              color="darken-1 pink"
+            />
+            <settings-page-section
+              section="history"
+              title="History"
+              icon="mdi-format-list-bulleted"
+              color="darken-1 green"
+            >
+              <v-list-item-subtitle>
+                {{ historySize }}
+                {{ historySize === 1 ? "entry" : "entries" }}
+              </v-list-item-subtitle>
+            </settings-page-section>
+            <settings-page-section
+              section="posts"
+              title="Posts"
+              icon="mdi-format-list-text"
+              color="darken-3 brown"
+            />
+            <settings-page-section
+              section="account"
+              title="Account"
+              icon="mdi-account"
+              color="darken-3 yellow"
+            >
+              <v-list-item-subtitle v-if="username">
+                Signed in as {{ username }}
+              </v-list-item-subtitle>
+            </settings-page-section>
+            <settings-page-section
+              section="restore"
+              title="Backup and Restore"
+              icon="mdi-backup-restore"
+              color="darken-1 blue"
+            />
+            <settings-page-section
+              section="shortcuts"
+              title="Keyboard Shortcuts"
+              icon="mdi-keyboard"
+              color="black"
+            >
+              <v-list-item-subtitle>
+                {{ shortcutCount }}
+                {{ shortcutCount === 1 ? "shortcut" : "shortcuts" }} defined
+              </v-list-item-subtitle>
+              </settings-page-section>
+          </v-list>
+        </v-card>
+
+        <v-card color="secondary" class="mt-3">
+          <v-card-title class="pb-0">
+            Found a bug? Got an idea for a new feature?
+          </v-card-title>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              outlined
+              color="primary"
+              rel="noopener noreferrer"
+              target="_blank"
+              href="https://github.com/avoonix/material-e621/issues/new/choose"
+            >
+              <v-icon left> mdi-open-in-new </v-icon>
+              share it on github
+            </v-btn>
+          </v-card-actions>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { getGitInfo } from "@/misc/util/git";
+import { accountService, blacklistService, historyService } from "@/services";
+import { shortcutService } from "@/services/ShortcutService";
+import { computed, defineComponent, onMounted } from "@vue/composition-api";
+import { formatDistanceToNow } from "date-fns";
 import SettingsPageSection from "./SettingsPageSection.vue";
 
 export default defineComponent({
@@ -65,6 +115,31 @@ export default defineComponent({
   },
   components: {
     SettingsPageSection,
+  },
+  setup() {
+    onMounted(() => {
+      window.scrollTo({ top: 0 });
+    });
+
+    const lastUpdated = computed(() =>
+      formatDistanceToNow(getGitInfo()[0].date, { addSuffix: true }),
+    );
+
+    const historySize = computed(() => historyService.entries.length);
+
+    const blacklistCount = computed(() => blacklistService.tags.length);
+
+    const username = computed(() => accountService.username);
+
+    const shortcutCount = computed(() => shortcutService.shortcuts.length);
+
+    return {
+      lastUpdated,
+      historySize,
+      blacklistCount,
+      username,
+      shortcutCount,
+    };
   },
 });
 </script>

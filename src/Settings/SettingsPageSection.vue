@@ -1,24 +1,20 @@
 <template>
-  <v-flex class="my-2">
-    <v-card color="secondary">
-      <div :class="color">
-        <v-icon size="100">{{ icon }}</v-icon>
-      </div>
-      <v-card-title primary-title>
-        <div class="text-h6">{{ title }}</div>
-      </v-card-title>
-      <v-card-text class="grey--text text-left">
-        <slot />
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer />
-        <v-btn text color="accent" :to="{ path: '/settings/' + section }">
-          Edit
-          <v-icon right>mdi-chevron-right</v-icon>
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-flex>
+  <v-list-item :to="{ path: '/settings/' + section }">
+    <v-list-item-avatar>
+      <v-avatar :color="color">
+        <v-icon>{{ icon }}</v-icon>
+      </v-avatar>
+    </v-list-item-avatar>
+    <v-list-item-content>
+      <v-list-item-title>
+        {{ title }}
+      </v-list-item-title>
+      <slot />
+    </v-list-item-content>
+    <v-list-item-action>
+      <v-icon> mdi-chevron-right </v-icon>
+    </v-list-item-action>
+  </v-list-item>
 </template>
 
 <script lang="ts">
