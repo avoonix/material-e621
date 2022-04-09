@@ -1,30 +1,30 @@
 # Material e621
 
-![Material e621 screenshot](./screenshot.png)
+> Material e621 is a modern, open source web client for e621.net. It is customizable, comes with a bunch of additional features that are not available on e621.net, and makes browsing posts a delightful experience.
 
-https://e621.net/forum_topics/29483
+## Screenshot Gallery
+
+[![Material e621 - Landing Page](./screenshots/material-e621-screenshot-landing-page.png)](https://material-e621.vercel.app/)
+
+[![Material e621 - Posts](./screenshots/material-e621-screenshot-posts-page.png)](https://material-e621.vercel.app/)
+
+[![Material e621 - Details](./screenshots/material-e621-screenshot-post-details.png)](https://material-e621.vercel.app/)
+
+[![Material e621 - Settings](./screenshots/material-e621-screenshot-settings-page.png)](https://material-e621.vercel.app/)
+
+[![Material e621 - Recommendations](./screenshots/material-e621-screenshot-post-recommendations.png)](https://material-e621.vercel.app/)
+
+[![Material e621 - Starred Tags](./screenshots/material-e621-screenshot-starred-tags.png)](https://material-e621.vercel.app/)
 
 ## Usage
 
 ### Hosted
 
-Latest version (`master`) hosted on [Vercel](https://material-e621.vercel.app/). 
+Latest version is available on [Vercel](https://material-e621.vercel.app/).
 
-<!-- `dev` version [here](https://material-e621-git-dev-avoonix.vercel.app/) - mainly for testing, might not work at all. -->
-
-### Local
+### Development
 
 ```bash
 npm install
-npm run build
+npm run dev
 ```
-
-Serve the contents of `dist` on a http server. ([handy list](https://gist.github.com/willurd/5720255))
-
-<!-- ## Some goals
-
-- rewrite everything using typescript, vue3 function api and vuetify 3; with more focus on performance (than the previous version)
-- more customizability, re-add features removed during rewriting
-- create a desktop application -->
-
-<!-- [Configuration Reference](https://cli.vuejs.org/config/) -->

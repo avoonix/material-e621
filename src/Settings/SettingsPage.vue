@@ -79,20 +79,33 @@
         </v-card>
 
         <v-card color="secondary" class="mt-3">
-          <v-card-title class="pb-0">
-            Found a bug? Got an idea for a new feature?
+          <v-card-title class="pb-1 pt-2">
+            Found a bug or got an idea for a new feature?
           </v-card-title>
-          <v-card-actions>
+          <v-card-text  class="py-0" >
+            Create, comment on, or react to issues on the Material e621 GitHub page!
+          </v-card-text>
+          <v-card-actions class="pb-2">
             <v-spacer />
             <v-btn
+            small
               outlined
               color="primary"
-              rel="noopener noreferrer"
+              target="_blank"
+              href="https://github.com/avoonix/material-e621/issues"
+            >
+              <v-icon left> mdi-open-in-new </v-icon>
+              browse issues
+            </v-btn>
+            <v-btn
+            small
+              outlined
+              color="primary"
               target="_blank"
               href="https://github.com/avoonix/material-e621/issues/new/choose"
             >
               <v-icon left> mdi-open-in-new </v-icon>
-              share it on github
+              create issue
             </v-btn>
           </v-card-actions>
         </v-card>

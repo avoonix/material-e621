@@ -10,13 +10,10 @@ const VUE_APP_GIT_COMMIT_INFO = execSync(
 )
   .toString()
   .trim();
-const VUE_APP_GIT_BRANCH = execSync(
-  'git branch --show-current',
-)
+
+const VUE_APP_GIT_BRANCH = execSync("git branch --show-current")
   .toString()
   .trim();
-
-  
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -42,13 +39,14 @@ export default defineConfig({
       manifest: {
         id: "/#/posts",
         name: "Material e621",
-        short_name: "M e621",
+        short_name: "Material e6", // maximum of 12 characters recommended by chromium devs
         start_url: "/#/posts",
         scope: "/",
         display: "fullscreen",
         background_color: "#000000",
         theme_color: "#000000",
-        description: "A customizable e621 client.",
+        description:
+          "Material e621 is a modern, open source web client for e621.net. It is customizable, comes with a bunch of additional features that are not available on e621.net, and makes browsing posts a delightful experience.",
         orientation: "any",
         lang: "en",
         icons: [
