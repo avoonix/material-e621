@@ -1,0 +1,8 @@
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    cache-control = "public, max-age=7776000"
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    cache-control = "public, max-age=7776000"
