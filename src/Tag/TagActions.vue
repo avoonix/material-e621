@@ -34,6 +34,9 @@ export default defineComponent({
     const wikiUrl = computed(
       () => `https://e621.net/wiki/show?title=${props.name}`,
     );
+    const e621Url = computed(
+      () => `https://e621.net/posts?tags=${props.name}`,
+    );
 
     const isBlacklisted = computed(() =>
       blacklistService.tagIsBlacklisted(props.name),
@@ -54,10 +57,17 @@ export default defineComponent({
     const items = computed(() => {
       return [
         {
-          text: "Open wiki article",
+          text: isFavorited.value ? "Unstar" : "Star",
           action: () => {
-            const w = window.open(wikiUrl.value, "_blank");
-            w?.focus();
+            toggleFavorite();
+          },
+        },
+        {
+          text: "Search",
+          action: async () => {
+            updateRouterQuery({
+              tags: props.name,
+            });
           },
         },
         {
@@ -73,17 +83,17 @@ export default defineComponent({
           },
         },
         {
-          text: isFavorited.value ? "Unstar" : "Star",
+          text: "Open e621.net wiki article",
           action: () => {
-            toggleFavorite();
+            const w = window.open(wikiUrl.value, "_blank");
+            w?.focus();
           },
         },
         {
-          text: "Search",
-          action: async () => {
-            updateRouterQuery({
-              tags: props.name,
-            });
+          text: "Search on e621.net",
+          action: () => {
+            const w = window.open(e621Url.value, "_blank");
+            w?.focus();
           },
         },
       ];
