@@ -2,7 +2,7 @@ import { isMobile } from "@/misc/util/mobile";
 import { BlacklistMode, DataSaverType, FullscreenZoomUiMode, ISettingsServiceState } from "./types";
 
 export const defaultSettings: ISettingsServiceState = {
-  configVersion: 2,
+  configVersion: 4,
   shortcuts: [
     // { action: "favorite_post", sequence: "f p" },
     // { action: "toggle_fullscreen", sequence: "t f" },
@@ -73,6 +73,7 @@ export const defaultSettings: ISettingsServiceState = {
     tagFetchLimit: 30,
     goFullscreen: false,
     dataSaver: DataSaverType.auto,
+    lazyLoadImages: true,
   },
   favorites: {
     tags: {},

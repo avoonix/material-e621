@@ -3,7 +3,7 @@ import localforage from "localforage";
 import { ISettingsServiceState } from "./types";
 import debug from "debug";
 import clone from "clone";
-import { reactive, watch } from "@vue/composition-api";
+import { reactive, watch, set } from "@vue/composition-api";
 import { defaultSettings } from "./defaultSettings";
 
 localforage.config({
@@ -81,6 +81,14 @@ class PersistanceService {
     if (newState.configVersion < 3) {
       newState.favorites = reactive(clone(defaultSettings.favorites));
       newState.configVersion = 3;
+    }
+    if (newState.configVersion < 4) {
+      set(
+        newState.posts,
+        "lazyLoadImages",
+        defaultSettings.posts.lazyLoadImages,
+      );
+      newState.configVersion = 4;
     }
     Object.assign(state, newState);
   }

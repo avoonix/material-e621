@@ -38,7 +38,7 @@ export interface Shortcut {
 // }
 
 export interface ISettingsServiceState {
-  configVersion: undefined | 1 | 2 | 3;
+  configVersion: undefined | 1 | 2 | 3 | 4;
   shortcuts: Shortcut[];
   blacklist: {
     mode: BlacklistMode;
@@ -76,6 +76,7 @@ export interface ISettingsServiceState {
     tagFetchLimit: number;
     goFullscreen: boolean;
     dataSaver: DataSaverType;
+    lazyLoadImages: boolean;
   };
   favorites: {
     // searches: FavoritedSearch[];

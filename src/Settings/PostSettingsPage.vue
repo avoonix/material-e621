@@ -20,7 +20,7 @@
           />
         </settings-page-item>
         <settings-page-item title="Go fullscreen when viewing posts" switch>
-          <v-switch v-model="goFullscreen"/>
+          <v-switch v-model="goFullscreen" />
         </settings-page-item>
         <settings-page-item title="Limits" select>
           <v-slider
@@ -67,6 +67,13 @@
             hide-details
             v-model="dataSaver"
           />
+        </settings-page-item>
+        <settings-page-item
+          title="Lazy load images"
+          switch
+          description="Load images as you scroll past them, instead of all at once."
+        >
+          <v-switch v-model="lazyLoad" />
         </settings-page-item>
       </v-flex>
     </v-layout>
@@ -157,6 +164,15 @@ export default defineComponent({
       },
     });
 
+    const lazyLoad = computed<boolean>({
+      get() {
+        return postService.lazyLoad;
+      },
+      set(value) {
+        postService.lazyLoad = value;
+      },
+    });
+
     const fullscreenZoomUiModeItems = computed(() => [
       {
         text: "Always hide",
@@ -227,6 +243,7 @@ export default defineComponent({
       dataSaver,
       dataSaverItems,
       showAutomaticDataSaverInfo,
+      lazyLoad,
     };
   },
 });

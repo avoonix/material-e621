@@ -5,6 +5,7 @@
     v-ripple="true"
   >
     <img
+      :loading="loading"
       v-if="(isImage || isVideo) && imageSrc"
       :src="imageSrc"
       class="clickable"
@@ -121,12 +122,17 @@ export default defineComponent({
       }
     });
 
+    const loading = computed(() => {
+      return postService.lazyLoad ? "lazy" : "eager";
+    });
+
     return {
       isSwf,
       isVideo,
       isImage,
       imageSrc,
       handleClick,
+      loading,
     };
   },
 });

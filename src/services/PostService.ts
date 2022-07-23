@@ -71,6 +71,13 @@ class PostService {
   public set dataSaver(value) {
     Vue.set(state.posts, "dataSaver", value);
   }
+
+  public get lazyLoad() {
+    return state.posts.lazyLoadImages;
+  }
+  public set lazyLoad(value) {
+    state.posts.lazyLoadImages = value;
+  }
 }
 
 export const postService = new PostService();
