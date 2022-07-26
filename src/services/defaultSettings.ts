@@ -1,8 +1,19 @@
 import { isMobile } from "@/misc/util/mobile";
-import { BlacklistMode, DataSaverType, FullscreenZoomUiMode, ISettingsServiceState } from "./types";
+import {
+  BlacklistMode,
+  DataSaverType,
+  FullscreenZoomUiMode,
+  ISettingsServiceState,
+  Shortcut,
+} from "./types";
+
+export const focusSearchShortcut: Shortcut = {
+  action: "focus_search",
+  sequence: "/",
+};
 
 export const defaultSettings: ISettingsServiceState = {
-  configVersion: 4,
+  configVersion: 5,
   shortcuts: [
     // { action: "favorite_post", sequence: "f p" },
     // { action: "toggle_fullscreen", sequence: "t f" },
@@ -15,6 +26,7 @@ export const defaultSettings: ISettingsServiceState = {
     { action: "go_to_settings", sequence: "g s" },
 
     { action: "focus_search", sequence: "f s" },
+    focusSearchShortcut,
 
     { action: "fullscreen_exit", sequence: "esc" },
 

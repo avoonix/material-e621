@@ -4,7 +4,7 @@ import { ISettingsServiceState } from "./types";
 import debug from "debug";
 import clone from "clone";
 import { reactive, watch, set } from "@vue/composition-api";
-import { defaultSettings } from "./defaultSettings";
+import { defaultSettings, focusSearchShortcut } from "./defaultSettings";
 
 localforage.config({
   description: "",
@@ -89,6 +89,10 @@ class PersistanceService {
         defaultSettings.posts.lazyLoadImages,
       );
       newState.configVersion = 4;
+    }
+    if (newState.configVersion < 5) {
+      newState.shortcuts.push(focusSearchShortcut);
+      newState.configVersion = 5;
     }
     Object.assign(state, newState);
   }
