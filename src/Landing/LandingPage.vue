@@ -100,7 +100,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject } from "@vue/composition-api";
+import { computed, defineComponent, inject } from "vue";
 import AppLogo from "../App/AppLogo.vue";
 import CommitTimeline from "@/About/CommitTimeline.vue";
 

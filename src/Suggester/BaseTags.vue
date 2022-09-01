@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import { FavoriteTagsResult } from "@/worker/AnalyzeService";
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue";
 import TagLabel from "@/Tag/TagLabel.vue";
 
 export default defineComponent({

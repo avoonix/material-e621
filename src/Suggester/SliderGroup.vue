@@ -21,7 +21,7 @@ import {
   defineComponent,
   nextTick,
   PropType,
-} from "@vue/composition-api";
+} from "vue";
 
 export default defineComponent({
   props: {

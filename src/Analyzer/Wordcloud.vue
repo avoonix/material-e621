@@ -9,7 +9,7 @@ import {
   PropType,
   ref,
   watchEffect,
-} from "@vue/composition-api";
+} from "vue";
 import * as d3 from "d3";
 
 export default defineComponent({
@@ -78,7 +78,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-div >>> svg {
+div :deep(svg) {
   outline: 1px solid rgba(0, 0, 0, 0.3);
 }
 </style>

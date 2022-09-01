@@ -12,7 +12,7 @@ if (import.meta.env.PROD) showConsoleMessage();
 
 persistanceService.persist();
 
-new (Vue as any)({
+new Vue({
   router,
   vuetify,
   render: (h: any) => h(App),

@@ -68,7 +68,7 @@
 
 <script lang="ts">
 import { Post } from "@/worker/api";
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue";
 import prettyBytes from "pretty-bytes";
 
 export default defineComponent({

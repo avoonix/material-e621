@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import SettingsPageTitle from "./SettingsPageTitle.vue";
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import KeyboardShortcutEditor from "./KeyboardShortcutEditor.vue";
 
 export default defineComponent({

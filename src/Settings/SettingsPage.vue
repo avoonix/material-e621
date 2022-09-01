@@ -118,7 +118,7 @@
 import { getGitInfo } from "@/misc/util/git";
 import { accountService, blacklistService, historyService } from "@/services";
 import { shortcutService } from "@/services/ShortcutService";
-import { computed, defineComponent, onMounted } from "@vue/composition-api";
+import { computed, defineComponent, onMounted } from "vue";
 import { formatDistanceToNow } from "date-fns";
 import SettingsPageSection from "./SettingsPageSection.vue";
 

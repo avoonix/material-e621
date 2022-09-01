@@ -1,4 +1,4 @@
-import { readonly } from "@vue/composition-api";
+import { readonly } from "vue";
 import { isEmpty, isEqual } from "lodash";
 import Vue from "vue";
 import { state } from "./state";

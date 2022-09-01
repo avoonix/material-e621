@@ -83,7 +83,7 @@
 <script lang="ts">
 import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
-import { computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent } from "vue";
 import {
   ButtonType,
   DataSaverType,

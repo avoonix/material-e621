@@ -19,7 +19,7 @@
 <script lang="ts">
 import router from "@/router";
 import { accountService } from "@/services";
-import { computed, defineComponent, ref, reactive } from "@vue/composition-api";
+import { computed, defineComponent, ref, reactive } from "vue";
 import { RawLocation } from "vue-router";
 import SliderGroup from "./SliderGroup.vue";
 

@@ -15,7 +15,7 @@
 <script lang="ts">
 import { useDirectionalTransitions } from "@/misc/util/directionalTransitions";
 import { appearanceService } from "@/services";
-import { computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent } from "vue";
 
 export default defineComponent({
   props: {},

@@ -18,7 +18,7 @@
 <script lang="ts">
 import router from "@/router";
 import { accountService } from "@/services";
-import { computed, defineComponent, ref } from "@vue/composition-api";
+import { computed, defineComponent, ref } from "vue";
 import { RawLocation } from "vue-router";
 
 export default defineComponent({

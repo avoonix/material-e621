@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "@vue/composition-api";
+import { defineComponent, PropType } from "vue";
 import { ITag, default as TagLabel } from "../Tag/TagLabel.vue";
 import TagFavoriteButton from "@/Tag/TagFavoriteButton.vue";
 import TagMenu from "@/Tag/TagMenu.vue";

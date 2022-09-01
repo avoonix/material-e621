@@ -41,7 +41,7 @@
 <script lang="ts">
 import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
-import { computed, defineComponent, reactive } from "@vue/composition-api";
+import { computed, defineComponent, reactive } from "vue";
 import prettyBytes from "pretty-bytes";
 import Install from "@/Settings/Install.vue";
 import { getGitInfo, getGitBranchInfo } from "@/misc/util/git";

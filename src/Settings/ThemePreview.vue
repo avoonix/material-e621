@@ -84,7 +84,7 @@
 <script lang="ts">
 import { getTagColorFromCategory } from "@/misc/util/utilities";
 import { Theme, ThemeItem } from "@/services";
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue";
 import imageSrc from "./image.jpg";
 import ThemeText from "./ThemeText.vue";
 

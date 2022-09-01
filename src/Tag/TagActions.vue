@@ -10,7 +10,7 @@
 import { updateRouterQuery } from "@/misc/util/utilities";
 import { blacklistService } from "@/services";
 import { favoriteService } from "@/services/FavoriteService";
-import { computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent } from "vue";
 
 // const menu = {
 //   remove: "Remove from search",

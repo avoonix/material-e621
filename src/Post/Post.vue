@@ -29,7 +29,7 @@
 import { useBlacklistClasses } from "@/misc/util/blacklist";
 import { blacklistService, postService } from "@/services";
 import { EnhancedPost } from "@/worker/ApiService";
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue";
 import PostButtons from "./PostButtons.vue";
 import PostPreview from "./PostPreview.vue";
 import PostText from "./PostText.vue";

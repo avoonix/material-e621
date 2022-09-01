@@ -10,11 +10,7 @@
         </div>
       </div>
     </v-card-title>
-    <v-card-text
-      v-if="entry.message.body"
-      class="pre text-body-1"
-      v-text="entry.message.body"
-    />
+    <v-card-text v-if="entry.message.body" class="pre text-body-1" >{{entry.message.body}}</v-card-text>
     <v-card-actions>
       <v-spacer />
       <v-btn
@@ -31,7 +27,7 @@
 
 <script lang="ts">
 import { IGitCommit } from "@/misc/util/git";
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue";
 import { formatDistanceToNow } from "date-fns";
 
 export default defineComponent({

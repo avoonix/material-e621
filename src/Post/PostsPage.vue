@@ -73,7 +73,7 @@ import Suggestions from "./Suggestions.vue";
 import TagSearch from "../Tag/TagSearch.vue";
 import { accountService, blacklistService, postService } from "@/services";
 import HistoryList from "../Tag/HistoryList.vue";
-import { defineComponent, onMounted, ref, watch } from "@vue/composition-api";
+import { defineComponent, onMounted, ref, watch } from "vue";
 import { usePostListManager } from "@/Post/postListManager";
 import { useRouterTagManager } from "@/Post/routerTagManager";
 import { useHistory } from "@/Post/historyManager";

@@ -38,7 +38,7 @@ import {
   computed,
   PropType,
   watchEffect,
-} from "@vue/composition-api";
+} from "vue";
 
 const isAnyPartOfElementInViewport = (el: Element) => {
   const rect = el.getBoundingClientRect();

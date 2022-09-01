@@ -1,5 +1,5 @@
 import { favoriteService } from "@/services/FavoriteService";
-import { computed } from "@vue/composition-api";
+import { computed } from "vue";
 
 const hasFavorites = computed(() => favoriteService.hasFavorites)
 

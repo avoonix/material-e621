@@ -33,7 +33,7 @@ import router from "@/router";
 import { postService } from "@/services";
 import { DataSaverType } from "@/services/types";
 import { File, Preview, Sample } from "@/worker/api";
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue";
 import FixedAspectRatioBox from "./FixedAspectRatioBox.vue";
 
 export default defineComponent({

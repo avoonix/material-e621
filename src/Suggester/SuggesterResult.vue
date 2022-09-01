@@ -41,7 +41,7 @@ import {
   ref,
   watchEffect,
   watch,
-} from "@vue/composition-api";
+} from "vue";
 import router from "@/router";
 import { FavoriteTagsResult, IProgressEvent } from "@/worker/AnalyzeService";
 import { getAnalyzeService } from "@/worker/services";

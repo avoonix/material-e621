@@ -38,7 +38,7 @@
 <script lang="ts">
 import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
-import { computed, defineComponent, ref } from "@vue/composition-api";
+import { computed, defineComponent, ref } from "vue";
 import { accountService } from "@/services";
 import ExternalLink from "@/App/ExternalLink.vue";
 

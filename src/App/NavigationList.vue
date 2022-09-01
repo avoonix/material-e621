@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import { navigationItems } from "../App/navigation";
 
 export default defineComponent({

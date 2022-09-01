@@ -101,7 +101,7 @@
 import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
 import TransitionPreview from "./TransitionPreview.vue";
-import { computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent } from "vue";
 import ColorChooser from "./ColorChooser.vue";
 import { appearanceService } from "@/services";
 import transitions from "@/misc/data/transitions.json";

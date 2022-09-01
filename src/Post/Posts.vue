@@ -93,7 +93,7 @@
 import FullscreenDialog from "./FullscreenDialog.vue";
 import DetailsDialog from "./DetailsDialog.vue";
 import AppLogo from "../App/AppLogo.vue";
-import { defineComponent, PropType } from "@vue/composition-api";
+import { defineComponent, PropType } from "vue";
 import Post from "@/Post/Post.vue";
 import PostList from "@/Post/PostList.vue";
 import { Post as PostType } from "@/worker/api";

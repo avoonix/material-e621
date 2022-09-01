@@ -29,7 +29,7 @@ import {
   onBeforeUnmount,
   onMounted,
   ref,
-} from "@vue/composition-api";
+} from "vue";
 import { getTransitionName } from "../misc/util/transitions";
 
 export default defineComponent({

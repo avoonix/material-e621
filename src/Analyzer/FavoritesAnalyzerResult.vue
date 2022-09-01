@@ -35,7 +35,7 @@ import {
   ref,
   watch,
   watchEffect,
-} from "@vue/composition-api";
+} from "vue";
 import Wordcloud from "./Wordcloud.vue";
 import { IAnalyzeTagsArgs, IProgressEvent } from "@/worker/AnalyzeService";
 import { getAnalyzeService } from "@/worker/services";

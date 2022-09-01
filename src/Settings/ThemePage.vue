@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent } from "vue";
 import { appearanceService, Theme } from "@/services";
 import themes from "@/misc/data/themes.json";
 import ThemePreview from "./ThemePreview.vue";

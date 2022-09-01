@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { getAppName, getBaseUrl } from "@/misc/util/utilities";
-import { computed, defineComponent, ref } from "@vue/composition-api";
+import { computed, defineComponent, ref } from "vue";
 
 const bookmarklet = `function bookmarklet() {
   let m = /https?:\\/\\/e621\\.net\\/(post\\/show|posts)\\/(\\d+)/.exec(window.location.href);

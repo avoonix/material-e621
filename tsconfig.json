@@ -18,6 +18,7 @@
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }],
   "vueCompilerOptions": {
+    "target": 2.7,
     "experimentalCompatMode": 2,
     "experimentalTemplateCompilerOptions": {
       "compatConfig": { "MODE": 2 } // optional

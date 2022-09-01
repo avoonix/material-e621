@@ -30,7 +30,7 @@ import {
   onMounted,
   reactive,
   watch,
-} from "@vue/composition-api";
+} from "vue";
 import Hammer from "hammerjs";
 import clone from "clone";
 import Vue from "vue";

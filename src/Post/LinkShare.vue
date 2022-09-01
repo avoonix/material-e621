@@ -33,7 +33,7 @@
 <script lang="ts">
 import { snackbarService } from "@/services";
 import { getAppName, getBaseUrl } from "@/misc/util/utilities";
-import { computed, defineComponent, ref } from "@vue/composition-api";
+import { computed, defineComponent, ref } from "vue";
 import copyToClipboard from "clipboard-copy";
 
 enum UrlTypes {

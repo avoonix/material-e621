@@ -3,7 +3,7 @@ import localforage from "localforage";
 import { ISettingsServiceState } from "./types";
 import debug from "debug";
 import clone from "clone";
-import { reactive, watch, set } from "@vue/composition-api";
+import { reactive, watch, set } from "vue";
 import { defaultSettings, focusSearchShortcut } from "./defaultSettings";
 
 localforage.config({

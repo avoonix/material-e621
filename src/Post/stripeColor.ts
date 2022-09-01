@@ -1,6 +1,6 @@
 import { appearanceService } from "@/services";
 import { Post } from "@/worker/api";
-import { computed } from "@vue/composition-api";
+import { computed } from "vue";
 
 export const useStripeColor = ({ post }: { post: Post }) => {
   const stripeColor = computed<string>(() => {

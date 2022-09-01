@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { snackbarService } from "@/services";
-import { computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent } from "vue";
 
 export default defineComponent({
   setup() {

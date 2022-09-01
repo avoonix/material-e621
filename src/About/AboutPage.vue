@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import Libraries from "./Libraries.vue";
 import CommitTimeline from "./CommitTimeline.vue";
 

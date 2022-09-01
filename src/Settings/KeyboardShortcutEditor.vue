@@ -87,7 +87,7 @@ import {
   nextTick,
   ref,
   watch,
-} from "@vue/composition-api";
+} from "vue";
 import { clone } from "lodash";
 import KeyboardShortcutRecorder from "./KeyboardShortcutRecorder.vue";
 

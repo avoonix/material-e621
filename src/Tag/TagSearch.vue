@@ -82,7 +82,7 @@ import {
   PropType,
   ref,
   watch,
-} from "@vue/composition-api";
+} from "vue";
 import { getApiService } from "@/worker/services";
 import { postService } from "@/services";
 import { categoryIdToCategoryName } from "@/misc/util/utilities";
@@ -282,7 +282,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.combobox-with-background >>> .v-list {
+.combobox-with-background :deep(.v-list) {
   background-color: var(--v-secondary-base);
 }
 </style>

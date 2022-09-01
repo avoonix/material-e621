@@ -80,7 +80,7 @@
 <script lang="ts">
 import PostButton from "@/Post/PostButton.vue";
 import { ButtonType } from "@/services/types";
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue";
 import Draggable from "vuedraggable";
 
 export default defineComponent({

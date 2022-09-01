@@ -1,4 +1,4 @@
-import { readonly, ref } from "@vue/composition-api";
+import { readonly, ref } from "vue";
 
 // very little support (https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation)
 

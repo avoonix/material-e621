@@ -1,4 +1,4 @@
-import { ref } from "@vue/composition-api";
+import { ref } from "vue";
 import { getTransitionName } from "./transitions";
 
 export type Direction = "left" | "right" | "none";

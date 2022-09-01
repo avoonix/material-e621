@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import { appearanceService } from "@/services";
-import { computed, defineComponent, ref } from "@vue/composition-api";
+import { computed, defineComponent, ref } from "vue";
 
 const deferredPrompt = ref<Event | null>(null);
 

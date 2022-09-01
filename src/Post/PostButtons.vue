@@ -16,7 +16,7 @@
 import { ButtonType } from "@/services/types";
 import { Post } from "@/worker/api";
 import { EnhancedPost } from "@/worker/ApiService";
-import { defineComponent, PropType } from "@vue/composition-api";
+import { defineComponent, PropType } from "vue";
 import PostButton from "./PostButton.vue";
 
 export default defineComponent({

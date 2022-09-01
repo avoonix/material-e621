@@ -1,5 +1,5 @@
 import { historyService } from "@/services";
-import { computed } from "@vue/composition-api";
+import { computed } from "vue";
 
 export const useHistory = () => {
   const historyEntries = computed(() => historyService.entries);

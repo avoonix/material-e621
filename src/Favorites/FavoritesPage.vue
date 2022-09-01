@@ -62,7 +62,7 @@
 
 <script lang="ts">
 import { favoriteService } from "@/services/FavoriteService";
-import { computed, defineComponent, watch } from "@vue/composition-api";
+import { computed, defineComponent, watch } from "vue";
 import TagLabel from "@/Tag/TagLabel.vue";
 
 export default defineComponent({

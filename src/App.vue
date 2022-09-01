@@ -68,7 +68,7 @@
 <script lang="ts">
 import AppLogo from "./App/AppLogo.vue";
 import { useSettingsServiceState, appearanceService } from "./services";
-import { computed, defineComponent, watch } from "@vue/composition-api";
+import { computed, defineComponent, watch } from "vue";
 import NavigationList from "./App/NavigationList.vue";
 import NavigationToolbar from "./App/NavigationToolbar.vue";
 import MainContent from "./App/MainContent.vue";
@@ -208,7 +208,7 @@ export default defineComponent({
 </style>
 
 <style scoped>
-.padded-toolbar >>> .v-toolbar__content {
+.padded-toolbar :deep(.v-toolbar__content) {
   /* padding-right: 4px;
   padding-left: 8px; */
 }

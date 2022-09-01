@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "@vue/composition-api";
+import { defineComponent, onMounted } from "vue";
 
 export default defineComponent({
   props: {

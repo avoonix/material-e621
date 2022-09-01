@@ -1,4 +1,4 @@
-import { reactive, readonly } from "@vue/composition-api";
+import { reactive, readonly } from "vue";
 import { isEqual, pick } from "lodash";
 
 const { router } = await import("@/main");

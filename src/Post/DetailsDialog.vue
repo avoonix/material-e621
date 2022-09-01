@@ -71,7 +71,7 @@ import DText from "../Parser/DText.vue";
 import PostInfoList from "./PostInfoList.vue";
 import LinkShare from "./LinkShare.vue";
 import PostButtons from "@/Post/PostButtons.vue";
-import { computed, defineComponent, PropType, ref } from "@vue/composition-api";
+import { computed, defineComponent, PropType, ref } from "vue";
 import { postService } from "@/services";
 import { Post } from "@/worker/api";
 import { ITag } from "../Tag/TagLabel.vue";

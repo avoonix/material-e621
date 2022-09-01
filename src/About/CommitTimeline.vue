@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { getGitInfo } from "@/misc/util/git";
-import { computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent } from "vue";
 import CommitEntry from "./CommitEntry.vue";
 
 export default defineComponent({

@@ -2,7 +2,7 @@ import router from "@/router";
 import { accountService, snackbarService } from "@/services";
 import { EnhancedPost } from "@/worker/ApiService";
 import { getApiService } from "@/worker/services";
-import { computed, ref, watch } from "@vue/composition-api";
+import { computed, ref, watch } from "vue";
 import Vue from "vue";
 
 interface IUsePostListManagerArgs {

@@ -22,7 +22,7 @@
 import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
 import HistoryList from "../Tag/HistoryList.vue";
-import { computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent } from "vue";
 import { historyService } from "@/services";
 
 export default defineComponent({

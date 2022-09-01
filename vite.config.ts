@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import { createVuePlugin as vue } from "vite-plugin-vue2";
+import vue from "@vitejs/plugin-vue2";
 import * as path from "path";
 import { execSync } from "child_process";
 import eslintPlugin from "vite-plugin-eslint";

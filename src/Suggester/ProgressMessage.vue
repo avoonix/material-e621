@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import AppLogo from "@/App/AppLogo.vue";
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   components: { AppLogo },

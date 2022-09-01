@@ -50,7 +50,7 @@
 import { getTagColorFromCategory } from "@/misc/util/utilities";
 import { ScoredPost } from "@/worker/AnalyzeService";
 import { Post } from "@/worker/api";
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue";
 import { formatDistanceToNow, format, parse, parseISO } from "date-fns";
 import prettyBytes from "pretty-bytes";
 import TagMenu from "@/Tag/TagMenu.vue";

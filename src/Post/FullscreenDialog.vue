@@ -142,7 +142,7 @@ import {
   Ref,
   ref,
   watch,
-} from "@vue/composition-api";
+} from "vue";
 import PostButtons from "@/Post/PostButtons.vue";
 import { useDirectionalTransitions } from "@/misc/util/directionalTransitions";
 import { EnhancedPost } from "@/worker/ApiService";

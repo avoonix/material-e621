@@ -1,4 +1,4 @@
-import { computed, reactive, readonly } from "@vue/composition-api";
+import { computed, reactive, readonly } from "vue";
 import clone from "clone";
 import { defaultSettings } from "./defaultSettings";
 import { ISettingsServiceState } from "./types";

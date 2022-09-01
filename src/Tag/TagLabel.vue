@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { getTagColorFromCategory } from "@/misc/util/utilities";
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue";
 
 export interface ITag {
   name: string;
