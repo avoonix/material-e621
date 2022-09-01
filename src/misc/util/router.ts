@@ -29,7 +29,7 @@ router.afterEach((to, from) => {
 });
 
 export const useRoute = () => {
-  return readonly(currentRoute);
+  return(currentRoute);
 };
 
 export const appRouter = router; // I used to be able to use the router from "@/router", but since switching to vite it behaves weird

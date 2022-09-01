@@ -13,32 +13,15 @@
   <!-- blog/feed -->
   <!-- v-else -->
   <v-flex xs12 lg6 md8 offset-lg3 offset-md2 wrap="">
-    <v-flex
-      :key="post.id"
-      xs12
-      class="mb-5"
-      v-for="post in visiblePosts"
-      ref="posts"
-    >
+    <v-flex :key="post.id" xs12 class="mb-5" v-for="(post, idx) in visiblePosts" :ref="addElement(idx)">
       <slot name="post" :post="post" />
     </v-flex>
   </v-flex>
 </template>
 
 <script lang="ts">
-import { Post } from "@/worker/api";
 import { EnhancedPost } from "@/worker/ApiService";
-import {
-  defineComponent,
-  ref,
-  onMounted,
-  onBeforeUnmount,
-  watch,
-  nextTick,
-  computed,
-  PropType,
-  watchEffect,
-} from "vue";
+import { computed, defineComponent, nextTick, onBeforeUnmount, onBeforeUpdate, onMounted, PropType, ref, watch } from "vue";
 
 const isAnyPartOfElementInViewport = (el: Element) => {
   const rect = el.getBoundingClientRect();
@@ -55,10 +38,10 @@ const isAnyPartOfElementInViewport = (el: Element) => {
 const getOffset = (el: Element) => {
   let curEl:
     | {
-        offsetTop?: number;
-        scrollTop: number;
-        offsetParent?: Element | null;
-      }
+      offsetTop?: number;
+      scrollTop: number;
+      offsetParent?: Element | null;
+    }
     | null
     | undefined = el;
   let top = 0;
@@ -79,11 +62,12 @@ export default defineComponent({
     const layout = ref<"list" | "grid">("list");
     const size = ref<"sm" | "md" | "lg">("md");
     const firstVisibleElement = ref<Element | null>(null);
+    const posts = ref<Element[]>([]);
 
     const handleScroll = (event: Event) => {
-      if (!props.visiblePosts.length || !context.refs.posts) return;
+      if (!props.visiblePosts.length || !posts.value.length) return;
       firstVisibleElement.value =
-        (context.refs.posts as Element[]).find((post) =>
+        posts.value.find((post) =>
           isAnyPartOfElementInViewport(post),
         ) || null;
       // window.scroll(window.scrollX, window.scrollY + 100);
@@ -137,9 +121,22 @@ export default defineComponent({
       },
     );
 
+    onBeforeUpdate(() => {
+      // Make sure to reset the refs before each update.
+      posts.value = [];
+    });
+
+    const addElement = (idx: number) => (el: Element) => {
+      if (el) {
+        posts.value[idx] = el;
+      }
+    }
+
     return {
       layout,
       size,
+      posts,
+      addElement
     };
   },
 });

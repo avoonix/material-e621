@@ -1,6 +1,6 @@
 import "intersection-observer";
 import "typeface-roboto";
-import { vuetify } from "./misc/plugins";
+import { vuetify, pinia } from "./misc/plugins";
 import { showConsoleMessage } from "./misc/util/consoleMessage";
 import Vue from "vue";
 import App from "./App.vue";
@@ -15,6 +15,7 @@ persistanceService.persist();
 new Vue({
   router,
   vuetify,
+  pinia,
   render: (h: any) => h(App),
   metaInfo: {
     titleTemplate: "%s",

@@ -20,7 +20,7 @@ class HistoryService {
     state.history.entries.splice(index, 1);
   }
   public get entries() {
-    return readonly(state.history.entries);
+    return(state.history.entries);
   }
 
   public get maxLength() {

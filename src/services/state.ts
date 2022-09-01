@@ -6,5 +6,5 @@ import { ISettingsServiceState } from "./types";
 export const state = reactive<ISettingsServiceState>(clone(defaultSettings));
 
 export const useSettingsServiceState = () => ({
-  state: computed(() => readonly(state)),
+  state: computed(() =>(state)),
 });

@@ -33,7 +33,7 @@ const info = ref<INetworkInfo>(getInfo());
 
 export const useDataSaverInfo = () => {
   return {
-    dataSaverInfo: readonly(info),
+    dataSaverInfo:(info),
   };
 };
 

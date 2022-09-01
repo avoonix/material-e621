@@ -158,7 +158,7 @@ export default defineComponent({
             !this.minimalHeader,
         );
       },
-      set(val) {
+      set(val: boolean) {
         this.drawer_ = val;
       },
     },

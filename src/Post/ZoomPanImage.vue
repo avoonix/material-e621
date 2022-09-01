@@ -29,6 +29,7 @@ import {
   defineComponent,
   onMounted,
   reactive,
+  ref,
   watch,
 } from "vue";
 import Hammer from "hammerjs";
@@ -47,6 +48,9 @@ export default defineComponent({
       startLevel: 0,
     };
 
+    const middle = ref<Element>();
+    const zoom = ref<Element>();
+
     const currentZoom = reactive(clone(initialZoom));
 
     onMounted(() => {
@@ -60,7 +64,8 @@ export default defineComponent({
         hammer.destroy();
         hammer = null;
       }
-      hammer = new Hammer.Manager(context.refs.middle as any, {
+      if(!middle.value) return;
+      hammer = new Hammer.Manager(middle.value, {
         recognizers: [
           [Hammer.Tap],
           [Hammer.Pan, { threshold: 1 }],
@@ -101,20 +106,21 @@ export default defineComponent({
     };
 
     const constrainZoom = () => {
+      if(!middle.value || !zoom.value) return;
       const padding = 0;
       const constraints = {
         left: {
           min: 0 - padding,
           max:
-            (context.refs as any).zoom.getBoundingClientRect().width -
-            (context.refs as any).middle.getBoundingClientRect().width +
+            zoom.value.getBoundingClientRect().width -
+            middle.value.getBoundingClientRect().width +
             padding,
         },
         top: {
           min: 0 - padding,
           max:
-            (context.refs as any).zoom.getBoundingClientRect().height -
-            (context.refs as any).middle.getBoundingClientRect().height +
+            zoom.value.getBoundingClientRect().height -
+            middle.value.getBoundingClientRect().height +
             padding,
         },
       };
@@ -154,10 +160,10 @@ export default defineComponent({
       const mouseOffset = {
         x:
           event.clientX -
-          (context.refs as any).middle.getBoundingClientRect().x,
+          (middle.value?.getBoundingClientRect().x ?? 0),
         y:
           event.clientY -
-          (context.refs as any).middle.getBoundingClientRect().y,
+          (middle.value?.getBoundingClientRect().y ?? 0),
       };
 
       const left =
@@ -223,6 +229,8 @@ export default defineComponent({
       onMouseUp,
       onMouseDown,
       containerStyle,
+      middle,
+      zoom
     };
   },
 });

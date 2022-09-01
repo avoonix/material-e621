@@ -4,6 +4,7 @@ import Meta from "vue-meta";
 import "./vue";
 export * from "./vuetify";
 import "./mousetrap";
+export * from "./pinia";
 
 Vue.use(PortalVue);
 Vue.use(Meta, {
