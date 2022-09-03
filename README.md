@@ -10,6 +10,8 @@
 
 [![Material e621 - Details](./screenshots/material-e621-screenshot-post-details.png)](https://material-e621.vercel.app/)
 
+[![Material e621 - Artist Dashboard](./screenshots/material-e621-screenshot-artist-dashboard-post-overview.png)](https://material-e621.vercel.app/)
+
 [![Material e621 - Settings](./screenshots/material-e621-screenshot-settings-page.png)](https://material-e621.vercel.app/)
 
 [![Material e621 - Recommendations](./screenshots/material-e621-screenshot-post-recommendations.png)](https://material-e621.vercel.app/)
