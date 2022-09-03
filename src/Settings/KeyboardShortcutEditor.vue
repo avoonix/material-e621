@@ -79,7 +79,6 @@
 </template>
 
 <script lang="ts">
-import { shortcutService } from "@/services/ShortcutService";
 import { Action, Shortcut } from "@/services/types";
 import {
   computed,
@@ -90,17 +89,19 @@ import {
 } from "vue";
 import { clone } from "lodash";
 import KeyboardShortcutRecorder from "./KeyboardShortcutRecorder.vue";
+import { useShortcutStore } from "@/services";
 
 export default defineComponent({
   props: {},
   components: { KeyboardShortcutRecorder },
   setup(props, context) {
+    const shortcutStore = useShortcutStore();
     const headers = [
       { text: "Action", value: "action" },
       { text: "Sequence", value: "sequence" },
       { text: "", value: "buttons", align: "end" },
     ];
-    const shortcuts = computed(() => shortcutService.shortcuts);
+    const shortcuts = computed(() => shortcutStore.shortcuts);
     const editedItem = ref<Shortcut>({ action: "go_to_posts", sequence: "" });
     const defaultItem: Shortcut = { action: "go_to_posts", sequence: "" };
     const dialog = ref(false);
@@ -122,7 +123,7 @@ export default defineComponent({
       dialogDelete.value = true;
     };
     const deleteItemConfirm = () => {
-      shortcutService.deleteShortcut(editedIndex.value);
+      shortcutStore.deleteShortcut(editedIndex.value);
       closeDelete();
     };
     const close = async () => {
@@ -139,9 +140,9 @@ export default defineComponent({
     };
     const save = () => {
       if (editedIndex.value > -1) {
-        shortcutService.updateShortcut(editedIndex.value, editedItem.value);
+        shortcutStore.updateShortcut(editedIndex.value, editedItem.value);
       } else {
-        shortcutService.addShortcut(clone(editedItem.value));
+        shortcutStore.addShortcut(clone(editedItem.value));
       }
       close();
     };

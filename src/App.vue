@@ -1,44 +1,20 @@
 <template>
   <v-app :class="`theme--${theme.dark ? 'dark' : 'light'}`">
-    <v-navigation-drawer
-      persistent
-      :clipped="clipped"
-      v-model="drawer"
-      fixed
-      floating
-      hide-overlay
-      :temporary="isMobile"
-      app
-      width="400"
-      class="pa-2"
-      :style="`background-color: ${theme.sidebar} !important; border-color: ${theme.sidebar} !important;`"
-    >
+    <v-navigation-drawer persistent :clipped="clipped" v-model="drawer" fixed floating hide-overlay
+      :temporary="isMobile" app width="400" class="pa-2"
+      :style="`background-color: ${theme.sidebar} !important; border-color: ${theme.sidebar} !important;`">
       <app-logo :type="logoStyle" @click.native="onLogoClick" />
       <navigation-list />
       <portal-target name="sidebar-suggestions" />
     </v-navigation-drawer>
-    <v-app-bar
-      :color="theme.toolbar"
-      :app="!minimalHeader"
-      :flat="minimalHeader"
-      :clipped-left="clipped"
-      :floating="navMode == 'floating'"
-      :class="{
+    <v-app-bar :color="theme.toolbar" :app="!minimalHeader" :flat="minimalHeader" :clipped-left="clipped"
+      :floating="navMode == 'floating'" :class="{
         'ma-2': navMode == 'floating',
         'mb-3': navMode == 'floating',
         primary: minimalHeader,
-      }"
-      class="padded-toolbar"
-    >
-      <v-menu
-        bottom
-        offset-y
-        right
-        attach
-        close-delay="0"
-        :nudge-width="200"
-        v-if="navMode == 'floating' && !minimalHeader"
-      >
+      }" class="padded-toolbar">
+      <v-menu bottom offset-y right attach close-delay="0" :nudge-width="200"
+        v-if="navMode == 'floating' && !minimalHeader">
         <template #activator="{ on }">
           <v-btn v-on="on" icon>
             <v-icon>mdi-menu</v-icon>
@@ -47,11 +23,8 @@
         <navigation-list />
       </v-menu>
       <v-slide-x-transition>
-        <v-app-bar-nav-icon
-          @click.stop="drawer = !drawer"
-          class="hidden-lg-and-up"
-          v-if="navMode == 'sidebar' && !minimalHeader"
-        />
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-lg-and-up"
+          v-if="navMode == 'sidebar' && !minimalHeader" />
       </v-slide-x-transition>
       <portal-target name="toolbar" style="width: 100%">
         <v-toolbar-title>{{ appName }}</v-toolbar-title>
@@ -66,49 +39,47 @@
 </template>
 
 <script lang="ts">
+import { computed, defineComponent, onMounted, watch } from "vue";
 import AppLogo from "./App/AppLogo.vue";
-import { useSettingsServiceState, appearanceService } from "./services";
-import { computed, defineComponent, watch } from "vue";
+import AppSnackbar from "./App/AppSnackbar.vue";
+import InstallMenu from "./App/InstallMenu.vue";
+import MainContent from "./App/MainContent.vue";
 import NavigationList from "./App/NavigationList.vue";
 import NavigationToolbar from "./App/NavigationToolbar.vue";
-import MainContent from "./App/MainContent.vue";
-import InstallMenu from "./App/InstallMenu.vue";
 import { getAppName } from "./misc/util/utilities";
-import AppSnackbar from "./App/AppSnackbar.vue";
-import { shortcutService } from "./services/ShortcutService";
+import { useAppearanceStore, useMainStore, usePersistanceService, useShortcutService, useShortcutStore } from "./services";
 
 const mobileBreakPoint = 1264;
 
 export default defineComponent({
   setup() {
-    const { state } = useSettingsServiceState();
+    const persistance = usePersistanceService();
+    const appearance = useAppearanceStore();
+    const shortcuts = useShortcutStore();
+    const shortcutService = useShortcutService();
+    const navMode = computed(() => appearance.navigationType);
 
-    const navMode = computed(() => appearanceService.navigationType);
+    onMounted(() => persistance.persist())
 
-    const logoStyle = computed(() => appearanceService.logoStyle);
+    const logoStyle = computed(() => appearance.logoStyle);
     const onLogoClick = () => {
-      const availableStyles = appearanceService.logoStyles.filter(
+      const availableStyles = appearance.logoStyles.filter(
         (ls) => ls !== logoStyle.value,
       );
-      appearanceService.logoStyle =
+      appearance.logoStyle =
         availableStyles[Math.floor(availableStyles.length * Math.random())];
     };
 
-    const shortcuts = computed(() => shortcutService.shortcuts);
+    const main = useMainStore();
 
-    watch(
-      shortcuts,
-      () => {
-        console.log("setting up shortcuts");
-        shortcutService.setUpShortcuts();
-      },
-      { immediate: true, deep: true },
-    );
+    main.$subscribe(() => {
+      shortcutService.setUpShortcuts();
+    })
+    watch(main.shortcuts, () => console.log("shortcuts updated"))
 
-    const theme = computed(() => appearanceService.theme);
+    const theme = computed(() => appearance.theme);
 
     return {
-      state,
       navMode,
       logoStyle,
       onLogoClick,
@@ -154,8 +125,8 @@ export default defineComponent({
       get() {
         return Boolean(
           this.navMode == "sidebar" &&
-            (this.drawer_ || !this.isMobile) &&
-            !this.minimalHeader,
+          (this.drawer_ || !this.isMobile) &&
+          !this.minimalHeader,
         );
       },
       set(val: boolean) {

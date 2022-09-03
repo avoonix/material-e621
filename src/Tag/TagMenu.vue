@@ -22,8 +22,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { ITag } from "./TagLabel.vue";
 import TagActions from "@/Tag/TagActions.vue";
+import { ITag } from "./ITag";
 
 export default defineComponent({
   components: {

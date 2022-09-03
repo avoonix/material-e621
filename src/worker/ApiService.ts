@@ -12,7 +12,7 @@ import debug from "debug";
 import { BlacklistMode } from "@/services/types";
 import { createTagQuery } from "@/misc/util/createTagQuery";
 
-debug.disable();
+// debug.disable();
 // debug.enable("app:*");
 
 const log = debug("app:ApiService");

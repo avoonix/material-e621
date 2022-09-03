@@ -7,10 +7,7 @@
             <tag-label :tag="tag" />
           </div>
         </v-list-item-content>
-        <v-list-item-action
-          v-if="tag.post_count"
-          class="grey--text text-caption"
-        >
+        <v-list-item-action v-if="tag.post_count" class="grey--text text-caption">
           {{ tag.post_count }}
         </v-list-item-action>
         <v-list-item-action class="ma-0" v-if="tag.category">
@@ -26,9 +23,10 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { ITag, default as TagLabel } from "../Tag/TagLabel.vue";
+import TagLabel from "../Tag/TagLabel.vue";
 import TagFavoriteButton from "@/Tag/TagFavoriteButton.vue";
 import TagMenu from "@/Tag/TagMenu.vue";
+import { ITag } from "@/Tag/ITag";
 
 export default defineComponent({
   components: {

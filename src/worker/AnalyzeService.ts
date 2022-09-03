@@ -8,8 +8,8 @@ import * as d3 from "d3";
 
 const log = debug("app:AnalyzeService");
 
-debug.disable();
-debug.enable("app:AnalyzeService");
+// debug.disable();
+// debug.enable("app:AnalyzeService");
 
 export interface ScoredPost extends EnhancedPost {
   __score: number;

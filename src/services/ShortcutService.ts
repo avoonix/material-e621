@@ -1,7 +1,6 @@
-import { state } from "./state";
-import { Shortcut } from "./types";
-import Mousetrap from "mousetrap";
 import mitt from "mitt";
+import Mousetrap from "mousetrap";
+import { useShortcutStore } from "./ShortcutStore";
 
 export type Events = {
   focusSearch: void;
@@ -13,23 +12,11 @@ export type Events = {
 class ShortcutService {
   public emitter = mitt<Events>();
 
-  public get shortcuts() {
-    return state.shortcuts;
-  }
-
-  public deleteShortcut(index: number) {
-    state.shortcuts.splice(index, 1);
-  }
-  public addShortcut(shortcut: Shortcut) {
-    state.shortcuts.unshift(shortcut);
-  }
-  public updateShortcut(index: number, shortcut: Shortcut) {
-    Object.assign(state.shortcuts[index], shortcut);
-  }
-
   public setUpShortcuts() {
     Mousetrap.reset();
-    for (const { action, sequence } of this.shortcuts) {
+    const shortcutStore = useShortcutStore();
+    console.log("setting up shortcuts");
+    for (const { action, sequence } of shortcutStore.shortcuts) {
       Mousetrap.bind(sequence, async (e) => {
         const { appRouter } = await import("@/misc/util/router");
         switch (action) {
@@ -51,8 +38,8 @@ class ShortcutService {
           case "fullscreen_previous_post":
             this.emitter.emit("fullscreenPrevious");
             break;
-          default:
-            console.log(action, e); // TODO
+          default: // TODO
+            console.log(action, e);
             break;
         }
       });
@@ -60,4 +47,6 @@ class ShortcutService {
   }
 }
 
-export const shortcutService = new ShortcutService();
+const shortcutService = new ShortcutService();
+
+export const useShortcutService = () => shortcutService;

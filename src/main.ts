@@ -1,16 +1,14 @@
 import "intersection-observer";
 import "typeface-roboto";
-import { vuetify, pinia } from "./misc/plugins";
-import { showConsoleMessage } from "./misc/util/consoleMessage";
 import Vue from "vue";
 import App from "./App.vue";
-import router from "./router";
-import { persistanceService, snackbarService } from "./services";
+import { pinia, vuetify } from "./misc/plugins";
 import "./misc/serviceWorker/register";
+import { showConsoleMessage } from "./misc/util/consoleMessage";
+import router from "./router";
+import { useSnackbarStore } from "./services";
 
 if (import.meta.env.PROD) showConsoleMessage();
-
-persistanceService.persist();
 
 new Vue({
   router,
@@ -24,8 +22,9 @@ new Vue({
 }).$mount("#app");
 
 Vue.config.errorHandler = (err, vm, info) => {
+  const snackbar = useSnackbarStore();
   console.error(err, vm, info);
-  snackbarService.addMessage(`Error: ${err.message}`);
+  snackbar.addMessage(`Error: ${err.message}`);
 };
 
 export { router };

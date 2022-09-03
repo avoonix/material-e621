@@ -71,9 +71,8 @@
 </template>
 
 <script lang="ts">
-import TagLabel, { ITag } from "./TagLabel.vue";
+import TagLabel from "./TagLabel.vue";
 import { debounce, differenceBy } from "lodash";
-import Vue from "vue";
 import {
   computed,
   defineComponent,
@@ -84,11 +83,11 @@ import {
   watch,
 } from "vue";
 import { getApiService } from "@/worker/services";
-import { postService } from "@/services";
 import { categoryIdToCategoryName } from "@/misc/util/utilities";
-import { shortcutService } from "@/services/ShortcutService";
 import TagFavoriteButton from "./TagFavoriteButton.vue";
-import { favoriteService } from "@/services/FavoriteService";
+import { useFavoritesStore } from "@/services/FavoriteStore";
+import { usePostsStore, useShortcutService } from "@/services";
+import { ITag } from "./ITag";
 
 interface ITagWithText extends ITag {
   text: string;
@@ -111,6 +110,9 @@ export default defineComponent({
     TagFavoriteButton,
   },
   setup(props, context) {
+    const shortcutService = useShortcutService();
+    const posts = usePostsStore();
+    const favoritesStore = useFavoritesStore();
     const search = ref("");
     const tagsLoading = ref(false);
     const tags = ref<ITagWithText[]>([]);
@@ -130,7 +132,7 @@ export default defineComponent({
     };
     const favorites = computed(() => {
       const result: ITagWithText[] = [];
-      for (const [category, tags] of Object.entries(favoriteService.tags)) {
+      for (const [category, tags] of Object.entries(favoritesStore.tags)) {
         for (const [tag, display] of Object.entries(tags)) {
           result.push({
             category,
@@ -162,12 +164,12 @@ export default defineComponent({
         const result = await Promise.all([
           // TODO: error handling
           service.getTags({
-            limit: postService.tagFetchLimit,
+            limit: posts.tagFetchLimit,
             order: "count",
             query: `*${search}*`,
           }),
           service.getPools({
-            limit: postService.tagFetchLimit,
+            limit: posts.tagFetchLimit,
             order: "count",
             query: `*${search}*`,
           }),

@@ -7,12 +7,7 @@
 <script lang="ts">
 import { getTagColorFromCategory } from "@/misc/util/utilities";
 import { computed, defineComponent, PropType } from "vue";
-
-export interface ITag {
-  name: string;
-  post_count?: number;
-  category?: string;
-}
+import { ITag } from "./ITag";
 
 export default defineComponent({
   inheritAttrs: false,

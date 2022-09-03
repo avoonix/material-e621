@@ -38,11 +38,11 @@
 </template>
 
 <script lang="ts">
-import SettingsPageTitle from "./SettingsPageTitle.vue";
-import SettingsPageItem from "./SettingsPageItem.vue";
-import { computed, defineComponent, ref } from "vue";
-import { persistanceService, snackbarService } from "@/services";
+import { usePersistanceService, useSnackbarStore } from "@/services";
 import downloadjs from "downloadjs";
+import { defineComponent, ref } from "vue";
+import SettingsPageItem from "./SettingsPageItem.vue";
+import SettingsPageTitle from "./SettingsPageTitle.vue";
 
 export default defineComponent({
   metaInfo: {
@@ -53,6 +53,8 @@ export default defineComponent({
     SettingsPageItem,
   },
   setup(props, context) {
+    const snackbar = useSnackbarStore();
+    const persistanceService = usePersistanceService();
     const fileInput = ref<HTMLInputElement>();
     const download = async () => {
       const file = await persistanceService.stateToFile();
@@ -62,11 +64,11 @@ export default defineComponent({
       const file = fileInput.value?.files?.[0];
       if(!file) return;
       await persistanceService.loadStateFromFile(file);
-      snackbarService.addMessage("successfully restored settings");
+      snackbar.addMessage("successfully restored settings");
     };
     const reset = () => {
       persistanceService.resetStateToDefault();
-      snackbarService.addMessage("successfully reset settings");
+      snackbar.addMessage("successfully reset settings");
     };
     const openFileInput = () => {
       fileInput.value?.click();

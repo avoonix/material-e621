@@ -129,7 +129,7 @@
 <script lang="ts">
 import scrollIntoView from "scroll-into-view";
 import AppLogo from "../App/AppLogo.vue";
-import { appearanceService, blacklistService, postService } from "@/services";
+import { useAppearanceStore, useBlacklistStore, usePostsStore, useShortcutService } from "@/services";
 import ZoomPanImage from "./ZoomPanImage.vue";
 import { useBlacklistClasses } from "../misc/util/blacklist";
 import {
@@ -147,7 +147,6 @@ import PostButtons from "@/Post/PostButtons.vue";
 import { useDirectionalTransitions } from "@/misc/util/directionalTransitions";
 import { EnhancedPost } from "@/worker/ApiService";
 import { FullscreenZoomUiMode } from "@/services/types";
-import { shortcutService } from "@/services/ShortcutService";
 
 const appIsFullscreen = ref(!!document.fullscreenElement);
 
@@ -187,6 +186,11 @@ export default defineComponent({
     },
   },
   setup(props, context) {
+    const appearance = useAppearanceStore();
+    const blacklist = useBlacklistStore();
+    const posts = usePostsStore();
+    const shortcutService = useShortcutService();
+
     const dialog = ref<Vue>();
     const lastFullscreenId = ref<number | null>();
     const isZoomed = ref(false);
@@ -194,21 +198,21 @@ export default defineComponent({
       Boolean(props?.current?.__meta.isBlacklisted),
     );
     const { classes: blacklistClasses } = useBlacklistClasses({
-      mode: blacklistService.mode,
+      mode: blacklist.mode,
       postIsBlacklisted,
     });
 
-    const buttons = computed(() => postService.fullscreenButtons);
+    const buttons = computed(() => posts.fullscreenButtons);
 
     const { enterTransitionName, leaveTransitionName, setTransitionNames } =
       useDirectionalTransitions({
         transitionName() {
-          return appearanceService.fullscreenTransition;
+          return appearance.fullscreenTransition;
         },
       });
 
     const hideUi = computed(() => {
-      switch (postService.fullscreenZoomUiMode) {
+      switch (posts.fullscreenZoomUiMode) {
         case FullscreenZoomUiMode.neverHide:
           return false;
         case FullscreenZoomUiMode.alwaysHide:
@@ -300,7 +304,7 @@ export default defineComponent({
       if (!open.value) {
         setTransitionNames("none");
       }
-      if (open.value && postService.goFullscreen) {
+      if (open.value && posts.goFullscreen) {
         // dialog.value?.requestFullscreen();
         document.querySelector("#app")?.requestFullscreen();
       } else {

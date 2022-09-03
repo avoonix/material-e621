@@ -14,20 +14,22 @@
 
 <script lang="ts">
 import { useDirectionalTransitions } from "@/misc/util/directionalTransitions";
-import { appearanceService } from "@/services";
+import { useAppearanceStore } from "@/services";
 import { computed, defineComponent } from "vue";
 
 export default defineComponent({
   props: {},
   setup(props, context) {
+    const appearance = useAppearanceStore();
+
     const { enterTransitionName, leaveTransitionName, setTransitionNames } =
       useDirectionalTransitions({
         transitionName() {
-          return appearanceService.routeTransition;
+          return appearance.routeTransition;
         },
       });
 
-    const backgroundColor = computed(() => appearanceService.backgroundColor);
+    const backgroundColor = computed(() => appearance.backgroundColor);
 
     return {
       enterTransitionName,
@@ -44,7 +46,7 @@ export default defineComponent({
         toDepth < fromDepth ? "left" : toDepth === fromDepth ? "none" : "right",
       );
 
-      // snackbarService.clearMessage();
+      // snackbar.clearMessage();
     },
   },
   computed: {

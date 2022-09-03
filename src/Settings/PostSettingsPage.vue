@@ -4,76 +4,35 @@
       <v-flex text-center xs12 sm10 offset-sm1 lg6 offset-lg3>
         <settings-page-title title="Post" color="darken-3 brown" />
         <settings-page-item title="Buttons" select>
-          <post-button-editor
-            :available-buttons="availableButtons"
-            :fullscreen-buttons.sync="fullscreenButtons"
-            :details-buttons.sync="detailsButtons"
-            :post-buttons.sync="postButtons"
-          />
+          <post-button-editor :available-buttons="availableButtons" :fullscreen-buttons.sync="posts.fullscreenButtons"
+            :details-buttons.sync="posts.detailsButtons" :post-buttons.sync="posts.buttons" />
         </settings-page-item>
         <settings-page-item title="Fullscreen arrow buttons" select>
-          <v-select
-            :items="fullscreenZoomUiModeItems"
-            outlined
-            hide-details
-            v-model="fullscreenZoomUiMode"
-          />
+          <v-select :items="fullscreenZoomUiModeItems" outlined hide-details v-model="posts.fullscreenZoomUiMode" />
         </settings-page-item>
         <settings-page-item title="Go fullscreen when viewing posts" switch>
-          <v-switch v-model="goFullscreen" />
+          <v-switch v-model="posts.goFullscreen" />
         </settings-page-item>
         <settings-page-item title="Limits" select>
-          <v-slider
-            color="accent"
-            class="my-0 mx-3"
-            v-model="postListFetchLimit"
-            thumb-label
-            :min="10"
-            :max="320"
-            label="Posts per page"
-          />
-          <v-slider
-            color="accent"
-            class="my-0 mx-3"
-            v-model="tagFetchLimit"
-            thumb-label
-            :min="10"
-            :max="500"
-            label="Tags"
-          />
-          <v-slider
-            color="accent"
-            class="my-0 mx-3"
-            v-model="sidebarSuggestionLimit"
-            thumb-label
-            :min="0"
-            :max="500"
-            label="Suggestions (sidebar)"
-          />
+          <v-slider color="accent" class="my-0 mx-3" v-model="posts.postListFetchLimit" thumb-label :min="10" :max="320"
+            label="Posts per page" />
+          <v-slider color="accent" class="my-0 mx-3" v-model="posts.tagFetchLimit" thumb-label :min="10" :max="500"
+            label="Tags" />
+          <v-slider color="accent" class="my-0 mx-3" v-model="posts.sidebarSuggestionLimit" thumb-label :min="0"
+            :max="500" label="Suggestions (sidebar)" />
         </settings-page-item>
-        <settings-page-item
-          title="Data saver"
-          select
-          description="Viewing posts in fullscreen will still show highest-quality images."
-        >
+        <settings-page-item title="Data saver" select
+          description="Viewing posts in fullscreen will still show highest-quality images.">
           <template #description>
             <v-expand-transition>
               <automatic-data-saver-info v-if="showAutomaticDataSaverInfo" />
             </v-expand-transition>
           </template>
-          <v-select
-            :items="dataSaverItems"
-            outlined
-            hide-details
-            v-model="dataSaver"
-          />
+          <v-select :items="dataSaverItems" outlined hide-details v-model="posts.dataSaver" />
         </settings-page-item>
-        <settings-page-item
-          title="Lazy load images"
-          switch
-          description="Load images as you scroll past them, instead of all at once."
-        >
-          <v-switch v-model="lazyLoad" />
+        <settings-page-item title="Lazy load images" switch
+          description="Load images as you scroll past them, instead of all at once.">
+          <v-switch v-model="posts.lazyLoad" />
         </settings-page-item>
       </v-flex>
     </v-layout>
@@ -81,17 +40,13 @@
 </template>
 
 <script lang="ts">
-import SettingsPageTitle from "./SettingsPageTitle.vue";
-import SettingsPageItem from "./SettingsPageItem.vue";
+import { usePostsStore } from "@/services";
+import { DataSaverType, FullscreenZoomUiMode } from "@/services/types";
 import { computed, defineComponent } from "vue";
-import {
-  ButtonType,
-  DataSaverType,
-  FullscreenZoomUiMode,
-} from "@/services/types";
-import { postService } from "@/services";
-import PostButtonEditor from "./PostButtonEditor.vue";
 import AutomaticDataSaverInfo from "./AutomaticDataSaverInfo.vue";
+import PostButtonEditor from "./PostButtonEditor.vue";
+import SettingsPageItem from "./SettingsPageItem.vue";
+import SettingsPageTitle from "./SettingsPageTitle.vue";
 
 export default defineComponent({
   metaInfo: {
@@ -104,74 +59,8 @@ export default defineComponent({
     AutomaticDataSaverInfo,
   },
   setup() {
-    const availableButtons = computed(() => postService.allButtonTypes);
-
-    const postButtons = computed<ButtonType[]>({
-      get() {
-        return postService.buttons;
-      },
-      set(value) {
-        postService.buttons = value;
-      },
-    });
-    const fullscreenButtons = computed<ButtonType[]>({
-      get() {
-        return postService.fullscreenButtons;
-      },
-      set(value) {
-        postService.fullscreenButtons = value;
-      },
-    });
-    const detailsButtons = computed<ButtonType[]>({
-      get() {
-        return postService.detailsButtons;
-      },
-      set(value) {
-        postService.detailsButtons = value;
-      },
-    });
-
-    const sidebarSuggestionLimit = computed<number>({
-      get() {
-        return postService.sidebarSuggestionLimit;
-      },
-      set(value) {
-        postService.sidebarSuggestionLimit = value;
-      },
-    });
-    const tagFetchLimit = computed<number>({
-      get() {
-        return postService.tagFetchLimit;
-      },
-      set(value) {
-        postService.tagFetchLimit = value;
-      },
-    });
-    const postListFetchLimit = computed<number>({
-      get() {
-        return postService.postListFetchLimit;
-      },
-      set(value) {
-        postService.postListFetchLimit = value;
-      },
-    });
-    const goFullscreen = computed<boolean>({
-      get() {
-        return postService.goFullscreen;
-      },
-      set(value) {
-        postService.goFullscreen = value;
-      },
-    });
-
-    const lazyLoad = computed<boolean>({
-      get() {
-        return postService.lazyLoad;
-      },
-      set(value) {
-        postService.lazyLoad = value;
-      },
-    });
+    const posts = usePostsStore();
+    const availableButtons = computed(() => posts.allButtonTypes);
 
     const fullscreenZoomUiModeItems = computed(() => [
       {
@@ -187,15 +76,6 @@ export default defineComponent({
         value: FullscreenZoomUiMode.hideWhileZoomed,
       },
     ]);
-
-    const fullscreenZoomUiMode = computed<FullscreenZoomUiMode>({
-      get() {
-        return postService.fullscreenZoomUiMode;
-      },
-      set(value) {
-        postService.fullscreenZoomUiMode = value;
-      },
-    });
 
     const dataSaverItems = computed(() => [
       {
@@ -216,34 +96,16 @@ export default defineComponent({
       },
     ]);
 
-    const dataSaver = computed<DataSaverType>({
-      get() {
-        return postService.dataSaver;
-      },
-      set(value) {
-        postService.dataSaver = value;
-      },
-    });
-
     const showAutomaticDataSaverInfo = computed(
-      () => postService.dataSaver === DataSaverType.auto,
+      () => posts.dataSaver === DataSaverType.auto,
     );
 
     return {
-      goFullscreen,
       availableButtons,
-      postButtons,
-      fullscreenButtons,
-      detailsButtons,
-      sidebarSuggestionLimit,
-      postListFetchLimit,
-      tagFetchLimit,
-      fullscreenZoomUiMode,
       fullscreenZoomUiModeItems,
-      dataSaver,
       dataSaverItems,
       showAutomaticDataSaverInfo,
-      lazyLoad,
+      posts,
     };
   },
 });

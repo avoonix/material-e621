@@ -61,18 +61,19 @@
 </template>
 
 <script lang="ts">
-import { favoriteService } from "@/services/FavoriteService";
 import { computed, defineComponent, watch } from "vue";
 import TagLabel from "@/Tag/TagLabel.vue";
+import { useFavoritesStore } from "@/services/FavoriteStore";
 
 export default defineComponent({
   setup(props, context) {
-    const tags = computed(() => favoriteService.tags);
+    const favorites = useFavoritesStore();
+    const tags = computed(() => favorites.tags);
     const removeFavorite = (name: string, category: string) => {
-      favoriteService.setFavorite(name, category, false);
+      favorites.setFavorite(name, category, false);
     };
 
-    const hasFavorites = computed(() => favoriteService.hasFavorites);
+    const hasFavorites = computed(() => favorites.hasFavorites);
 
     watch(hasFavorites, async () => {
       if (!hasFavorites.value) {

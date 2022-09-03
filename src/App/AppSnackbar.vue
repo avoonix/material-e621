@@ -8,20 +8,22 @@
 </template>
 
 <script lang="ts">
-import { snackbarService } from "@/services";
+import { useSnackbarStore } from "@/services";
 import { computed, defineComponent } from "vue";
 
 export default defineComponent({
   setup() {
+    const snackbar = useSnackbarStore();
+
     const close = () => {
-      snackbarService.clearMessage();
+      snackbar.clearMessage();
     };
 
-    const message = computed(() => snackbarService.message);
+    const message = computed(() => snackbar.message);
 
     const open = computed<boolean>({
       get() {
-        return !!snackbarService.message;
+        return !!snackbar.message;
       },
       set(open) {
         if (!open) {

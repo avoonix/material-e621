@@ -148,11 +148,20 @@ export default new Router({
         ),
     },
     {
-      path: "/404",
-      name: "ErrorPage",
+      path: "/dash",
+      name: "Dashboard",
       component: () =>
-        import(/* webpackChunkName: "misc" */ "@/Error/ErrorPage.vue"),
-      alias: "*",
+        import(
+          /* webpackChunkName: "dashboard" */ "@/ArtistDashboard/Dashboard.vue"
+        ),
+    },
+    {
+      path: "/dash/:name",
+      name: "DashboardResult",
+      component: () =>
+        import(
+          /* webpackChunkName: "dashboard" */ "@/ArtistDashboard/DashboardResult.vue"
+        ),
     },
     {
       alias: ["/favorites"],
@@ -160,6 +169,13 @@ export default new Router({
       name: "Starred",
       component: () =>
         import(/* webpackChunkName: "favorites" */ "@/Favorites/FavoritesPage.vue"),
+    },
+    {
+      path: "/404",
+      name: "ErrorPage",
+      component: () =>
+        import(/* webpackChunkName: "misc" */ "@/Error/ErrorPage.vue"),
+      alias: "*",
     },
   ],
   mode: "hash",

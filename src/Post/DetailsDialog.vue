@@ -72,10 +72,9 @@ import PostInfoList from "./PostInfoList.vue";
 import LinkShare from "./LinkShare.vue";
 import PostButtons from "@/Post/PostButtons.vue";
 import { computed, defineComponent, PropType, ref } from "vue";
-import { postService } from "@/services";
-import { Post } from "@/worker/api";
-import { ITag } from "../Tag/TagLabel.vue";
 import { EnhancedPost } from "@/worker/ApiService";
+import { usePostsStore } from "@/services";
+import { ITag } from "@/Tag/ITag";
 
 export default defineComponent({
   components: {
@@ -92,7 +91,8 @@ export default defineComponent({
     },
   },
   setup(props, context) {
-    const buttons = computed(() => postService.detailsButtons);
+    const posts = usePostsStore();
+    const buttons = computed(() => posts.detailsButtons);
     const tabs = ref(1);
     const tags = computed(() => {
       const allTags: ITag[] = [];

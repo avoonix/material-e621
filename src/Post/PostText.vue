@@ -19,18 +19,9 @@
           {{ score }}
         </span>
       </v-chip>
-      <tag-menu
-        v-for="artist in post.tags.artist"
-        :key="artist"
-        :tag="{ name: artist, category: 'artist' }"
-      >
+      <tag-menu v-for="artist in post.tags.artist" :key="artist" :tag="{ name: artist, category: 'artist' }">
         <template #default="{ on }">
-          <v-chip
-            :color="artistColor"
-            outlined
-            class="mr-2 mb-2"
-            v-on="on"
-          >
+          <v-chip :color="artistColor" outlined class="mr-2 mb-2" v-on="on">
             <v-icon>mdi-palette</v-icon>
             <span class="ml-2">
               {{ artist }}
@@ -40,20 +31,22 @@
       </tag-menu>
       <v-chip outlined class="mb-2 no-before-content">
         <v-icon>mdi-clock</v-icon>
-        <span class="ml-2"> {{ relativeUploadDate }} ({{ uploadDate }}) </span>
+        <span class="ml-2">
+          <date-display :value="post.created_at" />
+        </span>
       </v-chip>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import DateDisplay from "@/ArtistDashboard/DateDisplay.vue";
 import { getTagColorFromCategory } from "@/misc/util/utilities";
+import TagMenu from "@/Tag/TagMenu.vue";
 import { ScoredPost } from "@/worker/AnalyzeService";
 import { Post } from "@/worker/api";
-import { computed, defineComponent, PropType } from "vue";
-import { formatDistanceToNow, format, parse, parseISO } from "date-fns";
 import prettyBytes from "pretty-bytes";
-import TagMenu from "@/Tag/TagMenu.vue";
+import { computed, defineComponent, PropType } from "vue";
 
 const isScoredPost = (post: any): post is ScoredPost => !!post.__score;
 
@@ -68,12 +61,6 @@ export default defineComponent({
   },
   setup(props, context) {
     const fileSize = computed(() => prettyBytes(props.post.file.size));
-    const date = computed(() => parseISO(props.post.created_at));
-    const relativeUploadDate = computed(() =>
-      formatDistanceToNow(date.value, { addSuffix: true }),
-    );
-    const uploadDate = computed(() => format(date.value, "PP p"));
-    // post.__score
     const score = computed(() => {
       if (isScoredPost(props.post)) {
         return props.post.__score;
@@ -82,12 +69,10 @@ export default defineComponent({
     });
     return {
       fileSize,
-      relativeUploadDate,
-      uploadDate,
       score,
       artistColor,
     };
   },
-  components: { TagMenu },
+  components: { TagMenu, DateDisplay },
 });
 </script>

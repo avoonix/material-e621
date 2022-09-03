@@ -2,85 +2,52 @@
   <div>
     <portal to="toolbar">
       <v-flex style="display: flex; align-items: center">
-        <tag-search
-          style="flex: 1 1 auto"
-          :tags="tags"
-          @add-tag="addTag"
-          @remove-tag="removeTag"
-          @confirm-search="updateQuery() && onSearchClick()"
-          label="Tags"
-        />
-        <v-btn
-          icon
-          @click="updateQuery() && onSearchClick()"
-          :loading="loading"
-        >
+        <tag-search style="flex: 1 1 auto" :tags="tags" @add-tag="addTag" @remove-tag="removeTag"
+          @confirm-search="updateQuery() && onSearchClick()" label="Tags" />
+        <v-btn icon @click="updateQuery() && onSearchClick()" :loading="loading">
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
-        <v-menu
-          bottom
-          left
-          max-height="300"
-          offset-y
-          transition="slide-y-transition"
-          v-if="$vuetify.breakpoint.mdAndUp"
-        >
+        <v-menu bottom left max-height="300" offset-y transition="slide-y-transition"
+          v-if="$vuetify.breakpoint.mdAndUp">
           <template #activator="{ on }">
             <v-btn v-on="on" icon>
               <v-icon>mdi-history</v-icon>
             </v-btn>
           </template>
-          <history-list
-            :entries="historyEntries"
-            @delete-entry="removeHistoryEntry($event)"
-            @click-entry="onHistoryEntryClick"
-          />
+          <history-list :entries="historyEntries" @delete-entry="removeHistoryEntry($event)"
+            @click-entry="onHistoryEntryClick" />
         </v-menu>
       </v-flex>
     </portal>
-    <posts
-      :posts="posts"
-      :loading="loading"
-      @load-previous="loadPreviousPage()"
-      @load-next="loadNextPage()"
-      @open-post="openFullscreenPost"
-      :fullscreen-post="fullscreenPost || undefined"
-      @exit-fullscreen="fullscreenPost = null"
-      @next-fullscreen-post="openNextFullscreenPost()"
-      @previous-fullscreen-post="openPreviousFullscreenPost()"
-      :has-previous-fullscreen-post="true"
-      :has-next-fullscreen-post="true"
-      :details-post="detailsPost || undefined"
-      @open-post-details="openPostDetails"
-      @close-details="detailsPost = null"
-      @set-post-favorite="setPostFavorite($event)"
-    />
+    <posts :posts="posts" :loading="loading" @load-previous="loadPreviousPage()" @load-next="loadNextPage()"
+      @open-post="openFullscreenPost" :fullscreen-post="fullscreenPost || undefined"
+      @exit-fullscreen="fullscreenPost = null" @next-fullscreen-post="openNextFullscreenPost()"
+      @previous-fullscreen-post="openPreviousFullscreenPost()" :has-previous-fullscreen-post="true"
+      :has-next-fullscreen-post="true" :details-post="detailsPost || undefined" @open-post-details="openPostDetails"
+      @close-details="detailsPost = null" @set-post-favorite="setPostFavorite($event)" />
     <!-- TODO: set has-(next|previous)-fullscreen-post -->
     <portal to="sidebar-suggestions">
-      <v-subheader v-if="suggestedTags.length > 0"
-        >Tags on this page</v-subheader
-      >
+      <v-subheader v-if="suggestedTags.length > 0">Tags on this page</v-subheader>
       <suggestions :tags="suggestedTags" />
     </portal>
   </div>
 </template>
 
 <script lang="ts">
-import Posts from "@/Post/Posts.vue";
-import { getApiService, getAnalyzeService } from "../worker/services";
-import { removeRouterQuery, updateRouterQuery } from "../misc/util/utilities";
-import Suggestions from "./Suggestions.vue";
-import TagSearch from "../Tag/TagSearch.vue";
-import { accountService, blacklistService, postService } from "@/services";
-import HistoryList from "../Tag/HistoryList.vue";
-import { defineComponent, onMounted, ref, watch } from "vue";
-import { usePostListManager } from "@/Post/postListManager";
-import { useRouterTagManager } from "@/Post/routerTagManager";
-import { useHistory } from "@/Post/historyManager";
-import router from "@/router";
-import { ITag } from "@/Tag/TagLabel.vue";
 import { useRoute } from "@/misc/util/router";
+import { useHistory } from "@/Post/historyManager";
+import { usePostListManager } from "@/Post/postListManager";
+import Posts from "@/Post/Posts.vue";
+import { useRouterTagManager } from "@/Post/routerTagManager";
+import { useAccountStore, useBlacklistStore, usePostsStore } from "@/services";
+import { ITag } from "@/Tag/ITag";
 import { debounce, isEqual } from "lodash";
+import { defineComponent, onMounted, ref, watch } from "vue";
+import { removeRouterQuery, updateRouterQuery } from "../misc/util/utilities";
+import HistoryList from "../Tag/HistoryList.vue";
+import TagSearch from "../Tag/TagSearch.vue";
+import { getAnalyzeService, getApiService } from "../worker/services";
+import Suggestions from "./Suggestions.vue";
 
 export default defineComponent({
   components: {
@@ -90,6 +57,9 @@ export default defineComponent({
     HistoryList,
   },
   setup(props, context) {
+    const account = useAccountStore();
+    const blacklist = useBlacklistStore();
+    const postsStore = usePostsStore();
     const { tags, addTag, removeTag, updateQuery, query, setTags } =
       useRouterTagManager();
 
@@ -112,9 +82,10 @@ export default defineComponent({
         return Number(route.query.first_post); // TODO: handle null
       },
       getSettingsPageSize() {
-        return postService.postListFetchLimit;
+        return postsStore.postListFetchLimit;
       },
       saveFirstPostId(id) {
+        console.log("save first post", id)
         if (!id) {
           removeRouterQuery(["first_post"]);
           return;
@@ -126,13 +97,13 @@ export default defineComponent({
       async loadPosts({ postsBefore, postsAfter }) {
         const service = await getApiService();
         const posts = await service.getPosts({
-          limit: postService.postListFetchLimit,
+          limit: postsStore.postListFetchLimit,
           postsBefore,
           postsAfter,
           tags: tags.value,
-          blacklist: blacklistService.tags,
-          blacklistMode: blacklistService.mode,
-          auth: accountService.auth,
+          blacklist: blacklist.tags,
+          blacklistMode: blacklist.mode,
+          auth: account.auth,
         });
         return posts;
       },
@@ -145,13 +116,9 @@ export default defineComponent({
     const { historyEntries, addHistoryEntry, removeHistoryEntry } =
       useHistory();
 
-    watch(posts, () => {
-      addHistoryEntry(tags.value);
-    });
-
     const suggestedTags = ref<ITag[]>([]);
     const suggestTags = async () => {
-      const settingsSuggestedTagsCount = postService.sidebarSuggestionLimit;
+      const settingsSuggestedTagsCount = postsStore.sidebarSuggestionLimit;
       if (!posts.value.length) {
         suggestedTags.value = [];
         return;
@@ -163,23 +130,15 @@ export default defineComponent({
         .slice(0, settingsSuggestedTagsCount)
         .map(
           (t) =>
-            ({
-              name: t.name,
-              category: t.category,
-              post_count: t.count,
-            } as ITag),
+          ({
+            name: t.name,
+            category: t.category,
+            post_count: t.count,
+          } as ITag),
         );
     };
 
-    watch(
-      () => posts.value,
-      () => {
-        suggestTags();
-      },
-    );
-
     const onSearchClick = debounce(async () => {
-      console.log("on search click");
       if (!loading.value) {
         await removeRouterQuery(["first_post"]);
         posts.value = [];
@@ -202,6 +161,12 @@ export default defineComponent({
       setTags(entry);
       updateQuery();
     };
+
+    watch(posts, () => {
+      console.log("posts changed", posts.value.length)
+      addHistoryEntry(tags.value);
+      suggestTags();
+    }, { deep: true, });
 
     return {
       updateQuery,

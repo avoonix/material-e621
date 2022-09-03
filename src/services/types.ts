@@ -38,7 +38,7 @@ export interface Shortcut {
 // }
 
 export interface ISettingsServiceState {
-  configVersion: undefined | 1 | 2 | 3 | 4 | 5;
+  configVersion: undefined | 1 | 2 | 3 | 4 | 5 | 6;
   shortcuts: Shortcut[];
   blacklist: {
     mode: BlacklistMode;

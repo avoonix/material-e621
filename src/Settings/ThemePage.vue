@@ -1,14 +1,7 @@
 <template>
   <div>
     <div class="ma-2">
-      <v-btn
-        outlined
-        block
-        large
-        color="primary"
-        to="/settings/appearance"
-        exact
-      >
+      <v-btn outlined block large color="primary" to="/settings/appearance" exact>
         <v-icon left>mdi-arrow-left</v-icon>
         Back
       </v-btn>
@@ -21,14 +14,7 @@
       </v-layout>
     </v-container>
     <div class="ma-2">
-      <v-btn
-        outlined
-        block
-        large
-        color="primary"
-        :href="issueUrl"
-        target="_blank"
-      >
+      <v-btn outlined block large color="primary" :href="issueUrl" target="_blank">
         <v-icon left>mdi-open-in-new</v-icon>
         Want your theme listed?
       </v-btn>
@@ -38,7 +24,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { appearanceService, Theme } from "@/services";
+import { Theme, useAppearanceStore } from "@/services";
 import themes from "@/misc/data/themes.json";
 import ThemePreview from "./ThemePreview.vue";
 import { createIssueLink } from "@/misc/util/git";
@@ -51,8 +37,10 @@ export default defineComponent({
     ThemePreview,
   },
   setup() {
+    const appearance = useAppearanceStore();
+
     const applyTheme = (theme: Theme) => {
-      appearanceService.applyTheme(theme);
+      appearance.applyTheme(theme);
     };
     const issueUrl = computed(() =>
       createIssueLink({
@@ -60,7 +48,7 @@ export default defineComponent({
         body: `Hi, I would like to propose adding a new theme:
 
 \`\`\`json
-${JSON.stringify(appearanceService.theme, null, 2)}
+${JSON.stringify(appearance.theme, null, 2)}
 \`\`\`
 `,
       }),

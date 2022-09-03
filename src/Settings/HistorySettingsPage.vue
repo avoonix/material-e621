@@ -23,7 +23,7 @@ import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
 import HistoryList from "../Tag/HistoryList.vue";
 import { computed, defineComponent } from "vue";
-import { historyService } from "@/services";
+import { useHistoryStore } from "@/services";
 
 export default defineComponent({
   metaInfo: {
@@ -35,6 +35,7 @@ export default defineComponent({
     HistoryList,
   },
   setup(props, context) {
+    const history = useHistoryStore();
     const openSearch = async (tags: string[]) => {
       const { appRouter } = await import("@/misc/util/router");
       appRouter.push({
@@ -46,14 +47,14 @@ export default defineComponent({
     };
     return {
       openSearch,
-      entries: historyService.entries,
-      deleteEntry: (idx: number) => historyService.deleteEntry(idx),
+      entries: history.entries,
+      deleteEntry: (idx: number) => history.deleteEntry(idx),
       maxLength: computed<number>({
         get() {
-          return historyService.maxLength;
+          return history.maxLength;
         },
         set(value) {
-          historyService.maxLength = value;
+          history.maxLength = value;
         },
       }),
     };

@@ -7,9 +7,8 @@
 </template>
 
 <script lang="ts">
-import { updateRouterQuery } from "@/misc/util/utilities";
-import { blacklistService } from "@/services";
-import { favoriteService } from "@/services/FavoriteService";
+import { useBlacklistStore } from "@/services";
+import { useFavoritesStore } from "@/services/FavoriteStore";
 import { computed, defineComponent } from "vue";
 
 // const menu = {
@@ -31,6 +30,8 @@ export default defineComponent({
     },
   },
   setup(props, context) {
+    const blacklist = useBlacklistStore();
+    const favorites = useFavoritesStore();
     const wikiUrl = computed(
       () => `https://e621.net/wiki/show?title=${props.name}`,
     );
@@ -39,14 +40,14 @@ export default defineComponent({
     );
 
     const isBlacklisted = computed(() =>
-      blacklistService.tagIsBlacklisted(props.name),
+      blacklist.tagIsBlacklisted(props.name),
     );
 
     const isFavorited = computed(() =>
-      favoriteService.isFavorited(props.name, props.category),
+      favorites.isFavorited(props.name, props.category),
     );
     const toggleFavorite = () => {
-      favoriteService.setFavorite(
+      favorites.setFavorite(
         props.name,
         props.category,
         !isFavorited.value,
@@ -65,9 +66,16 @@ export default defineComponent({
         {
           text: "Search",
           action: async () => {
-            updateRouterQuery({
-              tags: props.name,
-            });
+            const { appRouter } = await import("@/misc/util/router");
+            appRouter.push({
+              name: 'Posts',
+              query: {
+                tags: props.name,
+              },
+            })
+            // updateRouterQuery({
+            //   tags: props.name,
+            // });
           },
         },
         {
@@ -76,9 +84,9 @@ export default defineComponent({
             : "Add to blacklist",
           action: () => {
             if (isBlacklisted.value) {
-              blacklistService.removeTag(props.name);
+              blacklist.removeTag(props.name);
             } else {
-              blacklistService.addTag(props.name);
+              blacklist.addTag(props.name);
             }
           },
         },

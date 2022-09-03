@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { appearanceService } from "@/services";
+import { useAppearanceStore } from "@/services";
 import { computed, defineComponent, ref } from "vue";
 
 const deferredPrompt = ref<Event | null>(null);
@@ -38,12 +38,13 @@ window.addEventListener("beforeinstallprompt", (e: Event) => {
 
 export default defineComponent({
   setup(props, context) {
+    const appearance = useAppearanceStore();
     const showInstallPrompt = computed(
-      () => !!deferredPrompt.value && !appearanceService.hideInstallPrompt,
+      () => !!deferredPrompt.value && !appearance.hideInstallPrompt,
     );
 
     const hide = () => {
-      appearanceService.hideInstallPrompt = true;
+      appearance.hideInstallPrompt = true;
     };
     const install = async () => {
       if (!deferredPrompt.value) return;

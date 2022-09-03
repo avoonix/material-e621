@@ -3,23 +3,17 @@
     <v-layout align-center>
       <v-flex text-center xs12 md8 offset-md2>
         <v-form @submit="submit">
-          <v-text-field
-            v-model="username"
-            append-icon="mdi-send"
-            @click:append="submit"
-            label="Username"
-          />
-          <slider-group v-model="sliders" />
+          <v-text-field v-model="username" append-icon="mdi-send" @click:append="submit" label="Username" />
         </v-form>
+        <slider-group v-model="sliders" />
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script lang="ts">
-import router from "@/router";
-import { accountService } from "@/services";
-import { computed, defineComponent, ref, reactive } from "vue";
+import { useAccountStore } from "@/services";
+import { computed, defineComponent, reactive, ref } from "vue";
 import { RawLocation } from "vue-router";
 import SliderGroup from "./SliderGroup.vue";
 
@@ -29,7 +23,8 @@ export default defineComponent({
   },
   components: { SliderGroup },
   setup(props, context) {
-    const username = ref(accountService.username || "");
+    const account = useAccountStore();
+    const username = ref(account.username || "");
     const sliders = reactive({
       general: 5,
       artist: 30,
@@ -49,7 +44,8 @@ export default defineComponent({
         ),
       },
     }));
-    const submit = async () => {
+    const submit = async (event?: SubmitEvent) => {
+      event?.preventDefault?.();
       const { appRouter } = await import("@/misc/util/router");
       appRouter.push(query.value);
     };

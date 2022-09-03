@@ -14,13 +14,13 @@
           >
             Browse themes
           </v-btn>
-          <color-chooser label="Primary" :color.sync="primary" />
-          <color-chooser label="Secondary" :color.sync="secondary" />
-          <color-chooser label="Accent" :color.sync="accent" />
-          <color-chooser label="Background" :color.sync="background" />
-          <color-chooser label="Sidebar" :color.sync="sidebar" />
-          <color-chooser label="Toolbar" :color.sync="toolbar" />
-          <v-switch label="Dark" v-model="dark" />
+          <color-chooser label="Primary" :color.sync="appearance.primaryColor" />
+          <color-chooser label="Secondary" :color.sync="appearance.secondaryColor" />
+          <color-chooser label="Accent" :color.sync="appearance.accentColor" />
+          <color-chooser label="Background" :color.sync="appearance.backgroundColor" />
+          <color-chooser label="Sidebar" :color.sync="appearance.sidebarColor" />
+          <color-chooser label="Toolbar" :color.sync="appearance.toolbarColor" />
+          <v-switch label="Dark" v-model="appearance.dark" />
         </settings-page-item>
         <settings-page-item
           title="Fullscreen image transitions"
@@ -30,11 +30,11 @@
           <v-select
             :items="transitionItems"
             outlined
-            v-model="fullscreenTransition"
+            v-model="appearance.fullscreenTransition"
             hide-details
           />
           <transition-preview
-            :transition-name="fullscreenTransition"
+            :transition-name="appearance.fullscreenTransition"
             :ratio="2"
             :directions="[
               'left',
@@ -57,11 +57,11 @@
           <v-select
             :items="transitionItems"
             outlined
-            v-model="routeTransition"
+            v-model="appearance.routeTransition"
             hide-details
           />
           <transition-preview
-            :transition-name="routeTransition"
+            :transition-name="appearance.routeTransition"
             :ratio="2"
             :directions="['none', 'right', 'left', 'none']"
             class="mt-3"
@@ -71,13 +71,13 @@
           title="Colored stripe indicating post rating"
           switch
         >
-          <v-switch v-model="stripe" />
+          <v-switch v-model="appearance.ratingStripe" />
         </settings-page-item>
         <settings-page-item title="Navigation" select>
           <v-select
             :items="navigationTypeItems"
             outlined
-            v-model="navigationType"
+            v-model="appearance.navigationType"
             hide-details
           />
         </settings-page-item>
@@ -85,12 +85,12 @@
           <v-select
             :items="logoStyleItems"
             outlined
-            v-model="logoStyle"
+            v-model="appearance.logoStyle"
             hide-details
           />
         </settings-page-item>
         <settings-page-item title="Hide install prompt" switch>
-          <v-switch v-model="hideInstallPrompt" />
+          <v-switch v-model="appearance.hideInstallPrompt" />
         </settings-page-item>
       </v-flex>
     </v-layout>
@@ -103,8 +103,8 @@ import SettingsPageItem from "./SettingsPageItem.vue";
 import TransitionPreview from "./TransitionPreview.vue";
 import { computed, defineComponent } from "vue";
 import ColorChooser from "./ColorChooser.vue";
-import { appearanceService } from "@/services";
 import transitions from "@/misc/data/transitions.json";
+import { useAppearanceStore } from "@/services";
 
 export default defineComponent({
   metaInfo: {
@@ -117,6 +117,8 @@ export default defineComponent({
     TransitionPreview,
   },
   setup() {
+    const appearance = useAppearanceStore();
+
     const transitionItems = computed(() =>
       Object.entries(transitions).map(([key, val]) => ({
         text: val.name,
@@ -125,112 +127,9 @@ export default defineComponent({
     );
     return {
       transitionItems,
-      primary: computed<string>({
-        get() {
-          return appearanceService.primaryColor;
-        },
-        set(value) {
-          appearanceService.primaryColor = value;
-        },
-      }),
-      secondary: computed<string>({
-        get() {
-          return appearanceService.secondaryColor;
-        },
-        set(value) {
-          appearanceService.secondaryColor = value;
-        },
-      }),
-      accent: computed<string>({
-        get() {
-          return appearanceService.accentColor;
-        },
-        set(value) {
-          appearanceService.accentColor = value;
-        },
-      }),
-      sidebar: computed<string>({
-        get() {
-          return appearanceService.sidebarColor;
-        },
-        set(value) {
-          appearanceService.sidebarColor = value;
-        },
-      }),
-      background: computed<string>({
-        get() {
-          return appearanceService.backgroundColor;
-        },
-        set(value) {
-          appearanceService.backgroundColor = value;
-        },
-      }),
-      dark: computed<boolean>({
-        get() {
-          return appearanceService.dark;
-        },
-        set(value) {
-          appearanceService.dark = value;
-        },
-      }),
-      toolbar: computed<string>({
-        get() {
-          return appearanceService.toolbarColor;
-        },
-        set(value) {
-          appearanceService.toolbarColor = value;
-        },
-      }),
-      fullscreenTransition: computed<string>({
-        get() {
-          return appearanceService.fullscreenTransition;
-        },
-        set(value) {
-          appearanceService.fullscreenTransition = value;
-        },
-      }),
-      routeTransition: computed<string>({
-        get() {
-          return appearanceService.routeTransition;
-        },
-        set(value) {
-          appearanceService.routeTransition = value;
-        },
-      }),
-      stripe: computed<boolean>({
-        get() {
-          return appearanceService.ratingStripe;
-        },
-        set(value) {
-          appearanceService.ratingStripe = value;
-        },
-      }),
+      appearance,
       navigationTypeItems: ["sidebar", "toolbar", "floating"],
-      navigationType: computed<"sidebar" | "toolbar" | "floating">({
-        get() {
-          return appearanceService.navigationType;
-        },
-        set(value) {
-          appearanceService.navigationType = value;
-        },
-      }),
-      logoStyleItems: computed(() => appearanceService.logoStyles),
-      logoStyle: computed<"face" | "text">({
-        get() {
-          return appearanceService.logoStyle;
-        },
-        set(value) {
-          appearanceService.logoStyle = value;
-        },
-      }),
-      hideInstallPrompt: computed<boolean>({
-        get() {
-          return appearanceService.hideInstallPrompt;
-        },
-        set(value) {
-          appearanceService.hideInstallPrompt = value;
-        },
-      }),
+      logoStyleItems: computed(() => appearance.logoStyles),
     };
   },
 });

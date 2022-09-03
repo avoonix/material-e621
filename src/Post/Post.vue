@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import { useBlacklistClasses } from "@/misc/util/blacklist";
-import { blacklistService, postService } from "@/services";
+import { useBlacklistStore, usePostsStore } from "@/services";
 import { EnhancedPost } from "@/worker/ApiService";
 import { computed, defineComponent, PropType } from "vue";
 import PostButtons from "./PostButtons.vue";
@@ -48,11 +48,13 @@ export default defineComponent({
     },
   },
   setup(props, context) {
+    const blacklist = useBlacklistStore();
+    const posts = usePostsStore();
     const postIsBlacklisted = computed(
       () => Boolean(props.post?.__meta.isBlacklisted), // TODO: types
     );
     const { classes: blacklistClasses } = useBlacklistClasses({
-      mode: blacklistService.mode,
+      mode: blacklist.mode,
       postIsBlacklisted,
     });
     const { stripeColor } = useStripeColor(props);
@@ -61,7 +63,7 @@ export default defineComponent({
       context.emit("open-post", props.post.id);
     };
 
-    const buttons = computed(() => postService.buttons);
+    const buttons = computed(() => posts.buttons);
 
     return {
       blacklistClasses,

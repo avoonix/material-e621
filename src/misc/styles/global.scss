@@ -38,10 +38,24 @@ html {
   background: var(--v-secondary-lighten1);
 }
 
-.v-slide-group__content, .v-window__container, .v-color-picker__controls, .v-select-list {
+.v-slide-group__content,
+.v-window__container,
+.v-color-picker__controls,
+.v-select-list {
   background-color: var(--v-secondary-base) !important;
 }
 
 .no-before-content::before {
   content: none !important;
+}
+
+.secondary-hover tr {
+  background-color: var(--v-secondary-base) !important;
+}
+.secondary-hover tr:hover {
+  background-color: var(--v-secondary-lighten1) !important;
+}
+
+.fill-width {
+  width: 100%;
 }

@@ -1,10 +1,7 @@
-import { computed, reactive, readonly } from "vue";
 import clone from "clone";
+import { defineStore } from 'pinia';
 import { defaultSettings } from "./defaultSettings";
-import { ISettingsServiceState } from "./types";
 
-export const state = reactive<ISettingsServiceState>(clone(defaultSettings));
-
-export const useSettingsServiceState = () => ({
-  state: computed(() =>(state)),
-});
+export const useMainStore = defineStore('main', {
+  state: () => clone(defaultSettings)
+})

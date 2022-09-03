@@ -39,8 +39,8 @@
 import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
 import { computed, defineComponent, ref } from "vue";
-import { accountService } from "@/services";
 import ExternalLink from "@/App/ExternalLink.vue";
+import { useAccountStore } from "@/services";
 
 export default defineComponent({
   metaInfo: {
@@ -52,23 +52,24 @@ export default defineComponent({
     ExternalLink,
   },
   setup() {
+    const account = useAccountStore();
     const showPassword = ref(false);
 
     const username = computed<string>({
       get() {
-        return accountService.username || "";
+        return account.username || "";
       },
       set(value) {
-        accountService.username = value ? value : null;
+        account.username = value ? value : null;
       },
     });
 
     const apiKey = computed<string>({
       get() {
-        return accountService.apiKey || "";
+        return account.apiKey || "";
       },
       set(value) {
-        accountService.apiKey = value ? value : null;
+        account.apiKey = value ? value : null;
       },
     });
 

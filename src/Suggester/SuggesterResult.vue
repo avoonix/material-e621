@@ -42,7 +42,6 @@ import {
   watchEffect,
   watch,
 } from "vue";
-import router from "@/router";
 import { FavoriteTagsResult, IProgressEvent } from "@/worker/AnalyzeService";
 import { getAnalyzeService } from "@/worker/services";
 import * as Comlink from "comlink";
@@ -50,9 +49,9 @@ import BaseTags from "./BaseTags.vue";
 import { usePostListManager } from "@/Post/postListManager";
 import { updateRouterQuery } from "@/misc/util/utilities";
 import Posts from "@/Post/Posts.vue";
-import { accountService, postService } from "@/services";
 import { useRoute } from "@/misc/util/router";
 import ProgressMessage from "./ProgressMessage.vue";
+import { useAccountStore, usePostsStore } from "@/services";
 
 export default defineComponent({
   metaInfo: {
@@ -64,6 +63,8 @@ export default defineComponent({
     ProgressMessage,
   },
   setup(props, context) {
+    const postsStore = usePostsStore();
+    const account = useAccountStore();
     const route = useRoute();
     const progress = ref<IProgressEvent>();
     const listProgress = ref<IProgressEvent | null>(null);
@@ -120,7 +121,7 @@ export default defineComponent({
         return Number(route.query.first_post); // TODO: handle null
       },
       getSettingsPageSize() {
-        return postService.postListFetchLimit;
+        return postsStore.postListFetchLimit;
       },
       saveFirstPostId(id) {
         updateRouterQuery({
@@ -136,9 +137,9 @@ export default defineComponent({
           const posts = await service.suggestPosts(
             result.value,
             weights.value,
-            postService.postListFetchLimit,
+            postsStore.postListFetchLimit,
             { postsBefore, postsAfter },
-            accountService.auth,
+            account.auth,
             Comlink.proxy((progressEvent) => {
               listProgress.value = progressEvent;
             }),

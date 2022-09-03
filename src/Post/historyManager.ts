@@ -1,10 +1,11 @@
-import { historyService } from "@/services";
+import { useHistoryStore } from "@/services";
 import { computed } from "vue";
 
 export const useHistory = () => {
-  const historyEntries = computed(() => historyService.entries);
-  const addHistoryEntry = (tags: string[]) => historyService.addEntry(tags);
-  const removeHistoryEntry = (idx: number) => historyService.deleteEntry(idx);
+  const history = useHistoryStore();
+  const historyEntries = computed(() => history.entries);
+  const addHistoryEntry = (tags: string[]) => history.addEntry(tags);
+  const removeHistoryEntry = (idx: number) => history.deleteEntry(idx);
 
   return {
     historyEntries,

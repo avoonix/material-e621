@@ -5,12 +5,11 @@
 </template>
 
 <script lang="ts">
-import { ButtonType } from "@/services/types";
 import { openE6PostInStandaloneWindow } from "@/misc/util/url";
-import { computed, defineComponent, PropType } from "vue";
-import { postService } from "@/services";
-import { usePostListManager } from "./postListManager";
+import { ButtonType } from "@/services/types";
 import { EnhancedPost } from "@/worker/ApiService";
+import { computed, defineComponent, PropType } from "vue";
+import { usePostListManager } from "./postListManager";
 
 interface IButton {
   icon: string;
@@ -23,8 +22,8 @@ export default defineComponent({
     type: {
       type: String as PropType<ButtonType>,
       required: true,
-      validator: (v: any): v is ButtonType =>
-        postService.allButtonTypes.indexOf(v) !== -1,
+      // validator: (v: any): v is ButtonType =>
+      //   posts.allButtonTypes.indexOf(v) !== -1,
     },
     post: {
       type: Object as PropType<EnhancedPost>,

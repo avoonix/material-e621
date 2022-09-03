@@ -1,6 +1,10 @@
-import { state } from "./state";
+import { useMainStore } from "./state";
 import localforage from "localforage";
-import { ISettingsServiceState } from "./types";
+import {
+  DataSaverType,
+  FullscreenZoomUiMode,
+  ISettingsServiceState,
+} from "./types";
 import debug from "debug";
 import clone from "clone";
 import { reactive, watch, set } from "vue";
@@ -16,8 +20,10 @@ localforage.config({
 const log = debug("app:PersistanceService");
 
 class PersistanceService {
+  constructor(private main: ReturnType<typeof useMainStore>) {}
+
   public async saveState() {
-    await this.saveToLocalStorage("state", state);
+    await this.saveToLocalStorage("state", this.main.$state);
     log("saved state");
   }
   public async loadState() {
@@ -57,7 +63,7 @@ class PersistanceService {
 
   public persist() {
     this.loadState().then(() => {
-      watch(state, () => this.saveState(), { deep: true });
+      this.main.$subscribe(() => this.saveState(), { deep: true });
     });
   }
 
@@ -66,7 +72,7 @@ class PersistanceService {
   }
 
   private serializeState() {
-    return JSON.stringify(state);
+    return JSON.stringify(this.main.$state);
   }
 
   private setState(newState: ISettingsServiceState) {
@@ -94,7 +100,21 @@ class PersistanceService {
       newState.shortcuts.push(focusSearchShortcut);
       newState.configVersion = 5;
     }
-    Object.assign(state, newState);
+    if (newState.configVersion < 6) {
+      // remove need for fallbacks in stores
+      if (!newState.appearance.toolbar) {
+        newState.appearance.toolbar = defaultSettings.appearance.toolbar;
+      }
+      if (typeof newState.posts.fullscreenZoomUiMode !== "number") {
+        newState.posts.fullscreenZoomUiMode =
+          FullscreenZoomUiMode.hideWhileZoomed;
+      }
+      if (!newState.posts.dataSaver) {
+        newState.posts.dataSaver = DataSaverType.auto;
+      }
+      newState.configVersion = 6;
+    }
+    this.main.$state = newState;
   }
 
   private saveToLocalStorage<T>(key: string, value: T): Promise<T> {
@@ -108,11 +128,10 @@ class PersistanceService {
   }
 }
 
-// const migrations = {
-//   2: (state: ISettingsServiceState) => {
-//     // other migrations
-//     state.configVersion = 2;
-//   },
-// } as const;
+let persistanceService: PersistanceService | null = null;
 
-export const persistanceService = new PersistanceService();
+export const usePersistanceService = () => {
+  if (!persistanceService)
+    persistanceService = new PersistanceService(useMainStore());
+  return persistanceService;
+};

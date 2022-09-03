@@ -14,8 +14,8 @@
 </template>
 
 <script lang="ts">
+import { useFavoritesStore } from "@/services/FavoriteStore";
 import { computed, defineComponent } from "vue";
-import { favoriteService } from "@/services/FavoriteService";
 
 export default defineComponent({
   props: {
@@ -33,11 +33,12 @@ export default defineComponent({
     }
   },
   setup(props, context) {
+    const favorites = useFavoritesStore();
     const isFavorited = computed(() =>
-      favoriteService.isFavorited(props.name, props.category),
+      favorites.isFavorited(props.name, props.category),
     );
     const toggleFavorite = () => {
-      favoriteService.setFavorite(
+      favorites.setFavorite(
         props.name,
         props.category,
         !isFavorited.value,

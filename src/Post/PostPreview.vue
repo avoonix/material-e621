@@ -30,7 +30,7 @@
 <script lang="ts">
 import { useDataSaverInfo } from "@/misc/util/dataSaver";
 import router from "@/router";
-import { postService } from "@/services";
+import { usePostsStore } from "@/services";
 import { DataSaverType } from "@/services/types";
 import { File, Preview, Sample } from "@/worker/api";
 import { computed, defineComponent, PropType } from "vue";
@@ -53,6 +53,7 @@ export default defineComponent({
     },
   },
   setup(props, context) {
+    const posts = usePostsStore();
     const isSwf = computed(() => props.file.ext === "swf");
     const isVideo = computed(() => props.file.ext === "webm");
     const isImage = computed(() => !isSwf.value && !isVideo.value);
@@ -91,7 +92,7 @@ export default defineComponent({
     });
 
     const imageSrc = computed(() => {
-      switch (postService.dataSaver) {
+      switch (posts.dataSaver) {
         case DataSaverType.lowest:
           return imageSrcPerQuality.value.low;
         case DataSaverType.medium:
@@ -123,7 +124,7 @@ export default defineComponent({
     });
 
     const loading = computed(() => {
-      return postService.lazyLoad ? "lazy" : "eager";
+      return posts.lazyLoad ? "lazy" : "eager";
     });
 
     return {

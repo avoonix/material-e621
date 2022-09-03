@@ -35,11 +35,11 @@
 import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
 import BlacklistSuggestions from "./BlacklistSuggestions.vue";
-import { blacklistService } from "@/services";
 import { computed, defineComponent } from "vue";
 import blacklistSuggestions from "@/misc/data/blacklistSuggestions.json";
 import TagSearch from "../Tag/TagSearch.vue";
 import { BlacklistMode } from "@/services/types";
+import { useBlacklistStore } from "@/services";
 
 export default defineComponent({
   metaInfo: {
@@ -52,6 +52,7 @@ export default defineComponent({
     TagSearch,
   },
   setup() {
+    const blacklistStore = useBlacklistStore();
     const modeItems = computed(() => [
       {
         text: "Hide",
@@ -69,22 +70,22 @@ export default defineComponent({
 
     const mode = computed<BlacklistMode>({
       get() {
-        return blacklistService.mode;
+        return blacklistStore.mode;
       },
       set(value) {
-        blacklistService.mode = value;
+        blacklistStore.mode = value;
       },
     });
 
-    const blacklist = computed(() => blacklistService.tags);
+    const blacklist = computed(() => blacklistStore.tags);
 
     return {
       modeItems,
       mode,
       suggestions: blacklistSuggestions,
       blacklist,
-      addTag: (tag: string) => blacklistService.addTag(tag),
-      removeTag: (tag: string) => blacklistService.removeTag(tag),
+      addTag: (tag: string) => blacklistStore.addTag(tag),
+      removeTag: (tag: string) => blacklistStore.removeTag(tag),
     };
   },
 });

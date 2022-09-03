@@ -31,10 +31,10 @@
 </template>
 
 <script lang="ts">
-import { snackbarService } from "@/services";
 import { getAppName, getBaseUrl } from "@/misc/util/utilities";
 import { computed, defineComponent, ref } from "vue";
 import copyToClipboard from "clipboard-copy";
+import { useSnackbarStore } from "@/services";
 
 enum UrlTypes {
   image,
@@ -64,6 +64,7 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const snackbar = useSnackbarStore();
     const url = computed(() => {
       switch (urlType.value) {
         case UrlTypes.materialE621:
@@ -104,7 +105,7 @@ export default defineComponent({
 
     const copyUrlToClipboard = async () => {
       await copyToClipboard(url.value);
-      snackbarService.addMessage("Link copied");
+      snackbar.addMessage("Link copied");
     };
 
     const shareButtons = computed<IButton[]>(() => {

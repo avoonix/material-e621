@@ -1,7 +1,10 @@
-import { favoriteService } from "@/services/FavoriteService";
+import { useFavoritesStore } from "@/services/FavoriteStore";
 import { computed } from "vue";
 
-const hasFavorites = computed(() => favoriteService.hasFavorites)
+const hasFavorites = computed(() => {
+  const store = useFavoritesStore();
+  return store.hasFavorites;
+});
 
 export const navigationItems = computed(() => [
   {
@@ -13,15 +16,7 @@ export const navigationItems = computed(() => [
     },
   },
   {
-    icon: "mdi-cog",
-    name: "Settings",
-    exact: false,
-    to: {
-      path: "/settings",
-    },
-  },
-  {
-    icon: "mdi-braille",
+    icon: "mdi-chart-timeline-variant-shimmer",
     name: "Post Suggester",
     exact: true,
     to: {
@@ -29,11 +24,19 @@ export const navigationItems = computed(() => [
     },
   },
   {
-    icon: "mdi-graph",
-    name: "Stats",
+    icon: "mdi-cloud-tags",
+    name: "Tag Cloud",
     exact: true,
     to: {
       path: "/analyzer",
+    },
+  },
+  {
+    icon: "mdi-view-dashboard-variant",
+    name: "Artist Dashboard",
+    exact: true,
+    to: {
+      path: "/dash",
     },
   },
   ...(hasFavorites.value
@@ -43,9 +46,17 @@ export const navigationItems = computed(() => [
           name: "Starred",
           exact: true,
           to: {
-            name: "Starred"
+            name: "Starred",
           },
         },
       ]
     : []),
+  {
+    icon: "mdi-cog",
+    name: "Settings",
+    exact: false,
+    to: {
+      path: "/settings",
+    },
+  },
 ]);

@@ -7,22 +7,10 @@
             <h3>
               {{ cloud.category }}
             </h3>
-            <wordcloud
-              :height="args.height"
-              :width="args.width"
-              :word-positions="cloud.result"
-            />
+            <wordcloud :height="args.height" :width="args.width" :word-positions="cloud.result" />
           </div>
         </div>
-        <div v-else>
-          <app-logo type="loader" />
-          <span v-if="progress">{{ progress.message }}</span>
-          <v-progress-linear
-            v-if="progress"
-            :value="progress.progress * 100"
-            :indeterminate="progress.indeterminate"
-          />
-        </div>
+        <progress-message :value="progress"  v-else />
       </v-flex>
     </v-layout>
   </v-container>
@@ -41,9 +29,9 @@ import { IAnalyzeTagsArgs, IProgressEvent } from "@/worker/AnalyzeService";
 import { getAnalyzeService } from "@/worker/services";
 import debounce from "lodash.debounce";
 import { cloneDeep } from "lodash";
-import AppLogo from "../App/AppLogo.vue";
 import * as Comlink from "comlink";
 import { useRoute } from "@/misc/util/router";
+import ProgressMessage from "@/Suggester/ProgressMessage.vue";
 
 export default defineComponent({
   metaInfo: {
@@ -51,7 +39,7 @@ export default defineComponent({
   },
   components: {
     Wordcloud,
-    AppLogo,
+    ProgressMessage
   },
   setup(props, context) {
     const route = useRoute();

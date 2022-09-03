@@ -1,9 +1,9 @@
 import router from "@/router";
-import { accountService, snackbarService } from "@/services";
 import { EnhancedPost } from "@/worker/ApiService";
 import { getApiService } from "@/worker/services";
 import { computed, ref, watch } from "vue";
 import Vue from "vue";
+import { useAccountStore, useSnackbarStore } from "@/services";
 
 interface IUsePostListManagerArgs {
   loadPosts(args: {
@@ -32,13 +32,15 @@ export const usePostListManager = ({
     postId: number;
     favorited: boolean;
   }) => {
+    const snackbar = useSnackbarStore();
+    const account = useAccountStore();
     const post = posts.value.find((p) => p.id === args.postId);
     if (!post) {
       return;
     }
 
-    if (!accountService.auth) {
-      snackbarService.addMessage("Not logged in");
+    if (!account.auth) {
+      snackbar.addMessage("Not logged in");
       const { appRouter } = await import("@/misc/util/router");
       appRouter.push({ name: "AccountSettings" });
       return;
@@ -46,7 +48,7 @@ export const usePostListManager = ({
     const service = await getApiService();
     const serviceArgs = {
       postId: post.id,
-      auth: accountService.auth,
+      auth: account.auth,
     };
     try {
       Vue.set(post.__meta, "isFavoriteLoading", true);
@@ -57,7 +59,7 @@ export const usePostListManager = ({
       }
     } catch (error: any) {
       const errorMessage = error.message || String(error);
-      snackbarService.addMessage(errorMessage);
+      snackbar.addMessage(errorMessage);
     } finally {
       Vue.set(post.__meta, "isFavoriteLoading", false);
     }
@@ -110,9 +112,13 @@ export const usePostListManager = ({
     }
   };
 
-  watch(posts, () => {
-    saveFirstPostId(posts.value[0]?.id || null);
-  });
+  watch(
+    posts,
+    () => {
+      saveFirstPostId(posts.value[0]?.id || null);
+    },
+    { deep: true },
+  );
 
   const openPostDetails = (postId: number) => {
     detailsPost.value = posts.value.find((p) => p.id === postId) || null;
