@@ -28,7 +28,8 @@ export type Heatmap = {
 
 export interface IDashboardResult {
   posts: EnhancedPost[];
-  metrics: IMetric[];
+  uploadMetrics: IMetric[];
+  communityMetrics: IMetric[];
   topTags: ITag[];
   heatmap: Heatmap;
 }
@@ -48,7 +49,8 @@ export class DashboardService {
     const posts = await this.getPosts([args.artist], onProgress);
     if (!posts.length)
       return {
-        metrics: [],
+        communityMetrics: [],
+        uploadMetrics: [],
         posts: [],
         topTags: [],
         heatmap: { max: 0, days: {} },
@@ -91,26 +93,10 @@ export class DashboardService {
         counters.heatmap[formatted] = (counters.heatmap[formatted] || 0) + 1;
       }
     }
-    const metrics: IMetric[] = [
+    const uploadMetrics: IMetric[] = [
       {
         display: "Artwork Uploaded",
         value: posts.length,
-      },
-      {
-        display: "Upvotes Received",
-        value: counters.upvotes,
-      },
-      {
-        display: "Downvotes Received",
-        value: counters.downvotes,
-      },
-      {
-        display: "Favorites Received",
-        value: counters.favorites,
-      },
-      {
-        display: "Comments Received",
-        value: counters.comments,
       },
       {
         display: "SFW Artwork",
@@ -129,6 +115,37 @@ export class DashboardService {
         value: counters.pending,
       },
       {
+        display: "Average Uploads per Week",
+        value: round(
+          posts.length /
+            (Math.abs(
+              differenceInDays(
+                parseISO(posts[posts.length - 1].created_at),
+                new Date(),
+              ),
+            ) /
+              7),
+        ),
+      },
+    ];
+    const communityMetrics: IMetric[] = [
+      {
+        display: "Upvotes Received",
+        value: counters.upvotes,
+      },
+      {
+        display: "Downvotes Received",
+        value: counters.downvotes,
+      },
+      {
+        display: "Favorites Received",
+        value: counters.favorites,
+      },
+      {
+        display: "Comments Received",
+        value: counters.comments,
+      },
+      {
         display: "Average Upvotes per Post",
         value: round(counters.upvotes / posts.length),
       },
@@ -144,19 +161,6 @@ export class DashboardService {
         display: "Average Comments per Post",
         value: round(counters.comments / posts.length),
       },
-      {
-        display: "Average Uploads per Week",
-        value: round(
-          posts.length /
-            (Math.abs(
-              differenceInDays(
-                parseISO(posts[posts.length - 1].created_at),
-                new Date(),
-              ),
-            ) /
-              7),
-        ),
-      },
     ];
     const tags = Object.entries(counters.tags)
       .flatMap(([category, tags]) =>
@@ -168,7 +172,8 @@ export class DashboardService {
       .sort((a, b) => (b.post_count ?? 0) - (a.post_count ?? 0));
     return {
       posts,
-      metrics,
+      uploadMetrics,
+      communityMetrics,
       topTags: tags.slice(0, 20),
       heatmap: {
         days: counters.heatmap,

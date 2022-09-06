@@ -55,13 +55,14 @@ export default defineComponent({
       );
     };
 
-    const items = computed(() => {
-      return [
+    const items = computed<{ text: string, action: () => void, visible: boolean }[]>(() =>
+      [
         {
           text: isFavorited.value ? "Unstar" : "Star",
           action: () => {
             toggleFavorite();
           },
+          visible: true,
         },
         {
           text: "Search",
@@ -77,6 +78,7 @@ export default defineComponent({
             //   tags: props.name,
             // });
           },
+          visible: true,
         },
         {
           text: isBlacklisted.value
@@ -89,6 +91,7 @@ export default defineComponent({
               blacklist.addTag(props.name);
             }
           },
+          visible: true,
         },
         {
           text: "Open e621.net wiki article",
@@ -96,6 +99,7 @@ export default defineComponent({
             const w = window.open(wikiUrl.value, "_blank");
             w?.focus();
           },
+          visible: true,
         },
         {
           text: "Search on e621.net",
@@ -103,9 +107,23 @@ export default defineComponent({
             const w = window.open(e621Url.value, "_blank");
             w?.focus();
           },
+          visible: true,
         },
-      ];
-    });
+        {
+          text: "View in Artist Dashboard",
+          action: async () => {
+            const { appRouter } = await import("@/misc/util/router");
+            appRouter.push({
+              name: 'DashboardResult',
+              params: {
+                name: props.name,
+              },
+            })
+          },
+          visible: props.category === "artist",
+        },
+      ].filter(item => item.visible)
+    );
 
     return {
       items,

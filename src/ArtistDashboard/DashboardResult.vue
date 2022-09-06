@@ -13,9 +13,15 @@
       </v-card-text>
     </v-card>
     <v-card class="my-2" color="transparent" flat>
-      <v-card-title>Metrics</v-card-title>
+      <v-card-title>Uploads</v-card-title>
       <v-card-text>
-        <ArtistMetrics :metrics="result.metrics" />
+        <ArtistMetrics :metrics="result.uploadMetrics" />
+      </v-card-text>
+    </v-card>
+    <v-card class="my-2" color="transparent" flat>
+      <v-card-title>Community</v-card-title>
+      <v-card-text>
+        <ArtistMetrics :metrics="result.communityMetrics" />
       </v-card-text>
     </v-card>
     <v-card class="my-2" color="transparent" flat>

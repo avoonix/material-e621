@@ -1,8 +1,8 @@
 <template>
   <div class="d-flex flex-row fill-width">
-    <div v-for="(col, idx) in matrix" :key="idx" class="d-flex flex-column fill-width mx-1">
-      <div v-for="(day, i) in col" :key="i" class="d-flex my-1"
-        :style="{ outline: `1px ${day.count ? 'solid' : 'dotted'} var(--v-secondary-base)` }">
+    <div v-for="(col, idx) in matrix" :key="idx" class="d-flex flex-column fill-width" :style="{marginLeft: '2px', marginRight: '2px'}">
+      <div v-for="(day, i) in col" :key="i" class="d-flex"
+        :style="{ outline: `1px ${day.count ? 'solid' : 'dotted'} var(--v-secondary-base)`, marginTop: '2px', marginBottom: '2px' }">
         <v-tooltip bottom>
           <template #activator="{ on, attrs }">
             <div v-bind="attrs" v-on="on" :style="{ aspectRatio: '1', opacity: day.count / (max || 1) }"
