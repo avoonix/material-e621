@@ -2,12 +2,7 @@ import { round } from "@/misc/util/round";
 import { BlacklistMode } from "@/services/types";
 import { ITag } from "@/Tag/ITag";
 import { expose } from "comlink";
-import {
-  differenceInDays,
-  differenceInYears,
-  format,
-  parseISO,
-} from "date-fns";
+import { differenceInDays, format, parseISO } from "date-fns";
 import { debug } from "debug";
 import { IProgressEvent } from "./AnalyzeService";
 import { ApiService, EnhancedPost } from "./ApiService";
@@ -30,13 +25,20 @@ export interface IDashboardResult {
   posts: EnhancedPost[];
   uploadMetrics: IMetric[];
   communityMetrics: IMetric[];
-  topTags: ITag[];
+  topTags: { up: ITag[]; down: ITag[]; count: ITag[]; fav: ITag[] };
   heatmap: Heatmap;
 }
 
 export interface IMetric {
   display: string;
   value: number;
+}
+
+export interface ITagCount {
+  count: number;
+  favorites: number;
+  up: number;
+  down: number;
 }
 
 export class DashboardService {
@@ -52,7 +54,7 @@ export class DashboardService {
         communityMetrics: [],
         uploadMetrics: [],
         posts: [],
-        topTags: [],
+        topTags: { count: [], down: [], fav: [], up: [] },
         heatmap: { max: 0, days: {} },
       };
     const counters = {
@@ -66,7 +68,11 @@ export class DashboardService {
         e: 0,
       },
       pending: 0,
-      tags: {} as { [category: string]: { [tag: string]: number | undefined } },
+      tags: {} as {
+        [category: string]: {
+          [tag: string]: ITagCount | undefined;
+        };
+      },
       heatmap: {} as { [date: string]: number | undefined },
     };
     for (const post of posts) {
@@ -83,8 +89,19 @@ export class DashboardService {
           counters.tags[category] = {};
         }
         for (const tag of tags) {
-          counters.tags[category][tag] =
-            (counters.tags[category][tag] || 0) + 1;
+          if (!(tag in counters.tags[category])) {
+            counters.tags[category][tag] = {
+              count: 0,
+              favorites: 0,
+              up: 0,
+              down: 0,
+            };
+          }
+          const counts = counters.tags[category][tag]!;
+          counts.count += 1;
+          counts.up = post.score.up;
+          counts.down = post.score.down;
+          counts.favorites = post.fav_count;
         }
       }
       const uploadDate = parseISO(post.created_at);
@@ -123,8 +140,7 @@ export class DashboardService {
                 parseISO(posts[posts.length - 1].created_at),
                 new Date(),
               ),
-            ) /
-              7),
+            ) / 7 || 1),
         ),
       },
     ];
@@ -165,16 +181,46 @@ export class DashboardService {
     const tags = Object.entries(counters.tags)
       .flatMap(([category, tags]) =>
         Object.entries(tags).map(
-          ([name, post_count]) => ({ name, post_count, category } as ITag),
+          ([name, counts]) =>
+            ({ name, post_count: counts?.count, category, counts } as ITag & {
+              counts: ITagCount;
+            }),
         ),
       )
-      .filter((t) => t.name !== args.artist && t.name !== "conditional_dnp")
-      .sort((a, b) => (b.post_count ?? 0) - (a.post_count ?? 0));
+      .filter((t) => t.name !== args.artist && t.name !== "conditional_dnp");
+
+    const count = [...tags].sort(
+      (a, b) => (b.post_count ?? 0) - (a.post_count ?? 0),
+    );
+    const fav = [...tags].sort(
+      (a, b) =>
+        (b.counts.favorites ?? 0) / b.counts.count -
+        (a.counts.favorites ?? 0) / a.counts.count,
+    );
+    const up = [...tags].sort(
+      (a, b) =>
+        b.counts.up / (b.counts.up + b.counts.down) -
+        a.counts.up / (a.counts.up + a.counts.down),
+    );
+    const down = [...tags].sort(
+      (a, b) =>
+        b.counts.down / (b.counts.up + b.counts.down) -
+        a.counts.down / (a.counts.up + a.counts.down),
+    );
+
+    const removeOutliers = (t: { counts: { count: number } }) =>
+      t.counts.count > posts.length * 0.02; // TODO: let user decide this number?
+
     return {
       posts,
       uploadMetrics,
       communityMetrics,
-      topTags: tags.slice(0, 20),
+      topTags: {
+        count: count.slice(0, 10),
+        fav: fav.filter(removeOutliers).slice(0, 10),
+        up: up.filter(removeOutliers).slice(0, 10),
+        down: down.filter(removeOutliers).slice(0, 10),
+      },
       heatmap: {
         days: counters.heatmap,
         max: Math.max(
@@ -215,6 +261,5 @@ export class DashboardService {
     return posts;
   }
 }
-
 
 expose(DashboardService);

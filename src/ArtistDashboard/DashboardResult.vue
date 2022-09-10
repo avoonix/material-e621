@@ -6,36 +6,77 @@
   </v-container>
   <v-container fluid v-else>
     <h1 class="text-center text-h2 mt-2">{{ artist }}</h1>
-    <v-card class="my-2" color="transparent" flat>
-      <v-card-title>Uploads During the Past Year</v-card-title>
-      <v-card-text>
-        <UploadHeatmap :heatmap="result.heatmap.days" :max="result.heatmap.max" />
-      </v-card-text>
-    </v-card>
-    <v-card class="my-2" color="transparent" flat>
-      <v-card-title>Uploads</v-card-title>
-      <v-card-text>
-        <ArtistMetrics :metrics="result.uploadMetrics" />
-      </v-card-text>
-    </v-card>
-    <v-card class="my-2" color="transparent" flat>
-      <v-card-title>Community</v-card-title>
-      <v-card-text>
-        <ArtistMetrics :metrics="result.communityMetrics" />
-      </v-card-text>
-    </v-card>
-    <v-card class="my-2" color="transparent" flat>
-      <v-card-title>Top Tags</v-card-title>
-      <v-card-text>
-        <ArtistTags :tags="result.topTags" />
-      </v-card-text>
-    </v-card>
-    <v-card class="my-2" color="transparent" flat>
-      <v-card-title>Posts</v-card-title>
-      <v-card-text>
-        <PostsDataTable :posts="result.posts" />
-      </v-card-text>
-    </v-card>
+    <div class="d-flex justify-center mt-2">
+      <v-btn :href="artistUrl" target="_blank" color="primary">
+        View Profile <v-icon right>mdi-open-in-new</v-icon>
+      </v-btn>
+    </div>
+    <v-row>
+      <v-col cols="12">
+        <v-card  color="transparent" flat>
+          <v-card-title>Uploads During the Past Year</v-card-title>
+          <v-card-text>
+            <UploadHeatmap :heatmap="result.heatmap.days" :max="result.heatmap.max" />
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12">
+        <v-card  color="transparent" flat>
+          <v-card-title>Uploads</v-card-title>
+          <v-card-text>
+            <ArtistMetrics :metrics="result.uploadMetrics" />
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12">
+        <v-card  color="transparent" flat>
+          <v-card-title>Community</v-card-title>
+          <v-card-text>
+            <ArtistMetrics :metrics="result.communityMetrics" />
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card  color="transparent" flat>
+          <v-card-title>Top Tags (Posts)</v-card-title>
+          <v-card-text>
+            <ArtistTags :tags="result.topTags.count" />
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card  color="transparent" flat>
+          <v-card-title>Top Tags (Favorites per Post)</v-card-title>
+          <v-card-text>
+            <ArtistTags :tags="result.topTags.fav" />
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card  color="transparent" flat>
+          <v-card-title>Top Tags (Upvote Rate)</v-card-title>
+          <v-card-text>
+            <ArtistTags :tags="result.topTags.up" />
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card  color="transparent" flat>
+          <v-card-title>Top Tags (Downvote Rate)</v-card-title>
+          <v-card-text>
+            <ArtistTags :tags="result.topTags.down" />
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12">
+        <v-card  color="transparent" flat>
+          <v-card-title>Posts</v-card-title>
+          <v-card-text>
+            <PostsDataTable :posts="result.posts" />
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -63,14 +104,14 @@ export default defineComponent({
     ArtistMetrics,
     ArtistTags,
     UploadHeatmap
-},
+  },
   setup(props, context) {
     const progress = ref<IProgressEvent>();
 
     const artist = computed<string>(() => {
       let name = "";
       const route = useRoute(); // weird recursive type
-      if(route.params.name) name = route.params.name;
+      if (route.params.name) name = route.params.name;
       return name;
     });
 
@@ -96,10 +137,13 @@ export default defineComponent({
       getResult();
     }, { immediate: true })
 
+    const artistUrl = computed(() => `https://e621.net/artists/${encodeURIComponent(artist.value)}`)
+
     return {
       progress,
       result,
       artist,
+      artistUrl,
     };
   },
 });
