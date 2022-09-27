@@ -1,15 +1,6 @@
 <template>
-  <fixed-aspect-ratio-box
-    @click.native="handleClick"
-    :ratio="file.height / file.width"
-    v-ripple="true"
-  >
-    <img
-      :loading="loading"
-      v-if="(isImage || isVideo) && imageSrc"
-      :src="imageSrc"
-      class="clickable"
-    />
+  <fixed-aspect-ratio-box @click.native="handleClick" :ratio="file.height / file.width" v-ripple="true">
+    <img :loading="loading" v-if="(isImage || isVideo) && imageSrc" :src="imageSrc" class="clickable" />
     <div v-else-if="isImage || isVideo" class="centered clickable play-button">
       <v-chip color="red" text-color="white">Global Blacklist</v-chip>
       <p class="pa-3">
@@ -69,7 +60,7 @@ export default defineComponent({
 
     const { dataSaverInfo } = useDataSaverInfo();
 
-    const imageSrcPerQuality = computed(() => {
+    const imageSrcPerQuality = computed<{ high: string, low: string, medium: string }>(() => {
       if (isSwf.value) {
         return {
           high: props.preview.url,
@@ -91,7 +82,7 @@ export default defineComponent({
       };
     });
 
-    const imageSrc = computed(() => {
+    const imageSrc = computed<string>(() => {
       switch (posts.dataSaver) {
         case DataSaverType.lowest:
           return imageSrcPerQuality.value.low;
@@ -101,7 +92,11 @@ export default defineComponent({
           return imageSrcPerQuality.value.high;
         default:
         case DataSaverType.auto:
+          if (dataSaverInfo.value.effectiveTypeSupported && (dataSaverInfo.value.effectiveType === "slow-2g" || dataSaverInfo.value.effectiveType === "2g")) {
+            return imageSrcPerQuality.value.low;
+          }
           if (!dataSaverInfo.value.typeSupported) {
+            if(dataSaverInfo.value.saveData) return imageSrcPerQuality.value.low;
             return imageSrcPerQuality.value.medium;
           }
           if (
