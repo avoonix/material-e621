@@ -23,16 +23,22 @@ export const usePostListManager = ({
   saveFirstPostId,
   getSettingsPageSize,
 }: IUsePostListManagerArgs) => {
+  const snackbar = useSnackbarStore();
   const posts = ref<EnhancedPost[]>([]);
   const fullscreenPost = ref<EnhancedPost | null>(null);
   const detailsPost = ref<EnhancedPost | null>(null);
   const loading = ref(false);
 
+  const handleError = (error: any) => {
+    const errorMessage = error?.message || String(error);
+    snackbar.addMessage(errorMessage);
+    console.log(error);
+  };
+
   const setPostFavorite = async (args: {
     postId: number;
     favorited: boolean;
   }) => {
-    const snackbar = useSnackbarStore();
     const account = useAccountStore();
     const post = posts.value.find((p) => p.id === args.postId);
     if (!post) {
@@ -58,8 +64,7 @@ export const usePostListManager = ({
         await service.unfavoritePost(serviceArgs);
       }
     } catch (error: any) {
-      const errorMessage = error.message || String(error);
-      snackbar.addMessage(errorMessage);
+      handleError(error);
     } finally {
       Vue.set(post.__meta, "isFavoriteLoading", false);
     }
@@ -78,6 +83,9 @@ export const usePostListManager = ({
   );
 
   const loadPreviousPage = async () => {
+    if (loading.value) {
+      return console.log("loadPreviousPage called, but already loading");
+    }
     try {
       loading.value = true;
       const newPosts = await loadPosts({
@@ -90,12 +98,15 @@ export const usePostListManager = ({
         postCountToRemove,
       );
     } catch (error) {
-      console.log(error);
+      handleError(error);
     } finally {
       loading.value = false;
     }
   };
   const loadNextPage = async () => {
+    if (loading.value) {
+      return console.log("loadNextPage called, but already loading");
+    }
     try {
       loading.value = true;
       const newPosts = await loadPosts({
@@ -106,7 +117,7 @@ export const usePostListManager = ({
       posts.value.push(...newPosts);
       posts.value.splice(0, postCountToRemove);
     } catch (error) {
-      console.log(error);
+      handleError(error);
     } finally {
       loading.value = false;
     }
