@@ -17,14 +17,17 @@ class ShortcutService {
     const shortcutStore = useShortcutStore();
     console.log("setting up shortcuts");
     for (const { action, sequence } of shortcutStore.shortcuts) {
-      Mousetrap.bind(sequence, async (e) => {
-        const { appRouter } = await import("@/misc/util/router");
+      Mousetrap.bind(sequence, (e) => {
         switch (action) {
           case "go_to_settings":
-            appRouter.push({ name: "Settings" });
+            import("@/misc/util/router").then(({ appRouter }) =>
+              appRouter.push({ name: "Settings" }),
+            );
             break;
           case "go_to_posts":
-            appRouter.push({ name: "Posts" });
+            import("@/misc/util/router").then(({ appRouter }) =>
+              appRouter.push({ name: "Posts" }),
+            );
             break;
           case "focus_search":
             this.emitter.emit("focusSearch");
@@ -40,8 +43,9 @@ class ShortcutService {
             break;
           default: // TODO
             console.log(action, e);
-            break;
+            return true;
         }
+        return false; // abort handling
       });
     }
   }
