@@ -4,30 +4,19 @@
       <v-flex text-center xs12 sm10 offset-sm1 lg6 offset-lg3>
         <settings-page-title title="Account" color="darken-3 yellow" />
         <settings-page-item title="Credentials" select>
-          <v-text-field
-            filled
-            label="e621 username"
-            type="text"
-            v-model="username"
-            autocomplete="username"
-          />
-          <v-text-field
-            filled
-            :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-            :type="showPassword ? 'text' : 'password'"
-            label="e621 API key"
-            v-model="apiKey"
-            @click:append="showPassword = !showPassword"
-            autocomplete="password"
-          />
+          <v-text-field filled label="e621 username" type="text" v-model="username" autocomplete="username" />
+          <v-text-field filled :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+            :type="showPassword ? 'text' : 'password'" label="e621 API key" v-model="apiKey"
+            @click:append="showPassword = !showPassword" autocomplete="password" />
+          <p class="text-left">
+            Go to <external-link href="https://e621.net/users/home" /> > Manage API Access to get the API key
+          </p>
           <p class="text-left">
             Material e621 uses the regular e621 API as much as possible, but the
             favorites endpoints don't have the required cross origin resource
             sharing headers in order to use them directly in the browser. This
             is why adding and removing favorites uses this API:
-            <external-link
-              href="https://github.com/avoonix/material-e621-proxy"
-            />
+            <external-link href="https://github.com/avoonix/material-e621-proxy" />
           </p>
         </settings-page-item>
       </v-flex>

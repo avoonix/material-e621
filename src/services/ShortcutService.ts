@@ -7,6 +7,9 @@ export type Events = {
   fullscreenNext: void;
   fullscreenPrevious: void;
   fullscreenExit: void;
+  fullscreenAddFavorite: void;
+  fullscreenRemoveFavorite: void;
+  fullscreenToggleFavorite: void;
 };
 
 class ShortcutService {
@@ -30,6 +33,7 @@ class ShortcutService {
             );
             break;
           case "focus_search":
+            this.emitter.emit("fullscreenExit"); // search can't be focused otherwise
             this.emitter.emit("focusSearch");
             break;
           case "fullscreen_exit":
@@ -41,8 +45,17 @@ class ShortcutService {
           case "fullscreen_previous_post":
             this.emitter.emit("fullscreenPrevious");
             break;
-          default: // TODO
-            console.log(action, e);
+          case "fullscreen_add_favorite":
+            this.emitter.emit("fullscreenAddFavorite");
+            break;
+          case "fullscreen_remove_favorite":
+            this.emitter.emit("fullscreenRemoveFavorite");
+            break;
+          case "fullscreen_toggle_favorite":
+            this.emitter.emit("fullscreenToggleFavorite");
+            break;
+          default:
+            expectNever(action);
             return true;
         }
         return false; // abort handling
@@ -50,6 +63,8 @@ class ShortcutService {
     }
   }
 }
+
+const expectNever = (arg: never) => console.log("unexpected", arg);
 
 const shortcutService = new ShortcutService();
 

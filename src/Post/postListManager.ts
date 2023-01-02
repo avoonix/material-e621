@@ -63,12 +63,12 @@ export const usePostListManager = ({
       } else {
         await service.unfavoritePost(serviceArgs);
       }
+      Vue.set(post, "is_favorited", args.favorited);
     } catch (error: any) {
       handleError(error);
     } finally {
       Vue.set(post.__meta, "isFavoriteLoading", false);
     }
-    Vue.set(post, "is_favorited", args.favorited);
   };
 
   const getPostCountToRemove = () => posts.value.length - getSettingsPageSize();

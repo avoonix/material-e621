@@ -20,6 +20,9 @@ export enum DataSaverType {
 }
 
 export type Action =
+  | "fullscreen_add_favorite"
+  | "fullscreen_remove_favorite"
+  | "fullscreen_toggle_favorite"
   | "fullscreen_next_post"
   | "fullscreen_previous_post"
   | "fullscreen_exit"
@@ -38,7 +41,7 @@ export interface Shortcut {
 // }
 
 export interface ISettingsServiceState {
-  configVersion: undefined | 1 | 2 | 3 | 4 | 5 | 6;
+  configVersion: undefined | 1 | 2 | 3 | 4 | 5 | 6 | 7;
   shortcuts: Shortcut[];
   blacklist: {
     mode: BlacklistMode;

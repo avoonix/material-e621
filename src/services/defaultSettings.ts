@@ -12,6 +12,21 @@ export const focusSearchShortcut: Shortcut = {
   sequence: "/",
 };
 
+export const fullscreenFavoriteShortcuts: Shortcut[] = [
+  {
+    action: "fullscreen_add_favorite",
+    sequence: "a f",
+  },
+  {
+    action: "fullscreen_remove_favorite",
+    sequence: "r f",
+  },
+  {
+    action: "fullscreen_toggle_favorite",
+    sequence: "t f",
+  },
+];
+
 export const defaultSettings: ISettingsServiceState = {
   configVersion: 6,
   shortcuts: [
@@ -41,6 +56,8 @@ export const defaultSettings: ISettingsServiceState = {
     { action: "fullscreen_exit", sequence: "j" },
     { action: "fullscreen_next_post", sequence: "l" },
     { action: "fullscreen_previous_post", sequence: "h" },
+
+    ...fullscreenFavoriteShortcuts,
   ],
   blacklist: {
     mode: BlacklistMode.blur,

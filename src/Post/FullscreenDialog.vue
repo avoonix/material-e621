@@ -1,108 +1,48 @@
 <template>
-  <v-dialog
-    dark
-    :value="open"
-    fullscreen
-    hide-overlay
-    transition="dialog-bottom-transition"
-    scrollable
-    persistent
-  >
+  <v-dialog dark :value="open" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable persistent>
     <div class="fullscreen grey darken-4" ref="dialog">
       <div class="flex">
-        <div
-          v-show="!hideUi"
-          class="float-left"
-          v-ripple="hasPreviousFullscreenPost"
-          @click="showPreviousImage"
-        >
+        <div v-show="!hideUi" class="float-left" v-ripple="hasPreviousFullscreenPost" @click="showPreviousImage">
           <v-icon size="50" v-if="hasPreviousFullscreenPost">
             mdi-chevron-left
           </v-icon>
         </div>
-        <zoom-pan-image
-          @update-zoomed="isZoomed = $event"
-          @swipe-down="!$event.zoomedIn && exitFullscreen()"
-          @swipe-right="!$event.zoomedIn && showPreviousImage()"
-          @swipe-left="!$event.zoomedIn && showNextImage()"
-        >
-          <div
-            v-if="current"
-            style="height: 100%"
-            class="middle black"
-            :class="blacklistClasses"
-          >
+        <zoom-pan-image @update-zoomed="isZoomed = $event" @swipe-down="!$event.zoomedIn && exitFullscreen()"
+          @swipe-right="!$event.zoomedIn && showPreviousImage()" @swipe-left="!$event.zoomedIn && showNextImage()">
+          <div v-if="current" style="height: 100%" class="middle black" :class="blacklistClasses">
             <div v-if="current.file.ext == 'swf'" class="overflow flash">
               flash is not supported
             </div>
-            <video
-              v-else-if="current.file.ext == 'webm' && currentFileUrl"
-              class="overflow flash black position-relative"
-              controls
-              loop
-              autoplay
-              preload="metadata"
-            >
-              <source
-                v-if="current.file.url"
-                :src="current.file.url"
-                type="video/webm"
-              />
+            <video v-else-if="current.file.ext == 'webm' && currentFileUrl"
+              class="overflow flash black position-relative" controls loop autoplay preload="metadata">
+              <source v-if="current.file.url" :src="current.file.url" type="video/webm" />
               Video type not supported by your browser
             </video>
             <div v-else class="overflow">
-              <div
-                class="zoom-container text-center"
-                style="position: relative"
-              >
-                <transition
-                  :enter-active-class="enterTransitionName"
-                  :leave-active-class="leaveTransitionName"
-                  mode="in-out"
-                >
-                  <div
-                    :key="currentFileUrl || 0"
-                    style="
+              <div class="zoom-container text-center" style="position: relative">
+                <transition :enter-active-class="enterTransitionName" :leave-active-class="leaveTransitionName"
+                  mode="in-out">
+                  <div :key="currentFileUrl || 0" style="
                       position: absolute;
                       width: 100%;
                       height: 100%;
                       left: 0;
-                    "
-                  >
-                    <img
-                      v-if="currentSampleFileUrl"
-                      :class="{ grey: false, 'darken-3': false }"
-                      :src="currentSampleFileUrl"
-                    />
-                    <img
-                      v-if="currentFileUrl"
-                      @loadstart="loadStart"
-                      @load="loadEnd"
-                      :class="{
-                        grey: false,
-                        'darken-3': false,
-                        hidden: loading,
-                      }"
-                      :src="currentFileUrl"
-                    />
+                    ">
+                    <img v-if="currentSampleFileUrl" :class="{ grey: false, 'darken-3': false }"
+                      :src="currentSampleFileUrl" />
+                    <img v-if="currentFileUrl" @loadstart="loadStart" @load="loadEnd" :class="{
+  grey: false,
+  'darken-3': false,
+  hidden: loading,
+}" :src="currentFileUrl" />
                   </div>
                 </transition>
-                <app-logo
-                  class="centered-in-container"
-                  svg-margin-auto
-                  v-if="loading"
-                  type="loader"
-                />
+                <app-logo class="centered-in-container" svg-margin-auto v-if="loading" type="loader" />
               </div>
             </div>
           </div>
         </zoom-pan-image>
-        <div
-          v-show="!hideUi"
-          class="float-right"
-          v-ripple="hasNextFullscreenPost"
-          @click="showNextImage"
-        >
+        <div v-show="!hideUi" class="float-right" v-ripple="hasNextFullscreenPost" @click="showNextImage">
           <v-icon size="50" v-if="hasNextFullscreenPost">
             mdi-chevron-right
           </v-icon>
@@ -112,15 +52,9 @@
         <v-icon size="40" class="ml-2 mt-2">mdi-close</v-icon>
       </div>
       <div class="bottom-right" v-show="!hideUi">
-        <post-buttons
-          v-if="current"
-          :key="current.id"
-          :buttons="buttons"
-          :post="current"
-          @open-post-details="$emit('open-post-details', $event)"
-          @open-post-fullscreen="exitFullscreen()"
-          @set-post-favorite="$emit('set-post-favorite', $event)"
-        />
+        <post-buttons v-if="current" :key="current.id" :buttons="buttons" :post="current"
+          @open-post-details="$emit('open-post-details', $event)" @open-post-fullscreen="exitFullscreen()"
+          @set-post-favorite="$emit('set-post-favorite', $event)" />
       </div>
     </div>
   </v-dialog>
@@ -147,6 +81,7 @@ import PostButtons from "@/Post/PostButtons.vue";
 import { useDirectionalTransitions } from "@/misc/util/directionalTransitions";
 import { EnhancedPost } from "@/worker/ApiService";
 import { FullscreenZoomUiMode } from "@/services/types";
+import { usePostListManager } from "./postListManager";
 
 const appIsFullscreen = ref(!!document.fullscreenElement);
 
@@ -252,15 +187,31 @@ export default defineComponent({
       setTransitionNames("left");
     };
 
+    const updateFavorite = (favorited: (current: boolean) => boolean) => () =>
+      props.current && !props.current?.__meta.isFavoriteLoading && props.current.is_favorited !== favorited(props.current.is_favorited) && context.emit("set-post-favorite", {
+        postId: props.current.id,
+        favorited: favorited(props.current.is_favorited),
+      } as Parameters<ReturnType<typeof usePostListManager>["setPostFavorite"]>["0"]);
+
+    const addFavorite = updateFavorite(() => true)
+    const removeFavorite = updateFavorite(() => false)
+    const toggleFavorite = updateFavorite((cur) => !cur)
+
     onBeforeUnmount(() => {
       shortcutService.emitter.off("fullscreenNext", showNextImage);
       shortcutService.emitter.off("fullscreenPrevious", showPreviousImage);
       shortcutService.emitter.off("fullscreenExit", exitFullscreen);
+      shortcutService.emitter.off("fullscreenAddFavorite", addFavorite);
+      shortcutService.emitter.off("fullscreenRemoveFavorite", removeFavorite);
+      shortcutService.emitter.off("fullscreenToggleFavorite", addFavorite);
     });
     onMounted(() => {
       shortcutService.emitter.on("fullscreenNext", showNextImage);
       shortcutService.emitter.on("fullscreenPrevious", showPreviousImage);
       shortcutService.emitter.on("fullscreenExit", exitFullscreen);
+      shortcutService.emitter.on("fullscreenAddFavorite", addFavorite);
+      shortcutService.emitter.on("fullscreenRemoveFavorite", removeFavorite);
+      shortcutService.emitter.on("fullscreenToggleFavorite", toggleFavorite);
     });
 
     const scrollToPost = (postId: number) => {
@@ -470,7 +421,8 @@ export default defineComponent({
   }
 }
 
-.float-left, .float-right {
+.float-left,
+.float-right {
   display: flex;
 }
 </style>

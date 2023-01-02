@@ -8,7 +8,11 @@ import {
 import debug from "debug";
 import clone from "clone";
 import { reactive, watch, set } from "vue";
-import { defaultSettings, focusSearchShortcut } from "./defaultSettings";
+import {
+  defaultSettings,
+  focusSearchShortcut,
+  fullscreenFavoriteShortcuts,
+} from "./defaultSettings";
 
 localforage.config({
   description: "",
@@ -114,6 +118,11 @@ class PersistanceService {
       }
       newState.configVersion = 6;
     }
+    if (newState.configVersion < 7) {
+      newState.shortcuts.push(...fullscreenFavoriteShortcuts);
+      newState.configVersion = 7;
+    }
+
     this.main.$state = newState;
   }
 
