@@ -3,16 +3,18 @@
     <v-navigation-drawer persistent :clipped="clipped" v-model="drawer" fixed floating hide-overlay
       :temporary="isMobile" app width="400" class="pa-2"
       :style="`background-color: ${theme.sidebar} !important; border-color: ${theme.sidebar} !important;`">
-      <app-logo :type="logoStyle" @click.native="onLogoClick" />
+      <router-link to="/">
+        <app-logo :type="logoStyle" />
+      </router-link>
       <navigation-list />
       <portal-target name="sidebar-suggestions" />
     </v-navigation-drawer>
     <v-app-bar :color="theme.toolbar" :app="!minimalHeader" :flat="minimalHeader" :clipped-left="clipped"
       :floating="navMode == 'floating'" :class="{
-        'ma-2': navMode == 'floating',
-        'mb-3': navMode == 'floating',
-        primary: minimalHeader,
-      }" class="padded-toolbar">
+  'ma-2': navMode == 'floating',
+  'mb-3': navMode == 'floating',
+  primary: minimalHeader,
+}" class="padded-toolbar">
       <v-menu bottom offset-y right attach close-delay="0" :nudge-width="200"
         v-if="navMode == 'floating' && !minimalHeader">
         <template #activator="{ on }">

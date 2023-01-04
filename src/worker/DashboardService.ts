@@ -177,6 +177,12 @@ export class DashboardService {
         display: "Average Comments per Post",
         value: round(counters.comments / posts.length),
       },
+      {
+        display: "Upvote to Downvote Ratio",
+        value: counters.downvotes
+          ? round(counters.upvotes / counters.downvotes)
+          : 0,
+      },
     ];
     const tags = Object.entries(counters.tags)
       .flatMap(([category, tags]) =>
