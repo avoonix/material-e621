@@ -130,3 +130,6 @@ public/static/*.png
 public/favicon.ico
 
 .vscode/settings.json
+/test-results/
+/playwright-report/
+/playwright/.cache/

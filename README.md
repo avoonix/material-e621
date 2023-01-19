@@ -30,3 +30,9 @@ Latest version is available on [Vercel](https://material-e621.vercel.app/).
 npm install
 npm run dev
 ```
+
+```bash
+npx playwright test
+npx playwright test --debug
+npx playwright codegen
+```
