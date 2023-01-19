@@ -34,6 +34,9 @@
           description="Load images as you scroll past them, instead of all at once.">
           <v-switch v-model="posts.lazyLoad" />
         </settings-page-item>
+        <settings-page-item title="Auto load next page" switch>
+          <v-switch v-model="posts.autoLoad" />
+        </settings-page-item>
       </v-flex>
     </v-layout>
   </v-container>

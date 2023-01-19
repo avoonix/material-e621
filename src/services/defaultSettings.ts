@@ -103,6 +103,7 @@ export const defaultSettings: ISettingsServiceState = {
     goFullscreen: false,
     dataSaver: DataSaverType.auto,
     lazyLoadImages: true,
+    autoLoadNext: true,
   },
   favorites: {
     tags: {},

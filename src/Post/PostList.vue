@@ -1,6 +1,6 @@
 <template>
   <!-- grid -->
-  <!-- <v-layout v-if="layout === 'grid'" wrap="">
+  <!-- <v-layout v-if="layout === 'grid'" row wrap="">
     <v-flex
       v-for="post in visiblePosts"
       :key="post.id"
@@ -14,14 +14,21 @@
   <!-- v-else -->
   <v-flex xs12 lg6 md8 offset-lg3 offset-md2 wrap="">
     <v-flex :key="post.id" xs12 class="mb-5" v-for="(post, idx) in visiblePosts" :ref="addElement(idx)">
-      <slot name="post" :post="post" />
+      <intersect @enter="triggerLoad(idx, 'enter', $event)" @leave="triggerLoad(idx, 'leave', $event)" :threshold="[0]"
+        :root="null" root-margin="0px 0px 0px 0px" v-if="shouldHaveIntersectionObserver(idx)">
+        <!-- @change="say('change', $event)" -->
+        <slot name="post" :post="post" />
+      </intersect>
+      <slot v-else name="post" :post="post" />
     </v-flex>
   </v-flex>
 </template>
 
 <script lang="ts">
+import { usePostsStore } from "@/services";
 import { EnhancedPost } from "@/worker/ApiService";
 import { computed, defineComponent, nextTick, onBeforeUnmount, onBeforeUpdate, onMounted, PropType, ref, watch } from "vue";
+import Intersect from "vue-intersect";
 
 const isAnyPartOfElementInViewport = (el: Element) => {
   const rect = el.getBoundingClientRect();
@@ -52,9 +59,16 @@ const getOffset = (el: Element) => {
 };
 
 export default defineComponent({
+  components: {
+    Intersect,
+  },
   props: {
     visiblePosts: {
       type: Array as PropType<EnhancedPost[]>,
+      required: true,
+    },
+    loading: {
+      type: Boolean,
       required: true,
     },
   },
@@ -63,6 +77,15 @@ export default defineComponent({
     const size = ref<"sm" | "md" | "lg">("md");
     const firstVisibleElement = ref<Element | null>(null);
     const posts = ref<Element[]>([]);
+    const hasLeftElementThatTriggersPreviousPage = ref(false);
+    const canTriggerLoad = ref({ previous: false, next: false });
+    const postsStore = usePostsStore();
+
+    watch(props.visiblePosts,
+      () => {
+        canTriggerLoad.value = { next: true, previous: true };
+      },
+    );
 
     const handleScroll = (event: Event) => {
       if (!props.visiblePosts.length || !posts.value.length) return;
@@ -99,16 +122,10 @@ export default defineComponent({
     // },
 
     const visiblePostIds = computed(() => props.visiblePosts.map((p) => p.id));
-
-    // watchEffect(() => {
-    //   console.log(
-    //     firstVisibleElement.value && getOffset(firstVisibleElement.value),
-    //   );
-    // });
-
     watch(
       () => visiblePostIds.value,
       async () => {
+        hasLeftElementThatTriggersPreviousPage.value = false;
         if (firstVisibleElement.value) {
           // get the offset between the first visible post and the top of the viewport (before the dom update)
           const el = firstVisibleElement.value;
@@ -132,11 +149,51 @@ export default defineComponent({
       }
     }
 
+    const indexThatTriggersPreviousPage = computed(() =>
+      props.visiblePosts.length > 2 ? 1 : 0,
+    );
+    const indexThatTriggersNextPage = computed(() =>
+      props.visiblePosts.length > 2
+        ? props.visiblePosts.length - 2
+        : props.visiblePosts.length - 1,
+    );
+
+    const triggerLoad = (
+      index: number,
+      name: "enter" | "leave",
+      event: IntersectionObserverEntry,
+    ) => {
+      if (props.loading) return;
+      if (index === indexThatTriggersNextPage.value && name === "enter" && canTriggerLoad.value.next) {
+        context.emit("load-next-page");
+        canTriggerLoad.value.next = false;
+      } else if (index === indexThatTriggersPreviousPage.value) {
+        if (name === "enter") {
+          if (hasLeftElementThatTriggersPreviousPage.value && canTriggerLoad.value.previous) {
+            context.emit("load-previous-page");
+            canTriggerLoad.value.previous = false;
+          }
+        } else {
+          hasLeftElementThatTriggersPreviousPage.value = true;
+        }
+      }
+    };
+
+    const shouldHaveIntersectionObserver = (index: number) => {
+      if(!postsStore.autoLoad) return false;
+      return (
+        index === indexThatTriggersPreviousPage.value ||
+        index === indexThatTriggersNextPage.value
+      );
+    };
+
     return {
       layout,
       size,
       posts,
-      addElement
+      addElement,
+      triggerLoad,
+      shouldHaveIntersectionObserver,
     };
   },
 });

@@ -85,6 +85,14 @@ export const usePostsStore = defineStore("posts", () => {
       main.posts.lazyLoadImages = value;
     },
   });
+  const autoLoad = computed({
+    get() {
+      return main.posts.autoLoadNext;
+    },
+    set(value) {
+      main.posts.autoLoadNext = value;
+    },
+  });
   const allButtonTypes = computed<ButtonType[]>(() => [
     "info",
     "fullscreen",
@@ -103,6 +111,7 @@ export const usePostsStore = defineStore("posts", () => {
     goFullscreen,
     dataSaver,
     lazyLoad,
+    autoLoad,
     allButtonTypes,
   };
 });

@@ -6,19 +6,12 @@
       </v-btn>
     </div>
     <!-- <app-logo v-if="loading" loader /> -->
-    <post-list
-      :visible-posts="posts"
-      @open-post="$emit('open-post', $event)"
-      @open-post-details="$emit('open-post-details', $event)"
-    >
+    <post-list :visible-posts="posts" :loading="loading" @load-next-page="loadNext" @load-previous-page="loadPrevious">
       <template #post="{ post }">
         <!-- :layout="layout" -->
-        <post
-          :post="post"
-          @open-post="$emit('open-post', $event)"
+        <post :post="post" @open-post="$emit('open-post', $event)"
           @open-post-details="$emit('open-post-details', $event)"
-          @set-post-favorite="$emit('set-post-favorite', $event)"
-        />
+          @set-post-favorite="$emit('set-post-favorite', $event)" />
       </template>
     </post-list>
     <app-logo v-if="loading" type="loader" />
@@ -27,22 +20,13 @@
         load next
       </v-btn>
     </div>
-    <fullscreen-dialog
-      :has-previous-fullscreen-post="hasPreviousFullscreenPost"
-      :has-next-fullscreen-post="hasNextFullscreenPost"
-      :current="fullscreenPost || null"
-      @close="$emit('exit-fullscreen')"
-      @next-post="$emit('next-fullscreen-post')"
-      @previous-post="$emit('previous-fullscreen-post')"
-      @open-post-details="$emit('open-post-details', $event)"
-      @set-post-favorite="$emit('set-post-favorite', $event)"
-    />
-    <details-dialog
-      :current="detailsPost"
-      @close="$emit('close-details')"
-      @open-post-fullscreen="$emit('open-post', $event)"
-      @set-post-favorite="$emit('set-post-favorite', $event)"
-    />
+    <fullscreen-dialog :has-previous-fullscreen-post="hasPreviousFullscreenPost"
+      :has-next-fullscreen-post="hasNextFullscreenPost" :current="fullscreenPost || null"
+      @close="$emit('exit-fullscreen')" @next-post="$emit('next-fullscreen-post')"
+      @previous-post="$emit('previous-fullscreen-post')" @open-post-details="$emit('open-post-details', $event)"
+      @set-post-favorite="$emit('set-post-favorite', $event)" />
+    <details-dialog :current="detailsPost" @close="$emit('close-details')"
+      @open-post-fullscreen="$emit('open-post', $event)" @set-post-favorite="$emit('set-post-favorite', $event)" />
     <!--
     <div>
       <blacklist-suggestions :suggested-blacklist="ratingTags" />
@@ -90,14 +74,13 @@
 </template>
 
 <script lang="ts">
-import FullscreenDialog from "./FullscreenDialog.vue";
-import DetailsDialog from "./DetailsDialog.vue";
-import AppLogo from "../App/AppLogo.vue";
-import { defineComponent, PropType } from "vue";
 import Post from "@/Post/Post.vue";
 import PostList from "@/Post/PostList.vue";
-import { Post as PostType } from "@/worker/api";
 import { EnhancedPost } from "@/worker/ApiService";
+import { defineComponent, PropType } from "vue";
+import AppLogo from "../App/AppLogo.vue";
+import DetailsDialog from "./DetailsDialog.vue";
+import FullscreenDialog from "./FullscreenDialog.vue";
 
 export default defineComponent({
   metaInfo: {

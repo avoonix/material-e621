@@ -122,6 +122,10 @@ class PersistanceService {
       newState.shortcuts.push(...fullscreenFavoriteShortcuts);
       newState.configVersion = 7;
     }
+    if(newState.configVersion < 8) {
+      newState.posts.autoLoadNext = defaultSettings.posts.autoLoadNext;
+      newState.configVersion = 8;
+    }
 
     this.main.$state = newState;
   }
