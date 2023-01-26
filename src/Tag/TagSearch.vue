@@ -21,6 +21,9 @@
       class="combobox-with-background"
       @keydown.enter="onEnterPressed"
     >
+    <template #prepend-item>
+      <SearchFilters :tags="tags" @add-tag="addTag($event)" @remove-tag="$emit('remove-tag', $event)" />
+    </template>
       <template slot="no-data">
         <v-list-item>
           <span class="subheading">
@@ -88,12 +91,19 @@ import TagFavoriteButton from "./TagFavoriteButton.vue";
 import { useFavoritesStore } from "@/services/FavoriteStore";
 import { usePostsStore, useShortcutService } from "@/services";
 import { ITag } from "./ITag";
+import SearchFilters from "./SearchFilters.vue";
 
 interface ITagWithText extends ITag {
   text: string;
 }
 
 type ListItem = ITagWithText | { header: string };
+
+const replacements: Record<string, string | undefined> = {
+  "rating:e": "rating:explicit",
+  "rating:q": "rating:questionable",
+  "rating:s": "rating:safe",
+};
 
 export default defineComponent({
   props: {
@@ -108,7 +118,8 @@ export default defineComponent({
   components: {
     TagLabel,
     TagFavoriteButton,
-  },
+    SearchFilters
+},
   setup(props, context) {
     const shortcutService = useShortcutService();
     const posts = usePostsStore();
@@ -121,6 +132,10 @@ export default defineComponent({
     );
     const inverted = computed(() => searchAsTag.value.startsWith("-"));
     const stripSymbols = (str?: string) => (str || "").replace(/\W+/g, "");
+
+    const addTag = (tag: string) => 
+      context.emit("add-tag", replacements[tag] || tag);
+
     const filter = (item: ListItem, queryText: string, itemText: string) => {
       if ("header" in item) return false;
       const text = stripSymbols(itemText);
@@ -226,7 +241,7 @@ export default defineComponent({
         search.value = "";
         const newItem = val.find((v) => typeof v === "string");
         if (newItem) {
-          context.emit("add-tag", newItem);
+          addTag(newItem as any);
         }
         const removedItems = differenceBy(
           props.tags,
@@ -243,7 +258,7 @@ export default defineComponent({
         );
         if (addedItems.length) {
           for (const item of addedItems) {
-            context.emit("add-tag", item);
+            addTag(item);
           }
         }
       },
@@ -278,6 +293,7 @@ export default defineComponent({
       model,
       onEnterPressed,
       inverted,
+      addTag,
     };
   },
 });
