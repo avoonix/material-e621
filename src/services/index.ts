@@ -7,4 +7,5 @@ export * from "./SnackbarStore";
 export * from "./AccountStore";
 export * from "./ShortcutService";
 export * from "./ShortcutStore";
+export * from "./UrlStore";
 export * from "./state";

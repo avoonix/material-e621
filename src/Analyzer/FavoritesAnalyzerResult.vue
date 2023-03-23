@@ -32,6 +32,7 @@ import { cloneDeep } from "lodash";
 import * as Comlink from "comlink";
 import { useRoute } from "@/misc/util/router";
 import ProgressMessage from "@/Suggester/ProgressMessage.vue";
+import { useUrlStore } from "@/services";
 
 export default defineComponent({
   metaInfo: {
@@ -45,6 +46,7 @@ export default defineComponent({
     const route = useRoute();
     const container = ref();
     const progress = ref<IProgressEvent>();
+    const urlStore = useUrlStore();
 
     const width = ref(700);
 
@@ -55,6 +57,7 @@ export default defineComponent({
         height: window.innerHeight * 0.66,
         tags: [`fav:${username}`],
         postLimit: 1000,
+        baseUrl: urlStore.e621Url
         // TODO: useBlacklist: bool
       };
     });

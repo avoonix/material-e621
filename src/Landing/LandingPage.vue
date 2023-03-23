@@ -53,7 +53,7 @@
               <a
                 class="primary--text text-decoration-none"
                 target="_blank"
-                href="https://e621.net/"
+                :href="url.e621Url"
               >
                 <v-icon color="primary" size="1em" class="mr-1">
                   mdi-open-in-new </v-icon
@@ -103,6 +103,7 @@
 import { computed, defineComponent, inject } from "vue";
 import AppLogo from "../App/AppLogo.vue";
 import CommitTimeline from "@/About/CommitTimeline.vue";
+import { useUrlStore } from "@/services";
 
 const chooseRandom = (arr: string[]) =>
   arr[Math.floor(Math.random() * arr.length)];
@@ -124,9 +125,12 @@ export default defineComponent({
       "handy",
     ]);
 
+    const url = useUrlStore();
+
     return {
       isDark,
       adjective,
+      url,
     };
   },
 });

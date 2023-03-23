@@ -51,7 +51,7 @@ import { updateRouterQuery } from "@/misc/util/utilities";
 import Posts from "@/Post/Posts.vue";
 import { useRoute } from "@/misc/util/router";
 import ProgressMessage from "./ProgressMessage.vue";
-import { useAccountStore, usePostsStore } from "@/services";
+import { useAccountStore, usePostsStore, useUrlStore } from "@/services";
 
 export default defineComponent({
   metaInfo: {
@@ -96,6 +96,7 @@ export default defineComponent({
       const service = await getAnalyzeService();
       result.value = await service.getFavoriteTags(
         username,
+        urlStore.e621Url,
         Comlink.proxy((progressEvent) => {
           progress.value = progressEvent;
         }),
@@ -103,6 +104,8 @@ export default defineComponent({
       await nextTick();
       await loadNextPage();
     };
+
+    const urlStore = useUrlStore();
 
     const {
       loadPreviousPage,
@@ -140,6 +143,7 @@ export default defineComponent({
             postsStore.postListFetchLimit,
             { postsBefore, postsAfter },
             account.auth,
+            urlStore.e621Url,
             Comlink.proxy((progressEvent) => {
               listProgress.value = progressEvent;
             }),

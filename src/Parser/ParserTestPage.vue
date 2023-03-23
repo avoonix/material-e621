@@ -10,6 +10,7 @@
 </template>
 
 <script lang="ts">
+import { useUrlStore } from "@/services";
 import { defineComponent } from "vue";
 import DText from "./DText.vue";
 
@@ -21,12 +22,13 @@ export default defineComponent({
     DText,
   },
   data() {
+    const urlStore = useUrlStore(); // todo: properly convert to vue 3 api
     return {
       testText: `
 h1. Hello there
 Edit this text and see the results below.
 
-Some features listed "here":https://e621.net/help/show/dtext are not implemented:
+Some features listed "here":${urlStore.e621Url}help/show/dtext are not implemented:
 * Some link syntaxes
 * Custom titles
 * Post Thumbnails

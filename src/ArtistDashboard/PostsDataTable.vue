@@ -15,7 +15,7 @@
     <template #item.buttons="{ item }">
       <v-tooltip bottom>
         <template #activator="{ on, attrs }">
-          <v-btn :href="`https://e621.net/posts/${item.id}`" target="_blank" v-bind="attrs" v-on="on" icon>
+          <v-btn :href="`${urlStore.e621Url}posts/${item.id}`" target="_blank" v-bind="attrs" v-on="on" icon>
             <v-icon>mdi-open-in-new</v-icon>
           </v-btn>
         </template>
@@ -23,7 +23,7 @@
       </v-tooltip>
       <v-tooltip bottom>
         <template #activator="{ on, attrs }">
-          <v-btn :href="`https://e621.net/post_versions?search[post_id]=${item.id}`" target="_blank" v-bind="attrs"
+          <v-btn :href="`${urlStore.e621Url}post_versions?search[post_id]=${item.id}`" target="_blank" v-bind="attrs"
             v-on="on" icon>
             <v-icon>mdi-history</v-icon>
           </v-btn>
@@ -40,6 +40,7 @@ import { computed, defineComponent, PropType } from "vue";
 import { DataTableHeader } from "vuetify";
 import DateDisplay from "./DateDisplay.vue";
 import { getColor } from "@/Post/stripeColor";
+import { useUrlStore } from "@/services";
 
 export default defineComponent({
   props: {
@@ -66,9 +67,13 @@ export default defineComponent({
       // { text: "Character Tags", value: "tags.character.length" },
       // { text: "Copyright Tags", value: "tags.copyright.length" },
     ]);
+
+    const urlStore = useUrlStore();
+
     return {
       headers,
-      getColor
+      getColor,
+      urlStore,
     };
   },
   components: { DateDisplay, }

@@ -41,7 +41,7 @@ export interface Shortcut {
 // }
 
 export interface ISettingsServiceState {
-  configVersion: undefined | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+  configVersion: undefined | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
   shortcuts: Shortcut[];
   blacklist: {
     mode: BlacklistMode;
@@ -114,4 +114,10 @@ export interface ISettingsServiceState {
     username: string | null;
     apiKey: string | null;
   };
+  misc: {
+    urls: {
+      proxy: string;
+      e621: string;
+    }
+  }
 }

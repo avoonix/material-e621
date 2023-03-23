@@ -34,7 +34,7 @@
 import { getAppName, getBaseUrl } from "@/misc/util/utilities";
 import { computed, defineComponent, ref } from "vue";
 import copyToClipboard from "clipboard-copy";
-import { useSnackbarStore } from "@/services";
+import { useSnackbarStore, useUrlStore } from "@/services";
 
 enum UrlTypes {
   image,
@@ -65,12 +65,14 @@ export default defineComponent({
   },
   setup(props) {
     const snackbar = useSnackbarStore();
+    const urlStore = useUrlStore();
+
     const url = computed(() => {
       switch (urlType.value) {
         case UrlTypes.materialE621:
           return `${getBaseUrl()}/#/posts?first_post=${props.postId}`;
         case UrlTypes.e621:
-          return `https://e621.net/posts/${props.postId}`;
+          return `${urlStore.e621Url}posts/${props.postId}`;
         case UrlTypes.image:
         default:
           return props.rawFileUrl;

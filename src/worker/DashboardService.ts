@@ -5,6 +5,7 @@ import { expose } from "comlink";
 import { differenceInDays, format, parseISO } from "date-fns";
 import { debug } from "debug";
 import { IProgressEvent } from "./AnalyzeService";
+import type { IBaseArgs } from "./api";
 import { ApiService, EnhancedPost } from "./ApiService";
 
 const log = debug("app:DashboardService");
@@ -12,7 +13,7 @@ const log = debug("app:DashboardService");
 // debug.disable();
 debug.enable("app:DashboardService");
 
-export interface IDashboardArgs {
+export interface IDashboardArgs extends IBaseArgs {
   artist: string;
 }
 
@@ -48,7 +49,7 @@ export class DashboardService {
     args: IDashboardArgs,
     onProgress: (event: IProgressEvent) => void,
   ): Promise<IDashboardResult> {
-    const posts = await this.getPosts([args.artist], onProgress);
+    const posts = await this.getPosts([args.artist], args.baseUrl, onProgress);
     if (!posts.length)
       return {
         communityMetrics: [],
@@ -238,6 +239,7 @@ export class DashboardService {
 
   private async getPosts(
     tags: string[],
+    baseUrl: string,
     onProgress: (event: IProgressEvent) => void,
   ) {
     const service = new ApiService();
@@ -250,6 +252,7 @@ export class DashboardService {
         limit: 320,
         tags,
         postsBefore,
+        baseUrl
       });
       postsBefore = newPosts[newPosts.length - 1]?.id;
       posts.push(...newPosts);

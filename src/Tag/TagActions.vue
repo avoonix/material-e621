@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { useBlacklistStore } from "@/services";
+import { useBlacklistStore, useUrlStore } from "@/services";
 import { useFavoritesStore } from "@/services/FavoriteStore";
 import { computed, defineComponent } from "vue";
 
@@ -32,11 +32,12 @@ export default defineComponent({
   setup(props, context) {
     const blacklist = useBlacklistStore();
     const favorites = useFavoritesStore();
+    const urlStore = useUrlStore();
     const wikiUrl = computed(
-      () => `https://e621.net/wiki/show?title=${props.name}`,
+      () => `${urlStore.e621Url}wiki/show?title=${props.name}`,
     );
     const e621Url = computed(
-      () => `https://e621.net/posts?tags=${props.name}`,
+      () => `${urlStore.e621Url}posts?tags=${props.name}`,
     );
 
     const isBlacklisted = computed(() =>

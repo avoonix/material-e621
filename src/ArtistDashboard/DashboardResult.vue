@@ -93,6 +93,7 @@ import PostsDataTable from "./PostsDataTable.vue";
 import ArtistMetrics from "./ArtistMetrics.vue";
 import ArtistTags from "./ArtistTags.vue";
 import UploadHeatmap from "./UploadHeatmap.vue";
+import { useUrlStore } from "@/services";
 
 export default defineComponent({
   metaInfo: {
@@ -106,6 +107,7 @@ export default defineComponent({
     UploadHeatmap
   },
   setup(props, context) {
+    const urlStore = useUrlStore();
     const progress = ref<IProgressEvent>();
 
     const artist = computed<string>(() => {
@@ -118,6 +120,7 @@ export default defineComponent({
     const args = computed<IDashboardArgs>(() => {
       return {
         artist: artist.value,
+        baseUrl: urlStore.e621Url
       };
     });
 
@@ -137,7 +140,9 @@ export default defineComponent({
       getResult();
     }, { immediate: true })
 
-    const artistUrl = computed(() => `https://e621.net/artists/${encodeURIComponent(artist.value)}`)
+    const url = useUrlStore();
+
+    const artistUrl = computed(() => `${url.e621Url}artists/${encodeURIComponent(artist.value)}`)
 
     return {
       progress,

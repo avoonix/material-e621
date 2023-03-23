@@ -26,6 +26,7 @@ export interface IAnalyzeTagsArgs {
   height: number;
   tags: string[];
   postLimit: number;
+  baseUrl: string;
 }
 
 export interface IAnalyzeTagsResult {
@@ -89,6 +90,7 @@ export class AnalyzeService {
   private async fetchPostsCached(
     tags: string[],
     postLimit: number,
+    baseUrl: string,
     onProgress: (event: IProgressEvent) => void,
   ) {
     const service = new ApiService();
@@ -105,6 +107,7 @@ export class AnalyzeService {
           limit: 320,
           tags,
           postsBefore,
+          baseUrl,
         });
         postsBefore = newPosts[newPosts.length - 1]?.id;
         posts.push(...newPosts);
@@ -128,6 +131,7 @@ export class AnalyzeService {
     const posts = await this.fetchPostsCached(
       args.tags,
       args.postLimit,
+      args.baseUrl,
       onProgress,
     );
     onProgress({
@@ -155,11 +159,13 @@ export class AnalyzeService {
 
   async getFavoriteTags(
     username: string,
+    baseUrl: string,
     onProgress: (event: IProgressEvent) => void,
   ): Promise<FavoriteTagsResult> {
     const posts = await this.fetchPostsCached(
       [`fav:${username}`],
       320 * 6,
+      baseUrl,
       onProgress,
     );
 
@@ -192,6 +198,7 @@ export class AnalyzeService {
           api_key: string;
         }
       | undefined,
+    baseUrl: string,
     onProgress: (event: IProgressEvent) => void,
   ) {
     // fetch posts, sort them by score and display the top `limit` ones
@@ -214,6 +221,7 @@ export class AnalyzeService {
         postsBefore,
         postsAfter,
         auth,
+        baseUrl,
       });
 
       const scoredNewPosts = scorePosts(tags, weights, newPosts);

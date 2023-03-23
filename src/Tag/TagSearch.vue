@@ -89,7 +89,7 @@ import { getApiService } from "@/worker/services";
 import { categoryIdToCategoryName } from "@/misc/util/utilities";
 import TagFavoriteButton from "./TagFavoriteButton.vue";
 import { useFavoritesStore } from "@/services/FavoriteStore";
-import { usePostsStore, useShortcutService } from "@/services";
+import { usePostsStore, useShortcutService, useUrlStore } from "@/services";
 import { ITag } from "./ITag";
 import SearchFilters from "./SearchFilters.vue";
 
@@ -121,6 +121,7 @@ export default defineComponent({
     SearchFilters
 },
   setup(props, context) {
+    const urlStore = useUrlStore();
     const shortcutService = useShortcutService();
     const posts = usePostsStore();
     const favoritesStore = useFavoritesStore();
@@ -182,11 +183,13 @@ export default defineComponent({
             limit: posts.tagFetchLimit,
             order: "count",
             query: `*${search}*`,
+            baseUrl: urlStore.e621Url,
           }),
           service.getPools({
             limit: posts.tagFetchLimit,
             order: "count",
             query: `*${search}*`,
+            baseUrl: urlStore.e621Url,
           }),
         ]);
 

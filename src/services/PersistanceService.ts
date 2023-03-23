@@ -126,6 +126,10 @@ class PersistanceService {
       newState.posts.autoLoadNext = defaultSettings.posts.autoLoadNext;
       newState.configVersion = 8;
     }
+    if(newState.configVersion < 9) {
+      newState.misc = reactive(clone(defaultSettings.misc));
+      newState.configVersion = 9;
+    }
 
     this.main.$state = newState;
   }

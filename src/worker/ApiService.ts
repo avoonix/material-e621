@@ -34,6 +34,7 @@ export class ApiService {
     blacklist?: string[];
     blacklistMode: BlacklistMode;
     auth?: IPostsListArgs["auth"];
+    baseUrl: string;
   }) {
     log(args);
     const posts = (
@@ -44,6 +45,7 @@ export class ApiService {
           args.blacklist || [],
           args.tags,
         ),
+        baseUrl: args.baseUrl
       })
     ).data.posts;
 

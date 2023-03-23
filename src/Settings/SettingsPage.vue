@@ -25,7 +25,7 @@
               </v-list-item-subtitle>
             </settings-page-section>
             <settings-page-section section="posts" title="Posts" icon="mdi-format-list-text" color="darken-3 brown" />
-            <settings-page-section section="account" title="Account" icon="mdi-account" color="darken-3 yellow">
+            <settings-page-section section="account" title="API & Account" icon="mdi-account" color="darken-3 yellow">
               <v-list-item-subtitle v-if="username">
                 Signed in as {{ username }}
               </v-list-item-subtitle>

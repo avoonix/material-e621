@@ -3,6 +3,7 @@ import { getTagColorFromCategory } from "@/misc/util/utilities";
 import { computed, defineComponent } from "vue";
 import { CreateElement } from "vue";
 import ExternalLink from "@/App/ExternalLink.vue";
+import { useUrlStore } from "@/services";
 
 const validBbElements = [
   "b",
@@ -191,11 +192,12 @@ const customMatchers: Array<{
     name: "@Username",
     regex: /@([a-zA-Z0-9\-_~']+)/i,
     render({ h, match }) {
+      const urlStore = useUrlStore();
       return h(
         "external-link",
         {
           attrs: {
-            href: `https://e621.net/user/show/${match[1]}`,
+            href: `${urlStore.e621Url}user/show/${match[1]}`,
             target: "_blank",
           },
         },
@@ -224,11 +226,12 @@ const customMatchers: Array<{
     name: "e621 URLs",
     regex: /"(.+?)":(\/[-a-zA-Z0-9@:%_+.~#?&//=]*)/,
     render({ h, match }) {
+      const urlStore = useUrlStore();
       return h(
         "external-link",
         {
           attrs: {
-            href: `https://e621.net${match[2]}`,
+            href: `${urlStore.e621Url}${match[2]}`,
             target: "_blank",
           },
         },

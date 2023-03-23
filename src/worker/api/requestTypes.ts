@@ -1,4 +1,4 @@
-export interface IPostsListArgs {
+export interface IPostsListArgs extends IBaseArgs {
   limit: number;
   tags?: string;
   page?: number;
@@ -10,20 +10,24 @@ export interface IPostsListArgs {
   };
 }
 
-export interface ITagsListArgs {
+export interface ITagsListArgs extends IBaseArgs {
   limit: number;
   order: "count" | "date";
   query?: string;
 }
 
-export interface ITagAliasesArgs {
+export interface ITagAliasesArgs extends IBaseArgs {
   limit: number;
   order: "count" | "date";
   query?: string;
 }
 
-export interface IPoolsArgs {
+export interface IPoolsArgs extends IBaseArgs {
   limit: number;
   order: "count" | "date";
   query?: string;
+}
+
+export interface IBaseArgs {
+  baseUrl: string;
 }

@@ -52,7 +52,6 @@ const sortTags = [
   { tag: "order:lortags_asc", name: "Lore Tags (least first)" },
 ];
 
-// should allow multiple, but deal with them like the commented implications below
 const ratingTags = [
   { tag: "rating:safe", name: "Safe" },
   { tag: "rating:questionable", name: "Questionable" },
@@ -67,7 +66,6 @@ export default defineComponent({
     }
   },
   setup(props, context) {
-
     const rating = computed<string[]>({
       get() {
         let result = ["rating:explicit", "rating:questionable", "rating:safe"];
@@ -90,7 +88,6 @@ export default defineComponent({
           addTag(value[0]);
           return;
         }
-        console.log("TODO", value); // TODO
       }
     })
 

@@ -28,7 +28,7 @@ export const fullscreenFavoriteShortcuts: Shortcut[] = [
 ];
 
 export const defaultSettings: ISettingsServiceState = {
-  configVersion: 6,
+  configVersion: 9,
   shortcuts: [
     // { action: "favorite_post", sequence: "f p" },
     // { action: "toggle_fullscreen", sequence: "t f" },
@@ -107,5 +107,11 @@ export const defaultSettings: ISettingsServiceState = {
   },
   favorites: {
     tags: {},
+  },
+  misc: {
+    urls: {
+      e621: "https://e621.net/",
+      proxy: "https://material-e621-proxy.vercel.app/api/",
+    },
   },
 };

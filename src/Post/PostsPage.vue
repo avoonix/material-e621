@@ -7,8 +7,7 @@
         <v-btn icon @click="updateQuery() && onSearchClick()" :loading="loading">
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
-        <v-menu bottom left max-height="300" offset-y transition="slide-y-transition"
-          v-if="$vuetify.breakpoint.mdAndUp">
+        <v-menu bottom left max-height="300" offset-y transition="slide-y-transition" v-if="$vuetify.breakpoint.mdAndUp">
           <template #activator="{ on }">
             <v-btn v-on="on" icon>
               <v-icon>mdi-history</v-icon>
@@ -39,7 +38,7 @@ import { useHistory } from "@/Post/historyManager";
 import { usePostListManager } from "@/Post/postListManager";
 import Posts from "@/Post/Posts.vue";
 import { useRouterTagManager } from "@/Post/routerTagManager";
-import { useAccountStore, useBlacklistStore, usePostsStore } from "@/services";
+import { useAccountStore, useBlacklistStore, usePostsStore, useUrlStore } from "@/services";
 import { ITag } from "@/Tag/ITag";
 import { debounce, isEqual } from "lodash";
 import { defineComponent, onMounted, ref, watch } from "vue";
@@ -62,7 +61,7 @@ export default defineComponent({
     const postsStore = usePostsStore();
     const { tags, addTag, removeTag, updateQuery, query, setTags } =
       useRouterTagManager();
-
+    const urlStore = useUrlStore();
     const route = useRoute();
 
     const {
@@ -104,6 +103,7 @@ export default defineComponent({
           blacklist: blacklist.tags,
           blacklistMode: blacklist.mode,
           auth: account.auth,
+          baseUrl: urlStore.e621Url
         });
         return posts;
       },

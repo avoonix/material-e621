@@ -6,6 +6,7 @@ import {
   ITagAliasesArgs,
   IPoolsArgs,
 } from "./requestTypes";
+import { getGitInfo } from "@/misc/util/git";
 
 export * from "./returnTypes";
 export * from "./requestTypes";
@@ -14,10 +15,12 @@ export * from "./requestTypes";
  * TODO: Post upvoting/downvoting, login verification
  */
 
+const version = getGitInfo()[0]?.hash?.substring(0, 7) ?? "0.0.0";
+
 const axios = ax.create({
   responseType: "json",
   params: {
-    _client: "Material e621/0.0.0 (by Avoonix on e621)",
+    _client: `Material e621/${version} (by Avoonix on e621)`,
   },
 });
 
@@ -35,7 +38,7 @@ export const e621 = {
         page = args.page;
       }
       const auth = args?.auth || {};
-      return axios.get<Posts>("https://e621.net/posts.json", {
+      return axios.get<Posts>(`${args.baseUrl}posts.json`, {
         params: {
           tags: args.tags || "",
           limit: args.limit,
@@ -47,7 +50,7 @@ export const e621 = {
   },
   tags: {
     list(args: ITagsListArgs) {
-      return axios.get<Tag[] | { tags: [] }>("https://e621.net/tags.json", {
+      return axios.get<Tag[] | { tags: [] }>(`${args.baseUrl}tags.json`, {
         params: {
           limit: args.limit,
           "search[order]": args.order,
@@ -58,7 +61,7 @@ export const e621 = {
   },
   tagAliases: {
     list(args: ITagAliasesArgs) {
-      return axios.get<TagAlias[]>("https://e621.net/tag_aliases.json", {
+      return axios.get<TagAlias[]>(`${args.baseUrl}tag_aliases.json`, {
         params: {
           limit: args.limit,
           "search[order]": args.order,
@@ -69,7 +72,7 @@ export const e621 = {
   },
   pools: {
     list(args: IPoolsArgs) {
-      return axios.get<Pool[]>("https://e621.net/pools.json", {
+      return axios.get<Pool[]>(`${args.baseUrl}pools.json`, {
         params: {
           limit: args.limit,
           "search[order]": args.order,
