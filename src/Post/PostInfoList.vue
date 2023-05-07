@@ -7,6 +7,12 @@
       </v-list-item-content>
     </v-list-item>
     <v-list-item>
+      <v-list-item-content>Pool</v-list-item-content>
+      <v-list-item-content class="align-end">
+        {{ post.pools }}
+      </v-list-item-content>
+    </v-list-item>
+    <v-list-item>
       <v-list-item-content>Score</v-list-item-content>
       <v-list-item-content class="align-end">
         {{ post.score.total }}
