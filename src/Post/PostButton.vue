@@ -1,6 +1,6 @@
 <template>
   <v-btn icon @click="button.onClick" :loading="button.loading">
-    <v-icon>{{ button.icon }}</v-icon>
+    <v-icon :color="button.color">{{ button.icon }}</v-icon>
   </v-btn>
 </template>
 
@@ -12,6 +12,7 @@ import { computed, defineComponent, PropType } from "vue";
 import { usePostListManager } from "./postListManager";
 
 interface IButton {
+  color: any;
   icon: string;
   onClick: () => void;
   loading?: boolean;
@@ -32,24 +33,28 @@ export default defineComponent({
   setup(props, context) {
     const buttons = computed<{ [key in ButtonType]: IButton }>(() => ({
       info: {
+        color:"#4267B2",
         icon: "mdi-information",
         onClick: () => {
           if (props.post) context.emit("open-post-details", props.post.id);
         },
       },
       fullscreen: {
+        color:"#4267B2",
         icon: "mdi-fullscreen",
         onClick: () => {
           if (props.post) context.emit("open-post-fullscreen", props.post.id);
         },
       },
       external: {
+        color:"#4267B2",
         icon: "mdi-open-in-new",
         onClick: () => {
           if (props.post) openE6PostInStandaloneWindow(props.post.id);
         },
       },
       favorite: {
+        color:props.post?.is_favorited ? "#ff0000" : "#4267B2",
         icon: props.post?.is_favorited ? "mdi-heart" : "mdi-heart-outline",
         loading: props.post?.__meta.isFavoriteLoading || false,
         onClick: async () => {
