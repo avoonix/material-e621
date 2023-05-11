@@ -3,7 +3,7 @@ import { EnhancedPost } from "@/worker/ApiService";
 import { getApiService } from "@/worker/services";
 import { computed, ref, watch } from "vue";
 import Vue from "vue";
-import { useAccountStore, useSnackbarStore } from "@/services";
+import { useAccountStore, useSnackbarStore, useUrlStore } from "@/services";
 
 interface IUsePostListManagerArgs {
   loadPosts(args: {
@@ -28,6 +28,7 @@ export const usePostListManager = ({
   const fullscreenPost = ref<EnhancedPost | null>(null);
   const detailsPost = ref<EnhancedPost | null>(null);
   const loading = ref(false);
+  const urlStore = useUrlStore();
 
   const handleError = (error: any) => {
     const errorMessage = error?.message || String(error);
@@ -55,6 +56,7 @@ export const usePostListManager = ({
     const serviceArgs = {
       postId: post.id,
       auth: account.auth,
+      proxyUrl: urlStore.proxyUrl,
     };
     try {
       Vue.set(post.__meta, "isFavoriteLoading", true);

@@ -89,13 +89,14 @@ export interface IPostFavoriteArgs {
     login: string;
     api_key: string;
   };
+  proxyUrl: string;
 }
 
 export const custom = {
   posts: {
     favorite(args: IPostFavoriteArgs) {
       return axios.post(
-        "https://material-e621-proxy.vercel.app/api/favorites",
+        `${args.proxyUrl}favorites`,
         { post_id: args.postId },
         {
           headers: {
@@ -110,7 +111,7 @@ export const custom = {
     },
     unfavorite(args: IPostFavoriteArgs) {
       return axios.delete(
-        `https://material-e621-proxy.vercel.app/api/favorites/${args.postId}`,
+        `${args.proxyUrl}favorites/${args.postId}`,
         {
           headers: {
             "content-type": "application/json",
