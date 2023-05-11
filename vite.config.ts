@@ -6,7 +6,7 @@ import eslintPlugin from "vite-plugin-eslint";
 import { VitePWA } from "vite-plugin-pwa";
 
 const VUE_APP_GIT_COMMIT_INFO = execSync(
-  'git log -n 10 --pretty=format:";;;;;%H;%aI;%B"',
+  'git log -n 10 --pretty=format:";;;;;%H;%aI;%an;%B"',
 )
   .toString()
   .trim();

@@ -6,18 +6,14 @@
           {{ entry.message.subject }}
         </h3>
         <div class="text-caption">
-          {{ date }}
+          {{ date }} by {{ entry.author }}
         </div>
       </div>
     </v-card-title>
-    <v-card-text v-if="entry.message.body" class="pre text-body-1" >{{entry.message.body}}</v-card-text>
+    <v-card-text v-if="entry.message.body" class="pre text-body-1">{{ entry.message.body }}</v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn
-        text
-        :href="`https://github.com/avoonix/material-e621/commit/${entry.hash}`"
-        color="primary"
-      >
+      <v-btn text :href="`https://github.com/avoonix/material-e621/commit/${entry.hash}`" color="primary">
         <v-icon left> mdi-open-in-new </v-icon>
         View commit
       </v-btn>
