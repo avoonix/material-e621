@@ -19,16 +19,8 @@
           {{ score }}
         </span>
       </v-chip>
-      <tag-menu v-for="artist in post.tags.artist" :key="artist" :tag="{ name: artist, category: 'artist' }">
-        <template #default="{ on }">
-          <v-chip :color="artistColor" outlined class="mr-2 mb-2" v-on="on">
-            <v-icon>mdi-palette</v-icon>
-            <span class="ml-2">
-              {{ artist }}
-            </span>
-          </v-chip>
-        </template>
-      </tag-menu>
+      <tag-with-menu v-for="artist in post.tags.artist" :key="artist" :tag="{ name: artist, category: 'artist' }" />
+      <tag-with-menu v-for="pool in post.pools || []" :key="pool" :tag="{ name: `pool:${pool}`, category: 'pool' }" />
       <v-chip outlined class="mb-2 no-before-content">
         <v-icon>mdi-clock</v-icon>
         <span class="ml-2">
@@ -42,7 +34,7 @@
 <script lang="ts">
 import DateDisplay from "@/ArtistDashboard/DateDisplay.vue";
 import { getTagColorFromCategory } from "@/misc/util/utilities";
-import TagMenu from "@/Tag/TagMenu.vue";
+import TagWithMenu from "@/Tag/TagWithMenu.vue";
 import { ScoredPost } from "@/worker/AnalyzeService";
 import { Post } from "@/worker/api";
 import prettyBytes from "pretty-bytes";
@@ -73,6 +65,6 @@ export default defineComponent({
       artistColor,
     };
   },
-  components: { TagMenu, DateDisplay },
+  components: { DateDisplay, TagWithMenu },
 });
 </script>

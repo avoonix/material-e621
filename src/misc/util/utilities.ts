@@ -15,6 +15,11 @@ const tagColorMapping: { [idx: string]: string | undefined } = {
   pool: "pink",
   meta: "grey",
 };
+const tagIconMapping: { [idx: string]: string | undefined } = {
+  default: "",
+  pool: "mdi-format-list-text",
+  artist: "mdi-palette",
+};
 
 export const categoryIdToCategoryName = (id: number) => {
   const categories: { [idx: string]: string | undefined } = {
@@ -56,4 +61,10 @@ export const getTagColorFromCategory = (category?: string) => {
   return category
     ? tagColorMapping[category] || tagColorMapping.default!
     : tagColorMapping.default!;
+};
+
+export const getTagIconFromCategory = (category?: string) => {
+  return category
+    ? tagIconMapping[category] || tagIconMapping.default!
+    : tagIconMapping.default!;
 };
