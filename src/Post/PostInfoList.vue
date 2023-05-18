@@ -6,19 +6,19 @@
         {{ post.id }}
       </v-list-item-content>
     </v-list-item>
-    <v-list-item>
+    <v-list-item v-if="post.tags.artist?.length">
       <v-list-item-content>Artist</v-list-item-content>
       <v-list-item-content class="align-end">
         <div>
-          <TagWithMenu small v-for="artist in post.tags.artist || []" :key="artist" :tag="{ name: artist, category: 'artist' }" />
+          <TagWithMenu small v-for="artist in post.tags.artist" :key="artist" :tag="{ name: artist, category: 'artist' }" />
         </div>
       </v-list-item-content>
     </v-list-item>
-    <v-list-item>
+    <v-list-item v-if="post.pools?.length">
       <v-list-item-content>Pools</v-list-item-content>
       <v-list-item-content class="align-end">
         <div>
-          <TagWithMenu small v-for="pool in post.pools || []" :key="pool" :tag="{ name: `pool:${pool}`, category: 'pool' }" />
+          <TagWithMenu small v-for="pool in post.pools" :key="pool" :tag="{ name: `pool:${pool}`, category: 'pool' }" />
         </div>
       </v-list-item-content>
     </v-list-item>

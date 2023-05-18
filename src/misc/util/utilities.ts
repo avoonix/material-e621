@@ -16,7 +16,7 @@ const tagColorMapping: { [idx: string]: string | undefined } = {
   meta: "grey",
 };
 const tagIconMapping: { [idx: string]: string | undefined } = {
-  default: "",
+  default: "mdi-tag",
   pool: "mdi-format-list-text",
   artist: "mdi-palette",
 };

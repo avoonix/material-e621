@@ -5,6 +5,7 @@ import {
   ITagsListArgs,
   ITagAliasesArgs,
   IPoolsArgs,
+  IGetPoolArgs,
 } from "./requestTypes";
 import { getGitInfo } from "@/misc/util/git";
 
@@ -79,6 +80,9 @@ export const e621 = {
           "search[name_matches]": args.query,
         },
       });
+    },
+    get(args: IGetPoolArgs) {
+      return axios.get<Pool>(`${args.baseUrl}pools/${+args.id}.json`);
     },
   },
 };

@@ -28,6 +28,10 @@ export interface IPoolsArgs extends IBaseArgs {
   query?: string;
 }
 
+export interface IGetPoolArgs extends IBaseArgs {
+  id: number;
+}
+
 export interface IBaseArgs {
   baseUrl: string;
 }

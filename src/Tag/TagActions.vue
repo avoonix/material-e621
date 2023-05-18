@@ -1,5 +1,6 @@
 <template>
   <v-list class="secondary">
+    <PoolInfo v-if="pool" class="mb-2" :pool-id="pool" />
     <v-list-item v-for="(item, i) in items" :key="i" @click.stop="item.action">
       <v-list-item-content>{{ item.text }}</v-list-item-content>
     </v-list-item>
@@ -7,6 +8,7 @@
 </template>
 
 <script lang="ts">
+import PoolInfo from "@/Pool/PoolInfo.vue";
 import { useBlacklistStore, useUrlStore } from "@/services";
 import { useFavoritesStore } from "@/services/FavoriteStore";
 import { computed, defineComponent } from "vue";
@@ -19,117 +21,114 @@ import { computed, defineComponent } from "vue";
 // };
 
 export default defineComponent({
-  props: {
-    name: {
-      type: String,
-      required: true,
-    },
-    category: {
-      type: String,
-      required: true,
-    },
-  },
-  setup(props, context) {
-    const blacklist = useBlacklistStore();
-    const favorites = useFavoritesStore();
-    const urlStore = useUrlStore();
-    const wikiUrl = computed(
-      () => `${urlStore.e621Url}wiki/show?title=${props.name}`,
-    );
-    const e621Url = computed(
-      () => `${urlStore.e621Url}posts?tags=${props.name}`,
-    );
-
-    const isBlacklisted = computed(() =>
-      blacklist.tagIsBlacklisted(props.name),
-    );
-
-    const isFavorited = computed(() =>
-      favorites.isFavorited(props.name, props.category),
-    );
-    const toggleFavorite = () => {
-      favorites.setFavorite(
-        props.name,
-        props.category,
-        !isFavorited.value,
-        // props.displayText, // TODO: might be needed in the future
-      );
-    };
-
-    const items = computed<{ text: string, action: () => void, visible: boolean }[]>(() =>
-      [
-        {
-          text: isFavorited.value ? "Unstar" : "Star",
-          action: () => {
-            toggleFavorite();
-          },
-          visible: true,
+    props: {
+        name: {
+            type: String,
+            required: true,
         },
-        {
-          text: "Search",
-          action: async () => {
-            const { appRouter } = await import("@/misc/util/router");
-            appRouter.push({
-              name: 'Posts',
-              query: {
-                tags: props.name,
-              },
-            })
-            // updateRouterQuery({
-            //   tags: props.name,
-            // });
-          },
-          visible: true,
+        category: {
+            type: String,
+            required: true,
         },
-        {
-          text: isBlacklisted.value
-            ? "Remove from blacklist"
-            : "Add to blacklist",
-          action: () => {
-            if (isBlacklisted.value) {
-              blacklist.removeTag(props.name);
-            } else {
-              blacklist.addTag(props.name);
+    },
+    setup(props, context) {
+        const blacklist = useBlacklistStore();
+        const favorites = useFavoritesStore();
+        const urlStore = useUrlStore();
+        const wikiUrl = computed(() => `${urlStore.e621Url}wiki/show?title=${props.name}`);
+        const e621Url = computed(() => `${urlStore.e621Url}posts?tags=${props.name}`);
+        const isBlacklisted = computed(() => blacklist.tagIsBlacklisted(props.name));
+        const isFavorited = computed(() => favorites.isFavorited(props.name, props.category));
+        const pool = computed(() => {
+            if(props.category === "pool") {
+                const match = /pool:(\d+)/.exec(props.name);
+                if(match) {
+                    return +match[1];
+                }
             }
-          },
-          visible: true,
-        },
-        {
-          text: "Open e621.net wiki article",
-          action: () => {
-            const w = window.open(wikiUrl.value, "_blank");
-            w?.focus();
-          },
-          visible: true,
-        },
-        {
-          text: "Search on e621.net",
-          action: () => {
-            const w = window.open(e621Url.value, "_blank");
-            w?.focus();
-          },
-          visible: true,
-        },
-        {
-          text: "View in Artist Dashboard",
-          action: async () => {
-            const { appRouter } = await import("@/misc/util/router");
-            appRouter.push({
-              name: 'DashboardResult',
-              params: {
-                name: props.name,
-              },
-            })
-          },
-          visible: props.category === "artist",
-        },
-      ].filter(item => item.visible)
-    );
-
-    return {
-      items,
-    };
-  },
+            return false;
+        });
+        const toggleFavorite = () => {
+            favorites.setFavorite(props.name, props.category, !isFavorited.value);
+        };
+        const items = computed<{
+            text: string;
+            action: () => void;
+            visible: boolean;
+        }[]>(() => [
+            {
+                text: isFavorited.value ? "Unstar" : "Star",
+                action: () => {
+                    toggleFavorite();
+                },
+                visible: true,
+            },
+            {
+                text: "Search",
+                action: async () => {
+                    const { appRouter } = await import("@/misc/util/router");
+                    appRouter.push({
+                        name: "Posts",
+                        query: {
+                            tags: props.name,
+                        },
+                    });
+                    // updateRouterQuery({
+                    //   tags: props.name,
+                    // });
+                },
+                visible: true,
+            },
+            {
+                text: isBlacklisted.value
+                    ? "Remove from blacklist"
+                    : "Add to blacklist",
+                action: () => {
+                    if (isBlacklisted.value) {
+                        blacklist.removeTag(props.name);
+                    }
+                    else {
+                        blacklist.addTag(props.name);
+                    }
+                },
+                visible: true,
+            },
+            {
+                text: "Open e621.net wiki article",
+                action: () => {
+                    const w = window.open(wikiUrl.value, "_blank");
+                    w?.focus();
+                },
+                visible: true,
+            },
+            {
+                text: "Search on e621.net",
+                action: () => {
+                    const w = window.open(e621Url.value, "_blank");
+                    w?.focus();
+                },
+                visible: true,
+            },
+            {
+                text: "View in Artist Dashboard",
+                action: async () => {
+                    const { appRouter } = await import("@/misc/util/router");
+                    appRouter.push({
+                        name: "DashboardResult",
+                        params: {
+                            name: props.name,
+                        },
+                    });
+                },
+                visible: props.category === "artist",
+            },
+        ].filter(item => item.visible));
+        return {
+            items,
+            pool,
+        };
+    },
+    components: { PoolInfo }
 });
 // data() {
 //   return {

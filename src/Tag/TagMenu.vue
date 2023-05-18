@@ -1,14 +1,5 @@
 <template>
-  <v-menu
-    bottom
-    offset-y
-    left
-    attach
-    close-on-content-click
-    close-on-click
-    close-delay="0"
-    v-if="tag.category"
-  >
+  <v-menu bottom offset-y left attach close-on-content-click close-on-click close-delay="0" v-if="tag.category">
     <template #activator="{ on }">
       <slot :on="on">
         <v-btn v-on="on" icon>

@@ -6,6 +6,7 @@ import {
   IPostsListArgs,
   IPostFavoriteArgs,
   custom,
+  IGetPoolArgs,
 } from "./api";
 import { isPostBlacklisted } from "./blacklist";
 import debug from "debug";
@@ -72,6 +73,10 @@ export class ApiService {
 
   async getPools(args: IPoolsArgs) {
     return (await e621.pools.list(args)).data;
+  }
+
+  async getPool(args: IGetPoolArgs) {
+    return (await e621.pools.get(args)).data;
   }
 
   async favoritePost(args: IPostFavoriteArgs) {
