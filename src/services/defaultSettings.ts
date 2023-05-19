@@ -85,6 +85,18 @@ export const defaultSettings: ISettingsServiceState = {
     entries: [],
     maxLength: 100,
   },
+  searches: {
+    entries: [
+      {
+        name: "Hot",
+        tags: ["order:rank"],
+      },
+      {
+        name: "Popular Today",
+        tags: ["order:favcount", "date:today"],
+      },
+    ],
+  },
   snackbar: null,
   account: {
     apiKey: null,

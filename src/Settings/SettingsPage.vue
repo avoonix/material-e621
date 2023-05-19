@@ -17,7 +17,7 @@
               </v-list-item-subtitle>
             </settings-page-section>
             <settings-page-section section="appearance" title="Appearance" icon="mdi-palette" color="darken-1 pink" />
-            <settings-page-section section="history" title="History" icon="mdi-format-list-bulleted"
+            <settings-page-section section="history" title="History & Saved Searches" icon="mdi-format-list-bulleted"
               color="darken-1 green">
               <v-list-item-subtitle>
                 {{ historySize }}

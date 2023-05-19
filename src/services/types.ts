@@ -41,7 +41,7 @@ export interface Shortcut {
 // }
 
 export interface ISettingsServiceState {
-  configVersion: undefined | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+  configVersion: undefined | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
   shortcuts: Shortcut[];
   blacklist: {
     mode: BlacklistMode;
@@ -67,6 +67,9 @@ export interface ISettingsServiceState {
   history: {
     entries: string[][];
     maxLength: number;
+  };
+  searches: {
+    entries: { name: string; tags: string[] }[];
   };
   snackbar: string | null;
   posts: {
@@ -118,6 +121,6 @@ export interface ISettingsServiceState {
     urls: {
       proxy: string;
       e621: string;
-    }
-  }
+    };
+  };
 }

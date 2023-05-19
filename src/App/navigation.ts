@@ -1,9 +1,15 @@
+import { useSavedSearchStore } from "@/services";
 import { useFavoritesStore } from "@/services/FavoriteStore";
 import { computed } from "vue";
 
 const hasFavorites = computed(() => {
   const store = useFavoritesStore();
   return store.hasFavorites;
+});
+
+const customItems = computed(() => {
+  const store = useSavedSearchStore();
+  return store.entries;
 });
 
 export const navigationItems = computed(() => [
@@ -15,6 +21,14 @@ export const navigationItems = computed(() => [
       path: "/posts",
     },
   },
+  ...customItems.value.map((entry) => ({
+    icon: "mdi-panorama-variant",
+    name: entry.name,
+    exact: true,
+    to: {
+      path: `/posts?tags=${encodeURIComponent(entry.tags.join(" "))}`,
+    },
+  })),
   {
     icon: "mdi-chart-timeline-variant-shimmer",
     name: "Post Suggester",

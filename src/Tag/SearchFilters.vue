@@ -1,9 +1,11 @@
 <template>
   <v-list-item>
-    <v-select style="width: 50%" v-model="sortBy" item-text="name" item-value="tag" hide-details outlined label="Sort by" :items="sortTags"
-      class="mr-2" />
-    <v-select style="width: 50%" v-model="rating" item-text="name" item-value="tag" hide-details outlined label="Rating"
-      :items="ratingTags" multiple />
+    <div class="d-flex flex-column flex-md-row fill-width" style="gap: 8px;">
+      <v-select v-model="sortBy" item-text="name" item-value="tag" hide-details outlined label="Sort by" :items="sortTags"
+        class="fill-width shrink" />
+      <v-select v-model="rating" item-text="name" item-value="tag" hide-details outlined label="Rating"
+        :items="ratingTags" multiple class="fill-width shrink" />
+    </div>
   </v-list-item>
 </template>
 

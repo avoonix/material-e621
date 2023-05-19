@@ -130,6 +130,10 @@ class PersistanceService {
       newState.misc = reactive(clone(defaultSettings.misc));
       newState.configVersion = 9;
     }
+    if(newState.configVersion < 10) {
+      newState.searches = reactive(clone(defaultSettings.searches));
+      newState.configVersion = 10;
+    }
 
     this.main.$state = newState;
   }

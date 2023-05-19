@@ -11,6 +11,11 @@
       <v-list-item-title v-else>
         <i>Empty query</i>
       </v-list-item-title>
+      <v-list-item-action v-if="item.length">
+        <v-btn icon @click.stop="addSavedSearch([...item], item.join(' '))">
+          <v-icon>mdi-content-save-plus</v-icon>
+        </v-btn>
+      </v-list-item-action>
       <v-list-item-action>
         <v-btn icon @click.stop="$emit('delete-entry', i)">
           <v-icon>mdi-close</v-icon>
@@ -23,6 +28,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import TagLabel from "./TagLabel.vue";
+import { useSavedSearchStore } from "@/services";
 
 export default defineComponent({
   props: {
@@ -32,5 +38,12 @@ export default defineComponent({
     },
   },
   components: { TagLabel },
+  setup() {
+    const savedSearch = useSavedSearchStore();
+
+    return {
+      addSavedSearch: (tags: string[], name: string) => savedSearch.addEntry(tags, name),
+    }
+  }
 });
 </script>
