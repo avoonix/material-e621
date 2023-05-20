@@ -24,6 +24,16 @@
 
 Latest version is available on [Vercel](https://material-e621.vercel.app/).
 
+### Docker
+
+```bash
+sudo docker run -d -p 8080:80 ghcr.io/avoonix/material-e621:latest
+```
+
+Alternatively, you can use `docker-compose up` with this [docker-compose.yml](./docker-compose.yml). Alternative docker compose setups and dockerfiles can be found in [#3](https://github.com/avoonix/material-e621/issues/3) and [#13](https://github.com/avoonix/material-e621/issues/13).
+
+`latest` can be replaced with any of the [available versions](https://github.com/avoonix/material-e621/pkgs/container/material-e621/versions)
+
 ### Development
 
 ```bash

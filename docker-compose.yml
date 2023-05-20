@@ -1,7 +1,7 @@
 version: "3"
 services:
   app:
-    image: ghcr.io/<username>/<image-name>:<tag>
+    image: ghcr.io/avoonix/material-e621:latest
     # if you want to build it yourself, replace `image` with `build`
     # build:
     #   context: .
