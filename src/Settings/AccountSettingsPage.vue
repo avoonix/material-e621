@@ -11,9 +11,13 @@
           <p class="text-left">
             Go to <external-link :href="`${e621Url}users/home`" /> > Manage API Access to get the API key
           </p>
+          <v-btn :disabled="!username" color="accent" text @click="toggleFavoritesMenuItem">
+            {{ usernameSavedSearchExists ? `Remove "Favorites" saved search` : `Add "Favorites" saved search` }}
+          </v-btn>
         </settings-page-item>
         <settings-page-item title="API" select>
-          <v-select filled label="e621 API" type="text" v-model="e621Url" :items="['https://e621.net/', 'https://e926.net/']" />
+          <v-select filled label="e621 API" type="text" v-model="e621Url"
+            :items="['https://e621.net/', 'https://e926.net/']" />
           <v-text-field filled label="Favorites API" type="text" v-model="proxyUrl" autocomplete="url" />
           <p class="text-left">
             Material e621 uses the regular e621 API as much as possible, but the
@@ -33,7 +37,8 @@ import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
 import { computed, defineComponent, ref } from "vue";
 import ExternalLink from "@/App/ExternalLink.vue";
-import { useAccountStore, useUrlStore } from "@/services";
+import { useAccountStore, useSavedSearchStore, useUrlStore } from "@/services";
+import { SavedSearchEntry } from "@/services/types";
 
 export default defineComponent({
   metaInfo: {
@@ -85,7 +90,24 @@ export default defineComponent({
       },
     });
 
+    const findSavedSearch = (e: SavedSearchEntry) => e.tags.length === 1 && e.tags[0] === usernameSavedSearchTag.value;
+    const savedSearches = useSavedSearchStore();
+    const usernameSavedSearchTag = computed(() => `fav:${username.value}`);
+    const usernameSavedSearchExists = computed(() =>
+      !!savedSearches.entries.find(findSavedSearch)
+    )
+
+    const toggleFavoritesMenuItem = () => {
+      if (usernameSavedSearchExists.value) {
+        savedSearches.deleteEntry(savedSearches.entries.findIndex(findSavedSearch))
+      } else {
+        savedSearches.addEntry([usernameSavedSearchTag.value], `Favorites (${username.value})`)
+      }
+    }
+
     return {
+      toggleFavoritesMenuItem,
+      usernameSavedSearchExists,
       showPassword,
       username,
       apiKey,

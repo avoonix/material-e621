@@ -35,6 +35,11 @@ export interface Shortcut {
   action: Action;
 }
 
+export interface SavedSearchEntry {
+  name: string;
+  tags: string[];
+}
+
 // export interface FavoritedSearch {
 //   tags: string[];
 //   firstPost?: number;
@@ -69,7 +74,7 @@ export interface ISettingsServiceState {
     maxLength: number;
   };
   searches: {
-    entries: { name: string; tags: string[] }[];
+    entries: SavedSearchEntry[];
   };
   snackbar: string | null;
   posts: {
