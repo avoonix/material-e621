@@ -46,3 +46,17 @@ npx playwright test
 npx playwright test --debug
 npx playwright codegen
 ```
+
+Or, to build the desktop app:
+
+Install dependencies:
+`cargo/rust`
+
+`nodejs/npm`
+
+Then run:
+```bash
+npm install
+cargo install tauri-cli
+cargo tauri build
+```
