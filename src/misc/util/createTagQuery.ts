@@ -1,5 +1,7 @@
 import { BlacklistMode } from "@/services/types";
 
+const E621_API_TAG_LIMIT = 40;
+
 // TODO: replace rating:e with rating:explicit ... when adding tags
 //     str
 //       .replace(/\brating:e\b/g, "rating:explicit")
@@ -59,5 +61,5 @@ export const createTagQuery = (
   //       }
   //     }
   //   }
-  return allTags.slice(0, 6).join(" "); // limit tags + blacklisted tags to 6
+  return allTags.slice(0, E621_API_TAG_LIMIT).join(" "); // limit tags + blacklisted tags to `E621_API_TAG_LIMIT`
 };
