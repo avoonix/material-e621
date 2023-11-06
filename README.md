@@ -46,3 +46,40 @@ npx playwright test
 npx playwright test --debug
 npx playwright codegen
 ```
+
+Or, to build the desktop app:
+
+Install the dependencies:
+
+`rust/cargo`:
+<details>
+  <summary>Linux</summary>
+  
+  `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
+</details>
+<details>
+  <summary>Windows</summary>
+  Download and run the rust installer:
+
+  [Here's the official link](https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe)
+</details>
+
+`nodejs/npm`:
+<details>
+  <summary>Linux</summary>
+
+  Use the package manager that comes with your distro
+</details>
+
+<details>
+  <summary>Windows</summary>
+
+  Download the installer from [the NodeJS website](https://nodejs.org/en)
+</details>
+
+Then run:
+```bash
+npm install
+cargo install tauri-cli
+cargo tauri build
+```

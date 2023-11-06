@@ -133,3 +133,6 @@ public/favicon.ico
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# Tauri output
+/src-tauri/target/
