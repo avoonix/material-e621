@@ -5,10 +5,18 @@ export const getE6PostUrl = (id: number) => {
   return `${url.e621Url}post/show/${id}`;
 };
 
-export const openInStandaloneWindow = (url: string) => {
-  const win = window.open(url, "_blank");
-  if (win) win.focus();
-};
+export const openUrlInNewTab = (url: string) => {
+    if ("__TAURI__" in window) {
+        window.__TAURI__.shell.open(url);
+        return;
+    }
+    const win = window.open(url, "_blank", "noopener");
+    if (win) {
+        win.opener = null;
+        win.focus();
+    }
+}
 
 export const openE6PostInStandaloneWindow = (id: number) =>
-  openInStandaloneWindow(getE6PostUrl(id));
+  openUrlInNewTab(getE6PostUrl(id));
+

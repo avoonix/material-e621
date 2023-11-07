@@ -37,12 +37,47 @@ Alternatively, you can use `docker-compose up` with this [docker-compose.yml](./
 ### Development
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
 ```bash
-npx playwright test
-npx playwright test --debug
-npx playwright codegen
+pnpx playwright test
+pnpx playwright test --debug
+pnpx playwright codegen
+```
+
+Or, to build the desktop app:
+
+Install the dependencies:
+
+`rust/cargo`:
+<details>
+  <summary>Linux</summary>
+  
+  Use the package manager that comes with your distro
+</details>
+<details>
+  <summary>Windows</summary>
+  Download and run the rust installer
+</details>
+
+`nodejs/pnpm`:
+<details>
+  <summary>Linux</summary>
+
+  Use the package manager that comes with your distro
+</details>
+
+<details>
+  <summary>Windows</summary>
+
+  Download the installer from the NodeJS website
+</details>
+
+Then run:
+```bash
+pnpm install
+cargo install tauri-cli
+cargo tauri build
 ```
