@@ -4,9 +4,10 @@ WORKDIR /app
 COPY package*.json ./
 COPY icons ./icons
 COPY public ./public
-RUN npm ci
+RUN npm install -g pnpm
+RUN pnpm install
 COPY . .
-RUN npm run build
+RUN pnpm build
 
 FROM nginx:mainline-alpine
 COPY --from=build /app/dist /usr/share/nginx/html
