@@ -1,9 +1,10 @@
 {
   "build": {
     "beforeBuildCommand": "npm run build",
-    "beforeDevCommand": "npm run dev",
+    "beforeDevCommand": "npm run dev -- --port 8080",
     "devPath": "http://localhost:8080",
-    "distDir": "../dist"
+    "distDir": "../dist",
+    "withGlobalTauri": true
   },
   "package": {
     "productName": "material-e621",
@@ -14,7 +15,9 @@
       "iconPath": "../public/trayicon.png"
     },
     "allowlist": {
-      "all": false
+      "shell": {
+        "open": true
+      }
     },
     "bundle": {
       "active": true,

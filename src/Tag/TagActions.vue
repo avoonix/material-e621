@@ -12,6 +12,7 @@ import PoolInfo from "@/Pool/PoolInfo.vue";
 import { useBlacklistStore, useUrlStore } from "@/services";
 import { useFavoritesStore } from "@/services/FavoriteStore";
 import { computed, defineComponent } from "vue";
+import { openUrlInNewTab } from "@/misc/util/url";
 
 // const menu = {
 //   remove: "Remove from search",
@@ -96,16 +97,14 @@ export default defineComponent({
             {
                 text: "Open e621.net wiki article",
                 action: () => {
-                    const w = window.open(wikiUrl.value, "_blank");
-                    w?.focus();
+                    openUrlInNewTab(wikiUrl.value);
                 },
                 visible: true,
             },
             {
                 text: "Search on e621.net",
                 action: () => {
-                    const w = window.open(e621Url.value, "_blank");
-                    w?.focus();
+                    openUrlInNewTab(e621Url.value);
                 },
                 visible: true,
             },

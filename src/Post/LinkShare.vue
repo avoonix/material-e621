@@ -35,6 +35,7 @@ import { getAppName, getBaseUrl } from "@/misc/util/utilities";
 import { computed, defineComponent, ref } from "vue";
 import copyToClipboard from "clipboard-copy";
 import { useSnackbarStore, useUrlStore } from "@/services";
+import { openUrlInNewTab } from "@/misc/util/url";
 
 enum UrlTypes {
   image,
@@ -102,7 +103,9 @@ export default defineComponent({
       if (button.noPopup) {
         return;
       }
-      window.open(button.url, `Share to ${name}`, "width=600,height=400");
+
+      openUrlInNewTab(button.url);
+      // window.open(button.url, `Share to ${name}`, "width=600,height=400");
     };
 
     const copyUrlToClipboard = async () => {
