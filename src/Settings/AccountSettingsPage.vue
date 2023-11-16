@@ -11,18 +11,20 @@
           <p class="text-left">
             Go to <external-link :href="`${e621Url}users/home`" /> > Manage API Access to get the API key
           </p>
-          <v-btn :disabled="!username || !apiKey" :loading="verification.loading" :color="verification.success ? 'success' : verification.message ? 'error' : 'accent'" text @click="verifyCredentials">
-              Verify credentials
-          </v-btn>
-          <p v-if="verification.message">
-              {{ verification.message }}
-          </p>
-          <p class="text-left" v-if="!verification.success && verification.message">
-              A network error means that <i>something</i> did not work. 
-              Most likely, this was an authentication error. Double check if the username is exactly the same as on <external-link :href="`${e621Url}users/home`" /> and make sure you copied the API key correctly - it should be 24 characters long.
-              <br />
-              Due to a security policy (CORS), Material e621 cannot determine the cause of the error. There might be a general error with the network or e621.
-          </p>
+          <div>
+              <v-btn :disabled="!username || !apiKey" :loading="verification.loading" :color="verification.success ? 'success' : verification.message ? 'error' : 'accent'" text @click="verifyCredentials">
+                  Verify credentials
+              </v-btn>
+              <p v-if="verification.message">
+                  {{ verification.message }}
+              </p>
+              <p class="text-left" v-if="!verification.success && verification.message">
+                  A network error means that <i>something</i> did not work. 
+                  Most likely, this was an authentication error. Double check if the username is exactly the same as on <external-link :href="`${e621Url}users/home`" /> and make sure you copied the API key correctly - it should be 24 characters long.
+                  <br />
+                  Due to a security policy (CORS), Material e621 cannot determine the cause of the error. There might be a general error with the network or e621.
+              </p>
+          </div>
           <v-btn class="mt-4" :disabled="!username" color="accent" text @click="toggleFavoritesMenuItem">
             {{ usernameSavedSearchExists ? `Remove "Favorites" saved search` : `Add "Favorites" saved search` }}
           </v-btn>
