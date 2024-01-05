@@ -1,18 +1,12 @@
 <template>
   <!-- grid -->
-  <!-- <v-layout v-if="layout === 'grid'" row wrap="">
-    <v-flex
-      v-for="post in visiblePosts"
-      :key="post.id"
-      v-bind="gridSizes"
-      ref="posts"
-    >
+  <v-layout v-if="layout === 'grid'" wrap="">
+    <v-flex v-for="post in visiblePosts" :key="post.id" v-bind="gridSizes" ref="posts">
       <slot name="post" :post="post" />
     </v-flex>
-  </v-layout> -->
+  </v-layout>
   <!-- blog/feed -->
-  <!-- v-else -->
-  <v-flex xs12 lg6 md8 offset-lg3 offset-md2 wrap="">
+  <v-flex xs12 lg6 md8 offset-lg3 offset-md2 wrap="" v-else>
     <v-flex :key="post.id" xs12 class="mb-5" v-for="(post, idx) in visiblePosts" :ref="addElement(idx)">
       <intersect @enter="triggerLoad(idx, 'enter', $event)" @leave="triggerLoad(idx, 'leave', $event)" :threshold="[0]"
         :root="null" root-margin="0px 0px 0px 0px" v-if="shouldHaveIntersectionObserver(idx)">
@@ -27,7 +21,7 @@
 <script lang="ts">
 import { usePostsStore } from "@/services";
 import { EnhancedPost } from "@/worker/ApiService";
-import { computed, defineComponent, nextTick, onBeforeUnmount, onBeforeUpdate, onMounted, PropType, ref, watch } from "vue";
+import { computed, defineComponent, inject, nextTick, onBeforeUnmount, onBeforeUpdate, onMounted, PropType, Ref, ref, watch } from "vue";
 import Intersect from "vue-intersect";
 
 const isAnyPartOfElementInViewport = (el: Element) => {
@@ -40,6 +34,26 @@ const isAnyPartOfElementInViewport = (el: Element) => {
   const horInView = rect.left <= windowWidth && rect.left + rect.width >= 0;
 
   return vertInView && horInView;
+};
+
+const breakpoints = {
+  sm: 600,
+  md: 960,
+  lg: 1264,
+  xl: 1904,
+};
+
+const getScreenSize = () => {
+  const width = window.innerWidth;
+  if (width < breakpoints.md) {
+    return 'sm';
+  } else if (width < breakpoints.lg) {
+    return 'md';
+  } else if (width < breakpoints.xl) {
+    return 'lg';
+  } else {
+    return 'xl';
+  }
 };
 
 const getOffset = (el: Element) => {
@@ -72,9 +86,32 @@ export default defineComponent({
       required: true,
     },
   },
+  computed: {
+    gridSizes() {
+      const isRestrainingSize = this.layout === "grid" && this.selectedGridSize != "Automatic";
+      return {
+        xs6: this.size == "sm" || this.size == "md" && !isRestrainingSize,
+        sm4: this.size == "sm" && (!isRestrainingSize || this.selectedGridSize == 4),
+        md3: this.size == "sm" && (!isRestrainingSize || this.selectedGridSize == 3),
+        lg2: this.size == "sm" && (!isRestrainingSize || this.selectedGridSize == 2),
+        xl1: this.size == "sm" && !isRestrainingSize,
+
+        sm6: this.size == "md" && !isRestrainingSize,
+        md4: this.size == "md" && (!isRestrainingSize || this.selectedGridSize == 4),
+        lg3: this.size == "md" && (!isRestrainingSize || this.selectedGridSize == 3),
+        xl2: this.size == "md" && (!isRestrainingSize || this.selectedGridSize == 2),
+
+        xs12: this.size == "xl" && !isRestrainingSize,
+        sm12: this.size == "xl" && !isRestrainingSize,
+        md6: this.size == "xl" && !isRestrainingSize,
+        lg4: this.size == "xl" && (!isRestrainingSize || this.selectedGridSize == 4),
+        xl3: this.size == "xl" && (!isRestrainingSize || this.selectedGridSize == 3),
+      };
+    },
+  },
   setup(props, context) {
-    const layout = ref<"list" | "grid">("list");
-    const size = ref<"sm" | "md" | "lg">("md");
+    const layout = ref<"list" | "grid">("grid");
+    const size = ref<"sm" | "md" | "lg" | "xl">("xl");
     const firstVisibleElement = ref<Element | null>(null);
     const posts = ref<Element[]>([]);
     const hasLeftElementThatTriggersPreviousPage = ref(false);
@@ -87,6 +124,8 @@ export default defineComponent({
       },
     );
 
+    const selectedGridSize = inject<Ref<"Automatic" | number>>("selectedGridSize")
+
     const handleScroll = (event: Event) => {
       if (!props.visiblePosts.length || !posts.value.length) return;
       firstVisibleElement.value =
@@ -95,31 +134,27 @@ export default defineComponent({
         ) || null;
       // window.scroll(window.scrollX, window.scrollY + 100);
     };
+    const updateLayoutAndSize = () => {
+      if (selectedGridSize?.value == 1) {
+        layout.value = 'list'
+      } else {
+        layout.value = 'grid'
+      }
+      size.value = getScreenSize();
+    };
 
     //   // return "gridmd"; // blog, feed(sm|md|xl), grid(sm|md|xl)
-    onMounted(() => window.addEventListener("scroll", handleScroll));
-    onBeforeUnmount(() => window.removeEventListener("scroll", handleScroll));
+    onMounted(() => {
+      updateLayoutAndSize();
+      window.addEventListener("scroll", handleScroll)
+      window.addEventListener("resize", updateLayoutAndSize);
+    });
+    onBeforeUnmount(() => {
+      window.removeEventListener("scroll", handleScroll)
+      window.removeEventListener("resize", updateLayoutAndSize);
+    });
 
-    // gridSizes() {
-    //   return {
-    //     xs6: this.size == "sm" || this.size == "md",
-    //     sm4: this.size == "sm",
-    //     md3: this.size == "sm",
-    //     lg2: this.size == "sm",
-    //     xl1: this.size == "sm",
-
-    //     sm6: this.size == "md",
-    //     md4: this.size == "md",
-    //     lg3: this.size == "md",
-    //     xl2: this.size == "md",
-
-    //     xs12: this.size == "xl",
-    //     sm12: this.size == "xl",
-    //     md6: this.size == "xl",
-    //     lg4: this.size == "xl",
-    //     xl3: this.size == "xl",
-    //   };
-    // },
+    watch([selectedGridSize], updateLayoutAndSize)
 
     const visiblePostIds = computed(() => props.visiblePosts.map((p) => p.id));
     watch(
@@ -180,7 +215,7 @@ export default defineComponent({
     };
 
     const shouldHaveIntersectionObserver = (index: number) => {
-      if(!postsStore.autoLoad) return false;
+      if (!postsStore.autoLoad) return false;
       return (
         index === indexThatTriggersPreviousPage.value ||
         index === indexThatTriggersNextPage.value
@@ -194,7 +229,8 @@ export default defineComponent({
       addElement,
       triggerLoad,
       shouldHaveIntersectionObserver,
+      selectedGridSize
     };
-  },
+  }
 });
 </script>

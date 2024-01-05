@@ -16,6 +16,14 @@
           <history-list :entries="historyEntries" @delete-entry="removeHistoryEntry($event)"
             @click-entry="onHistoryEntryClick" />
         </v-menu>
+        <v-menu bottom left max-height="300" offset-y transition="slide-y-transition" v-if="$vuetify.breakpoint.mdAndUp">
+          <template #activator="{ on }">
+            <v-btn v-on="on" icon>
+              <v-icon>mdi-view-grid-outline</v-icon>
+            </v-btn>
+          </template>
+          <grid-size @selection-changed="selectedGridSize = $event" />
+        </v-menu>
       </v-flex>
     </portal>
     <posts :posts="posts" :loading="loading" @load-previous="loadPreviousPage()" @load-next="loadNextPage()"
@@ -41,12 +49,13 @@ import { useRouterTagManager } from "@/Post/routerTagManager";
 import { useAccountStore, useBlacklistStore, usePostsStore, useUrlStore } from "@/services";
 import { ITag } from "@/Tag/ITag";
 import { debounce, isEqual } from "lodash";
-import { defineComponent, onMounted, ref, watch } from "vue";
+import { defineComponent, onMounted, ref, watch, provide, readonly } from "vue";
 import { removeRouterQuery, updateRouterQuery } from "../misc/util/utilities";
 import HistoryList from "../Tag/HistoryList.vue";
 import TagSearch from "../Tag/TagSearch.vue";
 import { getAnalyzeService, getApiService } from "../worker/services";
 import Suggestions from "./Suggestions.vue";
+import GridSize from "./GridSize.vue"
 
 export default defineComponent({
   components: {
@@ -54,6 +63,7 @@ export default defineComponent({
     Suggestions,
     TagSearch,
     HistoryList,
+    GridSize
   },
   setup(props, context) {
     const account = useAccountStore();
@@ -63,6 +73,7 @@ export default defineComponent({
       useRouterTagManager();
     const urlStore = useUrlStore();
     const route = useRoute();
+    const selectedGridSize = ref<"Automatic" | number>(1)
 
     const {
       loadPreviousPage,
@@ -168,6 +179,8 @@ export default defineComponent({
       suggestTags();
     }, { deep: true, });
 
+    provide("selectedGridSize", readonly(selectedGridSize))
+
     return {
       updateQuery,
       onHistoryEntryClick,
@@ -190,6 +203,7 @@ export default defineComponent({
       addTag,
       removeTag,
       setPostFavorite,
+      selectedGridSize
     };
   },
 });
