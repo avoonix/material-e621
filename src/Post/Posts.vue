@@ -1,8 +1,8 @@
 <template>
   <v-container fluid grid-list-md>
-    <div class="text-center">
+    <div v-if="hasPrevious" class="text-center">
       <v-btn @click="loadPrevious" :loading="loading" color="accent" text>
-        load previous
+        previous page
       </v-btn>
     </div>
     <!-- <app-logo v-if="loading" loader /> -->
@@ -17,7 +17,7 @@
     <app-logo v-if="loading" type="loader" />
     <div class="text-center">
       <v-btn @click="loadNext" :loading="loading" color="accent" text>
-        load next
+        next page
       </v-btn>
     </div>
     <fullscreen-dialog :has-previous-fullscreen-post="hasPreviousFullscreenPost"
@@ -100,6 +100,7 @@ export default defineComponent({
     loading: { type: Boolean, required: true },
     hasPreviousFullscreenPost: { type: Boolean, required: true },
     hasNextFullscreenPost: { type: Boolean, required: true },
+    hasPrevious: { type: Boolean, required: true },
   },
   // data() {
   //   return {

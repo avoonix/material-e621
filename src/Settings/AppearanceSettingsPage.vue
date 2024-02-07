@@ -92,6 +92,9 @@
         <settings-page-item title="Hide install prompt" switch>
           <v-switch v-model="appearance.hideInstallPrompt" />
         </settings-page-item>
+        <settings-page-item title="Hide GitHub info" switch>
+          <v-switch v-model="appearance.hideGithubInfo" />
+        </settings-page-item>
       </v-flex>
     </v-layout>
   </v-container>

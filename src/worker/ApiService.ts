@@ -22,17 +22,16 @@ export interface EnhancedPost extends Post {
   __meta: {
     isBlacklisted: boolean;
     isFavoriteLoading?: boolean;
+    pageNumber: number;
   };
 }
 
 export class ApiService {
   async getPosts(args: {
-    page?: number;
+    page: number;
     limit: number;
-    postsBefore?: number;
-    postsAfter?: number;
     tags: string[];
-    blacklist?: string[];
+    blacklist?: string[][];
     blacklistMode: BlacklistMode;
     auth?: IPostsListArgs["auth"];
     baseUrl: string;
@@ -58,6 +57,7 @@ export class ApiService {
       },
       __meta: {
         isBlacklisted: isPostBlacklisted(post, args.blacklist || []),
+        pageNumber: args.page,
       },
     }));
   }

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { computed } from "vue";
+import { computed, set } from "vue";
 import { useMainStore } from "./state";
 import { ISettingsServiceState } from "./types";
 
@@ -127,6 +127,12 @@ export const useAppearanceStore = defineStore("appearance", () => {
       main.appearance.hideInstallPrompt = value;
     },
   });
+
+  const hideGithubInfo = computed({
+    get() { return main.appearance.hideGithubInfo; },
+    set(value) { main.appearance.hideGithubInfo = value; },
+  });
+
   const applyTheme = (theme: Theme) => {
     primaryColor.value = theme.primary;
     secondaryColor.value = theme.secondary;
@@ -164,6 +170,7 @@ export const useAppearanceStore = defineStore("appearance", () => {
     hideInstallPrompt,
     applyTheme,
     theme,
+    hideGithubInfo,
   };
 });
 

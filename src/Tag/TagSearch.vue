@@ -3,7 +3,8 @@
     <v-combobox
       background-color="secondary"
       style="flex-grow: 999"
-      solo
+      :outlined="outlined"
+      :solo="!outlined"
       multiple
       attach
       flat
@@ -21,7 +22,7 @@
       class="combobox-with-background"
       @keydown.enter="onEnterPressed"
     >
-    <template #prepend-item>
+    <template v-if="searchFilters" #prepend-item>
       <SearchFilters :tags="tags" @add-tag="addTag($event)" @remove-tag="$emit('remove-tag', $event)" />
     </template>
       <template slot="no-data">
@@ -114,6 +115,14 @@ export default defineComponent({
       type: Array as PropType<string[]>,
       required: true,
     },
+    outlined: {
+      type: Boolean,
+      default: false,
+    },
+    searchFilters: {
+      type: Boolean,
+      default: true,
+    }
   },
   components: {
     TagLabel,

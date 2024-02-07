@@ -1,18 +1,15 @@
+import { intersection } from "lodash";
 import { Post } from "../api";
 import debug from "debug";
 
 const log = debug("app:blacklist");
 
-export const isPostBlacklisted = (post: Post, blacklist?: string[]) => {
+export const isPostBlacklisted = (post: Post, blacklist?: string[][]) => {
   if (!blacklist) {
     log("no blacklist");
     return false;
   }
   const postTags = Object.values(post.tags).flat() as string[];
-  // const blacklistTags = blacklist
-  //   .split(" ")
-  //   .map((tag) => tag.replace(/$-/, ""))
-  //   .filter((tag) => tag.length);
   log(postTags);
   switch (post.rating) {
     case "e":
@@ -25,106 +22,26 @@ export const isPostBlacklisted = (post: Post, blacklist?: string[]) => {
       postTags.push("rating:s", "rating:safe");
       break;
   }
-  for (const tag of postTags) {
-    if (blacklist.indexOf(tag) !== -1) {
+  for (const blacklistLine of blacklist) {
+    if (matchesBlacklistLine(postTags, blacklistLine)) {
       return true;
     }
   }
   return false;
 };
 
-// const createQuery = (blacklistMode, blacklistStr, tagsStr) => {
-//   const includeBlacklistInQuery =
-//     blacklistMode === "dynamic" || blacklistMode === "tags"; // other implementations hide/blur/blackout posts
-//   const tagsArr = [
-//     ...tagsStr.split(" ").filter((str) => str.length > 0),
-//     ...(includeBlacklistInQuery
-//       ? blacklistStr
-//           .split(" ")
-//           .filter((str) => str.length > 0)
-//           .map((str) => (str.startsWith("-") ? str : "-" + str))
-//       : []),
-//   ].map((str) =>
-//     str
-//       .replace(/\brating:e\b/g, "rating:explicit")
-//       .replace(/\brating:q\b/g, "rating:questionable")
-//       .replace(/\brating:s\b/g, "rating:safe"),
-//   );
+const isSubset = <T>(arr: T[], subArr: T[]) => intersection(arr, subArr).length === subArr.length;
 
-//   const implications = [
-//     {
-//       contains: ["-rating:explicit", "-rating:questionable"],
-//       replace: "rating:safe",
-//     },
-//     {
-//       contains: ["-rating:safe", "-rating:questionable"],
-//       replace: "rating:explicit",
-//     },
-//     {
-//       contains: ["-rating:safe", "-rating:explicit"],
-//       replace: "rating:questionable",
-//     },
-//     {
-//       contains: ["rating:explicit", "rating:questionable"],
-//       replace: "-rating:safe",
-//     },
-//     {
-//       contains: ["rating:safe", "rating:questionable"],
-//       replace: "-rating:explicit",
-//     },
-//     {
-//       contains: ["rating:safe", "rating:explicit"],
-//       replace: "-rating:questionable",
-//     },
-//   ];
+const matchesBlacklistLine = (postTags: string[], blacklistLine: string[]) => {
+  if (!blacklistLine.length) return false;
 
-//   // e621 can't process duplicate metatags - they have to be converted (eg -rating:safe + -rating:questionable => rating:explicit)
-//   for (const implication of implications) {
-//     let matches = true;
-//     for (const str of implication.contains) {
-//       if (tagsArr.indexOf(str) === -1) {
-//         matches = false;
-//         break;
-//       }
-//     }
-//     if (matches) {
-//       tagsArr.push(implication.replace);
-//       for (const str of implication.contains) {
-//         const index = tagsArr.indexOf(str);
-//         tagsArr.splice(index, 1);
-//       }
-//     }
-//   }
+  // TODO: refactor
+  const require = blacklistLine.filter(t => !t.startsWith("~") && !t.startsWith("-"));
+  const optional = blacklistLine.filter(t => t.startsWith("~")).map(t => t.replace(/^~/, ""));
+  const exclude = blacklistLine.filter(t => t.startsWith("-")).map(t => t.replace(/^-/, ""));
 
-//   // reorder the tags based on importance (matters if the array contains more than 6 tags)
-//   const positiveTags = [],
-//     negativeTags = [];
-//   let sortedArr = []; // everything in here will be the first elements of the result array; it's fine to put tags in there that are also in positiveTags or negativeTags because of uniq
-//   for (const tag of tagsArr) {
-//     if (tag.indexOf("rating:") !== -1) {
-//       sortedArr.push(tag);
-//     } else if (tag.startsWith("-")) {
-//       negativeTags.push(tag);
-//     } else {
-//       positiveTags.push(tag);
-//     }
-//   }
-
-//   const result = uniq([
-//     ...sortedArr,
-//     ...positiveTags,
-//     ...negativeTags.sort((a, b) => {
-//       // also sort based on posts per tag(if available)
-//       // let countA = (allTags[a.replace(/^-/, "")] || {}).count || 0;
-//       // let countB = (allTags[b.replace(/^-/, "")] || {}).count || 0;
-//       let countA = 0;
-//       let countB = 0;
-//       // rank metatags a bit higher than tags without a count
-//       if (a.indexOf(":") !== -1) countA++;
-//       if (b.indexOf(":") !== -1) countB++;
-//       return countB - countA;
-//     }),
-//   ]);
-//   // console.log(result);
-//   return result.slice(0, 6).join(" "); // limit tags + blacklisted tags to 6
-// };
+  // https://github.com/e621ng/e621ng/blob/8112e57329ee225a193b5aa0503aaf95b29c103f/app/javascript/src/javascripts/blacklists.js#L281
+  return !!((isSubset(postTags, require))
+    && (!optional.length || intersection(postTags, optional).length)
+    && !intersection(postTags, exclude).length);
+}

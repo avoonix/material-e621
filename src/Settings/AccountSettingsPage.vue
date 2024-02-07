@@ -131,6 +131,7 @@ export default defineComponent({
         try {
             const service = await getApiService();
             const posts = await service.getPosts({
+              page: 1,
               limit: 1,
               tags: ["rating:s"],
               blacklist: [],

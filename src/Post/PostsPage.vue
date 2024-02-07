@@ -18,7 +18,8 @@
         </v-menu>
       </v-flex>
     </portal>
-    <posts :posts="posts" :loading="loading" @load-previous="loadPreviousPage()" @load-next="loadNextPage()"
+    <posts :posts="posts" :loading="loading" :has-previous="hasPrevious"
+      @load-previous="loadPreviousPage()" @load-next="loadNextPage()"
       @open-post="openFullscreenPost" :fullscreen-post="fullscreenPost || undefined"
       @exit-fullscreen="fullscreenPost = null" @next-fullscreen-post="openNextFullscreenPost()"
       @previous-fullscreen-post="openPreviousFullscreenPost()" :has-previous-fullscreen-post="true"
@@ -26,6 +27,7 @@
       @close-details="detailsPost = null" @set-post-favorite="setPostFavorite($event)" />
     <!-- TODO: set has-(next|previous)-fullscreen-post -->
     <portal to="sidebar-suggestions">
+      <v-subheader v-if="hiddenPostCount > 0">Blacklisted posts hidden: {{ hiddenPostCount }}</v-subheader>
       <v-subheader v-if="suggestedTags.length > 0">Tags on this page</v-subheader>
       <suggestions :tags="suggestedTags" />
     </portal>
@@ -67,7 +69,9 @@ export default defineComponent({
     const {
       loadPreviousPage,
       loadNextPage,
-      posts,
+      visiblePosts: posts,
+      clearPosts,
+      hiddenPostCount,
       fullscreenPost,
       detailsPost,
       loading,
@@ -76,29 +80,26 @@ export default defineComponent({
       openNextFullscreenPost,
       openPreviousFullscreenPost,
       setPostFavorite,
+      hasPrevious,
     } = usePostListManager({
-      getSavedFirstPostId() {
-        return Number(route.query.first_post); // TODO: handle null
+      getSavedPageNumber() {
+        return Number(route.query.page) || 0;
       },
-      getSettingsPageSize() {
-        return postsStore.postListFetchLimit;
-      },
-      saveFirstPostId(id) {
-        console.log("save first post", id)
-        if (!id) {
-          removeRouterQuery(["first_post"]);
-          return;
+      savePageNumber(page) {
+        console.log("save page number", page)
+        if (page === 1 || !page) {
+          removeRouterQuery(["page"]);
+        } else {
+          updateRouterQuery({
+            page: String(page),
+          });
         }
-        updateRouterQuery({
-          first_post: String(id),
-        });
       },
-      async loadPosts({ postsBefore, postsAfter }) {
+      async loadPosts(page) {
         const service = await getApiService();
         const posts = await service.getPosts({
           limit: postsStore.postListFetchLimit,
-          postsBefore,
-          postsAfter,
+          page,
           tags: tags.value,
           blacklist: blacklist.tags,
           blacklistMode: blacklist.mode,
@@ -140,8 +141,8 @@ export default defineComponent({
 
     const onSearchClick = debounce(async () => {
       if (!loading.value) {
-        await removeRouterQuery(["first_post"]);
-        posts.value = [];
+        await removeRouterQuery(["page"]);
+        clearPosts();
         loadNextPage();
       }
     }, 50);
@@ -190,6 +191,8 @@ export default defineComponent({
       addTag,
       removeTag,
       setPostFavorite,
+      hiddenPostCount,
+      hasPrevious,
     };
   },
 });

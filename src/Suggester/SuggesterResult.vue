@@ -6,6 +6,7 @@
           <posts
             :posts="posts"
             :loading="loading"
+            :has-previous="hasPrevious"
             @load-previous="loadPreviousPage()"
             @load-next="loadNextPage()"
             @open-post="openFullscreenPost"
@@ -21,6 +22,7 @@
             @set-post-favorite="setPostFavorite($event)"
           />
           <portal to="sidebar-suggestions">
+            <v-subheader v-if="hiddenPostCount > 0">Blacklisted posts hidden: {{ hiddenPostCount }}</v-subheader>
             <progress-message v-if="listProgress" :value="listProgress" />
             <base-tags :counts="result.counts" />
           </portal>
@@ -47,7 +49,7 @@ import { getAnalyzeService } from "@/worker/services";
 import * as Comlink from "comlink";
 import BaseTags from "./BaseTags.vue";
 import { usePostListManager } from "@/Post/postListManager";
-import { updateRouterQuery } from "@/misc/util/utilities";
+import { removeRouterQuery, updateRouterQuery } from "@/misc/util/utilities";
 import Posts from "@/Post/Posts.vue";
 import { useRoute } from "@/misc/util/router";
 import ProgressMessage from "./ProgressMessage.vue";
@@ -110,7 +112,8 @@ export default defineComponent({
     const {
       loadPreviousPage,
       loadNextPage,
-      posts,
+      visiblePosts: posts,
+      hiddenPostCount,
       fullscreenPost,
       detailsPost,
       loading,
@@ -119,19 +122,22 @@ export default defineComponent({
       openNextFullscreenPost,
       openPreviousFullscreenPost,
       setPostFavorite,
+      hasPrevious,
     } = usePostListManager({
-      getSavedFirstPostId() {
-        return Number(route.query.first_post); // TODO: handle null
+      getSavedPageNumber() {
+        return Number(route.query.page) || 0;
       },
-      getSettingsPageSize() {
-        return postsStore.postListFetchLimit;
+      savePageNumber(page) {
+        console.log("save page number", page)
+        if (page === 1 || !page) {
+          removeRouterQuery(["page"]);
+        } else {
+          updateRouterQuery({
+            page: String(page),
+          });
+        }
       },
-      saveFirstPostId(id) {
-        updateRouterQuery({
-          first_post: String(id),
-        });
-      },
-      async loadPosts({ postsBefore, postsAfter }) {
+      async loadPosts(page, direction) {
         if (!result.value) {
           throw new Error("no tags available");
         }
@@ -141,7 +147,7 @@ export default defineComponent({
             result.value,
             weights.value,
             postsStore.postListFetchLimit,
-            { postsBefore, postsAfter },
+            { page, direction },
             account.auth,
             urlStore.e621Url,
             Comlink.proxy((progressEvent) => {
@@ -165,13 +171,6 @@ export default defineComponent({
       },
     );
 
-    watchEffect(() => {
-      console.log(
-        posts.value,
-        posts.value.map((p) => p.id),
-      );
-    });
-
     return {
       listProgress,
       result,
@@ -187,6 +186,8 @@ export default defineComponent({
       openNextFullscreenPost,
       openPreviousFullscreenPost,
       setPostFavorite,
+      hiddenPostCount,
+      hasPrevious,
     };
   },
 });

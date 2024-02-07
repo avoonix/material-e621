@@ -86,7 +86,6 @@ export class AnalyzeService {
 
   cache: { [key: string]: Post[] | undefined } = {};
 
-  // TODO: generator?
   private async fetchPostsCached(
     tags: string[],
     postLimit: number,
@@ -95,27 +94,27 @@ export class AnalyzeService {
   ) {
     const service = new ApiService();
     const posts: Post[] = [];
-    let postsBefore: undefined | number = undefined;
+    let page = 1;
     const key = [tags, postLimit].join("");
     log("start fetch");
     if (key && this.cache[key]) {
       posts.push(...this.cache[key]!);
     } else {
-      while (true) {
+      while (posts.length < postLimit) {
         const newPosts: Post[] = await service.getPosts({
           blacklistMode: BlacklistMode.blur,
           limit: 320,
           tags,
-          postsBefore,
           baseUrl,
+          page,
         });
-        postsBefore = newPosts[newPosts.length - 1]?.id;
+        page += 1;
         posts.push(...newPosts);
         onProgress({
           message: `got ${posts.length} of ${postLimit} posts`,
           progress: Math.min(1, posts.length / postLimit),
         });
-        if (newPosts.length !== 320 || posts.length >= postLimit) {
+        if (newPosts.length !== 320) {
           break;
         }
       }
@@ -189,8 +188,8 @@ export class AnalyzeService {
     },
     limit: number,
     args: {
-      postsBefore?: number;
-      postsAfter?: number;
+      direction: "next" | "previous",
+      page: number,
     },
     auth:
       | {
@@ -203,13 +202,10 @@ export class AnalyzeService {
   ) {
     // fetch posts, sort them by score and display the top `limit` ones
     const toFetch = limit * 40;
-
     const service = new ApiService();
     const posts: ScoredPost[] = [];
-    const direction = args.postsAfter ? "after" : "before";
-    let postsBefore: undefined | number = args.postsBefore || undefined;
-    let postsAfter: undefined | number = args.postsAfter || undefined;
-    while (1) {
+    let page = args.page;
+    while (posts.length < toFetch && page >= 1) {
       onProgress({
         progress: Math.min(1, posts.length / toFetch),
         message: `got ${posts.length} of ${toFetch} posts`,
@@ -218,23 +214,21 @@ export class AnalyzeService {
         blacklistMode: BlacklistMode.blur, // TODO: blacklist mode
         limit: 320,
         tags: [],
-        postsBefore,
-        postsAfter,
+        page,
         auth,
         baseUrl,
       });
 
       const scoredNewPosts = scorePosts(tags, weights, newPosts);
-      if (direction === "after") {
-        postsAfter = scoredNewPosts[0]?.id || undefined;
+      if (args.direction === "previous") {
+        page -= 1;
         posts.unshift(...scoredNewPosts);
       } else {
-        postsBefore =
-          scoredNewPosts[scoredNewPosts.length - 1]?.id || undefined;
+        page += 1;
         posts.push(...scoredNewPosts);
       }
 
-      if (posts.length >= toFetch || scoredNewPosts.length < 320) {
+      if (scoredNewPosts.length < 320) {
         break;
       }
     }

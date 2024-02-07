@@ -2,6 +2,7 @@
   <v-flex>
     <template v-for="tag in tags">
       <v-btn
+      class="ma-1"
         :key="tag"
         outlined
         @click="toggleBlacklisted(tag)"
@@ -26,15 +27,24 @@ export default defineComponent({
       required: true,
     },
     blacklisted: {
-      type: Array as PropType<string[]>,
+      type: Array as PropType<string[][]>,
       required: true,
     },
   },
   setup(props, context) {
+    const findTag = (tag: string) => (tags: string[]) => tags.length === 1 && tags[0] === tag
+    // only count as blacklist if every occurence (= one row in the e621 blacklist) is blacklisted
     const isBlacklisted = (tag: string) =>
-      props.blacklisted.indexOf(tag) !== -1;
-    const toggleBlacklisted = (tag: string) =>
-      context.emit(isBlacklisted(tag) ? "remove-tag" : "add-tag", tag);
+      !!props.blacklisted.find(findTag(tag));
+
+    const toggleBlacklisted = (tag: string) => {
+      const index = props.blacklisted.findIndex(findTag(tag));
+      if (index !== -1) {
+        context.emit("remove-tag", index, tag)
+      } else {
+        context.emit("add-tag", tag);
+      }
+    }
 
     return {
       isBlacklisted,

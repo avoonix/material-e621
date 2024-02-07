@@ -12,8 +12,8 @@
             <settings-page-section section="blacklist" title="Blacklist" icon="mdi-playlist-remove"
               color="darken-1 red">
               <v-list-item-subtitle>
-                {{ blacklistCount }}
-                {{ blacklistCount === 1 ? "tag" : "tags" }} blacklisted
+                {{ blacklistCount }} blacklist 
+                {{ blacklistCount === 1 ? "entry" : "entries" }}
               </v-list-item-subtitle>
             </settings-page-section>
             <settings-page-section section="appearance" title="Appearance" icon="mdi-palette" color="darken-1 pink" />
@@ -41,7 +41,7 @@
           </v-list>
         </v-card>
 
-        <v-card color="secondary" class="mt-3">
+        <v-card color="secondary" class="mt-3" v-if="githubInfoVisible">
           <v-card-title class="pb-1 pt-2">
             Found a bug or got an idea for a new feature?
           </v-card-title>
@@ -50,6 +50,9 @@
           </v-card-text>
           <v-card-actions class="pb-2">
             <v-spacer />
+            <v-btn @click="hideGithubInfo" small outlined color="primary">
+              Never show again
+            </v-btn>
             <v-btn small outlined color="primary" target="_blank"
               href="https://github.com/avoonix/material-e621/issues">
               <v-icon left> mdi-open-in-new </v-icon>
@@ -69,7 +72,7 @@
 
 <script lang="ts">
 import { getGitInfo } from "@/misc/util/git";
-import { useAccountStore, useBlacklistStore, useHistoryStore, useShortcutStore } from "@/services";
+import { useAccountStore, useAppearanceStore, useBlacklistStore, useHistoryStore, useShortcutStore } from "@/services";
 import { computed, defineComponent, onMounted } from "vue";
 import { formatDistanceToNow } from "date-fns";
 import SettingsPageSection from "./SettingsPageSection.vue";
@@ -86,6 +89,8 @@ export default defineComponent({
     const blacklist = useBlacklistStore();
     const account = useAccountStore();
     const shortcuts = useShortcutStore();
+    const appearance = useAppearanceStore();
+
     onMounted(() => {
       window.scrollTo({ top: 0 });
     });
@@ -102,12 +107,17 @@ export default defineComponent({
 
     const shortcutCount = computed(() => shortcuts.shortcuts.length);
 
+    const hideGithubInfo = () => appearance.hideGithubInfo = true;
+    const githubInfoVisible = computed(() => !appearance.hideGithubInfo)
+
     return {
       lastUpdated,
       historySize,
       blacklistCount,
       username,
       shortcutCount,
+      hideGithubInfo,
+      githubInfoVisible,
     };
   },
 });

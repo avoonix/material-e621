@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
-import { computed } from "vue";
+import Vue, { computed, set } from "vue";
 import { useMainStore } from "./state";
 
 const stripTag = (tag: string) =>
-  tag.trim().toLowerCase().replaceAll(/^-/g, "");
+  tag.trim().toLowerCase().replaceAll(/^--/g, "");
 
 export const useBlacklistStore = defineStore("blacklist", () => {
   const main = useMainStore();
@@ -16,20 +16,35 @@ export const useBlacklistStore = defineStore("blacklist", () => {
     },
   });
   const tags = computed(() => main.blacklist.tags);
-  const addTag = (tag: string) => {
-    removeTag(tag);
-    main.blacklist.tags.push(stripTag(tag));
+  const addTag = (index: number, tag: string) => {
+    removeTag(index, tag);
+    if (!main.blacklist.tags[index]) {
+      Vue.set(main.blacklist.tags, index, []);
+    }
+    main.blacklist.tags[index].push(stripTag(tag));
   };
 
-  const removeTag = (tag: string) => {
-    const idx = main.blacklist.tags.indexOf(stripTag(tag));
+  const removeTag = (index: number, tag: string) => {
+    console.log(index, tag);
+    if (!main.blacklist.tags[index]) return;
+    const idx = main.blacklist.tags[index].indexOf(stripTag(tag));
     if (idx >= 0) {
-      main.blacklist.tags.splice(idx, 1);
+      main.blacklist.tags[index].splice(idx, 1);
+    }
+    if(main.blacklist.tags[index].length === 0) {
+      main.blacklist.tags.splice(index, 1);
     }
   };
 
+
+  const hideServerSideBlacklisted = computed({
+    get() { return main.blacklist.hideServerSideBlacklisted; },
+    set(value) { main.blacklist.hideServerSideBlacklisted = value; },
+  });
+
+  // only count tag as blacklisted if every occurrence of the tag (= single row in blacklist) is blacklisted
   const tagIsBlacklisted = computed(
-    () => (tag: string) => main.blacklist.tags.includes(stripTag(tag)),
+    () => (tag: string) => !!main.blacklist.tags.find(tags => tags.length === 1 && tags[0] === stripTag(tag)),
   );
 
   return {
@@ -38,5 +53,6 @@ export const useBlacklistStore = defineStore("blacklist", () => {
     addTag,
     removeTag,
     tagIsBlacklisted,
+    hideServerSideBlacklisted,
   };
 });

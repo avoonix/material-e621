@@ -18,7 +18,6 @@ class ShortcutService {
   public setUpShortcuts() {
     Mousetrap.reset();
     const shortcutStore = useShortcutStore();
-    console.log("setting up shortcuts");
     for (const { action, sequence } of shortcutStore.shortcuts) {
       Mousetrap.bind(sequence, (e) => {
         switch (action) {
