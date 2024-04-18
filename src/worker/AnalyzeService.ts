@@ -59,8 +59,12 @@ export class AnalyzeService {
     };
     for (const c of Object.keys(counts) as (keyof PostTags)[]) {
       for (const tag of tags) {
-        for (const t of tag[c]) {
-          counts[c][t] = (counts[c][t] || 0) + 1;
+        if(tag[c]) {
+          for (const t of tag[c]) {
+            counts[c][t] = (counts[c][t] || 0) + 1;
+          }
+        } else {
+          console.warn(tag, "does not contain", c)
         }
       }
     }
