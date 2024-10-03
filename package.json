@@ -68,7 +68,6 @@
     "lodash.uniq": "^4.5.0",
     "mitt": "^3.0.0",
     "mousetrap": "^1.6.5",
-    "node-sass": "^8.0.0",
     "pinia": "^2.0.29",
     "portal-vue": "^2.1.7",
     "prerender-spa-plugin": "^3.4.0",
