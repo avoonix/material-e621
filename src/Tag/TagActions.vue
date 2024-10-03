@@ -1,7 +1,7 @@
 <template>
   <v-list class="secondary">
     <PoolInfo v-if="pool" class="mb-2" :pool-id="pool" />
-    <v-list-item v-for="(item, i) in items" :key="i" @click.stop="item.action">
+    <v-list-item v-for="(item, i) in items" :key="i" @click.stop="item.action" :router="!!item.route" exact :to="item.route" >
       <v-list-item-content>{{ item.text }}</v-list-item-content>
     </v-list-item>
   </v-list>
@@ -56,6 +56,7 @@ export default defineComponent({
             text: string;
             action: () => void;
             visible: boolean;
+            route?: any;
         }[]>(() => [
             {
                 text: isFavorited.value ? "Unstar" : "Star",
@@ -66,6 +67,12 @@ export default defineComponent({
             },
             {
                 text: "Search",
+                route: {
+                    name: "Posts",
+                    query: {
+                        tags: props.name,
+                    },
+                },
                 action: async () => {
                     const { appRouter } = await import("@/misc/util/router");
                     appRouter.push({
@@ -74,9 +81,6 @@ export default defineComponent({
                             tags: props.name,
                         },
                     });
-                    // updateRouterQuery({
-                    //   tags: props.name,
-                    // });
                 },
                 visible: true,
             },
