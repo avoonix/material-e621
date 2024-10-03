@@ -244,26 +244,23 @@ export class DashboardService {
   ) {
     const service = new ApiService();
     const posts: EnhancedPost[] = [];
-    let postsBefore: undefined | number = undefined;
+    let page = 1;
     log("start fetch");
-    while (true) {
+    while (posts.length < DashboardService.POST_LIMIT) {
       const newPosts: EnhancedPost[] = await service.getPosts({
         blacklistMode: BlacklistMode.blur,
         limit: 320,
         tags,
-        postsBefore,
+        page,
         baseUrl
       });
-      postsBefore = newPosts[newPosts.length - 1]?.id;
+      page += 1;
       posts.push(...newPosts);
       onProgress({
         message: `got ${posts.length} of ${DashboardService.POST_LIMIT} posts`,
         progress: Math.min(1, posts.length / DashboardService.POST_LIMIT),
       });
-      if (
-        newPosts.length !== 320 ||
-        posts.length >= DashboardService.POST_LIMIT
-      ) {
+      if (newPosts.length !== 320) {
         break;
       }
     }

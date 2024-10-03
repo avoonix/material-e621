@@ -82,7 +82,8 @@ class PersistanceService {
   private setState(newState: ISettingsServiceState) {
     // migrations
     if (!newState.configVersion) {
-      newState.configVersion = 1;
+      set(newState, "configVersion", 1);
+      newState.configVersion = 1; // to satisfy ts
     }
     if (newState.configVersion < 2) {
       newState.shortcuts = reactive(clone(defaultSettings.shortcuts));
@@ -110,8 +111,7 @@ class PersistanceService {
         newState.appearance.toolbar = defaultSettings.appearance.toolbar;
       }
       if (typeof newState.posts.fullscreenZoomUiMode !== "number") {
-        newState.posts.fullscreenZoomUiMode =
-          FullscreenZoomUiMode.hideWhileZoomed;
+        set(newState.posts, "fullscreenZoomUiMode", defaultSettings.posts.fullscreenZoomUiMode);
       }
       if (!newState.posts.dataSaver) {
         newState.posts.dataSaver = DataSaverType.auto;
@@ -123,7 +123,7 @@ class PersistanceService {
       newState.configVersion = 7;
     }
     if(newState.configVersion < 8) {
-      newState.posts.autoLoadNext = defaultSettings.posts.autoLoadNext;
+      set(newState.posts,"autoLoadNext", defaultSettings.posts.autoLoadNext);
       newState.configVersion = 8;
     }
     if(newState.configVersion < 9) {
@@ -133,6 +133,13 @@ class PersistanceService {
     if(newState.configVersion < 10) {
       newState.searches = reactive(clone(defaultSettings.searches));
       newState.configVersion = 10;
+    }
+    if(newState.configVersion < 11) {
+      const old = newState.blacklist.tags as unknown as string[];
+      newState.blacklist.tags = reactive(old.map(tag => [tag]));
+      set(newState.appearance,"hideGithubInfo", defaultSettings.appearance.hideGithubInfo);
+      set(newState.blacklist, "hideServerSideBlacklisted", defaultSettings.blacklist.hideServerSideBlacklisted);
+      newState.configVersion = 11;
     }
 
     this.main.$state = newState;

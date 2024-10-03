@@ -28,7 +28,7 @@ export const fullscreenFavoriteShortcuts: Shortcut[] = [
 ];
 
 export const defaultSettings: ISettingsServiceState = {
-  configVersion: 9,
+  configVersion: 11,
   shortcuts: [
     // { action: "favorite_post", sequence: "f p" },
     // { action: "toggle_fullscreen", sequence: "t f" },
@@ -63,6 +63,7 @@ export const defaultSettings: ISettingsServiceState = {
     mode: BlacklistMode.blur,
     // tags: ["rating:explicit", "rating:questionable"],
     tags: [],
+    hideServerSideBlacklisted: false,
   },
   appearance: {
     primary: "#1976d2",
@@ -80,6 +81,7 @@ export const defaultSettings: ISettingsServiceState = {
     navigationType: "sidebar",
     logoStyle: "face",
     hideInstallPrompt: false,
+    hideGithubInfo: false,
   },
   history: {
     entries: [],

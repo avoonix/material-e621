@@ -23,7 +23,7 @@ import { computed, defineComponent, ref } from "vue";
 const bookmarklet = `function bookmarklet() {
   let m = /https?:\\/\\/e621\\.net\\/(post\\/show|posts)\\/(\\d+)/.exec(window.location.href);
   if (m) {
-    window.location.href = "[[baseUrl]]/#/posts?first_post=" + m[2];
+    window.location.href = "[[baseUrl]]/#/posts?tags=id%3A" + m[2];
     return;
   }
   m = /https?:\\/\\/e621\\.net\\/(post\\/index|posts)(\\/)?.*tags=([-a-zA-Z_.+)(]+?)(&|$)/.exec(window.location.href);

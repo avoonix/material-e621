@@ -71,7 +71,7 @@ export default defineComponent({
     const url = computed(() => {
       switch (urlType.value) {
         case UrlTypes.materialE621:
-          return `${getBaseUrl()}/#/posts?first_post=${props.postId}`;
+          return `${getBaseUrl()}/#/posts?tags=id:${props.postId}`;
         case UrlTypes.e621:
           return `${urlStore.e621Url}posts/${props.postId}`;
         case UrlTypes.image:

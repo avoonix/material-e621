@@ -90,10 +90,10 @@ export default defineComponent({
                     : "Add to blacklist",
                 action: () => {
                     if (isBlacklisted.value) {
-                        blacklist.removeTag(props.name);
+                        blacklist.removeTag(blacklist.tags.findIndex(tags => tags.length === 1 && tags[0] === props.name), props.name);
                     }
                     else {
-                        blacklist.addTag(props.name);
+                        blacklist.addTag(blacklist.tags.length, props.name);
                     }
                 },
                 visible: true,

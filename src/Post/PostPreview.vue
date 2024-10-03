@@ -3,9 +3,9 @@
     <img :loading="loading" v-if="(isImage || isVideo) && imageSrc" :src="imageSrc" class="clickable" />
     <div v-else-if="isImage || isVideo" class="centered clickable play-button">
       <v-chip color="red" text-color="white">Global Blacklist</v-chip>
-      <p class="pa-3">
+      <p class="pa-3 text-center">
         This post is on the server-side blacklist for unauthenticated users. Log
-        in to view.
+        in to view, or update the blacklist settings.
       </p>
     </div>
     <div v-if="isSwf" class="centered clickable" v-ripple>

@@ -46,11 +46,12 @@ export interface SavedSearchEntry {
 // }
 
 export interface ISettingsServiceState {
-  configVersion: undefined | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+  configVersion: undefined | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
   shortcuts: Shortcut[];
   blacklist: {
     mode: BlacklistMode;
-    tags: string[];
+    tags: string[][];
+    hideServerSideBlacklisted: boolean;
   };
   appearance: {
     primary: string;
@@ -68,6 +69,7 @@ export interface ISettingsServiceState {
     navigationType: "sidebar" | "toolbar" | "floating";
     logoStyle: "face" | "text";
     hideInstallPrompt: boolean;
+    hideGithubInfo: boolean;
   };
   history: {
     entries: string[][];

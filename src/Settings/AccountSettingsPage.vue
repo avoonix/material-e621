@@ -32,6 +32,7 @@
         <settings-page-item title="API" select>
           <v-select filled label="e621 API" type="text" v-model="e621Url"
             :items="['https://e621.net/', 'https://e926.net/']" />
+          <v-text-field filled label="Custom e621 URL" type="text" v-model="e621Url" autocomplete="url" hint="You might want to change your username/API key if you switch instances" persistent-hint />
           <v-text-field filled label="Favorites API" type="text" v-model="proxyUrl" autocomplete="url" />
           <p class="text-left">
             Material e621 uses the regular e621 API as much as possible, but the
@@ -131,6 +132,7 @@ export default defineComponent({
         try {
             const service = await getApiService();
             const posts = await service.getPosts({
+              page: 1,
               limit: 1,
               tags: ["rating:s"],
               blacklist: [],

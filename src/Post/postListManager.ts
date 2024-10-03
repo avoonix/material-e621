@@ -1,27 +1,21 @@
-import router from "@/router";
 import { EnhancedPost } from "@/worker/ApiService";
 import { getApiService } from "@/worker/services";
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, watchEffect } from "vue";
 import Vue from "vue";
-import { useAccountStore, useSnackbarStore, useUrlStore } from "@/services";
+import { useAccountStore, useSnackbarStore, useUrlStore, useBlacklistStore, usePostsStore } from "@/services";
+import { BlacklistMode } from "@/services/types";
 
 interface IUsePostListManagerArgs {
-  loadPosts(args: {
-    postsBefore?: number | undefined;
-    postsAfter?: number | undefined;
-  }): Promise<EnhancedPost[]>;
+  loadPosts(page: number, direction: "next" | "previous"): Promise<EnhancedPost[]>;
 
-  getSettingsPageSize(): number;
-
-  getSavedFirstPostId(): number;
-  saveFirstPostId(id: number | null): void;
+  getSavedPageNumber(): number;
+  savePageNumber(id: number | null): void;
 }
 
 export const usePostListManager = ({
   loadPosts,
-  getSavedFirstPostId,
-  saveFirstPostId,
-  getSettingsPageSize,
+  getSavedPageNumber,
+  savePageNumber,
 }: IUsePostListManagerArgs) => {
   const snackbar = useSnackbarStore();
   const posts = ref<EnhancedPost[]>([]);
@@ -29,6 +23,8 @@ export const usePostListManager = ({
   const detailsPost = ref<EnhancedPost | null>(null);
   const loading = ref(false);
   const urlStore = useUrlStore();
+  const blacklistStore = useBlacklistStore();
+  const postsStore = usePostsStore();
 
   const handleError = (error: any) => {
     const errorMessage = error?.message || String(error);
@@ -73,15 +69,16 @@ export const usePostListManager = ({
     }
   };
 
-  const getPostCountToRemove = () => posts.value.length - getSettingsPageSize();
+  const getPostCountToRemove = () => posts.value.length - postsStore.postListFetchLimit;
 
-  const firstPostId = computed(() =>
-    posts.value.length ? posts.value[0].id : getSavedFirstPostId(),
+  const firstPageNumber = computed(() =>
+    posts.value.length ? posts.value[0].__meta.pageNumber : getSavedPageNumber(),
   );
-  const lastPostId = computed(() =>
+
+  const lastPageNumber = computed(() =>
     posts.value.length
-      ? posts.value[posts.value.length - 1].id
-      : getSavedFirstPostId() + 1,
+      ? posts.value[posts.value.length - 1].__meta.pageNumber
+      : getSavedPageNumber(),
   );
 
   const loadPreviousPage = async () => {
@@ -90,11 +87,11 @@ export const usePostListManager = ({
     }
     try {
       loading.value = true;
-      const newPosts = await loadPosts({
-        postsAfter: firstPostId.value,
-      });
+      const newPosts = await loadPosts(firstPageNumber.value - 1, "previous");
       const postCountToRemove = getPostCountToRemove();
-      posts.value.unshift(...newPosts);
+      // newly uploaded posts cause old posts to shift pages, and duplicates are bad
+      const newPostsFiltered = newPosts.filter(newP => !posts.value.find(existing => existing.id === newP.id))
+      posts.value.unshift(...newPostsFiltered);
       posts.value.splice(
         posts.value.length - postCountToRemove,
         postCountToRemove,
@@ -111,9 +108,7 @@ export const usePostListManager = ({
     }
     try {
       loading.value = true;
-      const newPosts = await loadPosts({
-        postsBefore: lastPostId.value,
-      });
+      const newPosts = await loadPosts(lastPageNumber.value + 1, "next");
 
       const postCountToRemove = getPostCountToRemove();
       posts.value.push(...newPosts);
@@ -128,7 +123,7 @@ export const usePostListManager = ({
   watch(
     posts,
     () => {
-      saveFirstPostId(posts.value[0]?.id || null);
+      savePageNumber(posts.value[0]?.__meta.pageNumber || null);
     },
     { deep: true },
   );
@@ -137,7 +132,7 @@ export const usePostListManager = ({
     detailsPost.value = posts.value.find((p) => p.id === postId) || null;
   };
   const isValidNextPost = (post: EnhancedPost) => {
-    return !!post.file.url;
+    return !!post.file.url && !post.__meta.isBlacklisted;
   };
   const _openFullscreenPost =
     (offset: number) =>
@@ -182,10 +177,20 @@ export const usePostListManager = ({
     fullscreenPost.value?.id &&
     _openFullscreenPost(-1)(fullscreenPost.value.id, 0);
 
+  const visiblePosts = computed(() => {
+    const visibleAfterApplyingBlacklist = blacklistStore.mode === BlacklistMode.hide ? posts.value.filter(p => !p.__meta.isBlacklisted) : [...posts.value];
+    const visibleAfterApplyingServerSideBlacklistSetting = blacklistStore.hideServerSideBlacklisted ? visibleAfterApplyingBlacklist.filter(p => !!p.file.url) : [...visibleAfterApplyingBlacklist];
+    return visibleAfterApplyingServerSideBlacklistSetting;
+  });
+  const hiddenPostCount = computed(() => posts.value.length - visiblePosts.value.length);
+  const clearPosts = () => posts.value = [];
+  const hasPrevious = computed(() => posts.value.length !== 0 && posts.value[0].__meta.pageNumber > 1);
+
   return {
     loadPreviousPage,
     loadNextPage,
-    posts,
+    visiblePosts,
+    hiddenPostCount,
     fullscreenPost,
     detailsPost,
     loading,
@@ -194,5 +199,7 @@ export const usePostListManager = ({
     openNextFullscreenPost,
     openPreviousFullscreenPost,
     setPostFavorite,
+    clearPosts,
+    hasPrevious,
   };
 };

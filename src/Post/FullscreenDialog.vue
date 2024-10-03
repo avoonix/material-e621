@@ -14,7 +14,7 @@
               flash is not supported
             </div>
             <video v-else-if="current.file.ext == 'webm' && currentFileUrl"
-              class="overflow flash black position-relative" controls loop autoplay preload="metadata">
+              class="overflow flash black position-relative" controls loop autoplay playsinline preload="metadata">
               <source v-if="current.file.url" :src="current.file.url" type="video/webm" />
               Video type not supported by your browser
             </video>
