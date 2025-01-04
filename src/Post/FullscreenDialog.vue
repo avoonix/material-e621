@@ -48,13 +48,25 @@
           </v-icon>
         </div>
       </div>
-      <div class="top-right" v-ripple @click.stop="exitFullscreen">
-        <v-icon size="40" class="ml-2 mt-2">mdi-close</v-icon>
+      <div class="top-right button-panel" v-ripple @click.stop="exitFullscreen">
+        <v-icon size="30">mdi-close</v-icon>
       </div>
-      <div class="bottom-right" v-show="!hideUi">
-        <post-buttons v-if="current" :key="current.id" :buttons="buttons" :post="current"
-          @open-post-details="$emit('open-post-details', $event)" @open-post-fullscreen="exitFullscreen()"
-          @set-post-favorite="$emit('set-post-favorite', $event)" />
+      <div class="bottom-right button-panel slideshow-buttons" v-show="!hideUi">
+        <div style="margin-bottom: 1em;" v-show="showSlideshowIntervals">
+          <v-btn-toggle v-model="currentSlideshowSetting" @change="onSlideshowSetting" vertical>
+            <v-btn v-for="interval in ['Off', 5, 10, 30, 60]" :key="interval" :value="interval">
+              {{ interval }}{{ interval === 'Off' ? '' : 's' }}
+            </v-btn>
+          </v-btn-toggle>
+        </div>
+        <div style="display: inline-flex;">
+          <v-btn style="display: inline-flex;" icon="$mdi-projector-screen-outline" @click="showSlideshowIntervals = !showSlideshowIntervals">
+            <v-icon>mdi-projector-screen-outline</v-icon>
+          </v-btn>
+          <post-buttons style="display: inline-flex;" v-if="current" :key="current.id" :buttons="buttons" :post="current"
+            @open-post-details="$emit('open-post-details', $event)" @open-post-fullscreen="exitFullscreen()"
+            @set-post-favorite="$emit('set-post-favorite', $event)" />
+        </div>
       </div>
     </div>
   </v-dialog>
@@ -129,9 +141,11 @@ export default defineComponent({
     const dialog = ref<Vue>();
     const lastFullscreenId = ref<number | null>();
     const isZoomed = ref(false);
+    const currentSlideshowSetting = ref('Off');
     const postIsBlacklisted = computed(() =>
       Boolean(props?.current?.__meta.isBlacklisted),
     );
+    const showSlideshowIntervals = ref(false);
     const { classes: blacklistClasses } = useBlacklistClasses({
       mode: blacklist.mode,
       postIsBlacklisted,
@@ -145,6 +159,28 @@ export default defineComponent({
           return appearance.fullscreenTransition;
         },
       });
+
+    const timeoutStops = ref<any[]>([]);
+    const onSlideshowSetting = (value: string) => {
+      timeoutStops.value.forEach((stop) => stop());
+      timeoutStops.value = [];
+      if (value === 'Off') return;
+      const interval = parseInt(value);
+      const next = () => {
+        if (props.hasNextFullscreenPost) {
+          showNextImage();
+        } else {
+          exitFullscreen();
+        }
+      };
+      const intervalId = setInterval(next, interval * 1000);
+      const stop = () => clearInterval(intervalId);
+      timeoutStops.value.push(stop);
+      currentSlideshowSetting.value = value;
+      if (interval > 0) {
+        intervalId;
+      }
+    };
 
     const hideUi = computed(() => {
       switch (posts.fullscreenZoomUiMode) {
@@ -289,6 +325,9 @@ export default defineComponent({
       loadStart,
       exitFullscreen,
       dialog,
+      currentSlideshowSetting,
+      onSlideshowSetting,
+      showSlideshowIntervals,
     };
   },
 });
@@ -309,6 +348,24 @@ export default defineComponent({
 .hidden {
   // visibility: hidden;
   opacity: 0.1;
+}
+
+.slideshow-buttons {
+  margin: 1em;
+  text-align: right;
+}
+
+.button-panel {
+  margin: 1em 4em;
+  background-color: rgb(39, 39, 39);
+  padding: 1em;
+  border-radius: 8px;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.button-panel:hover {
+  opacity: 1;
 }
 
 .fullscreen {
@@ -392,10 +449,6 @@ export default defineComponent({
     bottom: 0;
     right: 0;
     z-index: 1006;
-
-    button {
-      float: right;
-    }
   }
 
   .bottom-left {
