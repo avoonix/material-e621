@@ -1,15 +1,15 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-if="!minimalHeader" :color="theme.sidebar" :clipped="clipped" v-model="drawer"
-      floating app width="400" class="pa-2">
+    <v-navigation-drawer v-if="!minimalHeader" :color="theme.sidebar" :clipped="clipped" v-model="drawer" floating app
+      width="400" class="pa-2">
       <router-link to="/">
         <app-logo v-view-transition-name="'applogo'" :type="logoStyle" />
       </router-link>
       <navigation-list />
       <portal-target name="sidebar-suggestions" />
     </v-navigation-drawer>
-    <v-app-bar v-view-transition-name="'appbar'" :color="minimalHeader ? theme.primary : theme.toolbar" :app="!minimalHeader" :flat="minimalHeader"
-      :clipped-left="clipped" :floating="navMode == 'floating'" :class="{
+    <v-app-bar v-view-transition-name="'appbar'" :color="minimalHeader ? theme.primary : theme.toolbar"
+      :app="!minimalHeader" :flat="minimalHeader" :clipped-left="clipped" :floating="navMode == 'floating'" :class="{
         'ma-2': navMode == 'floating',
         'mb-3': navMode == 'floating',
         primary: minimalHeader,
