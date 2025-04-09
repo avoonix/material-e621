@@ -1,9 +1,5 @@
 <template>
-  <v-data-table
-    disable-sort
-    :headers="headers"
-    :items="shortcuts"
-  >
+  <v-data-table disable-sort :headers="headers" :items="shortcuts">
     <template #top>
       <div class="pa-2">
         <v-dialog v-model="dialog" max-width="500px">
@@ -21,23 +17,13 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6">
-                    <v-select
-                      :items="actions"
-                      v-model="editedItem.action"
-                      label="Action"
-                    />
+                    <v-select :items="actions" v-model="editedItem.action" label="Action" />
                   </v-col>
                   <v-col cols="12" sm="6">
-                    <v-text-field
-                      v-model="editedItem.sequence"
-                      label="Recorded sequence"
-                      readonly
-                    />
+                    <v-text-field v-model="editedItem.sequence" label="Recorded sequence" readonly />
                   </v-col>
                   <v-col cols="12">
-                    <keyboard-shortcut-recorder
-                      @recorded="editedItem.sequence = $event"
-                    />
+                    <keyboard-shortcut-recorder @recorded="editedItem.sequence = $event" />
                   </v-col>
                 </v-row>
               </v-container>
@@ -89,13 +75,14 @@ import {
 import { clone } from "lodash";
 import KeyboardShortcutRecorder from "./KeyboardShortcutRecorder.vue";
 import { useShortcutStore } from "@/services";
+import type { DataTableHeader } from "vuetify";
 
 export default defineComponent({
   props: {},
   components: { KeyboardShortcutRecorder },
   setup(props, context) {
     const shortcutStore = useShortcutStore();
-    const headers = [
+    const headers: DataTableHeader[] = [
       { title: "Action", value: "action" },
       { title: "Sequence", value: "sequence" },
       { title: "", value: "buttons", align: "end" },

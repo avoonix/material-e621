@@ -27,7 +27,10 @@ export interface IAnalyzeTagsArgs {
 }
 
 export interface IAnalyzeTagsResult {
-  wordPositions: any[];
+  wordPositions: {
+      category: string;
+      result: {text: string, size: number}[];
+  }[];
 }
 
 export interface IProgressEvent {
@@ -143,7 +146,7 @@ export class AnalyzeService {
 
     const counts = getCounts(posts);
 
-    const result: any = [];
+    const result = [];
     for (const [category, obj] of Object.entries(counts)) {
       result.push({
         category,
@@ -284,7 +287,7 @@ const tagIterator = function* (tags: PostTags) {
 };
 
 const createCloud = (counts: any) => {
-  return new Promise<any[]>((resolve) => {
+  return new Promise<{text: string, size: number}[]>((resolve) => {
     const words = Object.entries(counts).map(([text, count]) => ({
       text,
       size: count as number,

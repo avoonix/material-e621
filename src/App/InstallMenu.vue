@@ -18,7 +18,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn variant="text" color @click="hide">Never show again</v-btn>
+        <v-btn variant="text" @click="hide">Never show again</v-btn>
         <v-btn variant="text" color="primary" @click="install">Install</v-btn>
       </v-card-actions>
     </v-card>

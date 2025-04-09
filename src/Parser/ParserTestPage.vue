@@ -13,11 +13,12 @@
 import { useUrlStore } from "@/services";
 import DText from "./DText.vue";
 import { useHead } from "@unhead/vue";
+import { ref } from "vue";
 
 useHead({ title: "Parser Test Page", });
 
 const urlStore = useUrlStore(); // todo: properly convert to vue 3 api
-const testText = `
+const testText = ref(`
 h1. Hello there
 Edit this text and see the results below.
 
@@ -79,5 +80,5 @@ header | header | header
  row   |   row  | row
  row   |   row  | row
 [/table]
-`
+`)
 </script>

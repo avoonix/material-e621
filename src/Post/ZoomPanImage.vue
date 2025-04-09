@@ -1,22 +1,7 @@
 <template>
-  <div
-    ref="middle"
-    class="middle bg-black"
-    @wheel="onScroll"
-    @mousewheel="onScroll"
-  >
-    <div
-      ref="overflow"
-      class="overflow"
-      @mousedown.prevent="onMouseDown"
-      @mouseup="onMouseUp"
-    >
-      <div
-        :style="containerStyle"
-        ref="zoom"
-        class="zoom-container text-center"
-        style="position: relative"
-      >
+  <div ref="middle" class="middle bg-black" @wheel="onScroll" @mousewheel="onScroll">
+    <div ref="overflow" class="overflow" @mousedown.prevent="onMouseDown" @mouseup="onMouseUp">
+      <div :style="containerStyle" ref="zoom" class="zoom-container text-center" style="position: relative">
         <slot />
       </div>
     </div>
@@ -48,8 +33,8 @@ export default defineComponent({
       startLevel: 0,
     };
 
-    const middle = ref<Element>();
-    const zoom = ref<Element>();
+    const middle = ref<HTMLElement>();
+    const zoom = ref<HTMLElement>();
 
     const currentZoom = reactive(clone(initialZoom));
 
@@ -64,7 +49,7 @@ export default defineComponent({
         hammer.destroy();
         hammer = null;
       }
-      if(!middle.value) return;
+      if (!middle.value) return;
       hammer = new Hammer.Manager(middle.value, {
         recognizers: [
           [Hammer.Tap],
@@ -77,16 +62,16 @@ export default defineComponent({
           [Hammer.Pinch, { enable: true, threshold: 0.01 }, ["pan"]],
         ],
       });
-      hammer.on("swipeleft", (event) => {
+      hammer.on("swipeleft", () => {
         context.emit("swipe-left", zoomInfo.value);
       });
-      hammer.on("swiperight", (event) => {
+      hammer.on("swiperight", () => {
         context.emit("swipe-right", zoomInfo.value);
       });
-      hammer.on("swipedown", (event) => {
+      hammer.on("swipedown", () => {
         context.emit("swipe-down", zoomInfo.value);
       });
-      hammer.on("swipeup", (event) => {
+      hammer.on("swipeup", () => {
         context.emit("swipe-up", zoomInfo.value);
       });
       hammer.on("pinchstart", () => {
@@ -106,7 +91,7 @@ export default defineComponent({
     };
 
     const constrainZoom = () => {
-      if(!middle.value || !zoom.value) return;
+      if (!middle.value || !zoom.value) return;
       const padding = 0;
       const constraints = {
         left: {
@@ -203,9 +188,8 @@ export default defineComponent({
       const zoom = currentZoom;
       const style = {
         "transform-origin": "top left",
-        transform: `translate(${-zoom.left}px, ${-zoom.top}px) scale(${
-          zoom.level
-        })`,
+        transform: `translate(${-zoom.left}px, ${-zoom.top}px) scale(${zoom.level
+          })`,
         display: "block",
       };
       return style;

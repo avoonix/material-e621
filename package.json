@@ -50,7 +50,9 @@
   "devDependencies": {
     "@playwright/test": "^1.51.1",
     "@tsconfig/node22": "^22.0.1",
+    "@types/hammerjs": "^2.0.46",
     "@types/jsdom": "^21.1.7",
+    "@types/mousetrap": "^1.6.15",
     "@types/node": "^22.13.14",
     "@vite-pwa/assets-generator": "^1.0.0",
     "@vitejs/plugin-vue": "^5.2.3",

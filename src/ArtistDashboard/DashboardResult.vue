@@ -105,7 +105,7 @@ const route = useRoute();
 
 const artist = computed<string>(() => {
   let name = "";
-  if (route.params.name) name = route.params.name;
+  if (route.params.name) name = typeof route.params.name === "string" ? route.params.name : route.params.name[0];
   return name;
 });
 

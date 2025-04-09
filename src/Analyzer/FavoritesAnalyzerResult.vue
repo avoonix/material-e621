@@ -15,7 +15,7 @@
                   </v-list-item-title>
                   <template v-slot:append>
                     <!-- <v-btn icon="mdi-pencil" size="x-small" variant="tonal"></v-btn> -->
-                     {{ item.size }}
+                    {{ item.size }}
                   </template>
                 </v-list-item>
               </template>
@@ -35,7 +35,7 @@ import {
   watch,
   watchEffect,
 } from "vue";
-import type { IAnalyzeTagsArgs, IProgressEvent } from "@/worker/AnalyzeService";
+import type { IAnalyzeTagsArgs, IAnalyzeTagsResult, IProgressEvent } from "@/worker/AnalyzeService";
 import { getAnalyzeService } from "@/worker/services";
 import { cloneDeep, debounce } from "lodash";
 import * as Comlink from "comlink";
@@ -62,7 +62,7 @@ const args = computed<IAnalyzeTagsArgs>(() => {
   };
 });
 
-const result = ref();
+const result = ref<IAnalyzeTagsResult>();
 
 const analyze = debounce(async (a) => {
   const service = await getAnalyzeService();

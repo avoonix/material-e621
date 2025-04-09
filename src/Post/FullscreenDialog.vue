@@ -1,7 +1,7 @@
 <template>
   <v-dialog dark :model-value="open" fullscreen :scrim="false" transition="dialog-bottom-transition" scrollable
     persistent>
-    <div class="fullscreen bg-grey-darken-4" ref="dialog">
+    <div class="fullscreen bg-grey-darken-4">
       <div class="flex">
         <div v-show="!hideUi" class="float-left" v-ripple="hasPreviousFullscreenPost" @click="showPreviousImage">
           <v-icon size="50" v-if="hasPreviousFullscreenPost">
@@ -90,7 +90,7 @@ document.querySelector("#app")?.addEventListener("fullscreenchange", () => {
   appIsFullscreen.value = !!document.fullscreenElement;
 });
 
-const emit = defineEmits(["close", "next-post", "previous-post"]);
+const emit = defineEmits(["close", "next-post", "previous-post", "set-post-favorite", "open-post-details"]);
 
 
 const props = defineProps({
@@ -115,7 +115,6 @@ const blacklist = useBlacklistStore();
 const posts = usePostsStore();
 const shortcutService = useShortcutService();
 
-const dialog = ref<Vue>();
 const lastFullscreenId = ref<number | null>();
 const isZoomed = ref(false);
 const postIsBlacklisted = computed(() =>
@@ -186,7 +185,7 @@ const showPreviousImage = () => {
 };
 
 const updateFavorite = (favorited: (current: boolean) => boolean) => () =>
-  props.current && !props.current?.__meta.isFavoriteLoading && props.current.is_favorited !== favorited(props.current.is_favorited) && context.emit("set-post-favorite", {
+  props.current && !props.current?.__meta.isFavoriteLoading && props.current.is_favorited !== favorited(props.current.is_favorited) && emit("set-post-favorite", {
     postId: props.current.id,
     favorited: favorited(props.current.is_favorited),
   } as Parameters<ReturnType<typeof usePostListManager>["setPostFavorite"]>["0"]);

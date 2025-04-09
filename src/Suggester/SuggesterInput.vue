@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { useAccountStore } from "@/services";
-import { computed, defineComponent, reactive, ref } from "vue";
+import { computed, defineComponent, reactive, ref, toRaw } from "vue";
 import { useRouter, type RouteLocationRaw } from "vue-router";
 import SliderGroup from "./SliderGroup.vue";
 import { useHead } from "@unhead/vue";
@@ -27,7 +27,7 @@ useHead({ title: "Post Suggester", });
 const account = useAccountStore();
 const username = ref(account.username || "");
 const router = useRouter();
-const sliders = reactive({
+const sliders = ref({
   general: 5,
   artist: 30,
   copyright: 25,
@@ -42,7 +42,7 @@ const query = computed<RouteLocationRaw>(() => ({
   query: {
     name: username.value,
     ...Object.fromEntries(
-      Object.entries(sliders).map(([key, value]) => [key, `${value}`]),
+      Object.entries(sliders.value).map(([key, value]) => [key, `${value}`]),
     ),
   },
 }));

@@ -1,6 +1,6 @@
 <template>
-  <v-virtual-scroll :items="entries" height="320" item-height="48">
-    <template v-slot:default="{ item }">
+  <v-virtual-scroll :items="entries" height="260" item-height="48">
+    <template v-slot:default="{ item, index }">
       <v-list-item @click="$emit('click-entry', item)">
         <v-list-item-title v-if="item.length">
           <TagLabel class="mx-1" :tag="{ name: tag }" v-for="(tag, idx) in item" :key="idx" />
@@ -12,7 +12,7 @@
           <v-btn icon @click.stop="addSavedSearch([...item], item.join(' '))" v-if="item.length">
             <v-icon>mdi-content-save-plus</v-icon>
           </v-btn>
-          <v-btn icon @click.stop="$emit('delete-entry', i)">
+          <v-btn icon @click.stop="$emit('delete-entry', index)">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </template>

@@ -1,4 +1,3 @@
-import './assets/main.css'
 import "./misc/serviceWorker/register";
 import '@asika32764/vue-animate/dist/vue-animate.css';
 

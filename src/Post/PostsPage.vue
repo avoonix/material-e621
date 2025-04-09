@@ -2,20 +2,23 @@
   <div>
     <portal to="toolbar">
       <div style="display: flex; align-items: center; flex-grow: 999;">
-        <tag-search v-view-transition-name="'tagsearch'" style="flex: 1 1 auto" :tags="tags" @add-tag="addTag" @remove-tag="removeTag"
-          @confirm-search="updateQuery() && onSearchClick()" label="Tags" />
-        <v-btn icon @click="updateQuery() && onSearchClick()" :loading="loading">
+        <tag-search v-view-transition-name="'tagsearch'" style="flex: 1 1 auto" :tags="tags" @add-tag="addTag"
+          @remove-tag="removeTag" @confirm-search="updateQuery(), onSearchClick()" label="Tags" />
+        <v-btn icon @click="updateQuery(), onSearchClick()" :loading="loading">
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
-        <v-menu location="bottom left" max-height="300" offset-y transition="slide-y-transition"
-          v-if="mdAndUp">
+        <v-menu location="bottom left" max-height="300" offset-y transition="slide-y-transition" v-if="mdAndUp">
           <template #activator="{ props }">
             <v-btn v-bind="props" icon>
               <v-icon>mdi-history</v-icon>
             </v-btn>
           </template>
-          <history-list :entries="historyEntries" @delete-entry="removeHistoryEntry($event)"
-            @click-entry="onHistoryEntryClick" />
+          <v-card>
+            <v-card-text>
+              <history-list :entries="historyEntries" @delete-entry="removeHistoryEntry($event)"
+                @click-entry="onHistoryEntryClick" />
+            </v-card-text>
+          </v-card>
         </v-menu>
       </div>
     </portal>
@@ -61,7 +64,7 @@ const { tags, addTag, removeTag, updateQuery, query, setTags } =
 const urlStore = useUrlStore();
 const route = useRoute();
 
-const {removeRouterQuery, updateRouterQuery} = useRouterQueryHelpers();
+const { removeRouterQuery, updateRouterQuery } = useRouterQueryHelpers();
 
 const {
   loadPreviousPage,

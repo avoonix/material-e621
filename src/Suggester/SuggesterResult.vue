@@ -1,7 +1,7 @@
 <template>
   <v-container class="fill-height">
     <v-row align-center>
-      <v-col class="text-center" ref="container">
+      <v-col ref="container">
         <div v-if="result">
           <posts :posts="posts" :loading="loading" :has-previous="hasPrevious" @load-previous="loadPreviousPage()"
             @load-next="loadNextPage()" @open-post="openFullscreenPost" :fullscreen-post="fullscreenPost || undefined"
@@ -16,7 +16,7 @@
             <base-tags :counts="result.counts" />
           </portal>
         </div>
-        <div v-else>
+        <div v-else class="text-center">
           <progress-message :value="progress" />
         </div>
       </v-col>
@@ -33,10 +33,10 @@ import BaseTags from "./BaseTags.vue";
 import { usePostListManager } from "@/Post/postListManager";
 import { useRouterQueryHelpers } from "@/misc/util/utilities";
 import Posts from "@/Post/Posts.vue";
-import { useRoute } from "vue-router";
 import ProgressMessage from "./ProgressMessage.vue";
 import { useAccountStore, useBlacklistStore, usePostsStore, useUrlStore } from "@/services";
 import { useHead } from "@unhead/vue";
+import { useRoute } from "vue-router";
 
 useHead({ title: "Suggestions", });
 
@@ -50,7 +50,7 @@ const route = useRoute();
 const progress = ref<IProgressEvent>();
 const listProgress = ref<IProgressEvent | null>(null);
 
-const username = computed<string>(() => route.query?.name?.toString());
+const username = computed(() => route.query?.name?.toString());
 
 const keys = [
   "general",
@@ -145,7 +145,9 @@ const {
 watch(
   username,
   () => {
-    analyze(username.value);
+    if (username.value) {
+      analyze(username.value);
+    } // TODO: else
   },
   {
     immediate: true,
