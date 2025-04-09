@@ -4,9 +4,10 @@
     @click="$emit('apply-theme')"
     class="ma-2"
     style="cursor: pointer"
+    :color="theme.background"
   >
-    <v-layout class="pa-0">
-      <v-flex xs3>
+    <v-row class="pa-0">
+      <v-col xs3>
         <v-card class="fill-height no-border-radius" :color="theme.sidebar">
           <div style="padding: 2px" />
           <theme-text
@@ -34,8 +35,8 @@
             :key="`${i}_tags`"
           />
         </v-card>
-      </v-flex>
-      <v-flex xs9>
+      </v-col>
+      <v-col xs9>
         <v-card :color="theme.background" class="no-border-radius">
           <v-toolbar
             dense
@@ -44,16 +45,16 @@
           >
             {{ theme.name }}
           </v-toolbar>
-          <v-layout align-center wrap>
-            <v-flex xs12 class="text-center">
+          <v-row align-center wrap>
+            <v-col cols="12" class="class="text-center"">
               <theme-text
                 width="15%"
                 :ratio="0.25"
                 :color="theme.accent"
                 style="display: inline-block"
               />
-            </v-flex>
-            <v-flex xs6 offset-xs3 v-for="i in 1" :key="i">
+            </v-col>
+            <v-col xs6 offset-xs3 v-for="i in 1" :key="i">
               <v-card class="mb-2" :color="theme.secondary">
                 <img class="img" :src="imageSrc" />
                 <theme-text
@@ -73,18 +74,20 @@
                   />
                 </div>
               </v-card>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
 <script lang="ts">
 import { getTagColorFromCategory } from "@/misc/util/utilities";
-import { Theme, ThemeItem } from "@/services";
-import { computed, defineComponent, PropType } from "vue";
+import type { ThemeItem } from "@/services";
+import { Theme } from "@/services";
+import type { PropType } from "vue";
+import { computed, defineComponent } from "vue";
 import imageSrc from "./image.jpg";
 import ThemeText from "./ThemeText.vue";
 
@@ -126,7 +129,7 @@ export default defineComponent({
 
 <style scoped>
 .no-border-radius {
-  border-radius: 0;
+  border-radius: 0!important;
 }
 .img {
   width: 100%;

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import Vue, { computed, set } from "vue";
+import { computed } from "vue";
 import { useMainStore } from "./state";
 
 const stripTag = (tag: string) =>
@@ -19,7 +19,7 @@ export const useBlacklistStore = defineStore("blacklist", () => {
   const addTag = (index: number, tag: string) => {
     removeTag(index, tag);
     if (!main.blacklist.tags[index]) {
-      Vue.set(main.blacklist.tags, index, []);
+      main.blacklist.tags[index] = [];
     }
     main.blacklist.tags[index].push(stripTag(tag));
   };

@@ -1,30 +1,18 @@
 <template>
-  <v-container fill-height>
-    <v-layout align-center>
-      <v-flex text-center xs12 sm10 offset-sm1 lg6 offset-lg3>
-        <settings-page-title title="Keyboard Shortcuts" color="black" />
+  <v-container class="fill-height">
+    <v-row align-center>
+      <v-col class="text-center" cols="12" sm="10" offset-sm="1" lg="6" offset-lg="3">
+        <settings-page-title section="shortcuts" title="Keyboard Shortcuts" color="black" />
         <keyboard-shortcut-editor class="mt-2" />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import SettingsPageTitle from "./SettingsPageTitle.vue";
-import { defineComponent } from "vue";
 import KeyboardShortcutEditor from "./KeyboardShortcutEditor.vue";
+import { useHead } from "@unhead/vue";
 
-export default defineComponent({
-  metaInfo: {
-    title: "Keyboard Shortcuts",
-  },
-  components: {
-    SettingsPageTitle,
-    KeyboardShortcutEditor
-  },
-  setup(props, context) {
-    return {
-    };
-  },
-});
+useHead({ title: "Keyboard Shortcuts", });
 </script>

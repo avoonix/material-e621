@@ -1,7 +1,7 @@
 <template>
   <div
     ref="middle"
-    class="middle black"
+    class="middle bg-black"
     @wheel="onScroll"
     @mousewheel="onScroll"
   >
@@ -27,6 +27,7 @@
 import {
   computed,
   defineComponent,
+  nextTick,
   onMounted,
   reactive,
   ref,
@@ -34,7 +35,6 @@ import {
 } from "vue";
 import Hammer from "hammerjs";
 import clone from "clone";
-import Vue from "vue";
 
 export default defineComponent({
   setup(props, context) {
@@ -176,7 +176,7 @@ export default defineComponent({
       currentZoom.top = top;
       currentZoom.left = left;
 
-      Vue.nextTick(() => {
+      nextTick(() => {
         constrainZoom();
       });
     };
@@ -236,22 +236,22 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .middle {
   position: relative;
   flex-grow: 1;
   overflow: hidden;
+}
 
-  .overflow {
-    overflow: hidden;
-    height: 100%;
-    width: 100%;
+.middle .overflow {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
 
-    .zoom-container {
-      height: 100%;
-      width: 100%;
-      position: relative;
-    }
-  }
+.middle .overflow .zoom-container {
+  height: 100%;
+  width: 100%;
+  position: relative;
 }
 </style>

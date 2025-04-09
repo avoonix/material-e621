@@ -1,42 +1,32 @@
 <template>
-  <v-container fill-height>
-    <v-layout align-center>
-      <v-flex text-center xs12 md8 offset-md2>
+  <v-container class="fill-height">
+    <v-row align-center>
+      <v-col class="text-center" cols="12" md="8" offset-md="2">
         <v-form @submit="submit">
           <v-text-field v-model="username" append-icon="mdi-send" @click:append="submit" label="Username" />
         </v-form>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
-<script lang="ts">
-import router from "@/router";
+<script setup lang="ts">
 import { useAccountStore } from "@/services";
-import { computed, defineComponent, ref } from "vue";
-import { RawLocation } from "vue-router";
+import { useHead } from "@unhead/vue";
+import { computed, ref } from "vue";
+import { useRouter, type RouteLocationRaw } from "vue-router";
 
-export default defineComponent({
-  metaInfo: {
-    title: "Favorite Analyzer",
-  },
-  components: {},
-  setup(props, context) {
-    const account = useAccountStore();
-    const username = ref(account.username || "");
-    const query = computed<RawLocation>(() => ({
-      name: "FavoritesAnalyzerResult",
-      query: { name: username.value },
-    }));
-    const submit = async (event?: SubmitEvent) => {
-      event?.preventDefault?.();
-      const { appRouter } = await import("@/misc/util/router");
-      appRouter.push(query.value);
-    };
-    return {
-      username,
-      submit,
-    };
-  },
-});
+useHead({ title: "Favorite Analyzer" });
+
+const account = useAccountStore();
+const username = ref(account.username || "");
+const query = computed<RouteLocationRaw>(() => ({
+  name: "FavoritesAnalyzerResult",
+  query: { name: username.value },
+}));
+const router = useRouter()
+const submit = async (event?: Event) => {
+  event?.preventDefault?.();
+  router.push(query.value);
+};
 </script>

@@ -142,130 +142,274 @@ export default defineComponent({
 });
 </script>
 
-<style lang="stylus" scoped>
+<style scoped>
 .margin-auto {
-  margin: auto;
+	 margin: auto;
 }
-
-div {
-  position: relative;
-  overflow: hidden;
+ div {
+	 position: relative;
+	 overflow: hidden;
 }
-
-svg {
-  width: 100%;
-  padding-top: 5px;
-
-  &.loader {
-    animation: load-logo 1s infinite;
-  }
-
-  .tail {
-    transform-origin: 100% 100%;
-    transform: translate(0) scale(1) rotate(0);
-    animation: wiggle-tail 10s infinite ease-in-out;
-    animation-delay: 0s;
-  }
-
-  .eyelids {
-    transform-origin: 100% 100%;
-    transform: translate(0) scale(1) rotate(0);
-    animation: close-eyes 30s infinite ease-in-out;
-    animation-delay: 0s;
-  }
-
-  .left-ear, .right-ear {
-    transform-origin: 50% 50%;
-    transform: translate(0) scale(1) rotate(0);
-    transition: all 0.5s ease !important;
-  }
-
-  .left-ear {
-    transform: translate(0) scale(1) rotate(0);
-    animation: wiggle-left 15s infinite ease-in-out;
-    animation-delay: 1.05s;
-  }
-
-  .right-ear {
-    transform: translate(0) scale(1) rotate(0);
-    animation: wiggle-right 15s infinite ease-in-out;
-    animation-delay: 1s;
-  }
+ svg {
+	 width: 100%;
+	 padding-top: 5px;
 }
-
-scale = 0.3;
-
-@keyframes wiggle-right {
-  from, to, {20% * scale} {
-    transform: translate(0) rotateZ(0deg);
-  }
-
-  {6% * scale}, {10% * scale}, {15% * scale} { // transform: rotateZ(-10deg);
-    transform: translate(0) rotateZ(-10deg);
-  }
-
-  {8% * scale}, {12% * scale} {
-    transform: translate(10px, -10px) rotateZ(10deg);
-  }
+ svg.loader {
+	 animation: load-logo 1s infinite;
 }
-
-@keyframes wiggle-left {
-  from, to, {20% * scale} {
-    transform: translate(0) rotateZ(0deg);
-  }
-
-  {6% * scale}, {10% * scale}, {15% * scale} { // transform: rotateZ(-10deg);
-    transform: translate(10px, -10px) rotateZ(10deg);
-  }
-
-  {8% * scale}, {12% * scale} {
-    transform: translate(0) rotateZ(-10deg);
-  }
+ svg .tail {
+	 transform-origin: 100% 100%;
+	 transform: translate(0) scale(1) rotate(0);
+	 animation: wiggle-tail 10s infinite ease-in-out;
+	 animation-delay: 0s;
 }
-
-@keyframes load-logo {
-  from, to {
-    transform: scale(0.7) rotate(0deg);
-    opacity: 0.2;
-  }
-
-  50% {
-    transform: scale(1) rotate(-10deg);
-    opacity: 1;
-  }
+ svg .eyelids {
+	 transform-origin: 100% 100%;
+	 transform: translate(0) scale(1) rotate(0);
+	 animation: close-eyes 30s infinite ease-in-out;
+	 animation-delay: 0s;
 }
-
-scale-tail = 1;
-
-@keyframes wiggle-tail {
-  from, to, {34% * scale-tail} {
-    transform: translate(0) rotateZ(0deg);
-  }
-
-  {6% * scale-tail}, {10% * scale-tail}, {14% * scale-tail}, {18% * scale-tail}, {22% * scale-tail} {
-    transform: translate(0) rotateZ(-1deg);
-  }
-
-  {8% * scale-tail}, {12% * scale-tail}, {16% * scale-tail}, {20% * scale-tail}, {24% * scale-tail} {
-    transform: translate(0) rotateZ(1deg);
-  }
-
-  {26% * scale-tail}, {30% * scale-tail} {
-    transform: translate(0) rotateZ(-0.6deg);
-  }
-
-  {28% * scale-tail}, {32% * scale-tail} {
-    transform: translate(0) rotateZ(0.6deg);
-  }
+ svg .left-ear, svg .right-ear {
+	 transform-origin: 50% 50%;
+	 transform: translate(0) scale(1) rotate(0);
+	 transition: all 0.5s ease !important;
 }
-
-@keyframes close-eyes {
-  1%, 19%, 21%, 39%, 41%, 59%, 61%, 79%, 81%, 82%, 84%, 99% {
-    transform: translate(0) rotateZ(0deg);
-  }
-
-  20%, 40%, 60%, 80%, 83%, 100%, 0% {
-    transform: translateY(12%) rotateZ(0deg);
-  }
+ svg .left-ear {
+	 transform: translate(0) scale(1) rotate(0);
+	 animation: wiggle-left 15s infinite ease-in-out;
+	 animation-delay: 1.05s;
+}
+ svg .right-ear {
+	 transform: translate(0) scale(1) rotate(0);
+	 animation: wiggle-right 15s infinite ease-in-out;
+	 animation-delay: 1s;
+}
+ @-moz-keyframes wiggle-right {
+	 from, to, 6% {
+		 transform: translate(0) rotateZ(0deg);
+	}
+	 1.7999999999999998%, 3%, 4.5% {
+		 transform: translate(0) rotateZ(-10deg);
+	}
+	 2.4%, 3.5999999999999996% {
+		 transform: translate(10px, -10px) rotateZ(10deg);
+	}
+}
+ @-webkit-keyframes wiggle-right {
+	 from, to, 6% {
+		 transform: translate(0) rotateZ(0deg);
+	}
+	 1.7999999999999998%, 3%, 4.5% {
+		 transform: translate(0) rotateZ(-10deg);
+	}
+	 2.4%, 3.5999999999999996% {
+		 transform: translate(10px, -10px) rotateZ(10deg);
+	}
+}
+ @-o-keyframes wiggle-right {
+	 from, to, 6% {
+		 transform: translate(0) rotateZ(0deg);
+	}
+	 1.7999999999999998%, 3%, 4.5% {
+		 transform: translate(0) rotateZ(-10deg);
+	}
+	 2.4%, 3.5999999999999996% {
+		 transform: translate(10px, -10px) rotateZ(10deg);
+	}
+}
+ @keyframes wiggle-right {
+	 from, to, 6% {
+		 transform: translate(0) rotateZ(0deg);
+	}
+	 1.7999999999999998%, 3%, 4.5% {
+		 transform: translate(0) rotateZ(-10deg);
+	}
+	 2.4%, 3.5999999999999996% {
+		 transform: translate(10px, -10px) rotateZ(10deg);
+	}
+}
+ @-moz-keyframes wiggle-left {
+	 from, to, 6% {
+		 transform: translate(0) rotateZ(0deg);
+	}
+	 1.7999999999999998%, 3%, 4.5% {
+		 transform: translate(10px, -10px) rotateZ(10deg);
+	}
+	 2.4%, 3.5999999999999996% {
+		 transform: translate(0) rotateZ(-10deg);
+	}
+}
+ @-webkit-keyframes wiggle-left {
+	 from, to, 6% {
+		 transform: translate(0) rotateZ(0deg);
+	}
+	 1.7999999999999998%, 3%, 4.5% {
+		 transform: translate(10px, -10px) rotateZ(10deg);
+	}
+	 2.4%, 3.5999999999999996% {
+		 transform: translate(0) rotateZ(-10deg);
+	}
+}
+ @-o-keyframes wiggle-left {
+	 from, to, 6% {
+		 transform: translate(0) rotateZ(0deg);
+	}
+	 1.7999999999999998%, 3%, 4.5% {
+		 transform: translate(10px, -10px) rotateZ(10deg);
+	}
+	 2.4%, 3.5999999999999996% {
+		 transform: translate(0) rotateZ(-10deg);
+	}
+}
+ @keyframes wiggle-left {
+	 from, to, 6% {
+		 transform: translate(0) rotateZ(0deg);
+	}
+	 1.7999999999999998%, 3%, 4.5% {
+		 transform: translate(10px, -10px) rotateZ(10deg);
+	}
+	 2.4%, 3.5999999999999996% {
+		 transform: translate(0) rotateZ(-10deg);
+	}
+}
+ @-moz-keyframes load-logo {
+	 from, to {
+		 transform: scale(0.7) rotate(0deg);
+		 opacity: 0.2;
+	}
+	 50% {
+		 transform: scale(1) rotate(-10deg);
+		 opacity: 1;
+	}
+}
+ @-webkit-keyframes load-logo {
+	 from, to {
+		 transform: scale(0.7) rotate(0deg);
+		 opacity: 0.2;
+	}
+	 50% {
+		 transform: scale(1) rotate(-10deg);
+		 opacity: 1;
+	}
+}
+ @-o-keyframes load-logo {
+	 from, to {
+		 transform: scale(0.7) rotate(0deg);
+		 opacity: 0.2;
+	}
+	 50% {
+		 transform: scale(1) rotate(-10deg);
+		 opacity: 1;
+	}
+}
+ @keyframes load-logo {
+	 from, to {
+		 transform: scale(0.7) rotate(0deg);
+		 opacity: 0.2;
+	}
+	 50% {
+		 transform: scale(1) rotate(-10deg);
+		 opacity: 1;
+	}
+}
+ @-moz-keyframes wiggle-tail {
+	 from, to, 34% {
+		 transform: translate(0) rotateZ(0deg);
+	}
+	 6%, 10%, 14%, 18%, 22% {
+		 transform: translate(0) rotateZ(-1deg);
+	}
+	 8%, 12%, 16%, 20%, 24% {
+		 transform: translate(0) rotateZ(1deg);
+	}
+	 26%, 30% {
+		 transform: translate(0) rotateZ(-0.6deg);
+	}
+	 28%, 32% {
+		 transform: translate(0) rotateZ(0.6deg);
+	}
+}
+ @-webkit-keyframes wiggle-tail {
+	 from, to, 34% {
+		 transform: translate(0) rotateZ(0deg);
+	}
+	 6%, 10%, 14%, 18%, 22% {
+		 transform: translate(0) rotateZ(-1deg);
+	}
+	 8%, 12%, 16%, 20%, 24% {
+		 transform: translate(0) rotateZ(1deg);
+	}
+	 26%, 30% {
+		 transform: translate(0) rotateZ(-0.6deg);
+	}
+	 28%, 32% {
+		 transform: translate(0) rotateZ(0.6deg);
+	}
+}
+ @-o-keyframes wiggle-tail {
+	 from, to, 34% {
+		 transform: translate(0) rotateZ(0deg);
+	}
+	 6%, 10%, 14%, 18%, 22% {
+		 transform: translate(0) rotateZ(-1deg);
+	}
+	 8%, 12%, 16%, 20%, 24% {
+		 transform: translate(0) rotateZ(1deg);
+	}
+	 26%, 30% {
+		 transform: translate(0) rotateZ(-0.6deg);
+	}
+	 28%, 32% {
+		 transform: translate(0) rotateZ(0.6deg);
+	}
+}
+ @keyframes wiggle-tail {
+	 from, to, 34% {
+		 transform: translate(0) rotateZ(0deg);
+	}
+	 6%, 10%, 14%, 18%, 22% {
+		 transform: translate(0) rotateZ(-1deg);
+	}
+	 8%, 12%, 16%, 20%, 24% {
+		 transform: translate(0) rotateZ(1deg);
+	}
+	 26%, 30% {
+		 transform: translate(0) rotateZ(-0.6deg);
+	}
+	 28%, 32% {
+		 transform: translate(0) rotateZ(0.6deg);
+	}
+}
+ @-moz-keyframes close-eyes {
+	 1%, 19%, 21%, 39%, 41%, 59%, 61%, 79%, 81%, 82%, 84%, 99% {
+		 transform: translate(0) rotateZ(0deg);
+	}
+	 20%, 40%, 60%, 80%, 83%, 100%, 0% {
+		 transform: translateY(12%) rotateZ(0deg);
+	}
+}
+ @-webkit-keyframes close-eyes {
+	 1%, 19%, 21%, 39%, 41%, 59%, 61%, 79%, 81%, 82%, 84%, 99% {
+		 transform: translate(0) rotateZ(0deg);
+	}
+	 20%, 40%, 60%, 80%, 83%, 100%, 0% {
+		 transform: translateY(12%) rotateZ(0deg);
+	}
+}
+ @-o-keyframes close-eyes {
+	 1%, 19%, 21%, 39%, 41%, 59%, 61%, 79%, 81%, 82%, 84%, 99% {
+		 transform: translate(0) rotateZ(0deg);
+	}
+	 20%, 40%, 60%, 80%, 83%, 100%, 0% {
+		 transform: translateY(12%) rotateZ(0deg);
+	}
+}
+ @keyframes close-eyes {
+	 1%, 19%, 21%, 39%, 41%, 59%, 61%, 79%, 81%, 82%, 84%, 99% {
+		 transform: translate(0) rotateZ(0deg);
+	}
+	 20%, 40%, 60%, 80%, 83%, 100%, 0% {
+		 transform: translateY(12%) rotateZ(0deg);
+	}
 }
 </style>

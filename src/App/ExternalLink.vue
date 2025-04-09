@@ -1,10 +1,9 @@
 <template>
   <a
     :href="href"
-    v-on="$listeners"
     v-bind="$attrs"
     target="_blank"
-    class="accent--text"
+    class="text-accent"
     rel="noopener"
   >
     <slot>{{ href }}</slot>

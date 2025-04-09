@@ -1,7 +1,7 @@
 <template>
   <TagMenu :tag="tag">
-    <template #default="{ on }">
-      <v-chip :color="color" outlined class="mr-2 mb-2" v-on="on" :small="small">
+    <template #default="{ props }">
+      <v-chip :color="color" variant="outlined" class="mr-2 mb-2" v-bind="props" :small="small">
         <v-icon v-if="icon">{{ icon }}</v-icon>
         <span :class="{ 'ml-2': icon }">
           {{ tag.name }}
@@ -13,8 +13,9 @@
 
 <script lang="ts">
 import { getTagColorFromCategory, getTagIconFromCategory } from "@/misc/util/utilities";
-import { computed, defineComponent, PropType } from "vue";
-import { ITag } from "./ITag";
+import type { PropType } from "vue";
+import { computed, defineComponent } from "vue";
+import type { ITag } from "./ITag";
 import TagMenu from "./TagMenu.vue";
 
 export default defineComponent({

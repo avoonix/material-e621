@@ -1,4 +1,4 @@
-import VueRouter from "vue-router";
+import { useRouter } from "vue-router";
 
 export const getAppName = () => "Material e621";
 export const getBaseUrl = () => document.location.origin;
@@ -35,27 +35,32 @@ export const categoryIdToCategoryName = (id: number) => {
   return categories[id] || "invalid";
 };
 
-export const updateRouterQuery = async (newQuery: {
-  [idx: string]: string | undefined;
-}) => {
-  const { appRouter } = await import("@/misc/util/router");
-  appRouter.push({
-    query: { ...appRouter.currentRoute.query, ...newQuery },
-  });
-};
+export const useRouterQueryHelpers = () => {
+  const router = useRouter();
 
-export const removeRouterQuery = async (keys: string[]) => {
-  const { appRouter } = await import("@/misc/util/router");
-  appRouter.push({
-    query: {
-      ...Object.fromEntries(
-        Object.entries(appRouter.currentRoute.query).filter(
+  const updateRouterQuery = async (newQuery: {
+    [idx: string]: string | undefined;
+  }) => {
+    router.push({
+      query: { ...router.currentRoute.value.query, ...newQuery },
+    });
+  };
+
+  const removeRouterQuery = async (keys: string[]) => {
+    router.push({
+      query: Object.fromEntries(
+        Object.entries(router.currentRoute.value.query).filter(
           (e) => !keys.includes(e[0]),
         ),
       ),
-    },
-  });
-};
+    });
+  };
+
+  return {
+    updateRouterQuery,
+    removeRouterQuery,
+  }
+}
 
 export const getTagColorFromCategory = (category?: string) => {
   return category

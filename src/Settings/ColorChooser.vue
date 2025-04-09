@@ -4,8 +4,8 @@
       <v-icon>mdi-palette</v-icon>
     </v-avatar>
     <v-menu offset-y :close-on-content-click="false">
-      <template #activator="{ on, attrs }">
-        <v-btn color="primary" class="grow" outlined v-bind="attrs" v-on="on">
+      <template #activator="{ props }">
+        <v-btn color="primary" class="grow" variant="outlined" v-bind="props">
           {{ label }}
         </v-btn>
       </template>

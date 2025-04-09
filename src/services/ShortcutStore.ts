@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { computed } from "vue";
 import { useMainStore } from "./state";
-import { Shortcut } from "./types";
+import type { Shortcut } from "./types";
 
 export const useShortcutStore = defineStore("shortcuts", () => {
   const main = useMainStore();

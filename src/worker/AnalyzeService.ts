@@ -1,10 +1,9 @@
 import { expose } from "comlink";
-import { PostTags, Post } from "./api";
-import { debug } from "debug";
-import cloud from "d3-cloud";
-import { ApiService, EnhancedPost } from "./ApiService";
+import type { PostTags, Post } from "./api";
+import type { EnhancedPost } from "./ApiService";
+import { ApiService } from "./ApiService";
 import { BlacklistMode } from "@/services/types";
-import * as d3 from "d3";
+import { debug } from "@/misc/util/debug";
 
 const log = debug("app:AnalyzeService");
 
@@ -22,8 +21,6 @@ export type Counts = {
 };
 
 export interface IAnalyzeTagsArgs {
-  width: number;
-  height: number;
   tags: string[];
   postLimit: number;
   baseUrl: string;
@@ -138,7 +135,7 @@ export class AnalyzeService {
       onProgress,
     );
     onProgress({
-      message: "got posts, creating clouds",
+      message: "got posts, sorting tags",
       progress: 0.5,
       indeterminate: true,
     });
@@ -150,7 +147,7 @@ export class AnalyzeService {
     for (const [category, obj] of Object.entries(counts)) {
       result.push({
         category,
-        result: await createCloud(obj, args.width, args.height),
+        result: await createCloud(obj),
       });
       log("created a cloud");
     }
@@ -203,6 +200,8 @@ export class AnalyzeService {
       | undefined,
     baseUrl: string,
     onProgress: (event: IProgressEvent) => void,
+    blacklist: string[][],
+    blacklistMode: BlacklistMode,
   ) {
     // fetch posts, sort them by score and display the top `limit` ones
     const toFetch = limit * 40;
@@ -215,7 +214,8 @@ export class AnalyzeService {
         message: `got ${posts.length} of ${toFetch} posts`,
       });
       const newPosts = await service.getPosts({
-        blacklistMode: BlacklistMode.blur, // TODO: blacklist mode
+        blacklistMode,
+        blacklist,
         limit: 320,
         tags: [],
         page,
@@ -283,39 +283,15 @@ const tagIterator = function* (tags: PostTags) {
   }
 };
 
-const createCloud = (counts: any, width: number, height: number) => {
+const createCloud = (counts: any) => {
   return new Promise<any[]>((resolve) => {
     const words = Object.entries(counts).map(([text, count]) => ({
       text,
-      size: count,
+      size: count as number,
     }));
+    words.sort((a, b) => b.size - a.size);
 
-    const sizes = words.map((w) => w.size as number);
-    // const fontSize = d3.scaleLinear([6, 60]);
-    // const fontSize = d3.scaleLog([6, 60]);
-    const fontSize = d3.scaleSqrt([6, 60]);
-    fontSize.domain([Math.min(...sizes), Math.max(...sizes)]); // min and max occurences
-    const rotate = d3.scaleLinear([-45, 45]);
-    rotate.domain([0, 1]);
-
-    const layout = cloud()
-      .canvas(() => {
-        return new OffscreenCanvas(width, height);
-      })
-      .size([width, height])
-      .words(words)
-      .padding(1)
-      .rotate(function () {
-        return rotate(Math.random());
-      })
-      .font("sans-serif")
-      .fontSize((d: any) => fontSize(d.size))
-      .spiral("archimedean")
-      .on("end", (wordPositions: any) => {
-        resolve(wordPositions);
-      });
-
-    layout.start();
+      resolve(words);
   });
 };
 

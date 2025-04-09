@@ -1,6 +1,6 @@
 <template>
   <v-btn block @click="toggleRecording" :color="recording ? 'red' : 'primary'">
-    <v-icon left :class="{ blinking: recording }"> mdi-circle </v-icon>
+    <v-icon start :class="{ blinking: recording }"> mdi-circle </v-icon>
     {{ recording ? "type something" : "record keystrokes" }}
   </v-btn>
 </template>
@@ -30,7 +30,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 .blinking {
   animation: blink 1s infinite;
 }

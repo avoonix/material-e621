@@ -23,18 +23,18 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style>
+/* TODO: scoped? */
 .aspect-ratio-box {
   height: 0;
   overflow: hidden;
   position: relative;
-
-  & > * {
+}
+.aspect-ratio-box > * {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
   }
-}
 </style>

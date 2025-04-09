@@ -1,8 +1,3 @@
-import qs from "qs";
-
-declare const VUE_APP_GIT_COMMIT_INFO: string;
-declare const VUE_APP_GIT_BRANCH: string;
-
 export interface IGitCommit {
   hash: string;
   date: Date;
@@ -13,10 +8,10 @@ export interface IGitCommit {
   };
 }
 
-export const getGitBranchInfo = () => String(VUE_APP_GIT_BRANCH);
+export const getGitBranchInfo = () => String(import.meta.env.VITE_GIT_BRANCH);
 
 export const getGitInfo = (): IGitCommit[] =>
-  String(VUE_APP_GIT_COMMIT_INFO)
+  String(import.meta.env.VITE_GIT_COMMIT_INFO)
     .split(";;;;;")
     .filter((s) => s)
     .map((commitStr) => {
@@ -37,5 +32,8 @@ export const getGitInfo = (): IGitCommit[] =>
       };
     });
 
-export const createIssueLink = (args: { title: string; body: string }) =>
-  `https://github.com/avoonix/material-e621/issues/new?${qs.stringify(args)}`;
+export const createIssueLink = (args: { title: string; body: string }) => {
+  const params = new URLSearchParams(Object.entries(args)).toString()
+  return `https://github.com/avoonix/material-e621/issues/new?${params}`;
+}
+

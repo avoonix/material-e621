@@ -13,10 +13,11 @@
 </template>
 
 <script lang="ts">
-import { ButtonType } from "@/services/types";
+import type { ButtonType } from "@/services/types";
 import { Post } from "@/worker/api";
-import { EnhancedPost } from "@/worker/ApiService";
-import { defineComponent, PropType } from "vue";
+import type { EnhancedPost } from "@/worker/ApiService";
+import type { PropType } from "vue";
+import { defineComponent } from "vue";
 import PostButton from "./PostButton.vue";
 
 export default defineComponent({

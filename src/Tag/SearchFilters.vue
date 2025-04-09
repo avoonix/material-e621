@@ -1,17 +1,15 @@
 <template>
   <v-list-item>
     <div class="d-flex flex-column flex-md-row fill-width" style="gap: 8px;">
-      <v-select v-model="sortBy" item-text="name" item-value="tag" hide-details outlined label="Sort by" :items="sortTags"
-        class="fill-width shrink" />
-      <v-select v-model="rating" item-text="name" item-value="tag" hide-details outlined label="Rating"
+      <v-select v-model="sortBy" item-title="name" item-value="tag" hide-details variant="outlined" label="Sort by"
+        :items="sortTags" class="fill-width shrink" />
+      <v-select v-model="rating" item-title="name" item-value="tag" hide-details variant="outlined" label="Rating"
         :items="ratingTags" multiple class="fill-width shrink" />
     </div>
   </v-list-item>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from "vue";
-
 // https://e621.net/help/cheatsheet
 const sortTags = [
   { tag: null, name: "Date (newest first) - Default" }, // default
@@ -59,61 +57,61 @@ const ratingTags = [
   { tag: "rating:questionable", name: "Questionable" },
   { tag: "rating:explicit", name: "Explicit" },
 ];
+</script>
 
-export default defineComponent({
-  props: {
-    tags: {
-      type: Array as PropType<string[]>,
-      required: true,
-    }
-  },
-  setup(props, context) {
-    const rating = computed<string[]>({
-      get() {
-        let result = ["rating:explicit", "rating:questionable", "rating:safe"];
-        const includedTags = props.tags.filter(t => t.startsWith("rating:"));
-        const excludedTags = props.tags.filter(t => t.startsWith("-rating:"));
-        result = includedTags.length ? includedTags : result; // no included tags -> show all ratings
-        result = result.filter(t => !excludedTags.includes(`-${t}`))
-        return result;
-      },
-      set(value) {
-        const all = ["rating:explicit", "rating:questionable", "rating:safe"];
-        all.forEach(t => { removeTag(`-${t}`); removeTag(t) });
-        if (!value.length || value.length === all.length) return
-        if (value.length === all.length - 1) {
-          const missingTag = all.find(t => !value.includes(t))
-          addTag(`-${missingTag}`)
-          return;
-        }
-        if (value.length === 1) {
-          addTag(value[0]);
-          return;
-        }
-      }
-    })
+<script setup lang="ts">
+import type { PropType } from "vue";
+import { computed } from "vue";
 
-    const sortBy = computed<string | null>({
-      get() {
-        return props.tags.find(t => t.startsWith("order:")) || null;
-      },
-      set(value) {
-        props.tags.filter(t => t.startsWith("order:")).forEach(removeTag)
-        if (value) {
-          addTag(value);
-        }
-      }
-    })
+const emit = defineEmits<{
+  (e: "add-tag", tag: string): void;
+  (e: "remove-tag", tag: string): void;
+}>();
 
-    const addTag = (tag: string) => context.emit("add-tag", tag);
-    const removeTag = (tag: string) => context.emit("remove-tag", tag);
-
-    return {
-      sortTags,
-      ratingTags,
-      rating,
-      sortBy,
-    };
-  },
+const props = defineProps({
+  tags: {
+    type: Array as PropType<string[]>,
+    required: true,
+  }
 });
+
+const rating = computed<string[]>({
+  get() {
+    let result = ["rating:explicit", "rating:questionable", "rating:safe"];
+    const includedTags = props.tags.filter(t => t.startsWith("rating:"));
+    const excludedTags = props.tags.filter(t => t.startsWith("-rating:"));
+    result = includedTags.length ? includedTags : result; // no included tags -> show all ratings
+    result = result.filter(t => !excludedTags.includes(`-${t}`))
+    return result;
+  },
+  set(value) {
+    const all = ["rating:explicit", "rating:questionable", "rating:safe"];
+    all.forEach(t => { removeTag(`-${t}`); removeTag(t) });
+    if (!value.length || value.length === all.length) return
+    if (value.length === all.length - 1) {
+      const missingTag = all.find(t => !value.includes(t))
+      addTag(`-${missingTag}`)
+      return;
+    }
+    if (value.length === 1) {
+      addTag(value[0]);
+      return;
+    }
+  }
+})
+
+const sortBy = computed<string | null>({
+  get() {
+    return props.tags.find(t => t.startsWith("order:")) || null;
+  },
+  set(value) {
+    props.tags.filter(t => t.startsWith("order:")).forEach(removeTag)
+    if (value) {
+      addTag(value);
+    }
+  }
+})
+
+const addTag = (tag: string) => emit("add-tag", tag);
+const removeTag = (tag: string) => emit("remove-tag", tag);
 </script>

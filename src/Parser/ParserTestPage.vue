@@ -1,30 +1,23 @@
 <template>
-  <v-container fill-height>
-    <v-layout>
-      <v-flex>
-        <v-textarea :rows="20" v-model="testText" label="Edit me"/>
+  <v-container class="fill-height">
+    <v-row>
+      <v-col>
+        <v-textarea :rows="20" v-model="testText" label="Edit me" />
         <d-text :text="testText" />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useUrlStore } from "@/services";
-import { defineComponent } from "vue";
 import DText from "./DText.vue";
+import { useHead } from "@unhead/vue";
 
-export default defineComponent({
-  metaInfo: {
-    title: "Parser Test Page",
-  },
-  components: {
-    DText,
-  },
-  data() {
-    const urlStore = useUrlStore(); // todo: properly convert to vue 3 api
-    return {
-      testText: `
+useHead({ title: "Parser Test Page", });
+
+const urlStore = useUrlStore(); // todo: properly convert to vue 3 api
+const testText = `
 h1. Hello there
 Edit this text and see the results below.
 
@@ -86,8 +79,5 @@ header | header | header
  row   |   row  | row
  row   |   row  | row
 [/table]
-`,
-    };
-  },
-});
+`
 </script>

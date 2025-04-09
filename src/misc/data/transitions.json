@@ -5,136 +5,136 @@
   "fade": {
     "name": "Fade",
     "left": {
-      "enter": "fadeInLeft",
-      "leave": "fadeOutRight"
+      "enter": "fadeLeft-enter-active",
+      "leave": "fadeRight-leave-active"
     },
     "none": {
-      "enter": "fadeIn",
-      "leave": "fadeOut"
+      "enter": "fade-enter-active",
+      "leave": "fade-leave-active"
     },
     "right": {
-      "enter": "fadeInRight",
-      "leave": "fadeOutLeft"
+      "enter": "fadeRight-enter-active",
+      "leave": "fadeLeft-leave-active"
     }
   },
   "fadebig": {
     "name": "Fade (big)",
     "left": {
-      "enter": "fadeInLeftBig",
-      "leave": "fadeOutRightBig"
+      "enter": "fadeLeftBig-enter-active",
+      "leave": "fadeRightBig-leave-active"
     },
     "none": {
-      "enter": "fadeIn",
-      "leave": "fadeOut"
+      "enter": "fade-enter-active",
+      "leave": "fade-leave-active"
     },
     "right": {
-      "enter": "fadeInRightBig",
-      "leave": "fadeOutLeftBig"
+      "enter": "fadeRightBig-enter-active",
+      "leave": "fadeLeftBig-leave-active"
     }
   },
   "bounce": {
     "name": "Bounce",
     "left": {
-      "enter": "bounceInLeft",
-      "leave": "bounceOutRight"
+      "enter": "bounceLeft-enter-active",
+      "leave": "bounceRight-leave-active"
     },
     "none": {
-      "enter": "bounceIn",
-      "leave": "bounceOut"
+      "enter": "bounce-enter-active",
+      "leave": "bounce-leave-active"
     },
     "right": {
-      "enter": "bounceInRight",
-      "leave": "bounceOutLeft"
+      "enter": "bounceRight-enter-active",
+      "leave": "bounceLeft-leave-active"
     }
   },
   "zoom": {
     "name": "Zoom",
     "left": {
-      "enter": "zoomInLeft",
-      "leave": "zoomOutRight"
+      "enter": "zoomLeft-enter-active",
+      "leave": "zoomRight-leave-active"
     },
     "none": {
-      "enter": "zoomIn",
-      "leave": "zoomOut"
+      "enter": "zoom-enter-active",
+      "leave": "zoom-leave-active"
     },
     "right": {
-      "enter": "zoomInRight",
-      "leave": "zoomOutLeft"
+      "enter": "zoomRight-enter-active",
+      "leave": "zoomLeft-leave-active"
     }
   },
   "zoomalt": {
     "name": "Zoom (alternative)",
     "left": {
-      "enter": "zoomIn",
-      "leave": "zoomOutRight"
+      "enter": "zoom-enter-active",
+      "leave": "zoomRight-leave-active"
     },
     "none": {
-      "enter": "zoomIn",
-      "leave": "zoomOut"
+      "enter": "zoom-enter-active",
+      "leave": "zoom-leave-active"
     },
     "right": {
-      "enter": "zoomIn",
-      "leave": "zoomOutLeft"
+      "enter": "zoom-enter-active",
+      "leave": "zoomLeft-leave-active"
     }
   },
   "slide": {
     "name": "Slide",
     "left": {
-      "enter": "slideInLeft",
-      "leave": "slideOutRight"
+      "enter": "slideLeft-enter-active",
+      "leave": "slideRight-leave-active"
     },
     "none": {
-      "enter": "slideInDown",
-      "leave": "slideOutDown"
+      "enter": "slideDown-enter-active",
+      "leave": "slideDown-leave-active"
     },
     "right": {
-      "enter": "slideInRight",
-      "leave": "slideOutLeft"
+      "enter": "slideRight-enter-active",
+      "leave": "slideLeft-leave-active"
     }
   },
   "slidealt": {
     "name": "Slide (alternative)",
     "left": {
-      "enter": "slideInLeft",
-      "leave": "fadeOut"
+      "enter": "slideLeft-enter-active",
+      "leave": "fade-leave-active"
     },
     "none": {
-      "enter": "slideInUp",
-      "leave": "slideOutUp"
+      "enter": "slideUp-enter-active",
+      "leave": "slideUp-leave-active"
     },
     "right": {
-      "enter": "fadeIn",
-      "leave": "slideOutLeft"
+      "enter": "fade-enter-active",
+      "leave": "slideLeft-leave-active"
     }
   },
   "rotate": {
     "name": "Rotate",
     "left": {
-      "enter": "rotateInDownLeft",
-      "leave": "rotateOutDownLeft"
+      "enter": "rotateDownLeft-enter-active",
+      "leave": "rotateDownLeft-leave-active"
     },
     "none": {
-      "enter": "rotateIn",
-      "leave": "rotateOut"
+      "enter": "rotate-enter-active",
+      "leave": "rotate-leave-active"
     },
     "right": {
-      "enter": "rotateInDownRight",
-      "leave": "rotateOutDownRight"
+      "enter": "rotateDownRight-enter-active",
+      "leave": "rotateDownRight-leave-active"
     }
   },
   "rotatealt": {
     "name": "Rotate (alternative)",
     "right": {
-      "enter": "rotateInUpRight",
-      "leave": "rotateOutDownRight"
+      "enter": "rotateUpRight-enter-active",
+      "leave": "rotateDownRight-leave-active"
     },
     "none": {
-      "enter": "rotateIn",
-      "leave": "rotateOut"
+      "enter": "rotate-enter-active",
+      "leave": "rotate-leave-active"
     },
     "left": {
-      "enter": "rotateInUpLeft",
-      "leave": "rotateOutDownLeft"
+      "enter": "rotateUpLeft-enter-active",
+      "leave": "rotateDownLeft-leave-active"
     }
   }
 }

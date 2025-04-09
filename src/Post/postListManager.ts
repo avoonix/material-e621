@@ -1,9 +1,9 @@
-import { EnhancedPost } from "@/worker/ApiService";
+import type { EnhancedPost } from "@/worker/ApiService";
 import { getApiService } from "@/worker/services";
-import { computed, ref, watch, watchEffect } from "vue";
-import Vue from "vue";
+import { computed, ref, watch } from "vue";
 import { useAccountStore, useSnackbarStore, useUrlStore, useBlacklistStore, usePostsStore } from "@/services";
 import { BlacklistMode } from "@/services/types";
+import { useRouter } from "vue-router";
 
 interface IUsePostListManagerArgs {
   loadPosts(page: number, direction: "next" | "previous"): Promise<EnhancedPost[]>;
@@ -25,6 +25,7 @@ export const usePostListManager = ({
   const urlStore = useUrlStore();
   const blacklistStore = useBlacklistStore();
   const postsStore = usePostsStore();
+  const router = useRouter()
 
   const handleError = (error: any) => {
     const errorMessage = error?.message || String(error);
@@ -44,8 +45,7 @@ export const usePostListManager = ({
 
     if (!account.auth) {
       snackbar.addMessage("Not logged in");
-      const { appRouter } = await import("@/misc/util/router");
-      appRouter.push({ name: "AccountSettings" });
+      router.push({ name: "AccountSettings" });
       return;
     }
     const service = await getApiService();
@@ -55,17 +55,17 @@ export const usePostListManager = ({
       proxyUrl: urlStore.proxyUrl,
     };
     try {
-      Vue.set(post.__meta, "isFavoriteLoading", true);
+      post.__meta.isFavoriteLoading = true;
       if (args.favorited) {
         await service.favoritePost(serviceArgs);
       } else {
         await service.unfavoritePost(serviceArgs);
       }
-      Vue.set(post, "is_favorited", args.favorited);
+      post.is_favorited = args.favorited;
     } catch (error: any) {
       handleError(error);
     } finally {
-      Vue.set(post.__meta, "isFavoriteLoading", false);
+      post.__meta.isFavoriteLoading = false;
     }
   };
 
@@ -136,38 +136,38 @@ export const usePostListManager = ({
   };
   const _openFullscreenPost =
     (offset: number) =>
-    async (postId: number, depth: number): Promise<boolean> => {
-      // returns whether post has been opened successfully
-      const idx = posts.value.findIndex((p) => p.id === postId);
-      let nextPostIdx = idx;
-      do {
-        nextPostIdx += offset;
-      } while (
-        posts.value[nextPostIdx] &&
-        !isValidNextPost(posts.value[nextPostIdx]) &&
-        offset
-      );
-      const nextPost = posts.value[nextPostIdx];
-      if (nextPost) {
-        fullscreenPost.value = nextPost;
-        return true;
-      } else {
-        if (offset > 0) {
-          await loadNextPage();
-        } else if (offset < 0) {
-          await loadPreviousPage();
-        }
-        if (depth <= 0) {
-          const success = await _openFullscreenPost(offset)(postId, depth + 1);
-          if (!success) {
-            fullscreenPost.value = null; // no further posts
-          }
-          return success;
+      async (postId: number, depth: number): Promise<boolean> => {
+        // returns whether post has been opened successfully
+        const idx = posts.value.findIndex((p) => p.id === postId);
+        let nextPostIdx = idx;
+        do {
+          nextPostIdx += offset;
+        } while (
+          posts.value[nextPostIdx] &&
+          !isValidNextPost(posts.value[nextPostIdx]) &&
+          offset
+        );
+        const nextPost = posts.value[nextPostIdx];
+        if (nextPost) {
+          fullscreenPost.value = nextPost;
+          return true;
         } else {
-          return false;
+          if (offset > 0) {
+            await loadNextPage();
+          } else if (offset < 0) {
+            await loadPreviousPage();
+          }
+          if (depth <= 0) {
+            const success = await _openFullscreenPost(offset)(postId, depth + 1);
+            if (!success) {
+              fullscreenPost.value = null; // no further posts
+            }
+            return success;
+          } else {
+            return false;
+          }
         }
-      }
-    };
+      };
 
   const openFullscreenPost = _openFullscreenPost(0);
   const openNextFullscreenPost = () =>

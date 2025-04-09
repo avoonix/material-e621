@@ -1,5 +1,6 @@
 import { BlacklistMode } from "@/services/types";
-import { computed, ComputedRef } from "vue";
+import type { ComputedRef } from "vue";
+import { computed } from "vue";
 
 export const useBlacklistClasses = ({
   mode,

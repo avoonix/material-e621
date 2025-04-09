@@ -1,93 +1,47 @@
 <template>
-  <v-container fill-height>
-    <v-layout align-center>
-      <v-flex text-center xs12 sm10 offset-sm1 lg6 offset-lg3>
-        <settings-page-title title="Appearance" color="darken-1 pink" />
+  <v-container class="fill-height">
+    <v-row align-center>
+      <v-col class="text-center" cols="12" sm="10" offset-sm="1" lg="6" offset-lg="3">
+        <settings-page-title section="appearance" title="Appearance" color="pink-darken-1" />
         <settings-page-item title="Colors" select>
-          <v-btn
-            outlined
-            block
-            large
-            color="primary"
-            to="/settings/appearance/themes"
-            class="mb-2"
-          >
+          <v-btn variant="outlined" block size="large" color="primary" to="/settings/appearance/themes" class="mb-2">
             Browse themes
           </v-btn>
-          <color-chooser label="Primary" :color.sync="appearance.primaryColor" />
-          <color-chooser label="Secondary" :color.sync="appearance.secondaryColor" />
-          <color-chooser label="Accent" :color.sync="appearance.accentColor" />
-          <color-chooser label="Background" :color.sync="appearance.backgroundColor" />
-          <color-chooser label="Sidebar" :color.sync="appearance.sidebarColor" />
-          <color-chooser label="Toolbar" :color.sync="appearance.toolbarColor" />
+          <color-chooser label="Primary" v-model:color="appearance.primaryColor" />
+          <color-chooser label="Secondary" v-model:color="appearance.secondaryColor" />
+          <color-chooser label="Accent" v-model:color="appearance.accentColor" />
+          <color-chooser label="Background" v-model:color="appearance.backgroundColor" />
+          <color-chooser label="Sidebar" v-model:color="appearance.sidebarColor" />
+          <color-chooser label="Toolbar" v-model:color="appearance.toolbarColor" />
           <v-switch label="Dark" v-model="appearance.dark" />
         </settings-page-item>
-        <settings-page-item
-          title="Fullscreen image transitions"
-          description="Change the image transitions"
-          select
-        >
-          <v-select
-            :items="transitionItems"
-            outlined
-            v-model="appearance.fullscreenTransition"
-            hide-details
-          />
-          <transition-preview
-            :transition-name="appearance.fullscreenTransition"
-            :ratio="2"
-            :directions="[
-              'left',
-              'right',
-              'left',
-              'right',
-              'left',
-              'left',
-              'right',
-              'right',
-            ]"
-            class="mt-3"
-          />
+        <settings-page-item title="Fullscreen image transitions" description="Change the image transitions" select>
+          <v-select :items="transitionItems" variant="outlined" v-model="appearance.fullscreenTransition"
+            hide-details />
+          <transition-preview :transition-name="appearance.fullscreenTransition" :ratio="2" :directions="[
+            'left',
+            'right',
+            'left',
+            'right',
+            'left',
+            'left',
+            'right',
+            'right',
+          ]" class="mt-3" />
         </settings-page-item>
-        <settings-page-item
-          title="Route transitions"
-          description="Change the route transitions"
-          select
-        >
-          <v-select
-            :items="transitionItems"
-            outlined
-            v-model="appearance.routeTransition"
-            hide-details
-          />
-          <transition-preview
-            :transition-name="appearance.routeTransition"
-            :ratio="2"
-            :directions="['none', 'right', 'left', 'none']"
-            class="mt-3"
-          />
-        </settings-page-item>
-        <settings-page-item
-          title="Colored stripe indicating post rating"
-          switch
-        >
+        <!-- <settings-page-item title="Route transitions" description="Change the route transitions" select>
+          <v-select :items="transitionItems" variant="outlined" v-model="appearance.routeTransition" hide-details />
+          <transition-preview :transition-name="appearance.routeTransition" :ratio="2"
+            :directions="['none', 'right', 'left', 'none']" class="mt-3" />
+        </settings-page-item> -->
+        <settings-page-item title="Colored stripe indicating post rating" switch>
           <v-switch v-model="appearance.ratingStripe" />
         </settings-page-item>
         <settings-page-item title="Navigation" select>
-          <v-select
-            :items="navigationTypeItems"
-            outlined
-            v-model="appearance.navigationType"
-            hide-details
-          />
+          <v-select :items="navigationTypeItems" variant="outlined" v-model="appearance.navigationType" hide-details />
         </settings-page-item>
         <settings-page-item title="Logo" select>
-          <v-select
-            :items="logoStyleItems"
-            outlined
-            v-model="appearance.logoStyle"
-            hide-details
-          />
+          <v-select :items="logoStyleItems" variant="outlined" v-model="appearance.logoStyle" hide-details />
         </settings-page-item>
         <settings-page-item title="Hide install prompt" switch>
           <v-switch v-model="appearance.hideInstallPrompt" />
@@ -95,12 +49,12 @@
         <settings-page-item title="Hide GitHub info" switch>
           <v-switch v-model="appearance.hideGithubInfo" />
         </settings-page-item>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
 import TransitionPreview from "./TransitionPreview.vue";
@@ -108,32 +62,21 @@ import { computed, defineComponent } from "vue";
 import ColorChooser from "./ColorChooser.vue";
 import transitions from "@/misc/data/transitions.json";
 import { useAppearanceStore } from "@/services";
+import { useHead } from "@unhead/vue";
 
-export default defineComponent({
-  metaInfo: {
-    title: "Appearance Settings",
-  },
-  components: {
-    SettingsPageTitle,
-    SettingsPageItem,
-    ColorChooser,
-    TransitionPreview,
-  },
-  setup() {
-    const appearance = useAppearanceStore();
-
-    const transitionItems = computed(() =>
-      Object.entries(transitions).map(([key, val]) => ({
-        text: val.name,
-        value: key,
-      })),
-    );
-    return {
-      transitionItems,
-      appearance,
-      navigationTypeItems: ["sidebar", "toolbar", "floating"],
-      logoStyleItems: computed(() => appearance.logoStyles),
-    };
-  },
+useHead({
+  title: "Appearance Settings",
 });
+
+const appearance = useAppearanceStore();
+
+const transitionItems = computed(() =>
+  Object.entries(transitions).map(([key, val]) => ({
+    title: val.name,
+    value: key,
+  })),
+);
+
+const navigationTypeItems = ["sidebar", "toolbar", "floating"];
+const logoStyleItems = computed(() => appearance.logoStyles)
 </script>

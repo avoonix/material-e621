@@ -1,14 +1,13 @@
-import Vue from "vue";
-import PortalVue from "portal-vue";
-import Meta from "vue-meta";
-import "./vue";
+import { createHead } from '@unhead/vue/client'
 export * from "./vuetify";
 import "./mousetrap";
-export * from "./pinia";
+// TODO: maybe migrate to https://github.com/jaywcjlove/hotkeys-js
 
-Vue.use(PortalVue);
-Vue.use(Meta, {
-  tagIDKeyName: "vmid",
-  attribute: "data-vue-meta",
-  keyName: "metaInfo",
-});
+export const head = createHead({
+  init: [
+    {
+      title: "Home",
+      titleTemplate: "%s | Material e621",
+    }
+  ]
+})

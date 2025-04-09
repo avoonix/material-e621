@@ -28,8 +28,9 @@
 <script lang="ts">
 import { useBlacklistClasses } from "@/misc/util/blacklist";
 import { useBlacklistStore, usePostsStore } from "@/services";
-import { EnhancedPost } from "@/worker/ApiService";
-import { computed, defineComponent, PropType } from "vue";
+import type { EnhancedPost } from "@/worker/ApiService";
+import type { PropType } from "vue";
+import { computed, defineComponent } from "vue";
 import PostButtons from "./PostButtons.vue";
 import PostPreview from "./PostPreview.vue";
 import PostText from "./PostText.vue";

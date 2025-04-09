@@ -1,13 +1,13 @@
 <template>
   <v-responsive height="100%">
-    <v-container fill-height>
-      <v-layout align-center>
-        <v-flex text-center>
+    <v-container class="fill-height">
+      <v-row align-center>
+        <v-col class="text-center">
           <app-logo type="face" />
           <h3 class="text-h2">Page not found</h3>
-          <v-btn color="primary" large :to="{ path: '/' }"> Start page </v-btn>
-        </v-flex>
-      </v-layout>
+          <v-btn color="primary" size="large" :to="{ name: 'LandingPage' }"> Start page </v-btn>
+        </v-col>
+      </v-row>
     </v-container>
   </v-responsive>
 </template>

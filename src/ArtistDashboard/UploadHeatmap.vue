@@ -3,10 +3,10 @@
     <div v-for="(col, idx) in matrix" :key="idx" class="d-flex flex-column fill-width" :style="{marginLeft: '2px', marginRight: '2px'}">
       <div v-for="(day, i) in col" :key="i" class="d-flex"
         :style="{ outline: `1px ${day.count ? 'solid' : 'dotted'} var(--v-secondary-base)`, marginTop: '2px', marginBottom: '2px' }">
-        <v-tooltip bottom>
-          <template #activator="{ on, attrs }">
-            <div v-bind="attrs" v-on="on" :style="{ aspectRatio: '1', opacity: day.count / (max || 1) }"
-              class="primary fill-width" />
+        <v-tooltip location="bottom">
+          <template #activator="{ props }">
+            <div v-bind="props" :style="{ aspectRatio: '1', opacity: day.count / (max || 1) }"
+              class="bg-primary fill-width" />
           </template>
           <span>{{day.count}} uploads on {{day.date}}</span>
         </v-tooltip>
@@ -18,7 +18,8 @@
 <script lang="ts">
 import { eachDayOfInterval, format, subDays } from "date-fns";
 import { chunk } from "lodash";
-import { computed, defineComponent, PropType } from "vue";
+import type { PropType } from "vue";
+import { computed, defineComponent } from "vue";
 
 export default defineComponent({
   props: {

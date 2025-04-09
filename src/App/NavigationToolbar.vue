@@ -1,25 +1,13 @@
 <template>
   <v-toolbar-items>
-    <v-btn
-      text
-      v-for="(option, index) in navigationItems"
-      :key="index"
-      :to="option.to"
-    >
+    <v-btn variant="text" v-for="(option, index) in navigationItems" :key="option.resolved" :to="option.to" :exact="option.exact">
       {{ option.name }}
     </v-btn>
   </v-toolbar-items>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import { navigationItems } from "../App/navigation";
+<script setup lang="ts">
+import { useNavigationItems } from "../App/navigation";
 
-export default defineComponent({
-  setup() {
-    return {
-      navigationItems,
-    };
-  },
-});
+const navigationItems = useNavigationItems();
 </script>

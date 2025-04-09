@@ -1,7 +1,8 @@
-import { wrap, Remote } from "comlink";
-import { ApiService } from "./ApiService";
-import { AnalyzeService } from "./AnalyzeService";
-import { DashboardService } from "./DashboardService";
+import type { Remote } from "comlink";
+import { wrap } from "comlink";
+import type { ApiService } from "./ApiService";
+import type { AnalyzeService } from "./AnalyzeService";
+import type { DashboardService } from "./DashboardService";
 
 // const workerOptions = import.meta.env.PROD ? {} : { type: "module" as const };
 

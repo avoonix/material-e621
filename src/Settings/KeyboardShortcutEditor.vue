@@ -3,17 +3,16 @@
     disable-sort
     :headers="headers"
     :items="shortcuts"
-    class="secondary"
   >
     <template #top>
       <div class="pa-2">
         <v-dialog v-model="dialog" max-width="500px">
-          <template #activator="{ on, attrs }">
-            <v-btn color="primary" block v-bind="attrs" v-on="on">
+          <template #activator="{ props }">
+            <v-btn color="primary" block v-bind="props">
               New Shortcut
             </v-btn>
           </template>
-          <v-card color="secondary">
+          <v-card>
             <v-card-title>
               <span>{{ formTitle }}</span>
             </v-card-title>
@@ -46,20 +45,20 @@
 
             <v-card-actions>
               <v-spacer />
-              <v-btn color="primary" text @click="close">Cancel</v-btn>
-              <v-btn color="primary" text @click="save">Save</v-btn>
+              <v-btn color="primary" variant="text" @click="close">Cancel</v-btn>
+              <v-btn color="primary" variant="text" @click="save">Save</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card color="secondary">
+          <v-card>
             <v-card-title>
               Are you sure you want to delete this item?
             </v-card-title>
             <v-card-actions>
               <v-spacer />
-              <v-btn color="primary" text @click="closeDelete"> Cancel </v-btn>
-              <v-btn color="primary" text @click="deleteItemConfirm">
+              <v-btn color="primary" variant="text" @click="closeDelete"> Cancel </v-btn>
+              <v-btn color="primary" variant="text" @click="deleteItemConfirm">
                 OK
               </v-btn>
             </v-card-actions>
@@ -79,7 +78,7 @@
 </template>
 
 <script lang="ts">
-import { Action, Shortcut } from "@/services/types";
+import type { Action, Shortcut } from "@/services/types";
 import {
   computed,
   defineComponent,
@@ -97,9 +96,9 @@ export default defineComponent({
   setup(props, context) {
     const shortcutStore = useShortcutStore();
     const headers = [
-      { text: "Action", value: "action" },
-      { text: "Sequence", value: "sequence" },
-      { text: "", value: "buttons", align: "end" },
+      { title: "Action", value: "action" },
+      { title: "Sequence", value: "sequence" },
+      { title: "", value: "buttons", align: "end" },
     ];
     const shortcuts = computed(() => shortcutStore.shortcuts);
     const editedItem = ref<Shortcut>({ action: "go_to_posts", sequence: "" });

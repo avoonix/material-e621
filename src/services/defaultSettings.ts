@@ -1,10 +1,10 @@
-import { isMobile } from "@/misc/util/mobile";
+import type {
+  ISettingsServiceState,
+  Shortcut} from "./types";
 import {
   BlacklistMode,
   DataSaverType,
-  FullscreenZoomUiMode,
-  ISettingsServiceState,
-  Shortcut,
+  FullscreenZoomUiMode
 } from "./types";
 
 export const focusSearchShortcut: Shortcut = {
@@ -108,9 +108,7 @@ export const defaultSettings: ISettingsServiceState = {
     buttons: ["info", "fullscreen", "external", "favorite"],
     fullscreenButtons: ["external", "info", "favorite"],
     detailsButtons: ["external", "favorite"],
-    fullscreenZoomUiMode: isMobile
-      ? FullscreenZoomUiMode.alwaysHide
-      : FullscreenZoomUiMode.hideWhileZoomed,
+    fullscreenZoomUiMode: FullscreenZoomUiMode.hideWhileZoomed,
     postListFetchLimit: 30,
     sidebarSuggestionLimit: 40,
     tagFetchLimit: 30,

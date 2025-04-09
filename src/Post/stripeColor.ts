@@ -1,5 +1,5 @@
 import { useAppearanceStore } from "@/services";
-import { Post } from "@/worker/api";
+import type { Post } from "@/worker/api";
 import { computed } from "vue";
 
 export const getColor = (rating: string) => {

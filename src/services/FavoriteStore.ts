@@ -1,6 +1,6 @@
 import { isEmpty } from "lodash";
 import { defineStore } from "pinia";
-import Vue, { computed } from "vue";
+import { computed } from "vue";
 import { useMainStore } from "./state";
 
 export const useFavoritesStore = defineStore("favorites", () => {
@@ -19,17 +19,13 @@ export const useFavoritesStore = defineStore("favorites", () => {
   ) => {
     if (favorite) {
       if (!main.favorites.tags[category]) {
-        Vue.set(main.favorites.tags, category, {});
+        main.favorites.tags[category] = {};
       }
-      Vue.set(
-        main.favorites.tags[category],
-        name,
-        display && display !== name ? display : true,
-      );
+      main.favorites.tags[category][name] = display && display !== name ? display : true;
     } else {
-      Vue.delete(main.favorites.tags[category], name);
+      delete main.favorites.tags[category][name];
       if (isEmpty(main.favorites.tags[category])) {
-        Vue.delete(main.favorites.tags, category);
+        delete main.favorites.tags[category];
       }
     }
   };

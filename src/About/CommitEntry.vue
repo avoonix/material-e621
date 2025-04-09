@@ -1,5 +1,5 @@
 <template>
-  <v-card color="secondary">
+  <v-card>
     <v-card-title>
       <div>
         <h3 class="text-h5">
@@ -13,35 +13,30 @@
     <v-card-text v-if="entry.message.body" class="pre text-body-1">{{ entry.message.body }}</v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn text :href="`https://github.com/avoonix/material-e621/commit/${entry.hash}`" color="primary">
-        <v-icon left> mdi-open-in-new </v-icon>
+      <v-btn variant="text" :href="`https://github.com/avoonix/material-e621/commit/${entry.hash}`" color="primary">
+        <v-icon start> mdi-open-in-new </v-icon>
         View commit
       </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
-<script lang="ts">
-import { IGitCommit } from "@/misc/util/git";
-import { computed, defineComponent, PropType } from "vue";
+<script setup lang="ts">
+import type { IGitCommit } from "@/misc/util/git";
+import type { PropType } from "vue";
+import { computed } from "vue";
 import { formatDistanceToNow } from "date-fns";
 
-export default defineComponent({
-  props: {
-    entry: {
-      type: Object as PropType<IGitCommit>,
-      required: true,
-    },
-  },
-  setup(props, context) {
-    const date = computed(() =>
-      formatDistanceToNow(props.entry.date, { addSuffix: true }),
-    );
-    return {
-      date,
-    };
+const props = defineProps({
+  entry: {
+    type: Object as PropType<IGitCommit>,
+    required: true,
   },
 });
+
+const date = computed(() =>
+  formatDistanceToNow(props.entry.date, { addSuffix: true }),
+);
 </script>
 
 <style scoped>

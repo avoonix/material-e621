@@ -1,53 +1,35 @@
 <template>
-  <v-container fill-height>
-    <v-layout align-center>
-      <v-flex text-center xs12 md8 offset-md2>
+  <v-container class="fill-height">
+    <v-row align-center>
+      <v-col class="text-center" cols="12" md="8" offset-md="2">
         <v-expand-transition>
-        <v-btn :to="query" class="mb-3" block color="primary" v-if="tags.length">View dashboard of {{tags[0]}}</v-btn>
+          <v-btn :to="query" class="mb-3" block color="primary" v-if="tags.length">View dashboard of {{ tags[0] }}</v-btn>
         </v-expand-transition>
-          <tag-search
-            label="Search Artist"
-            :tags="tags"
-            @add-tag="addTag"
-            @remove-tag="removeTag"
-          />
-          <!-- <v-text-field
+        <tag-search label="Search Artist" :tags="tags" @add-tag="addTag" @remove-tag="removeTag" />
+        <!-- <v-text-field
             v-model="username"
             append-icon="mdi-send"
             @click:append="submit"
             label="Artist Tag"
           /> -->
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import { RawLocation } from "vue-router";
 import TagSearch from "../Tag/TagSearch.vue";
+import { useHead } from "@unhead/vue";
+import type { RouteLocationRaw } from "vue-router";
 
-export default defineComponent({
-  metaInfo: {
-    title: "Artist Dashboard",
-  },
-  components: {
-    TagSearch,
-  },
-  setup(props, context) {
-    const tags = ref<string[]>([]);
-    const query = computed<RawLocation>(() => ({
-      name: "DashboardResult",
-      params: { name: tags.value[0] }
-    }));
-    const addTag = (tag: string) => tags.value = [tag];
-    const removeTag = () => tags.value = [];
-    return {
-      tags,
-      addTag,
-      removeTag,
-      query
-    };
-  },
-});
+useHead({ title: "Artist Dashboard" });
+
+const tags = ref<string[]>([]);
+const query = computed<RouteLocationRaw>(() => ({
+  name: "DashboardResult",
+  params: { name: tags.value[0] }
+}));
+const addTag = (tag: string) => tags.value = [tag];
+const removeTag = () => tags.value = [];
 </script>

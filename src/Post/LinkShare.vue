@@ -1,6 +1,6 @@
 <template>
-  <v-flex>
-    <v-text-field readonly :value="url" @click="copyUrlToClipboard" />
+  <v-col>
+    <v-text-field readonly :model-value="url" @click="copyUrlToClipboard" />
     <v-radio-group v-model="urlType">
       <v-radio
         v-for="option in radioOptions"
@@ -10,30 +10,29 @@
       />
     </v-radio-group>
     <div class="text-body-1">
-      <v-layout wrap>
-        <v-flex class="pa-1" v-for="(button, index) in shareButtons" :key="index" xs12 md6>
+      <v-row wrap>
+        <v-col class="pa-1" v-for="(button, index) in shareButtons" :key="index" cols="12" md="6">
           <v-btn
             class="ma-0"
             :dark="button.dark"
-            large
+            size="large"
             block
             :color="button.color"
             @click="shareButtonClick(button)"
             :href="button.noPopup ? button.url : undefined"
           >
-            <v-icon left>{{ button.icon }}</v-icon>
+            <v-icon start>{{ button.icon }}</v-icon>
             {{ button.name }}
           </v-btn>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </div>
-  </v-flex>
+  </v-col>
 </template>
 
 <script lang="ts">
 import { getAppName, getBaseUrl } from "@/misc/util/utilities";
 import { computed, defineComponent, ref } from "vue";
-import copyToClipboard from "clipboard-copy";
 import { useSnackbarStore, useUrlStore } from "@/services";
 import { openUrlInNewTab } from "@/misc/util/url";
 
@@ -109,7 +108,7 @@ export default defineComponent({
     };
 
     const copyUrlToClipboard = async () => {
-      await copyToClipboard(url.value);
+      await navigator.clipboard.writeText(url.value);
       snackbar.addMessage("Link copied");
     };
 

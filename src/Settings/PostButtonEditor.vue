@@ -3,74 +3,49 @@
     <v-card class="mb-2" color="secondary">
       <v-card-title> All buttons (drag to add/remove) </v-card-title>
       <v-card-text>
-        <draggable
-          :value="availableButtons"
-          :group="{ name: 'post-button-editor', pull: 'clone', put: true }"
-          :sort="false"
-          class="trash-container"
-        >
-          <post-button
-            v-for="button in availableButtons"
-            :key="button"
-            :type="button"
-          />
+        <draggable :model-value="availableButtons" :group="{ name: 'post-button-editor', pull: 'clone', put: true }"
+          :sort="false" class="trash-container" :item-key="identity">
+          <template #item="{ element: button }">
+            <post-button :type="button" />
+          </template>
         </draggable>
       </v-card-text>
     </v-card>
     <v-card class="mb-2" color="secondary">
       <v-card-title> Post buttons </v-card-title>
       <v-card-text>
-        <draggable
-          v-model="postButtonsComputed"
-          :group="{ name: 'post-button-editor', pull: true, put: true }"
-          @add="postButtonsComputed = handleSort(postButtonsComputed)($event)"
-        >
-          <post-button
-            class="trashable"
-            v-for="button in postButtonsComputed"
-            :key="button"
-            :type="button"
-          />
+        <draggable v-model="postButtonsComputed" :group="{ name: 'post-button-editor', pull: true, put: true }"
+          @add="postButtonsComputed = handleSort(postButtonsComputed)($event)" :item-key="identity">
+          <template #item="{ element: button }">
+            <post-button class="trashable" :type="button" />
+          </template>
         </draggable>
       </v-card-text>
     </v-card>
     <v-card class="mb-2" color="secondary">
       <v-card-title> Fullscreen buttons </v-card-title>
       <v-card-text>
-        <draggable
-          v-model="fullscreenButtonsComputed"
-          :group="{ name: 'post-button-editor', pull: true, put: true }"
+        <draggable v-model="fullscreenButtonsComputed" :group="{ name: 'post-button-editor', pull: true, put: true }"
           @add="
             fullscreenButtonsComputed = handleSort(fullscreenButtonsComputed)(
               $event,
             )
-          "
-        >
-          <post-button
-            class="trashable"
-            v-for="button in fullscreenButtonsComputed"
-            :key="button"
-            :type="button"
-          />
+            " :item-key="identity">
+          <template #item="{ element: button }">
+            <post-button class="trashable" :type="button" />
+          </template>
         </draggable>
       </v-card-text>
     </v-card>
-    <v-card color="secondary">
+    <v-card>
       <v-card-title> Details buttons </v-card-title>
       <v-card-text>
-        <draggable
-          v-model="detailsButtonsComputed"
-          :group="{ name: 'post-button-editor', pull: true, put: true }"
-          @add="
-            detailsButtonsComputed = handleSort(detailsButtonsComputed)($event)
-          "
-        >
-          <post-button
-            class="trashable"
-            v-for="button in detailsButtonsComputed"
-            :key="button"
-            :type="button"
-          />
+        <draggable v-model="detailsButtonsComputed" :group="{ name: 'post-button-editor', pull: true, put: true }" @add="
+          detailsButtonsComputed = handleSort(detailsButtonsComputed)($event)
+          " :item-key="identity">
+          <template #item="{ element: button }">
+            <post-button class="trashable" :type="button" />
+          </template>
         </draggable>
       </v-card-text>
     </v-card>
@@ -79,9 +54,11 @@
 
 <script lang="ts">
 import PostButton from "@/Post/PostButton.vue";
-import { ButtonType } from "@/services/types";
-import { computed, defineComponent, PropType } from "vue";
+import type { ButtonType } from "@/services/types";
+import type { PropType } from "vue";
+import { computed, defineComponent } from "vue";
 import Draggable from "vuedraggable";
+
 
 export default defineComponent({
   components: {
@@ -139,20 +116,21 @@ export default defineComponent({
       ); // remove old duplicates
     };
 
+const identity = (item: ButtonType) => item;
+
     return {
       postButtonsComputed,
       fullscreenButtonsComputed,
       handleSort,
       detailsButtonsComputed,
+      identity,
     };
   },
 });
 </script>
 
-<style lang="scss" scoped>
-.trash-container {
-  .trashable {
-    color: red;
-  }
+<style scoped>
+.trash-container .trashable {
+  color: red;
 }
 </style>

@@ -1,4 +1,4 @@
-import { BlacklistMode } from "@/services/types";
+import type { BlacklistMode } from "@/services/types";
 
 const E621_API_TAG_LIMIT = 40;
 

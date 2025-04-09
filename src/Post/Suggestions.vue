@@ -1,32 +1,32 @@
 <template>
-  <v-list dense>
-    <template v-for="(tag, index) in tags">
-      <v-list-item dense :key="index">
-        <v-list-item-content>
-          <div>
-            <tag-label :tag="tag" />
+  <v-list density="compact">
+    <template v-for="(tag, index) in tags" :key="index">
+      <v-list-item density="compact">
+        <div>
+          <tag-label :tag="tag" />
+        </div>
+        <template #append class="ma-0">
+
+          <div v-if="tag.post_count" class="text-grey text-caption mr-2">
+            {{ tag.post_count }}
           </div>
-        </v-list-item-content>
-        <v-list-item-action v-if="tag.post_count" class="grey--text text-caption">
-          {{ tag.post_count }}
-        </v-list-item-action>
-        <v-list-item-action class="ma-0" v-if="tag.category">
-          <tag-favorite-button :category="tag.category" :name="tag.name" />
-        </v-list-item-action>
-        <v-list-item-action v-if="tag.category" class="ma-0">
-          <tag-menu :tag="tag" />
-        </v-list-item-action>
+          <template v-if="tag.category">
+            <tag-favorite-button :category="tag.category" :name="tag.name" class="mr-2" />
+            <tag-menu :tag="tag" />
+          </template>
+        </template>
       </v-list-item>
     </template>
   </v-list>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import type { PropType } from "vue";
+import { defineComponent } from "vue";
 import TagLabel from "../Tag/TagLabel.vue";
 import TagFavoriteButton from "@/Tag/TagFavoriteButton.vue";
 import TagMenu from "@/Tag/TagMenu.vue";
-import { ITag } from "@/Tag/ITag";
+import type { ITag } from "@/Tag/ITag";
 
 export default defineComponent({
   components: {

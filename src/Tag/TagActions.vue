@@ -1,8 +1,8 @@
 <template>
-  <v-list class="secondary">
+  <v-list>
     <PoolInfo v-if="pool" class="mb-2" :pool-id="pool" />
     <v-list-item v-for="(item, i) in items" :key="i" @click.stop="item.action" :router="!!item.route" exact :to="item.route" >
-      <v-list-item-content>{{ item.text }}</v-list-item-content>
+      {{ item.text }}
     </v-list-item>
   </v-list>
 </template>
@@ -13,6 +13,7 @@ import { useBlacklistStore, useUrlStore } from "@/services";
 import { useFavoritesStore } from "@/services/FavoriteStore";
 import { computed, defineComponent } from "vue";
 import { openUrlInNewTab } from "@/misc/util/url";
+import { useRouter } from "vue-router";
 
 // const menu = {
 //   remove: "Remove from search",
@@ -40,6 +41,7 @@ export default defineComponent({
         const e621Url = computed(() => `${urlStore.e621Url}posts?tags=${props.name}`);
         const isBlacklisted = computed(() => blacklist.tagIsBlacklisted(props.name));
         const isFavorited = computed(() => favorites.isFavorited(props.name, props.category));
+        const router = useRouter();
         const pool = computed(() => {
             if(props.category === "pool") {
                 const match = /pool:(\d+)/.exec(props.name);
@@ -74,8 +76,7 @@ export default defineComponent({
                     },
                 },
                 action: async () => {
-                    const { appRouter } = await import("@/misc/util/router");
-                    appRouter.push({
+                    router.push({
                         name: "Posts",
                         query: {
                             tags: props.name,
@@ -115,8 +116,7 @@ export default defineComponent({
             {
                 text: "View in Artist Dashboard",
                 action: async () => {
-                    const { appRouter } = await import("@/misc/util/router");
-                    appRouter.push({
+                    router.push({
                         name: "DashboardResult",
                         params: {
                             name: props.name,

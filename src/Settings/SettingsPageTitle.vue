@@ -1,9 +1,11 @@
 <template>
-  <v-toolbar :class="color">
-    <v-btn icon exact :to="{ path: '/settings' }">
+  <v-toolbar :color="color" v-view-transition-name="`settings-toolbar-${section}`">
+    <v-btn icon exact :to="{ name: 'Settings' }">
       <v-icon>mdi-arrow-left</v-icon>
     </v-btn>
-    <v-toolbar-title>{{ title }}</v-toolbar-title>
+    <v-toolbar-title class="text-left">
+      {{ title }}
+    </v-toolbar-title>
     <v-spacer />
   </v-toolbar>
 </template>
@@ -17,6 +19,9 @@ export default defineComponent({
       type: String,
     },
     color: {
+      type: String,
+    },
+    section: {
       type: String,
     },
   },

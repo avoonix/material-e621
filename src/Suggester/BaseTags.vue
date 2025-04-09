@@ -1,11 +1,11 @@
 <template>
-  <v-card color="secondary">
-    <v-subheader>Suggestions based on</v-subheader>
+  <v-card>
+    <div class="text-overline">Suggestions based on</div>
     <div>
-      <template v-for="(item, i) in data">
-        <div :key="i" color="secondary">
+      <template v-for="(item, i) in data" :key="i">
+        <div  color="secondary">
           <!-- <v-card-title>{{ item.category }}</v-card-title> -->
-          <v-subheader>{{ item.category }}</v-subheader>
+          <div class="text-overline">{{ item.category }}</div>
           <div class="ml-10">
 
           <div v-if="item.tags.length">
@@ -15,12 +15,12 @@
               :tag="{ name, category: item.category }"
               class="ma-1"
             />
-            <span class="grey--text more" v-if="item.more">
+            <span class="text-grey more" v-if="item.more">
               + {{ item.more }} more
             </span>
           </div>
           <div v-else>
-            <i class="grey--text">None</i>
+            <i class="text-grey">None</i>
           </div>
           </div>
         </div>
@@ -30,8 +30,9 @@
 </template>
 
 <script lang="ts">
-import { FavoriteTagsResult } from "@/worker/AnalyzeService";
-import { computed, defineComponent, PropType } from "vue";
+import type { FavoriteTagsResult } from "@/worker/AnalyzeService";
+import type { PropType } from "vue";
+import { computed, defineComponent } from "vue";
 import TagLabel from "@/Tag/TagLabel.vue";
 
 export default defineComponent({

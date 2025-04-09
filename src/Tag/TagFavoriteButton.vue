@@ -4,7 +4,7 @@
       :key="isFavorited ? 0 : 1"
       :color="isFavorited ? 'yellow' : ''"
       icon
-      small
+      size="small"
       @click.stop="toggleFavorite"
     >
       <v-icon v-if="isFavorited"> mdi-star </v-icon>

@@ -6,10 +6,11 @@
 
 <script lang="ts">
 import { openE6PostInStandaloneWindow } from "@/misc/util/url";
-import { ButtonType } from "@/services/types";
-import { EnhancedPost } from "@/worker/ApiService";
-import { computed, defineComponent, PropType } from "vue";
-import { usePostListManager } from "./postListManager";
+import type { ButtonType } from "@/services/types";
+import type { EnhancedPost } from "@/worker/ApiService";
+import type { PropType } from "vue";
+import { computed, defineComponent, watch } from "vue";
+import type { usePostListManager } from "./postListManager";
 
 interface IButton {
   color: any;

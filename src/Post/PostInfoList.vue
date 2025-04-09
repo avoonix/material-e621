@@ -1,97 +1,80 @@
 <template>
-  <v-list dense class="secondary">
-    <v-list-item>
-      <v-list-item-content>ID</v-list-item-content>
-      <v-list-item-content class="align-end">
-        {{ post.id }}
-      </v-list-item-content>
-    </v-list-item>
-    <v-list-item v-if="post.tags.artist?.length">
-      <v-list-item-content>Artist</v-list-item-content>
-      <v-list-item-content class="align-end">
-        <div>
-          <TagWithMenu small v-for="artist in post.tags.artist" :key="artist" :tag="{ name: artist, category: 'artist' }" />
-        </div>
-      </v-list-item-content>
-    </v-list-item>
-    <v-list-item v-if="post.pools?.length">
-      <v-list-item-content>Pools</v-list-item-content>
-      <v-list-item-content class="align-end">
-        <div>
+  <v-table class="text-caption" density="compact">
+    <tbody>
+      <tr align="right">
+        <th>ID:</th>
+        <td>{{ post.id }}</td>
+      </tr>
+      <tr align="right" v-if="post.tags.artist?.length">
+        <th>Artist:</th>
+        <td>
+          <TagWithMenu small v-for="artist in post.tags.artist" :key="artist"
+            :tag="{ name: artist, category: 'artist' }" />
+        </td>
+      </tr>
+      <tr align="right" v-if="post.pools?.length">
+        <th>Pools:</th>
+        <td>
           <TagWithMenu small v-for="pool in post.pools" :key="pool" :tag="{ name: `pool:${pool}`, category: 'pool' }" />
-        </div>
-      </v-list-item-content>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-content>Score</v-list-item-content>
-      <v-list-item-content class="align-end">
-        {{ post.score.total }}
-        ({{ post.score.up }} up - {{ post.score.down }} down)
-      </v-list-item-content>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-content>Favorites</v-list-item-content>
-      <v-list-item-content class="align-end">
-        {{ post.fav_count }}
-      </v-list-item-content>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-content>File size</v-list-item-content>
-      <v-list-item-content class="align-end">
-        {{ fileSize }}
-        ({{ post.file.size }} B)
-      </v-list-item-content>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-content>Dimensions</v-list-item-content>
-      <v-list-item-content class="align-end">
-        {{ post.file.width }}x{{ post.file.height }} ({{ megapixel }} Megapixel)
-      </v-list-item-content>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-content>Hash</v-list-item-content>
-      <v-list-item-content class="align-end">
-        {{ post.file.md5 }}
-      </v-list-item-content>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-content>Rating</v-list-item-content>
-      <v-list-item-content class="align-end">
-        {{ post.rating }}
-      </v-list-item-content>
-    </v-list-item>
-    <v-list-item>
-      <v-list-item-content>Sources</v-list-item-content>
-      <v-list-item-content class="align-end">
-        <a target="_blank" :href="source" v-for="(source, idx) in post.sources" :key="idx">
-          {{ source }}
-        </a>
-      </v-list-item-content>
-    </v-list-item>
-  </v-list>
+        </td>
+      </tr>
+      <tr align="right">
+        <th>Score:</th>
+        <td>
+          {{ post.score.total }}
+          ({{ post.score.up }} up - {{ post.score.down }} down)
+        </td>
+      </tr>
+      <tr align="right">
+        <th>Favorites:</th>
+        <td>{{ post.fav_count }}</td>
+      </tr>
+      <tr align="right">
+        <th>File size:</th>
+        <td>
+          {{ fileSize }}
+          ({{ post.file.size }} B)
+        </td>
+      </tr>
+      <tr align="right">
+        <th>Dimensions:</th>
+        <td>
+          {{ post.file.width }}x{{ post.file.height }} ({{ megapixel }} Megapixel)
+        </td>
+      </tr>
+      <tr align="right">
+        <th>Hash:</th>
+        <td>{{ post.file.md5 }}</td>
+      </tr>
+      <tr align="right">
+        <th>Rating:</th>
+        <td>{{ post.rating }}</td>
+      </tr>
+      <tr align="right">
+        <th>Sources:</th>
+        <td>
+          <a target="_blank" :href="source" v-for="(source, idx) in post.sources" :key="idx">
+            {{ source }}
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </v-table>
 </template>
 
-<script lang="ts">
-import { Post } from "@/worker/api";
-import { computed, defineComponent, PropType } from "vue";
-import prettyBytes from "pretty-bytes";
+<script setup lang="ts">
+import type { Post } from "@/worker/api";
+import type { PropType } from "vue";
+import { computed } from "vue";
 import TagWithMenu from "@/Tag/TagWithMenu.vue";
+import { prettyBytes } from "@/misc/util/prettyBytes";
 
-export default defineComponent({
-  props: {
-    post: {
-      type: Object as PropType<Post>,
-      required: true,
-    },
+const props = defineProps({
+  post: {
+    type: Object as PropType<Post>,
+    required: true,
   },
-  setup(props) {
-    const fileSize = computed(() => prettyBytes(props.post.file.size));
-    const megapixel = computed(() => Math.round(((props.post.file.width * props.post.file.height) / 1000000) * 100) / 100);
-    return {
-      megapixel,
-      fileSize,
-    };
-  },
-  components: { TagWithMenu }
 });
+const fileSize = computed(() => prettyBytes(props.post.file.size));
+const megapixel = computed(() => Math.round(((props.post.file.width * props.post.file.height) / 1000000) * 100) / 100);
 </script>

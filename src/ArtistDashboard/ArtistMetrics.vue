@@ -1,7 +1,7 @@
 <template>
     <v-row>
         <v-col cols="12" lg="3" md="4" sm="6" :key="idx" v-for="(metric, idx) in metrics">
-            <v-card color="secondary">
+            <v-card>
                 <v-card-title class="text-h3">
                     {{ formatValue(metric.value) }}
                 </v-card-title>
@@ -14,8 +14,9 @@
 </template>
 
 <script lang="ts">
-import { IMetric } from "@/worker/DashboardService";
-import { defineComponent, PropType } from "vue";
+import type { IMetric } from "@/worker/DashboardService";
+import type { PropType } from "vue";
+import { defineComponent } from "vue";
 import { round } from "@/misc/util/round";
 
 export default defineComponent({

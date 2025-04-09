@@ -1,17 +1,18 @@
-import {
-  e621,
+import type {
   ITagsListArgs,
   IPoolsArgs,
   Post,
   IPostsListArgs,
   IPostFavoriteArgs,
-  custom,
-  IGetPoolArgs,
+  IGetPoolArgs} from "./api";
+import {
+  e621,
+  custom
 } from "./api";
 import { isPostBlacklisted } from "./blacklist";
-import debug from "debug";
-import { BlacklistMode } from "@/services/types";
+import type { BlacklistMode } from "@/services/types";
 import { createTagQuery } from "@/misc/util/createTagQuery";
+import { debug } from "@/misc/util/debug";
 
 // debug.disable();
 // debug.enable("app:*");
@@ -47,7 +48,7 @@ export class ApiService {
         ),
         baseUrl: args.baseUrl
       })
-    ).data.posts;
+    ).posts;
 
     return posts.map<EnhancedPost>((post) => ({
       ...post,
@@ -63,7 +64,7 @@ export class ApiService {
   }
 
   async getTags(args: ITagsListArgs) {
-    const { data } = await e621.tags.list(args);
+    const data = await e621.tags.list(args);
     if (Array.isArray(data)) {
       return data;
     } else {
@@ -72,11 +73,11 @@ export class ApiService {
   }
 
   async getPools(args: IPoolsArgs) {
-    return (await e621.pools.list(args)).data;
+    return (await e621.pools.list(args));
   }
 
   async getPool(args: IGetPoolArgs) {
-    return (await e621.pools.get(args)).data;
+    return (await e621.pools.get(args));
   }
 
   async favoritePost(args: IPostFavoriteArgs) {

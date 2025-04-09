@@ -1,24 +1,25 @@
 <template>
-  <v-flex>
-    <template v-for="tag in tags">
+  <v-col>
+    <template v-for="tag in tags"  :key="tag">
       <v-btn
       class="ma-1"
-        :key="tag"
-        outlined
+       
+        variant="outlined"
         @click="toggleBlacklisted(tag)"
         :color="isBlacklisted(tag) ? 'red' : 'green'"
       >
-        <v-icon left>
+        <v-icon start>
           {{ isBlacklisted(tag) ? "mdi-block-helper" : "mdi-check-decagram" }}
         </v-icon>
         {{ tag }}
       </v-btn>
     </template>
-  </v-flex>
+  </v-col>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import type { PropType } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {

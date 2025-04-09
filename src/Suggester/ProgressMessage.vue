@@ -4,7 +4,7 @@
     <span v-if="value">{{ value.message }} </span>
     <v-progress-linear
       v-if="value"
-      :value="value.progress * 100"
+      :model-value="value.progress * 100"
       :indeterminate="value.indeterminate"
     />
   </div>

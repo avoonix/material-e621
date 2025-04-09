@@ -1,6 +1,8 @@
 import mitt from "mitt";
+// TODO: implement basic event emitter ourselves
 import Mousetrap from "mousetrap";
 import { useShortcutStore } from "./ShortcutStore";
+import { useRouter } from "vue-router";
 
 export type Events = {
   focusSearch: void;
@@ -13,23 +15,20 @@ export type Events = {
 };
 
 class ShortcutService {
+  constructor(private router: ReturnType<typeof useRouter>, private shortcutStore: ReturnType<typeof useShortcutStore>) { }
+
   public emitter = mitt<Events>();
 
   public setUpShortcuts() {
     Mousetrap.reset();
-    const shortcutStore = useShortcutStore();
-    for (const { action, sequence } of shortcutStore.shortcuts) {
+    for (const { action, sequence } of this.shortcutStore.shortcuts) {
       Mousetrap.bind(sequence, (e) => {
         switch (action) {
           case "go_to_settings":
-            import("@/misc/util/router").then(({ appRouter }) =>
-              appRouter.push({ name: "Settings" }),
-            );
+            this.router.push({ name: "Settings" });
             break;
           case "go_to_posts":
-            import("@/misc/util/router").then(({ appRouter }) =>
-              appRouter.push({ name: "Posts" }),
-            );
+            this.router.push({ name: "Posts" });
             break;
           case "focus_search":
             this.emitter.emit("fullscreenExit"); // search can't be focused otherwise
@@ -65,6 +64,13 @@ class ShortcutService {
 
 const expectNever = (arg: never) => console.log("unexpected", arg);
 
-const shortcutService = new ShortcutService();
+let shortcutService: ShortcutService | null = null;
 
-export const useShortcutService = () => shortcutService;
+export const useShortcutService = () => {
+  const shortcutStore = useShortcutStore();
+  const router = useRouter();
+  if (shortcutService === null) {
+    shortcutService = new ShortcutService(router, shortcutStore);
+  }
+  return shortcutService;
+}

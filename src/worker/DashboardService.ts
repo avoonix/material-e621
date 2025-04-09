@@ -1,17 +1,15 @@
 import { round } from "@/misc/util/round";
 import { BlacklistMode } from "@/services/types";
-import { ITag } from "@/Tag/ITag";
+import type { ITag } from "@/Tag/ITag";
 import { expose } from "comlink";
 import { differenceInDays, format, parseISO } from "date-fns";
-import { debug } from "debug";
-import { IProgressEvent } from "./AnalyzeService";
+import type { IProgressEvent } from "./AnalyzeService";
 import type { IBaseArgs } from "./api";
-import { ApiService, EnhancedPost } from "./ApiService";
+import type { EnhancedPost } from "./ApiService";
+import { ApiService } from "./ApiService";
+import { debug } from "@/misc/util/debug";
 
 const log = debug("app:DashboardService");
-
-// debug.disable();
-debug.enable("app:DashboardService");
 
 export interface IDashboardArgs extends IBaseArgs {
   artist: string;

@@ -1,63 +1,52 @@
 <template>
   <div>
     <div class="ma-2">
-      <v-btn outlined block large color="primary" to="/settings/appearance" exact>
-        <v-icon left>mdi-arrow-left</v-icon>
+      <v-btn variant="outlined" block size="large" color="primary" to="/settings/appearance" exact>
+        <v-icon start>mdi-arrow-left</v-icon>
         Back
       </v-btn>
     </div>
-    <v-container fill-height>
-      <v-layout align-center wrap>
-        <v-flex xs12 sm6 md4 lg3 :key="idx" v-for="(theme, idx) in themes">
+    <v-container>
+      <v-row align="center">
+        <v-col cols="12" sm="6" md="4" lg="3" :key="idx" v-for="(theme, idx) in themes">
           <theme-preview @apply-theme="applyTheme(theme)" :theme="theme" />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
     <div class="ma-2">
-      <v-btn outlined block large color="primary" :href="issueUrl" target="_blank">
-        <v-icon left>mdi-open-in-new</v-icon>
+      <v-btn variant="outlined" block size="large" color="primary" :href="issueUrl" target="_blank">
+        <v-icon start>mdi-open-in-new</v-icon>
         Want your theme listed?
       </v-btn>
     </div>
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { computed, defineComponent } from "vue";
-import { Theme, useAppearanceStore } from "@/services";
+import type { Theme } from "@/services";
+import { useAppearanceStore } from "@/services";
 import themes from "@/misc/data/themes.json";
 import ThemePreview from "./ThemePreview.vue";
 import { createIssueLink } from "@/misc/util/git";
+import { useHead } from "@unhead/vue";
 
-export default defineComponent({
-  metaInfo: {
-    title: "Themes",
-  },
-  components: {
-    ThemePreview,
-  },
-  setup() {
-    const appearance = useAppearanceStore();
+useHead({ title: "Themes", });
 
-    const applyTheme = (theme: Theme) => {
-      appearance.applyTheme(theme);
-    };
-    const issueUrl = computed(() =>
-      createIssueLink({
-        title: "New theme: <your theme name here>",
-        body: `Hi, I would like to propose adding a new theme:
+const appearance = useAppearanceStore();
+
+const applyTheme = (theme: Theme) => {
+  appearance.applyTheme(theme);
+};
+const issueUrl = computed(() =>
+  createIssueLink({
+    title: "New theme: <your theme name here>",
+    body: `Hi, I would like to propose adding a new theme:
 
 \`\`\`json
 ${JSON.stringify(appearance.theme, null, 2)}
 \`\`\`
 `,
-      }),
-    );
-    return {
-      applyTheme,
-      themes,
-      issueUrl,
-    };
-  },
-});
+  }),
+);
 </script>

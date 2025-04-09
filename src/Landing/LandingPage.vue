@@ -1,137 +1,71 @@
 <template>
-  <v-flex>
-    <section
-      :class="`theme--${isDark ? 'dark' : 'light'}`"
-      class="v-toolbar elevation-0 primary d-flex"
-      :style="{ height: '75vh' }"
-    >
-      <v-layout column align-center justify-center fill-height class="">
-        <app-logo type="face" size="200" />
-        <h1 class="mb-2 text-h1 text-center">Material e621</h1>
-        <div class="text-h5">A {{ adjective }} frontend for e621.net</div>
-        <div class="ma-5">
-          <v-btn x-large color="secondary" outlined :to="{ path: '/posts' }">
-            Browse posts
-          </v-btn>
+  <section class="v-toolbar elevation-0 bg-primary d-flex" :style="{ height: '75vh' }">
+    <div class="w-100 d-flex flex-column align-center justify-center fill-height">
+
+      <app-logo v-view-transition-name="'applogo'" type="face" size="200" />
+      <h1 class="mb-2 text-h1 text-center">Material e621</h1>
+      <div class="text-h5">A {{ adjective }} frontend for e621.net</div>
+      <div style="min-width: 50vw;">
+        <tag-search v-view-transition-name="'tagsearch'" style="flex: 1 1 auto" :tags="tags" @add-tag="addTag"
+          @remove-tag="removeTag" @confirm-search="router.push(query)" label="Search Tags ..." />
+      </div>
+      <div class="ma-5">
+        <v-btn size="x-large" color="secondary" variant="outlined" :to="query">
+          Browse posts
+        </v-btn>
+      </div>
+    </div>
+  </section>
+  <About />
+  <section class="ma-1">
+    <v-row wrap justify="center" align="center">
+      <v-col cols="12" class="pt-5">
+        <div class="text-center">
+          <h2 class="text-h4">Latest updates</h2>
         </div>
-      </v-layout>
-    </section>
-    <section class="mt-8 mb-4">
-      <v-container>
-        <v-row>
-          <v-col cols="12" md="6" offset-md="3">
-            <div class="mb-3">
-              <h2 class="text-h4 text-center">What is Material e621?</h2>
-            </div>
-            <p class="text-center">
-              Material e621 is a modern, open source web client for e621.net. It
-              is customizable, comes with a bunch of features that are not
-              available on e621.net, and makes browsing posts a delightful
-              experience.
-            </p>
-            <p class="text-center">
-              Further information can be found on the project's
-              <a
-                class="primary--text text-decoration-none"
-                target="_blank"
-                href="https://github.com/avoonix/material-e621/issues"
-              >
-                <v-icon color="primary" size="1em" class="mr-1">
-                  mdi-open-in-new </v-icon
-                ><span class="text-decoration-underline">GitHub page</span></a
-              >.
-            </p>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12" md="6" offset-md="3">
-            <div class="mb-3">
-              <h2 class="text-h4 text-center">Looking for more?</h2>
-            </div>
-            <p class="text-center">
-              The original site can be found
-              <a
-                class="primary--text text-decoration-none"
-                target="_blank"
-                :href="url.e621Url"
-              >
-                <v-icon color="primary" size="1em" class="mr-1">
-                  mdi-open-in-new </v-icon
-                ><span class="text-decoration-underline">here</span></a
-              >. While Material e621 provides an enhanced interface for browsing
-              posts, e621.net has more features that go beyond that, such as
-              image uploads, comments, and a forum (among others). If you need
-              any of those, use e621.net directly as most of these features will
-              never be available in Material e621.
-            </p>
-          </v-col>
-        </v-row>
-      </v-container>
-    </section>
-    <section class="ma-1">
-      <v-layout justify-center wrap>
-        <v-flex xs12 class="pt-5">
-          <div class="text-center">
-            <h2 class="text-h4">Latest updates</h2>
-          </div>
-        </v-flex>
-        <v-flex xs12 md6 xl4 class="py-5">
-          <commit-timeline dense :limit="3" />
-          <v-btn block class="mt-0" color="primary" to="/about"> more </v-btn>
-        </v-flex>
-      </v-layout>
-    </section>
-    <v-footer class="primary">
-      <v-layout wrap="" align-center>
-        <v-flex xs12>
-          <v-spacer />
-          <div class="white--text ml-3">
-            Made with
-            <v-icon title="Vue" size="18" class="green--text">mdi-vuejs</v-icon>
-            by
-            <a href="https://avoonix.com/" class="white--text" title="Avoonix">
-              Avoo
-            </a>
-          </div>
-        </v-flex>
-      </v-layout>
-    </v-footer>
-  </v-flex>
+      </v-col>
+      <v-col cols="12" md="6" xl="4" class="py-5">
+        <commit-timeline dense :limit="3" />
+        <v-btn block class="mt-0" color="primary" to="/about"> more </v-btn>
+      </v-col>
+    </v-row>
+  </section>
+  <Footer />
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, inject } from "vue";
+<script setup lang="ts">
 import AppLogo from "../App/AppLogo.vue";
 import CommitTimeline from "@/About/CommitTimeline.vue";
-import { useUrlStore } from "@/services";
+import { useHead } from "@unhead/vue";
+import TagSearch from "@/Tag/TagSearch.vue";
+import About from "./About.vue";
+import Footer from "./Footer.vue";
+import { computed, ref } from "vue";
+import { useRouter, type RouteLocationRaw } from "vue-router";
+
+const router = useRouter();
 
 const chooseRandom = (arr: string[]) =>
   arr[Math.floor(Math.random() * arr.length)];
 
-export default defineComponent({
-  components: {
-    AppLogo,
-    CommitTimeline,
-  },
-  setup() {
-    const theme = inject<{ isDark: boolean }>("theme");
-    const isDark = computed(() => !!theme?.isDark);
-
-    const adjective = chooseRandom([
-      "modern",
-      "delightful",
-      "customizable",
-      "stylish",
-      "handy",
-    ]);
-
-    const url = useUrlStore();
-
-    return {
-      isDark,
-      adjective,
-      url,
-    };
-  },
+useHead({
+  title: "Material e621",
+  titleTemplate: null,
 });
+
+const adjective = chooseRandom([
+  "modern",
+  "delightful",
+  "customizable",
+  "stylish",
+  "handy",
+]);
+
+const tags = ref<string[]>([]);
+const query = computed<RouteLocationRaw>(() => ({
+  name: "Posts",
+  query: { tags: tags.value.join(" ") },
+}));
+const addTag = (tag: string) => tags.value.push(tag);
+const removeTag = (tag: string) => tags.value.splice(tags.value.indexOf(tag), 1);
 </script>

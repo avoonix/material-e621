@@ -1,22 +1,25 @@
 import { useMainStore } from "./state";
 import localforage from "localforage";
+// TODO: remove localforage and implement persistance ourselves
+import type {
+  ISettingsServiceState
+} from "./types";
 import {
   DataSaverType,
-  FullscreenZoomUiMode,
-  ISettingsServiceState,
+  FullscreenZoomUiMode
 } from "./types";
-import debug from "debug";
 import clone from "clone";
-import { reactive, watch, set } from "vue";
+import { reactive, toRaw, watch } from "vue";
 import {
   defaultSettings,
   focusSearchShortcut,
   fullscreenFavoriteShortcuts,
 } from "./defaultSettings";
+import { debug } from "@/misc/util/debug";
 
 localforage.config({
   description: "",
-  driver: [localforage.INDEXEDDB, localforage.WEBSQL, localforage.LOCALSTORAGE],
+  driver: [localforage.INDEXEDDB, localforage.LOCALSTORAGE],
   name: "material-e621",
   storeName: "material_e621",
 });
@@ -24,10 +27,10 @@ localforage.config({
 const log = debug("app:PersistanceService");
 
 class PersistanceService {
-  constructor(private main: ReturnType<typeof useMainStore>) {}
+  constructor(private main: ReturnType<typeof useMainStore>) { }
 
   public async saveState() {
-    await this.saveToLocalStorage("state", this.main.$state);
+    await this.saveToLocalStorage("state", this.getState());
     log("saved state");
   }
   public async loadState() {
@@ -79,10 +82,14 @@ class PersistanceService {
     return JSON.stringify(this.main.$state);
   }
 
-  private setState(newState: ISettingsServiceState) {
+  public getState() {
+    return toRaw(this.main.$state);
+  }
+
+  public setState(newState: ISettingsServiceState) {
     // migrations
     if (!newState.configVersion) {
-      set(newState, "configVersion", 1);
+      newState.configVersion = 1;
       newState.configVersion = 1; // to satisfy ts
     }
     if (newState.configVersion < 2) {
@@ -94,11 +101,7 @@ class PersistanceService {
       newState.configVersion = 3;
     }
     if (newState.configVersion < 4) {
-      set(
-        newState.posts,
-        "lazyLoadImages",
-        defaultSettings.posts.lazyLoadImages,
-      );
+      newState.posts.lazyLoadImages = defaultSettings.posts.lazyLoadImages
       newState.configVersion = 4;
     }
     if (newState.configVersion < 5) {
@@ -111,7 +114,7 @@ class PersistanceService {
         newState.appearance.toolbar = defaultSettings.appearance.toolbar;
       }
       if (typeof newState.posts.fullscreenZoomUiMode !== "number") {
-        set(newState.posts, "fullscreenZoomUiMode", defaultSettings.posts.fullscreenZoomUiMode);
+        newState.posts.fullscreenZoomUiMode = defaultSettings.posts.fullscreenZoomUiMode;
       }
       if (!newState.posts.dataSaver) {
         newState.posts.dataSaver = DataSaverType.auto;
@@ -122,23 +125,23 @@ class PersistanceService {
       newState.shortcuts.push(...fullscreenFavoriteShortcuts);
       newState.configVersion = 7;
     }
-    if(newState.configVersion < 8) {
-      set(newState.posts,"autoLoadNext", defaultSettings.posts.autoLoadNext);
+    if (newState.configVersion < 8) {
+      newState.posts.autoLoadNext = defaultSettings.posts.autoLoadNext;
       newState.configVersion = 8;
     }
-    if(newState.configVersion < 9) {
+    if (newState.configVersion < 9) {
       newState.misc = reactive(clone(defaultSettings.misc));
       newState.configVersion = 9;
     }
-    if(newState.configVersion < 10) {
+    if (newState.configVersion < 10) {
       newState.searches = reactive(clone(defaultSettings.searches));
       newState.configVersion = 10;
     }
-    if(newState.configVersion < 11) {
+    if (newState.configVersion < 11) {
       const old = newState.blacklist.tags as unknown as string[];
       newState.blacklist.tags = reactive(old.map(tag => [tag]));
-      set(newState.appearance,"hideGithubInfo", defaultSettings.appearance.hideGithubInfo);
-      set(newState.blacklist, "hideServerSideBlacklisted", defaultSettings.blacklist.hideServerSideBlacklisted);
+      newState.appearance.hideGithubInfo = defaultSettings.appearance.hideGithubInfo;
+      newState.blacklist.hideServerSideBlacklisted = defaultSettings.blacklist.hideServerSideBlacklisted;
       newState.configVersion = 11;
     }
 

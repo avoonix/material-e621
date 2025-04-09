@@ -1,25 +1,25 @@
 <template>
-  <v-list color="secondary">
+  <v-list>
     <v-list-item v-for="tag in tags" :key="tag.name">
       <v-list-item-title>
         <TagLabel :tag="tag" />
       </v-list-item-title>
-        <v-list-item-action
-          v-if="tag.post_count"
-          class="grey--text text-caption text-no-wrap"
-        >
+      <template #append>
+        <div v-if="tag.post_count" class="text-grey text-caption text-no-wrap">
           {{ tag.post_count }} Posts
-        </v-list-item-action>
-        <v-list-item-action v-if="tag.category">
+        </div>
+        <div v-if="tag.category">
           <TagMenu :tag="tag" />
-        </v-list-item-action>
+        </div>
+      </template>
     </v-list-item>
   </v-list>
 </template>
 
 <script lang="ts">
-import { ITag } from "@/Tag/ITag";
-import { defineComponent, PropType } from "vue";
+import type { ITag } from "@/Tag/ITag";
+import type { PropType } from "vue";
+import { defineComponent } from "vue";
 import TagLabel from "@/Tag/TagLabel.vue";
 import TagMenu from "@/Tag/TagMenu.vue";
 

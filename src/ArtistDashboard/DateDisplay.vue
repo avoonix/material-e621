@@ -1,7 +1,7 @@
 <template>
-    <v-tooltip bottom>
-        <template #activator="{ on, attrs }">
-            <span v-bind="attrs" v-on="on">{{ relativeDate }}</span>
+    <v-tooltip location="bottom">
+        <template #activator="{ props }">
+            <span v-bind="props">{{ relativeDate }}</span>
         </template>
         <span>{{ absoluteDate }}</span>
     </v-tooltip>

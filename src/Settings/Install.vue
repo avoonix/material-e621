@@ -16,8 +16,9 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { getAppName, getBaseUrl } from "@/misc/util/utilities";
+import { useHead } from "@unhead/vue";
 import { computed, defineComponent, ref } from "vue";
 
 const bookmarklet = `function bookmarklet() {
@@ -34,31 +35,19 @@ const bookmarklet = `function bookmarklet() {
   window.location.href = "[[baseUrl]]/#/posts";
 }`;
 
-export default defineComponent({
-  metaInfo: {
-    title: "Install",
-  },
-  setup() {
-    const appName = getAppName();
+useHead({ title: "Install", });
 
-    const initialName = `Open with ${appName}`;
+const appName = getAppName();
 
-    const name = ref(initialName);
+const initialName = `Open with ${appName}`;
 
-    const bookmarkletFunction = computed(() =>
-      bookmarklet
-        .replace(/\n\s+/g, " ")
-        .replace(/\[\[baseUrl\]\]/g, getBaseUrl()),
-    );
-    const href = computed(() => `javascript:(${bookmarkletFunction.value})();`);
-    const linkName = computed(() => name.value.trim() || initialName);
+const name = ref(initialName);
 
-    return {
-      appName,
-      name,
-      href,
-      linkName,
-    };
-  },
-});
+const bookmarkletFunction = computed(() =>
+  bookmarklet
+    .replace(/\n\s+/g, " ")
+    .replace(/\[\[baseUrl\]\]/g, getBaseUrl()),
+);
+const href = computed(() => `javascript:(${bookmarkletFunction.value})();`);
+const linkName = computed(() => name.value.trim() || initialName);
 </script>

@@ -1,8 +1,8 @@
 <template>
-  <v-menu bottom offset-y left attach close-delay="0">
-    <template #activator="{ on }">
-      <v-btn v-show="showInstallPrompt" v-on="on" icon>
-        <v-badge color="primary" overlap left>
+  <v-menu location="bottom left" offset-y close-delay="0">
+    <template #activator="{ props }">
+      <v-btn v-show="showInstallPrompt" v-bind="props" icon>
+        <v-badge color="primary" overlap location="left">
           <template #badge>
             <v-icon>mdi-exclamation-thick</v-icon>
           </template>
@@ -10,7 +10,7 @@
         </v-badge>
       </v-btn>
     </template>
-    <v-card max-width="400" color="secondary">
+    <v-card max-width="400">
       <v-card-text>
         You are using a browser that supports installing progressive web apps.
         After installing, a shortcut will be added to your app drawer and the
@@ -18,8 +18,8 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn text color @click="hide">Never show again</v-btn>
-        <v-btn text color="primary" @click="install">Install</v-btn>
+        <v-btn variant="text" color @click="hide">Never show again</v-btn>
+        <v-btn variant="text" color="primary" @click="install">Install</v-btn>
       </v-card-actions>
     </v-card>
   </v-menu>

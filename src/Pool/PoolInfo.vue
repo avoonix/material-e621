@@ -1,7 +1,7 @@
 <template>
     <v-fade-transition mode="out-in">
         <div v-if="pool" key="content">
-            <v-card color="secondary lighten-1" style="max-width: 50vw;">
+            <v-card color="transparent" elevation="0" style="max-width: 50vw;">
                 <v-card-title class="flex-column align-baseline">
                     <span style="line-height: initial">{{ pool.name }}</span>
                     <small class="text-caption" style="line-height: initial;">
@@ -23,7 +23,7 @@
 import AppLogo from "@/App/AppLogo.vue";
 import DText from "@/Parser/DText.vue";
 import { useUrlStore } from "@/services";
-import { Pool } from "@/worker/api";
+import type { Pool } from "@/worker/api";
 import { getApiService } from "@/worker/services";
 import { defineComponent, onMounted, ref } from "vue";
 

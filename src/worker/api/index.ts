@@ -1,6 +1,5 @@
-import ax from "axios";
-import { Posts, Tag, TagAlias, Pool } from "./returnTypes";
-import {
+import type { Posts, Tag, TagAlias, Pool } from "./returnTypes";
+import type {
   IPostsListArgs,
   ITagsListArgs,
   ITagAliasesArgs,
@@ -17,13 +16,34 @@ export * from "./requestTypes";
  */
 
 const version = getGitInfo()[0]?.hash?.substring(0, 7) ?? "0.0.0";
+const clientHeader = `Material e621/${version} (by Avoonix on e621)`;
 
-const axios = ax.create({
-  responseType: "json",
-  params: {
-    _client: `Material e621/${version} (by Avoonix on e621)`,
-  },
-});
+const buildUrl = (baseUrl: string, path: string, params: Record<string, any> = {}) => {
+  const url = new URL(`${baseUrl}${path}`);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      url.searchParams.append(key, value.toString());
+    }
+  });
+  url.searchParams.append("_client", clientHeader);
+  return url.toString();
+};
+
+const fetchJson = async <T>(url: string, options: RequestInit = {}): Promise<T> => {
+  const response = await fetch(url, options);
+  if (!response.ok) {
+    throw new Error(`Fetch error: ${response.status} ${response.statusText}`);
+  }
+  return response.json();
+};
+
+const getAuthHeader = (auth?: { login: string; api_key: string }): { Authorization: string } | {} => {
+  return auth
+    ? {
+      Authorization: `Basic ${btoa(`${auth.login}:${auth.api_key}`)}`,
+    }
+    : {};
+};
 
 export const e621 = {
   posts: {
@@ -39,50 +59,47 @@ export const e621 = {
         page = args.page;
       }
       const auth = args?.auth || {};
-      return axios.get<Posts>(`${args.baseUrl}posts.json`, {
-        params: {
-          tags: args.tags || "",
-          limit: args.limit,
-          page,
-          ...auth,
-        },
+      const url = buildUrl(args.baseUrl, "posts.json", {
+        tags: args.tags || "",
+        limit: args.limit,
+        page,
+        ...auth,
       });
+      return fetchJson<Posts>(url)
     },
   },
   tags: {
     list(args: ITagsListArgs) {
-      return axios.get<Tag[] | { tags: [] }>(`${args.baseUrl}tags.json`, {
-        params: {
-          limit: args.limit,
-          "search[order]": args.order,
-          "search[name_matches]": args.query,
-        },
+      const url = buildUrl(args.baseUrl, "tags.json", {
+        limit: args.limit,
+        "search[order]": args.order,
+        "search[name_matches]": args.query,
       });
+      return fetchJson<Tag[] | { tags: [] }>(url);
     },
   },
   tagAliases: {
     list(args: ITagAliasesArgs) {
-      return axios.get<TagAlias[]>(`${args.baseUrl}tag_aliases.json`, {
-        params: {
-          limit: args.limit,
-          "search[order]": args.order,
-          "search[name_matches]": args.query,
-        },
+      const url = buildUrl(args.baseUrl, "tag_aliases.json", {
+        limit: args.limit,
+        "search[order]": args.order,
+        "search[name_matches]": args.query,
       });
+      return fetchJson<TagAlias[]>(url);
     },
   },
   pools: {
     list(args: IPoolsArgs) {
-      return axios.get<Pool[]>(`${args.baseUrl}pools.json`, {
-        params: {
-          limit: args.limit,
-          "search[order]": args.order,
-          "search[name_matches]": args.query,
-        },
+      const url = buildUrl(args.baseUrl, "pools.json", {
+        limit: args.limit,
+        "search[order]": args.order,
+        "search[name_matches]": args.query,
       });
+      return fetchJson<Pool[]>(url);
     },
     get(args: IGetPoolArgs) {
-      return axios.get<Pool>(`${args.baseUrl}pools/${+args.id}.json`);
+      const url = buildUrl(args.baseUrl, `pools/${+args.id}.json`);
+      return fetchJson<Pool>(url);
     },
   },
 };
@@ -98,34 +115,32 @@ export interface IPostFavoriteArgs {
 
 export const custom = {
   posts: {
-    favorite(args: IPostFavoriteArgs) {
-      return axios.post(
-        `${args.proxyUrl}favorites`,
-        { post_id: args.postId },
-        {
-          headers: {
-            "content-type": "application/json",
-          },
-          auth: {
-            username: args.auth.login,
-            password: args.auth.api_key,
-          },
+    async favorite(args: IPostFavoriteArgs) {
+      const response = await fetch(`${args.proxyUrl}favorites`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...getAuthHeader(args.auth),
         },
-      );
+        body: JSON.stringify({ post_id: args.postId }),
+      });
+      if (!response.ok) {
+        throw new Error(`Error favoriting post: ${response.statusText}`);
+      }
+      return response.json();
     },
-    unfavorite(args: IPostFavoriteArgs) {
-      return axios.delete(
-        `${args.proxyUrl}favorites/${args.postId}`,
-        {
-          headers: {
-            "content-type": "application/json",
-          },
-          auth: {
-            username: args.auth.login,
-            password: args.auth.api_key,
-          },
+    async unfavorite(args: IPostFavoriteArgs) {
+      const response = await fetch(`${args.proxyUrl}favorites/${args.postId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          ...getAuthHeader(args.auth),
         },
-      );
+      });
+      if (!response.ok) {
+        throw new Error(`Error unfavoriting post: ${response.statusText}`);
+      }
+      return response.json();
     },
   },
 };

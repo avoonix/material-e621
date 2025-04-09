@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
-import { computed, set } from "vue";
+import { computed } from "vue";
 import { useMainStore } from "./state";
-import { ISettingsServiceState } from "./types";
+import type { ISettingsServiceState } from "./types";
 
 export const useAppearanceStore = defineStore("appearance", () => {
   const main = useMainStore();

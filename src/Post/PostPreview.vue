@@ -20,12 +20,13 @@
 
 <script lang="ts">
 import { useDataSaverInfo } from "@/misc/util/dataSaver";
-import router from "@/router";
 import { usePostsStore } from "@/services";
 import { DataSaverType } from "@/services/types";
-import { File, Preview, Sample } from "@/worker/api";
-import { computed, defineComponent, PropType } from "vue";
+import type { File, Preview, Sample } from "@/worker/api";
+import type { PropType } from "vue";
+import { computed, defineComponent } from "vue";
 import FixedAspectRatioBox from "./FixedAspectRatioBox.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   components: { FixedAspectRatioBox },
@@ -48,13 +49,13 @@ export default defineComponent({
     const isSwf = computed(() => props.file.ext === "swf");
     const isVideo = computed(() => props.file.ext === "webm");
     const isImage = computed(() => !isSwf.value && !isVideo.value);
+        const router = useRouter()
 
     const handleClick = async () => {
       if (imageSrc.value) {
         context.emit("open-post");
       } else {
-        const { appRouter } = await import("@/misc/util/router");
-        appRouter.push({ name: "AccountSettings" });
+        router.push({ name: "AccountSettings" });
       }
     };
 
@@ -134,25 +135,23 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .centered {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
+	 display: flex;
+	 justify-content: center;
+	 align-items: center;
+	 flex-direction: column;
+	 height: 100%;
+	 width: 100%;
 }
-
-.clickable {
-  cursor: pointer;
+ .clickable {
+	 cursor: pointer;
 }
-
-.play-button {
-  // z-index: 10;
-  position: absolute;
-  top: 0;
-  height: 100%;
-  pointer-events: none;
+ .play-button {
+	 position: absolute;
+	 top: 0;
+	 height: 100%;
+	 pointer-events: none;
 }
+ 
 </style>

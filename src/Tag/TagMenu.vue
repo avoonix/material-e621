@@ -1,8 +1,8 @@
 <template>
-  <v-menu bottom offset-y left attach close-on-content-click close-on-click close-delay="0" v-if="tag.category">
-    <template #activator="{ on }">
-      <slot :on="on">
-        <v-btn v-on="on" icon>
+  <v-menu location="bottom left" offset-y close-on-content-click :persistent="false" close-delay="0" v-if="tag.category">
+    <template #activator="{ props }">
+      <slot :props="props">
+        <v-btn v-bind="props" icon>
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
       </slot>
@@ -12,9 +12,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import type { PropType } from "vue";
+import { defineComponent } from "vue";
 import TagActions from "@/Tag/TagActions.vue";
-import { ITag } from "./ITag";
+import type { ITag } from "./ITag";
 
 export default defineComponent({
   components: {

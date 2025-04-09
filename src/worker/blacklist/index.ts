@@ -1,6 +1,6 @@
 import { intersection } from "lodash";
-import { Post } from "../api";
-import debug from "debug";
+import type { Post } from "../api";
+import { debug } from "@/misc/util/debug";
 
 const log = debug("app:blacklist");
 

@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { computed } from "vue";
 import { useMainStore } from "./state";
-import { ButtonType } from "./types";
+import type { ButtonType } from "./types";
 
 export const usePostsStore = defineStore("posts", () => {
   const main = useMainStore();
