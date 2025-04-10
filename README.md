@@ -4,25 +4,25 @@
 
 ## Screenshot Gallery
 
-[![Material e621 - Landing Page](./screenshots/material-e621-screenshot-landing-page.png)](https://material-e621.vercel.app/)
+[![Material e621 - Landing Page](./screenshots/material-e621-screenshot-landing-page.png)](https://material-e621.avoonix.com/)
 
-[![Material e621 - Posts](./screenshots/material-e621-screenshot-posts-page.png)](https://material-e621.vercel.app/)
+[![Material e621 - Posts](./screenshots/material-e621-screenshot-posts-page.png)](https://material-e621.avoonix.com/)
 
-[![Material e621 - Details](./screenshots/material-e621-screenshot-post-details.png)](https://material-e621.vercel.app/)
+[![Material e621 - Details](./screenshots/material-e621-screenshot-post-details.png)](https://material-e621.avoonix.com/)
 
-[![Material e621 - Artist Dashboard](./screenshots/material-e621-screenshot-artist-dashboard-post-overview.png)](https://material-e621.vercel.app/)
+[![Material e621 - Artist Dashboard](./screenshots/material-e621-screenshot-artist-dashboard-post-overview.png)](https://material-e621.avoonix.com/)
 
-[![Material e621 - Settings](./screenshots/material-e621-screenshot-settings-page.png)](https://material-e621.vercel.app/)
+[![Material e621 - Settings](./screenshots/material-e621-screenshot-settings-page.png)](https://material-e621.avoonix.com/)
 
-[![Material e621 - Recommendations](./screenshots/material-e621-screenshot-post-recommendations.png)](https://material-e621.vercel.app/)
+[![Material e621 - Recommendations](./screenshots/material-e621-screenshot-post-recommendations.png)](https://material-e621.avoonix.com/)
 
-[![Material e621 - Starred Tags](./screenshots/material-e621-screenshot-starred-tags.png)](https://material-e621.vercel.app/)
+[![Material e621 - Starred Tags](./screenshots/material-e621-screenshot-starred-tags.png)](https://material-e621.avoonix.com/)
 
 ## Usage
 
 ### Hosted
 
-Latest version is available on [Vercel](https://material-e621.vercel.app/).
+[Latest version is available here](https://material-e621.avoonix.com/).
 
 ### Docker
 
