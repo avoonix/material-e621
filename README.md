@@ -1,3 +1,7 @@
+> [!NOTE]
+> Main instance changed from material-e621.vercel.app to [material-e621.avoonix.com](https://material-e621.avoonix.com)
+
+
 # Material e621
 
 > Material e621 is a modern, open source web client for e621.net. It is customizable, comes with a bunch of additional features that are not available on e621.net, and makes browsing posts a delightful experience.
