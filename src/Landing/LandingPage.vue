@@ -16,6 +16,7 @@
       </div>
     </div>
   </section>
+  <MigrationInfo />
   <About />
   <section class="ma-1">
     <v-row wrap justify="center" align="center">
@@ -42,6 +43,7 @@ import About from "./About.vue";
 import Footer from "./Footer.vue";
 import { computed, ref } from "vue";
 import { useRouter, type RouteLocationRaw } from "vue-router";
+import MigrationInfo from "./MigrationInfo.vue";
 
 const router = useRouter();
 

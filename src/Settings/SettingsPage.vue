@@ -2,6 +2,7 @@
   <v-container class="fill-height">
     <v-row align-center>
       <v-col cols="12" sm="10" offset-sm="1" lg="6" offset-lg="3">
+        <MigrationInfo />
         <v-card>
           <v-list>
             <settings-page-section section="info" title="Info" icon="mdi-information" color="teal-darken-2">
@@ -77,6 +78,7 @@ import { computed, defineComponent, onMounted } from "vue";
 import { formatDistanceToNow } from "date-fns";
 import SettingsPageSection from "./SettingsPageSection.vue";
 import { useHead } from "@unhead/vue";
+import MigrationInfo from "@/Landing/MigrationInfo.vue";
 
 useHead({ title: "Settings", });
 
