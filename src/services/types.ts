@@ -46,7 +46,7 @@ export interface SavedSearchEntry {
 // }
 
 export interface ISettingsServiceState {
-  configVersion: undefined | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
+  configVersion: undefined | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
   shortcuts: Shortcut[];
   blacklist: {
     mode: BlacklistMode;
@@ -70,6 +70,7 @@ export interface ISettingsServiceState {
     logoStyle: "face" | "text";
     hideInstallPrompt: boolean;
     hideGithubInfo: boolean;
+    hideMigrationInfo: boolean;
   };
   history: {
     entries: string[][];

@@ -1,6 +1,7 @@
 import type {
   ISettingsServiceState,
-  Shortcut} from "./types";
+  Shortcut
+} from "./types";
 import {
   BlacklistMode,
   DataSaverType,
@@ -28,7 +29,7 @@ export const fullscreenFavoriteShortcuts: Shortcut[] = [
 ];
 
 export const defaultSettings: ISettingsServiceState = {
-  configVersion: 11,
+  configVersion: 12,
   shortcuts: [
     // { action: "favorite_post", sequence: "f p" },
     // { action: "toggle_fullscreen", sequence: "t f" },
@@ -82,6 +83,7 @@ export const defaultSettings: ISettingsServiceState = {
     logoStyle: "face",
     hideInstallPrompt: false,
     hideGithubInfo: false,
+    hideMigrationInfo: false,
   },
   history: {
     entries: [],

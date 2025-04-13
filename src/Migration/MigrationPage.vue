@@ -30,6 +30,10 @@ import Footer from '@/Landing/Footer.vue';
 import { usePersistanceService } from '@/services';
 import { downloadjs } from '@/Settings/download';
 import { onMounted } from 'vue';
+import { useSyncedTheme } from '@/misc/util/syncTheme';
+import { useMigrator } from '@/misc/util/migration';
+
+useSyncedTheme();
 
 const env = import.meta.env;
 const domain = env.VITE_MIGRATE_TO_DOMAIN;
@@ -40,4 +44,10 @@ const download = async () => {
   const file = await persistanceService.stateToFile();
   downloadjs(file, file.name, file.type);
 };
+
+const migrator = useMigrator();
+
+onMounted(() => {
+  migrator.setupMigrationDataListener(domain)
+});
 </script>

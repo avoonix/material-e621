@@ -133,6 +133,11 @@ export const useAppearanceStore = defineStore("appearance", () => {
     set(value) { main.appearance.hideGithubInfo = value; },
   });
 
+  const hideMigrationInfo = computed({
+    get() { return main.appearance.hideMigrationInfo; },
+    set(value) { main.appearance.hideMigrationInfo = value; },
+  });
+
   const applyTheme = (theme: Theme) => {
     primaryColor.value = theme.primary;
     secondaryColor.value = theme.secondary;
@@ -171,6 +176,7 @@ export const useAppearanceStore = defineStore("appearance", () => {
     applyTheme,
     theme,
     hideGithubInfo,
+    hideMigrationInfo,
   };
 });
 

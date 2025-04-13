@@ -51,13 +51,17 @@ import NavigationToolbar from "./App/NavigationToolbar.vue";
 import { getAppName } from "./misc/util/utilities";
 import { useAppearanceStore, useMainStore, usePersistanceService, useShortcutService, useShortcutStore } from "./services";
 import { useHead } from '@unhead/vue';
-import { useDisplay, useTheme } from 'vuetify';
+import { useDisplay } from 'vuetify';
+import { useSyncedTheme } from "./misc/util/syncTheme";
 
 const persistance = usePersistanceService();
 const appearance = useAppearanceStore();
 const shortcuts = useShortcutStore();
 const shortcutService = useShortcutService();
 const navMode = computed(() => appearance.navigationType);
+const theme = computed(() => appearance.theme);
+
+useSyncedTheme();
 
 onMounted(() => persistance.persist())
 
@@ -76,8 +80,6 @@ main.$subscribe(() => {
   shortcutService.setUpShortcuts();
 })
 watch(main.shortcuts, () => console.log("shortcuts updated"))
-
-const theme = computed(() => appearance.theme);
 
 useHead({
   title: getAppName(),
@@ -104,22 +106,6 @@ const drawer = computed({
   },
 });
 
-const vuetifyTheme = useTheme();
-
-const applyTheme = () => {
-  vuetifyTheme.themes.value.dark.colors.primary = theme.value.primary;
-  vuetifyTheme.themes.value.light.colors.primary = theme.value.primary;
-  vuetifyTheme.themes.value.dark.colors.secondary = theme.value.secondary;
-  vuetifyTheme.themes.value.light.colors.secondary = theme.value.secondary;
-  vuetifyTheme.themes.value.dark.colors.accent = theme.value.accent;
-  vuetifyTheme.themes.value.light.colors.accent = theme.value.accent;
-  vuetifyTheme.global.name.value = theme.value.dark ? "dark" : "light";
-};
-
-onMounted(() => {
-  applyTheme();
-});
-
 watch(mobile, (val, prevVal) => {
   if (navMode.value == "sidebar" && val) {
     drawer.value = false;
@@ -133,14 +119,6 @@ watch(mobile, (val, prevVal) => {
     });
   }
 });
-
-watch(
-  () => theme,
-  () => {
-    applyTheme();
-  },
-  { deep: true, immediate: true }
-);
 
 
 </script>

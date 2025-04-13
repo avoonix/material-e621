@@ -49,6 +49,9 @@
         <settings-page-item title="Hide GitHub info" switch>
           <v-switch v-model="appearance.hideGithubInfo" />
         </settings-page-item>
+        <settings-page-item title="Hide Migration info" switch>
+          <v-switch v-model="appearance.hideMigrationInfo" />
+        </settings-page-item>
       </v-col>
     </v-row>
   </v-container>

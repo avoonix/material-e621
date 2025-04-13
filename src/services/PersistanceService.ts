@@ -143,6 +143,10 @@ class PersistanceService {
       newState.blacklist.hideServerSideBlacklisted = defaultSettings.blacklist.hideServerSideBlacklisted;
       newState.configVersion = 11;
     }
+    if (newState.configVersion < 12) {
+      newState.appearance.hideMigrationInfo = defaultSettings.appearance.hideMigrationInfo;
+      newState.configVersion = 12;
+    }
 
     this.main.$state = newState;
   }
