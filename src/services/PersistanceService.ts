@@ -68,10 +68,9 @@ class PersistanceService {
     });
   }
 
-  public persist() {
-    this.loadState().then(() => {
-      this.main.$subscribe(() => this.saveState(), { deep: true });
-    });
+  public async persist() {
+    await this.loadState();
+    this.main.$subscribe(() => this.saveState(), { deep: true });
   }
 
   public resetStateToDefault() {

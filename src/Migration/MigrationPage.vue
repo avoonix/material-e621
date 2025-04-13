@@ -29,11 +29,13 @@ import About from '@/Landing/About.vue';
 import Footer from '@/Landing/Footer.vue';
 import { usePersistanceService } from '@/services';
 import { downloadjs } from '@/Settings/download';
+import { onMounted } from 'vue';
 
 const env = import.meta.env;
 const domain = env.VITE_MIGRATE_TO_DOMAIN;
 
 const persistanceService = usePersistanceService();
+onMounted(() => persistanceService.persist())
 const download = async () => {
   const file = await persistanceService.stateToFile();
   downloadjs(file, file.name, file.type);
