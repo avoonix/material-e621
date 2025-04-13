@@ -63,14 +63,16 @@ export const useMigrator = () => {
     }
 
     function setupMigrationDataListener(allowedOrigin: string): void {
+        console.log("Setting up migration data listener", allowedOrigin);
         window.addEventListener("message", (event: MessageEvent<MigrationMessage>) => {
+            console.log("received message", event.data);
             if (event.origin !== allowedOrigin) return;
 
             if (event.data?.type === "requestMigrationData") {
                 const state = persistanceService.getState();
-
+                console.log("got state")
                 if (state.history.entries.length > 0) {
-
+                    console.log("sending state");
                     const response: MigrationMessage = {
                         type: "migrationDataResponse",
                         migrationData: state
