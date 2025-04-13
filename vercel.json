@@ -1,4 +1,7 @@
 {
+  "redirects": [
+    { "source": "/", "destination": "https://material-e621.avoonix.com/", "statusCode": 301 }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",
