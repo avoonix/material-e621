@@ -43,6 +43,7 @@ const attemptAutoMigration = () => {
     migrator.requestMigrationDataViaIframe(oldOrigin, () => {
         snackbar.addMessage("Success");
         loading.value = false;
+        neverShowAgain();
     }, () => {
         snackbar.addMessage("Failed. Please migrate manually.");
         loading.value = false;
