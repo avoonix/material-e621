@@ -75,13 +75,14 @@ const result = ref<FavoriteTagsResult | null>(null);
 
 const analyze = async (username: string) => {
   const service = await getAnalyzeService();
-  result.value = await service.getFavoriteTags(
-    username,
-    urlStore.e621Url,
-    Comlink.proxy((progressEvent) => {
-      progress.value = progressEvent;
-    }),
-  );
+    result.value = await service.getFavoriteTags(
+      username,
+      urlStore.e621Url,
+      Comlink.proxy((progressEvent) => {
+        progress.value = progressEvent;
+      }),
+      toRaw(account.auth),
+    );
   await nextTick();
   await loadNextPage();
 };

@@ -41,7 +41,8 @@ import { cloneDeep, debounce } from "lodash";
 import * as Comlink from "comlink";
 import { useRoute } from "vue-router";
 import ProgressMessage from "@/Suggester/ProgressMessage.vue";
-import { useUrlStore } from "@/services";
+import { useUrlStore, useAccountStore } from "@/services";
+const account = useAccountStore();
 import { useHead } from "@unhead/vue";
 import TagLabel from "@/Tag/TagLabel.vue";
 
@@ -65,12 +66,18 @@ const args = computed<IAnalyzeTagsArgs>(() => {
 const result = ref<IAnalyzeTagsResult>();
 
 const analyze = debounce(async (a) => {
+  if (!account.auth) {
+    result.value = undefined;
+    progress.value = { message: "You must be logged in with an API key to analyze favorites.", progress: 1 };
+    return;
+  }
   const service = await getAnalyzeService();
   result.value = await service.analyzeTags(
     a,
     Comlink.proxy((progressEvent) => {
       progress.value = progressEvent;
     }),
+    account.auth,
   );
 }, 500);
 
