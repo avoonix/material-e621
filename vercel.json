@@ -1,6 +1,6 @@
 {
   "redirects": [
-    { "source": "/", "destination": "https://material-e621.avoonix.com/", "statusCode": 301, permanent: true }
+    { "source": "/", "destination": "https://material-e621.avoonix.com/", "statusCode": 301, "permanent": true }
   ],
   "rewrites": [{ "source": "/old", "destination": "/index.html" }],
   "headers": [
