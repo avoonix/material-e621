@@ -164,3 +164,4 @@ public/favicon.ico
 
 # Tauri output
 /src-tauri/target/
+.vscode

@@ -1,4 +1,5 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     { "source": "/", "destination": "https://material-e621.avoonix.com/", "statusCode": 301, "permanent": true }
   ],
