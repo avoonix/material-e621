@@ -1,6 +1,6 @@
 <template>
     <section v-if="oldOrigin && !appearance.hideMigrationInfo" class="ma-1">
-        <v-row justify="center" align="center">
+        <v-row class="justify-center align-center">
             <v-col>
                 <v-alert variant="tonal" type="info" :title="`New Primary Instance is ${currentHostname}`"
                     text="You can still visit the old instance to download your settings and import them here. You can also try to automatically migrate your settings (this will overwrite your current settings).">

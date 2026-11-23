@@ -3,7 +3,8 @@
     <v-combobox item-title="name" item-value="text" bg-color="secondary" style="flex-grow: 999"
       :variant="outlined ? 'outlined' : 'solo'" multiple flat hide-selected ref="combobox" v-model="model"
       :custom-filter="filter" :items="items" v-model:search="search" :label="label" autocomplete="off"
-      :loading="tagsLoading ? 'accent' : false" hide-details @keydown.enter="onEnterPressed">
+      :loading="tagsLoading ? 'accent' : false" hide-details :hide-no-data="false" @keydown.enter="onEnterPressed">
+      <template #no-data />
       <template #prepend-item>
         <SearchFilters v-if="props.searchFilters && !search" :tags="props.tags" @add-tag="addTag($event)" @remove-tag="$emit('remove-tag', $event)" />
         <div class="mx-4" v-if="!search">
@@ -15,17 +16,17 @@
             </v-chip>
         </div>
       </template>
-      <template #selection="{ item, index }">
-        <tag-label v-if="item === Object(item)" :tag="item.raw" closable :input-value="true" @click:close="$emit('remove-tag', item.raw.text)" />
+      <template #selection="{ internalItem: item, index }">
+        <tag-label v-if="item === Object(item)" :tag="item.raw" closable @click:close="$emit('remove-tag', item.raw.text)" />
       </template>
-      <template #item="{ item, props }">
+      <template #item="{ internalItem: item, props }">
         <v-list-item v-bind="{ ...props, title: undefined }" v-if="item.raw.text">
           <v-list-item-title>
             <span v-if="item.raw.text.startsWith('-')">Exclude</span>
             <tag-label :tag="item.raw" />
           </v-list-item-title>
           <template #append>
-            <div v-if="item.raw.post_count && isFinite(item.raw.post_count)" class="text-grey text-caption mr-2">
+            <div v-if="item.raw.post_count && isFinite(item.raw.post_count)" class="text-grey text-body-small mr-2">
               {{ item.raw.post_count }} posts
             </div>
             <tag-favorite-button v-if="item.raw.category" :category="item.raw.category" :name="item.raw.text"

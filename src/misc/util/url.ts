@@ -6,10 +6,6 @@ export const getE6PostUrl = (id: number) => {
 };
 
 export const openUrlInNewTab = (url: string) => {
-    if ("__TAURI__" in window) {
-        (window as any).__TAURI__.shell.open(url);
-        return;
-    }
     const win = window.open(url, "_blank", "noopener");
     if (win) {
         win.opener = null;

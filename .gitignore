@@ -162,6 +162,4 @@ public/favicon.ico
 /playwright-report/
 /playwright/.cache/
 
-# Tauri output
-/src-tauri/target/
 .vscode

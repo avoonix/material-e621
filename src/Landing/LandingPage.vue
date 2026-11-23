@@ -3,8 +3,8 @@
     <div class="w-100 d-flex flex-column align-center justify-center fill-height">
 
       <app-logo v-view-transition-name="'applogo'" type="face" size="200" />
-      <h1 class="mb-2 text-h1 text-center">Material e621</h1>
-      <div class="text-h5">A {{ adjective }} frontend for e621.net</div>
+      <h1 class="mb-2 text-center hero-title">Material e621</h1>
+      <div class="text-headline-small">A {{ adjective }} frontend for e621.net</div>
       <div style="min-width: 50vw;">
         <tag-search v-view-transition-name="'tagsearch'" style="flex: 1 1 auto" :tags="tags" @add-tag="addTag"
           @remove-tag="removeTag" @confirm-search="router.push(query)" label="Search Tags ..." />
@@ -19,14 +19,14 @@
   <MigrationInfo />
   <About />
   <section class="ma-1">
-    <v-row wrap justify="center" align="center">
+    <v-row class="justify-center align-center">
       <v-col cols="12" class="pt-5">
         <div class="text-center">
-          <h2 class="text-h4">Latest updates</h2>
+          <h2 class="text-headline-large">Latest updates</h2>
         </div>
       </v-col>
       <v-col cols="12" md="6" xl="4" class="py-5">
-        <commit-timeline dense :limit="3" />
+        <commit-timeline :limit="3" />
         <v-btn block class="mt-0" color="primary" to="/about"> more </v-btn>
       </v-col>
     </v-row>
@@ -71,3 +71,13 @@ const query = computed<RouteLocationRaw>(() => ({
 const addTag = (tag: string) => tags.value.push(tag);
 const removeTag = (tag: string) => tags.value.splice(tags.value.indexOf(tag), 1);
 </script>
+
+<style scoped>
+.hero-title {
+  font-family: var(--v-font-heading, var(--v-font-body, "Roboto", sans-serif));
+  font-size: 6rem;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.015625em;
+}
+</style>

@@ -1,4 +1,4 @@
-import type { Posts, Tag, TagAlias, Pool } from "./returnTypes";
+import type { Post, Tag, TagAlias, Pool } from "./returnTypes";
 import type {
   IPostsListArgs,
   ITagsListArgs,
@@ -63,9 +63,10 @@ export const e621 = {
         tags: args.tags || "",
         limit: args.limit,
         page,
+        mode: "extended",
         ...auth,
       });
-      return fetchJson<Posts>(url)
+      return fetchJson<Post[]>(url);
     },
   },
   tags: {

@@ -1,5 +1,3 @@
-import mitt from "mitt";
-// TODO: implement basic event emitter ourselves
 import Mousetrap from "mousetrap";
 import { useShortcutStore } from "./ShortcutStore";
 import { useRouter } from "vue-router";
@@ -14,10 +12,26 @@ export type Events = {
   fullscreenToggleFavorite: void;
 };
 
+const createEmitter = () => {
+  const handlers = new Map<keyof Events, Set<() => void>>();
+  return {
+    on(event: keyof Events, handler: () => void) {
+      if (!handlers.has(event)) handlers.set(event, new Set());
+      handlers.get(event)!.add(handler);
+    },
+    off(event: keyof Events, handler: () => void) {
+      handlers.get(event)?.delete(handler);
+    },
+    emit(event: keyof Events) {
+      handlers.get(event)?.forEach((handler) => handler());
+    },
+  };
+};
+
 class ShortcutService {
   constructor(private router: ReturnType<typeof useRouter>, private shortcutStore: ReturnType<typeof useShortcutStore>) { }
 
-  public emitter = mitt<Events>();
+  public emitter = createEmitter();
 
   public setUpShortcuts() {
     Mousetrap.reset();

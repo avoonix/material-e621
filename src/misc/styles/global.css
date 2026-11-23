@@ -20,13 +20,6 @@ html {
   scrollbar-color: rgb(var(--v-theme-primary)) rgb(var(--v-theme-secondary));
 }
 
-.v-slide-group__content,
-.v-window__container,
-.v-color-picker__controls,
-.v-select-list {
-  background-color: var(--v-secondary-base) !important;
-}
-
 .no-before-content::before {
   content: none !important;
 }

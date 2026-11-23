@@ -55,14 +55,14 @@ export default defineComponent({
         },
       },
       favorite: {
-        color: props.post?.is_favorited ? "red" : "",
-        icon: props.post?.is_favorited ? "mdi-heart" : "mdi-heart-outline",
+        color: props.post?.stats.is_favorited ? "red" : "",
+        icon: props.post?.stats.is_favorited ? "mdi-heart" : "mdi-heart-outline",
         loading: props.post?.__meta.isFavoriteLoading || false,
         onClick: async () => {
           if (!props.post) return;
           context.emit("set-post-favorite", {
             postId: props.post.id,
-            favorited: !props.post.is_favorited,
+            favorited: !props.post.stats.is_favorited,
           } as Parameters<ReturnType<typeof usePostListManager>["setPostFavorite"]>["0"]);
         },
       },

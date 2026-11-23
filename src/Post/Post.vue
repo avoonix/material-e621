@@ -2,9 +2,7 @@
   <v-card :id="'post_' + post.id" color="secondary">
     <div :class="[blacklistClasses]">
       <post-preview
-        :file="post.file"
-        :preview="post.preview"
-        :sample="post.sample"
+        :files="post.files"
         @open-post="setClicked"
       />
     </div>

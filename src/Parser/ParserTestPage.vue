@@ -1,5 +1,5 @@
 <template>
-  <v-container class="fill-height">
+  <v-container class="fill-height d-flex align-center flex-wrap">
     <v-row>
       <v-col>
         <v-textarea :rows="20" v-model="testText" label="Edit me" />

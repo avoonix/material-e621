@@ -1,8 +1,8 @@
 <template>
-  <v-container class="fill-height">
-    <v-row align-center>
+  <v-container class="fill-height d-flex align-center flex-wrap">
+    <v-row>
       <v-col cols="12">
-        <commit-timeline :dense="smAndDown" />
+        <commit-timeline />
         <div class="d-flex justify-center">
           <v-btn class="mt-0" color="primary" href="https://github.com/avoonix/material-e621/commits/master">
             view older commits on github
@@ -20,9 +20,6 @@
 import Libraries from "./Libraries.vue";
 import CommitTimeline from "./CommitTimeline.vue";
 import { useHead } from "@unhead/vue";
-import { useDisplay } from "vuetify";
 
 useHead({ title: "About" });
-
-const { smAndDown } = useDisplay();
 </script>

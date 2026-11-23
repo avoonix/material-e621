@@ -1,6 +1,6 @@
 <template>
-  <v-list subheader class="pa-0 mt-3">
-    <v-list-item v-for="(option, index) in navigationItems" :key="option.resolved" router :to="option.to" :exact="option.exact">
+  <v-list class="pa-0 mt-3">
+    <v-list-item v-for="(option, index) in navigationItems" :key="option.resolved" :to="option.to" :exact="option.exact">
       <template #prepend>
         <v-icon>{{ option.icon }}</v-icon>
       </template>

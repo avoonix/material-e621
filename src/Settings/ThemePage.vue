@@ -7,7 +7,7 @@
       </v-btn>
     </div>
     <v-container>
-      <v-row align="center">
+      <v-row class="align-center">
         <v-col cols="12" sm="6" md="4" lg="3" :key="idx" v-for="(theme, idx) in themes">
           <theme-preview @apply-theme="applyTheme(theme)" :theme="theme" />
         </v-col>

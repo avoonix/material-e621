@@ -7,7 +7,7 @@
         </div>
         <template #append class="ma-0">
 
-          <div v-if="tag.post_count" class="text-grey text-caption mr-2">
+          <div v-if="tag.post_count" class="text-grey text-body-small mr-2">
             {{ tag.post_count }}
           </div>
           <template v-if="tag.category">

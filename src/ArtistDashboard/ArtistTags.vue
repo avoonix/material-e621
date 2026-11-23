@@ -5,7 +5,7 @@
         <TagLabel :tag="tag" />
       </v-list-item-title>
       <template #append>
-        <div v-if="tag.post_count" class="text-grey text-caption text-no-wrap">
+        <div v-if="tag.post_count" class="text-grey text-body-small text-no-wrap">
           {{ tag.post_count }} Posts
         </div>
         <div v-if="tag.category">

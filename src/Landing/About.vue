@@ -4,7 +4,7 @@
             <v-row>
                 <v-col cols="12" md="6" offset-md="3">
                     <div class="mb-3">
-                        <h2 class="text-h4 text-center">What is Material e621?</h2>
+                        <h2 class="text-headline-large text-center">What is Material e621?</h2>
                     </div>
                     <p class="text-center">
                         Material e621 is a modern, open source web client for e621.net. It
@@ -24,7 +24,7 @@
             <v-row>
                 <v-col cols="12" md="6" offset-md="3">
                     <div class="mb-3">
-                        <h2 class="text-h4 text-center">Looking for more?</h2>
+                        <h2 class="text-headline-large text-center">Looking for more?</h2>
                     </div>
                     <p class="text-center">
                         The original site can be found

@@ -7,7 +7,7 @@
         <v-btn icon @click="updateQuery(), onSearchClick()" :loading="loading">
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
-        <v-menu location="bottom left" max-height="300" offset-y transition="slide-y-transition" v-if="mdAndUp">
+        <v-menu location="bottom left" max-height="300" transition="slide-y-transition" v-if="mdAndUp">
           <template #activator="{ props }">
             <v-btn v-bind="props" icon>
               <v-icon>mdi-history</v-icon>
@@ -30,8 +30,8 @@
       @close-details="detailsPost = null" @set-post-favorite="setPostFavorite($event)" />
     <!-- TODO: set has-(next|previous)-fullscreen-post -->
     <portal to="sidebar-suggestions">
-      <div class="text-overline" v-if="hiddenPostCount > 0">Blacklisted posts hidden: {{ hiddenPostCount }}</div>
-      <div class="text-overline" v-if="suggestedTags.length > 0">Tags on this page</div>
+      <div class="text-label-small text-uppercase" v-if="hiddenPostCount > 0">Blacklisted posts hidden: {{ hiddenPostCount }}</div>
+      <div class="text-label-small text-uppercase" v-if="suggestedTags.length > 0">Tags on this page</div>
       <suggestions :tags="suggestedTags" />
     </portal>
   </div>

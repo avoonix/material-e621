@@ -1,5 +1,5 @@
 <template>
-  <v-dialog dark :model-value="open" fullscreen :scrim="false" transition="dialog-bottom-transition" scrollable
+  <v-dialog :model-value="open" fullscreen :scrim="false" transition="dialog-bottom-transition" scrollable
     persistent>
     <div class="fullscreen bg-grey-darken-4">
       <div class="flex">
@@ -11,12 +11,12 @@
         <zoom-pan-image @update-zoomed="isZoomed = $event" @swipe-down="!$event.zoomedIn && exitFullscreen()"
           @swipe-right="!$event.zoomedIn && showPreviousImage()" @swipe-left="!$event.zoomedIn && showNextImage()">
           <div v-if="current" style="height: 100%" class="middle bg-black" :class="blacklistClasses">
-            <div v-if="current.file.ext == 'swf'" class="overflow flash">
+            <div v-if="current.files.meta.ext == 'swf'" class="overflow flash">
               flash is not supported
             </div>
-            <video v-else-if="current.file.ext == 'webm' && currentFileUrl"
+            <video v-else-if="current.files.meta.ext == 'webm' && currentFileUrl"
               class="overflow flash bg-black position-relative" controls loop autoplay playsinline preload="metadata">
-              <source v-if="current.file.url" :src="current.file.url" type="video/webm" />
+              <source v-if="current.files.original.url" :src="current.files.original.url" type="video/webm" />
               Video type not supported by your browser
             </video>
             <div v-else class="overflow">
@@ -29,16 +29,12 @@
                       height: 100%;
                       left: 0;
                     ">
-                    <img v-if="currentSampleFileUrl" :class="{ grey: false, 'darken-3': false }"
+                    <img v-if="currentSampleFileUrl"
                       :src="currentSampleFileUrl" />
-                    <img v-if="currentFileUrl" @loadstart="loadStart" @load="loadEnd" :class="{
-                      grey: false,
-                      'darken-3': false,
-                      hidden: loading,
-                    }" :src="currentFileUrl" />
+                    <img v-if="currentFileUrl" @loadstart="loadStart" @load="loadEnd" :class="{ hidden: loading }" :src="currentFileUrl" />
                   </div>
                 </transition>
-                <app-logo class="centered-in-container" svg-margin-auto v-if="loading" type="loader" />
+                <app-logo class="centered-in-container" v-if="loading" type="loader" />
               </div>
             </div>
           </div>
@@ -185,9 +181,9 @@ const showPreviousImage = () => {
 };
 
 const updateFavorite = (favorited: (current: boolean) => boolean) => () =>
-  props.current && !props.current?.__meta.isFavoriteLoading && props.current.is_favorited !== favorited(props.current.is_favorited) && emit("set-post-favorite", {
+  props.current && !props.current?.__meta.isFavoriteLoading && props.current.stats.is_favorited !== favorited(props.current.stats.is_favorited) && emit("set-post-favorite", {
     postId: props.current.id,
-    favorited: favorited(props.current.is_favorited),
+    favorited: favorited(props.current.stats.is_favorited),
   } as Parameters<ReturnType<typeof usePostListManager>["setPostFavorite"]>["0"]);
 
 const addFavorite = updateFavorite(() => true)
@@ -239,10 +235,10 @@ watch(
 const open = computed(() => !!props.current);
 
 const currentFileUrl = computed(() =>
-  switched.value ? false : props.current?.file.url,
+  switched.value ? false : props.current?.files.original.url,
 );
 const currentSampleFileUrl = computed(() =>
-  switched.value ? false : props.current?.preview.url,
+  switched.value ? false : props.current?.files.preview.jpg,
 );
 
 watch(open, () => {

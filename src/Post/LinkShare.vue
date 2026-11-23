@@ -9,12 +9,11 @@
         :value="option.type"
       />
     </v-radio-group>
-    <div class="text-body-1">
-      <v-row wrap>
-        <v-col class="pa-1" v-for="(button, index) in shareButtons" :key="index" cols="12" md="6">
+    <div class="text-body-large">
+      <v-row density="compact">
+        <v-col v-for="(button, index) in shareButtons" :key="index" cols="12" md="6">
           <v-btn
             class="ma-0"
-            :dark="button.dark"
             size="large"
             block
             :color="button.color"
@@ -45,7 +44,6 @@ enum UrlTypes {
 interface IButton {
   name: string;
   color: string;
-  dark: boolean;
   url: string;
   icon: string;
   clipboard?: true;
@@ -121,28 +119,24 @@ export default defineComponent({
         {
           name: "Twitter",
           color: "#1DA1F3",
-          dark: true,
           url: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${text}`,
           icon: "mdi-twitter",
         }, // TODO:
         {
           name: "Reddit",
           color: "#F73F07",
-          dark: true,
           url: `https://www.reddit.com/submit?url=${encodedUrl}&title=${text}`,
           icon: "mdi-reddit",
         },
         {
           name: "Telegram",
           color: "#2A9ED0",
-          dark: true,
           url: `https://telegram.me/share/url?url=${encodedUrl}&text=${text}`,
           icon: "mdi-telegram",
         },
         {
           name: "Email",
           color: "#b2b2b2",
-          dark: false,
           url: `mailto:?&subject=${text}&body=${encodedUrl}`,
           icon: "mdi-email",
           noPopup: true,
@@ -150,7 +144,6 @@ export default defineComponent({
         {
           name: "Copy to clipboard",
           color: "#353535",
-          dark: true,
           url: url.value,
           icon: "mdi-clipboard-text",
           clipboard: true,
@@ -158,7 +151,6 @@ export default defineComponent({
         {
           name: "Reverse Google search",
           color: "#999999",
-          dark: false,
           url: `https://www.google.com/searchbyimage?image_url=${rawUrl}`,
           icon: "mdi-google",
         },

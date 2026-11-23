@@ -61,7 +61,7 @@ export const usePostListManager = ({
       } else {
         await service.unfavoritePost(serviceArgs);
       }
-      post.is_favorited = args.favorited;
+      post.stats.is_favorited = args.favorited;
     } catch (error: any) {
       handleError(error);
     } finally {
@@ -85,6 +85,7 @@ export const usePostListManager = ({
     if (loading.value) {
       return console.log("loadPreviousPage called, but already loading");
     }
+    if (firstPageNumber.value <= 1) return;
     try {
       loading.value = true;
       const newPosts = await loadPosts(firstPageNumber.value - 1, "previous");
@@ -132,7 +133,7 @@ export const usePostListManager = ({
     detailsPost.value = posts.value.find((p) => p.id === postId) || null;
   };
   const isValidNextPost = (post: EnhancedPost) => {
-    return !!post.file.url && !post.__meta.isBlacklisted;
+    return !!post.files.original.url && !post.__meta.isBlacklisted;
   };
   const _openFullscreenPost =
     (offset: number) =>
@@ -179,7 +180,7 @@ export const usePostListManager = ({
 
   const visiblePosts = computed(() => {
     const visibleAfterApplyingBlacklist = blacklistStore.mode === BlacklistMode.hide ? posts.value.filter(p => !p.__meta.isBlacklisted) : [...posts.value];
-    const visibleAfterApplyingServerSideBlacklistSetting = blacklistStore.hideServerSideBlacklisted ? visibleAfterApplyingBlacklist.filter(p => !!p.file.url) : [...visibleAfterApplyingBlacklist];
+    const visibleAfterApplyingServerSideBlacklistSetting = blacklistStore.hideServerSideBlacklisted ? visibleAfterApplyingBlacklist.filter(p => !!p.files.original.url) : [...visibleAfterApplyingBlacklist];
     return visibleAfterApplyingServerSideBlacklistSetting;
   });
   const hiddenPostCount = computed(() => posts.value.length - visiblePosts.value.length);

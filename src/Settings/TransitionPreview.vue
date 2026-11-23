@@ -8,11 +8,9 @@
           mode="out-in"
         >
           <v-responsive
-            class="text-center align-middle elevation-10 ma-4"
+            class="text-center elevation-5 ma-4"
             :aspect-ratio="ratio"
             :key="pageKey"
-            style=""
-            :class="color"
           >
             from {{ direction }}
           </v-responsive>
@@ -24,7 +22,6 @@
 
 <script lang="ts">
 import {
-  computed,
   defineComponent,
   onBeforeUnmount,
   onMounted,
@@ -72,26 +69,12 @@ export default defineComponent({
       pageKey.value++;
     };
 
-    const colors = [
-      "red",
-      "blue",
-      "green",
-      "pink",
-      "teal",
-      "lime",
-      "deep-orange",
-      "light-blue",
-    ];
-    const color = computed(
-      () => colors[pageKey.value % colors.length] + " lighten-2 black--text",
-    );
 
     return {
       enterTransitionName,
       leaveTransitionName,
       direction,
       pageKey,
-      color,
     };
   },
 });

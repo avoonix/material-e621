@@ -1,7 +1,7 @@
 <template>
   <v-list>
     <PoolInfo v-if="pool" class="mb-2" :pool-id="pool" />
-    <v-list-item v-for="(item, i) in items" :key="i" @click.stop="item.action" :router="!!item.route" exact :to="item.route" >
+    <v-list-item v-for="(item, i) in items" :key="i" @click.stop="item.action" exact :to="item.route" >
       {{ item.text }}
     </v-list-item>
   </v-list>

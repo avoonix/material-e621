@@ -49,6 +49,7 @@ export class AnalyzeService {
     // TODO: only copy tags over context boundaries (not all posts)
     const counts: Counts = {
       artist: {},
+      contributor: {},
       character: {},
       copyright: {},
       general: {},
@@ -183,6 +184,7 @@ export class AnalyzeService {
       [key in
         | "general"
         | "artist"
+        | "contributor"
         | "copyright"
         | "character"
         | "species"

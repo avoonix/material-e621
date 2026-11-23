@@ -1,6 +1,6 @@
 <template>
-  <v-container class="fill-height">
-    <v-row align-center>
+  <v-container class="fill-height d-flex align-center flex-wrap">
+    <v-row>
       <v-col class="text-center" cols="12" md="8" offset-md="2">
         <v-card>
           <v-card-text>
@@ -30,6 +30,7 @@ const router = useRouter();
 const sliders = ref({
   general: 5,
   artist: 30,
+  contributor: 10,
   copyright: 25,
   character: 15,
   species: 25,

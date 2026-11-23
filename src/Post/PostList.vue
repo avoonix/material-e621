@@ -12,17 +12,13 @@
   </v-row> -->
   <!-- blog/feed -->
   <!-- v-else -->
-  <v-col cols="12" lg="6" md="8" offset-lg="3" offset-md="2" wrap="">
+  <v-row>
+  <v-col cols="12" lg="6" md="8" offset-lg="3" offset-md="2">
     <v-col :key="post.id" cols="12" class="mb-5" v-for="(post, idx) in visiblePosts" :ref="(ref) => addElement(idx, ref as any)">
-<!-- ((ref: Element | ComponentPublicInstance | null, refs: Record<string, any>) => void -->
-      <!-- <intersect @enter="triggerLoad(idx, 'enter', $event)" @leave="triggerLoad(idx, 'leave', $event)" :threshold="[0]" -->
-        <!-- :root="null" root-margin="0px 0px 0px 0px" v-if="shouldHaveIntersectionObserver(idx)"> -->
-        <!-- @change="say('change', $event)" -->
-        <slot name="post" :post="post" />
-      <!-- </intersect> -->
-      <!-- <slot v-else name="post" :post="post" /> -->
+      <slot name="post" :post="post" />
     </v-col>
   </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">
@@ -30,7 +26,6 @@ import { usePostsStore } from "@/services";
 import type { EnhancedPost } from "@/worker/ApiService";
 import type { ComponentPublicInstance, PropType} from "vue";
 import { computed, defineComponent, nextTick, onBeforeUnmount, onBeforeUpdate, onMounted, ref, watch } from "vue";
-// import Intersect from "vue-intersect";
 
 const isAnyPartOfElementInViewport = (el: Element) => {
   const rect = el.getBoundingClientRect();
@@ -61,9 +56,6 @@ const getOffset = (el: Element) => {
 };
 
 export default defineComponent({
-  components: {
-    // Intersect,
-  },
   props: {
     visiblePosts: {
       type: Array as PropType<EnhancedPost[]>,
@@ -83,7 +75,7 @@ export default defineComponent({
     const canTriggerLoad = ref({ previous: false, next: false });
     const postsStore = usePostsStore();
 
-    watch(props.visiblePosts,
+    watch(() => props.visiblePosts,
       () => {
         canTriggerLoad.value = { next: true, previous: true };
       },
@@ -160,11 +152,7 @@ export default defineComponent({
         : props.visiblePosts.length - 1,
     );
 
-    const triggerLoad = (
-      index: number,
-      name: "enter" | "leave",
-      event: IntersectionObserverEntry,
-    ) => {
+    const triggerLoad = (index: number, name: "enter" | "leave") => {
       if (props.loading) return;
       if (index === indexThatTriggersNextPage.value && name === "enter" && canTriggerLoad.value.next) {
         context.emit("load-next-page");
@@ -181,21 +169,43 @@ export default defineComponent({
       }
     };
 
-    const shouldHaveIntersectionObserver = (index: number) => {
-      if(!postsStore.autoLoad) return false;
-      return (
-        index === indexThatTriggersPreviousPage.value ||
-        index === indexThatTriggersNextPage.value
-      );
+    const observedIndices = new Map<Element, number>();
+    let observer: IntersectionObserver | null = null;
+
+    const observeTriggers = () => {
+      observer?.disconnect();
+      observedIndices.clear();
+      if (!observer || !postsStore.autoLoad) return;
+      for (const index of new Set([indexThatTriggersPreviousPage.value, indexThatTriggersNextPage.value])) {
+        const el = posts.value[index]?.$el as Element | undefined;
+        if (!el) continue;
+        observedIndices.set(el, index);
+        observer.observe(el);
+      }
     };
+
+    onMounted(() => {
+      observer = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          const index = observedIndices.get(entry.target);
+          if (index !== undefined) triggerLoad(index, entry.isIntersecting ? "enter" : "leave");
+        }
+      });
+      observeTriggers();
+    });
+    onBeforeUnmount(() => observer?.disconnect());
+
+    watch(
+      [visiblePostIds, () => postsStore.autoLoad],
+      () => nextTick(observeTriggers),
+      { flush: "post" },
+    );
 
     return {
       layout,
       size,
       posts,
       addElement,
-      triggerLoad,
-      shouldHaveIntersectionObserver,
     };
   },
 });

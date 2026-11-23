@@ -75,10 +75,10 @@ export class DashboardService {
       heatmap: {} as { [date: string]: number | undefined },
     };
     for (const post of posts) {
-      counters.upvotes += post.score.up;
-      counters.downvotes += post.score.down;
-      counters.favorites += post.fav_count;
-      counters.comments += post.comment_count;
+      counters.upvotes += post.stats.score.up;
+      counters.downvotes += post.stats.score.down;
+      counters.favorites += post.stats.fav_count;
+      counters.comments += post.stats.comment_count;
       counters.rating[post.rating]++;
       if (post.flags.pending) {
         counters.pending++;
@@ -98,9 +98,9 @@ export class DashboardService {
           }
           const counts = counters.tags[category][tag]!;
           counts.count += 1;
-          counts.up = post.score.up;
-          counts.down = post.score.down;
-          counts.favorites = post.fav_count;
+          counts.up = post.stats.score.up;
+          counts.down = post.stats.score.down;
+          counts.favorites = post.stats.fav_count;
         }
       }
       const uploadDate = parseISO(post.created_at);

@@ -1,6 +1,6 @@
 <template>
-  <v-container class="fill-height">
-    <v-row align-center>
+  <v-container class="fill-height d-flex align-center flex-wrap">
+    <v-row>
       <v-col cols="12" sm="10" offset-sm="1" lg="6" offset-lg="3">
         <MigrationInfo />
         <v-card>

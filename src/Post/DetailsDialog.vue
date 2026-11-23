@@ -28,7 +28,7 @@
           <v-tabs-window-item value="description">
             <v-card text>
               <v-card-text>
-                <div class="text-body-1">
+                <div class="text-body-large">
                   <d-text :text="current.description || 'No description'" />
                 </div>
               </v-card-text>
@@ -38,9 +38,9 @@
             <v-card text>
               <v-card-text>
                 <link-share
-                  v-if="current.file.url"
+                  v-if="current.files.original.url"
                   :post-id="current.id"
-                  :raw-file-url="current.file.url"
+                  :raw-file-url="current.files.original.url"
                 />
                 <div v-else>
                   Post can't be shared at this time.

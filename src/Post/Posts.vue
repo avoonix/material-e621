@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid grid-list-md>
+  <v-container fluid>
     <div v-if="hasPrevious" class="text-center">
       <v-btn @click="loadPrevious" :loading="loading" color="accent" variant="text">
         previous page

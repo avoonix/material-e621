@@ -4,13 +4,13 @@
       <v-chip variant="outlined" class="mr-2 mb-2 no-before-content">
         <v-icon>mdi-thumbs-up-down</v-icon>
         <span class="ml-2">
-          {{ post.score.total }}
+          {{ post.stats.score.total }}
         </span>
       </v-chip>
       <v-chip variant="outlined" class="mr-2 mb-2 no-before-content">
         <v-icon>mdi-heart</v-icon>
         <span class="ml-2">
-          {{ post.fav_count }}
+          {{ post.stats.fav_count }}
         </span>
       </v-chip>
       <v-chip variant="outlined" class="mr-2 mb-2 no-before-content" v-if="score">
@@ -20,6 +20,7 @@
         </span>
       </v-chip>
       <tag-with-menu v-for="artist in post.tags.artist" :key="artist" :tag="{ name: artist, category: 'artist' }" />
+      <tag-with-menu v-for="contributor in post.tags.contributor" :key="contributor" :tag="{ name: contributor, category: 'contributor' }" />
       <tag-with-menu v-for="pool in post.pools || []" :key="pool" :tag="{ name: `pool:${pool}`, category: 'pool' }" />
       <v-chip variant="outlined" class="mb-2 no-before-content">
         <v-icon>mdi-clock</v-icon>
@@ -53,7 +54,7 @@ export default defineComponent({
     },
   },
   setup(props, context) {
-    const fileSize = computed(() => prettyBytes(props.post.file.size));
+    const fileSize = computed(() => prettyBytes(props.post.files.meta.size));
     const score = computed(() => {
       if (isScoredPost(props.post)) {
         return props.post.__score;

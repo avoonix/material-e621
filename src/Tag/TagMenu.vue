@@ -1,5 +1,5 @@
 <template>
-  <v-menu location="bottom left" offset-y close-on-content-click :persistent="false" close-delay="0" v-if="tag.category">
+  <v-menu location="bottom left" close-on-content-click :persistent="false" close-delay="0" v-if="tag.category">
     <template #activator="{ props }">
       <slot :props="props">
         <v-btn v-bind="props" icon>

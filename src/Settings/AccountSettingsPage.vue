@@ -1,6 +1,6 @@
 <template>
-  <v-container class="fill-height">
-    <v-row align-center>
+  <v-container class="fill-height d-flex align-center flex-wrap">
+    <v-row>
       <v-col class="text-center" cols="12" sm="10" offset-sm="1" lg="6" offset-lg="3">
         <settings-page-title section="account" title="API & Account" color="yellow-darken-3" />
         <settings-page-item title="Credentials" select>

@@ -1,8 +1,8 @@
 <template>
-  <v-menu location="bottom left" offset-y close-delay="0">
+  <v-menu location="bottom left" close-delay="0">
     <template #activator="{ props }">
       <v-btn v-show="showInstallPrompt" v-bind="props" icon>
-        <v-badge color="primary" overlap location="left">
+        <v-badge color="primary" location="left">
           <template #badge>
             <v-icon>mdi-exclamation-thick</v-icon>
           </template>

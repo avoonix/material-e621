@@ -1,7 +1,7 @@
 <template>
   <v-card v-ripple @click="$emit('apply-theme')" class="ma-2" style="cursor: pointer" :color="theme.background">
     <v-row class="pa-0">
-      <v-col xs3>
+      <v-col>
         <v-card class="fill-height no-border-radius" :color="theme.sidebar">
           <div style="padding: 2px" />
           <theme-text style="margin: auto" width="30%" :ratio="1" color="#10559c" />
@@ -14,16 +14,16 @@
             :key="`${i}_tags`" />
         </v-card>
       </v-col>
-      <v-col xs9>
+      <v-col>
         <v-card :color="theme.background" class="no-border-radius">
-          <v-toolbar dense :color="theme.toolbar" :class="theme.dark ? 'white--text' : 'black--text'">
+          <v-toolbar :color="theme.toolbar">
             {{ theme.name }}
           </v-toolbar>
-          <v-row align-center wrap>
+          <v-row>
             <v-col cols="12" class="text-center">
               <theme-text width="15%" :ratio="0.25" :color="theme.accent" style="display: inline-block" />
             </v-col>
-            <v-col xs6 offset-xs3 v-for="i in 1" :key="i">
+            <v-col v-for="i in 1" :key="i">
               <v-card class="mb-2" :color="theme.secondary">
                 <img class="img" :src="imageSrc" />
                 <theme-text width="50%" :ratio="0.15" :color="theme.dark ? 'white' : 'black'"

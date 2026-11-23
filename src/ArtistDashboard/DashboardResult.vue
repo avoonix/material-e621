@@ -1,11 +1,11 @@
 <template>
-  <v-container class="fill-height" v-if="!result">
-    <v-row align="center" justify="center">
+  <v-container class="fill-height d-flex align-center flex-wrap" v-if="!result">
+    <v-row class="align-center justify-center">
       <progress-message :value="progress" />
     </v-row>
   </v-container>
   <v-container fluid v-else>
-    <h1 class="text-center text-h2 mt-2">{{ artist }}</h1>
+    <h1 class="text-center text-display-medium mt-2">{{ artist }}</h1>
     <div class="d-flex justify-center mt-2">
       <v-btn :href="artistUrl" target="_blank" color="primary">
         View Profile <v-icon end>mdi-open-in-new</v-icon>

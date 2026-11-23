@@ -1,6 +1,6 @@
 <template>
-  <v-container class="fill-height">
-    <v-row align-center>
+  <v-container class="fill-height d-flex align-center flex-wrap">
+    <v-row>
       <v-col ref="container">
         <div v-if="result">
           <posts :posts="posts" :loading="loading" :has-previous="hasPrevious" @load-previous="loadPreviousPage()"
@@ -11,7 +11,7 @@
             @open-post-details="openPostDetails" @close-details="detailsPost = null"
             @set-post-favorite="setPostFavorite($event)" />
           <portal to="sidebar-suggestions">
-            <div class="text-overline" v-if="hiddenPostCount > 0">Blacklisted posts hidden: {{ hiddenPostCount }}</div>
+            <div class="text-label-small text-uppercase" v-if="hiddenPostCount > 0">Blacklisted posts hidden: {{ hiddenPostCount }}</div>
             <progress-message v-if="listProgress" :value="listProgress" />
             <base-tags :counts="result.counts" />
           </portal>
@@ -55,6 +55,7 @@ const username = computed(() => route.query?.name?.toString());
 const keys = [
   "general",
   "artist",
+  "contributor",
   "copyright",
   "character",
   "species",

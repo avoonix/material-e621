@@ -1,5 +1,5 @@
 <template>
-  <v-table class="text-caption" density="compact">
+  <v-table class="text-body-small" density="compact">
     <tbody>
       <tr align="right">
         <th>ID:</th>
@@ -8,43 +8,50 @@
       <tr align="right" v-if="post.tags.artist?.length">
         <th>Artist:</th>
         <td>
-          <TagWithMenu small v-for="artist in post.tags.artist" :key="artist"
+          <TagWithMenu v-for="artist in post.tags.artist" :key="artist"
             :tag="{ name: artist, category: 'artist' }" />
+        </td>
+      </tr>
+      <tr align="right" v-if="post.tags.contributor?.length">
+        <th>Contributor:</th>
+        <td>
+          <TagWithMenu v-for="contributor in post.tags.contributor" :key="contributor"
+            :tag="{ name: contributor, category: 'contributor' }" />
         </td>
       </tr>
       <tr align="right" v-if="post.pools?.length">
         <th>Pools:</th>
         <td>
-          <TagWithMenu small v-for="pool in post.pools" :key="pool" :tag="{ name: `pool:${pool}`, category: 'pool' }" />
+          <TagWithMenu v-for="pool in post.pools" :key="pool" :tag="{ name: `pool:${pool}`, category: 'pool' }" />
         </td>
       </tr>
       <tr align="right">
         <th>Score:</th>
         <td>
-          {{ post.score.total }}
-          ({{ post.score.up }} up - {{ post.score.down }} down)
+          {{ post.stats.score.total }}
+          ({{ post.stats.score.up }} up - {{ post.stats.score.down }} down)
         </td>
       </tr>
       <tr align="right">
         <th>Favorites:</th>
-        <td>{{ post.fav_count }}</td>
+        <td>{{ post.stats.fav_count }}</td>
       </tr>
       <tr align="right">
         <th>File size:</th>
         <td>
           {{ fileSize }}
-          ({{ post.file.size }} B)
+          ({{ post.files.meta.size }} B)
         </td>
       </tr>
       <tr align="right">
         <th>Dimensions:</th>
         <td>
-          {{ post.file.width }}x{{ post.file.height }} ({{ megapixel }} Megapixel)
+          {{ post.files.original.width }}x{{ post.files.original.height }} ({{ megapixel }} Megapixel)
         </td>
       </tr>
       <tr align="right">
         <th>Hash:</th>
-        <td>{{ post.file.md5 }}</td>
+        <td>{{ post.files.meta.md5 }}</td>
       </tr>
       <tr align="right">
         <th>Rating:</th>
@@ -75,6 +82,6 @@ const props = defineProps({
     required: true,
   },
 });
-const fileSize = computed(() => prettyBytes(props.post.file.size));
-const megapixel = computed(() => Math.round(((props.post.file.width * props.post.file.height) / 1000000) * 100) / 100);
+const fileSize = computed(() => prettyBytes(props.post.files.meta.size));
+const megapixel = computed(() => Math.round(((props.post.files.original.width * props.post.files.original.height) / 1000000) * 100) / 100);
 </script>

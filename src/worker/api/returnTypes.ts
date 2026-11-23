@@ -1,26 +1,32 @@
-export interface File {
-  width: number;
-  height: number;
+export interface PostFilesMeta {
+  md5: string;
   ext: string;
   size: number;
-  md5: string;
+  duration: number | null;
+  has_sample: boolean;
+}
+
+export interface PostFilesOriginal {
+  width: number;
+  height: number;
   /**
    * might be null if tags are on the "Global Blacklist"
    */
   url: string | null;
 }
 
-export interface Preview {
+export interface PostFilesImage {
   width: number;
   height: number;
-  url: string;
+  jpg: string | null;
+  webp: string | null;
 }
 
-export interface Sample {
-  has: boolean;
-  height: number;
-  width: number;
-  url: string;
+export interface PostFiles {
+  meta: PostFilesMeta;
+  original: PostFilesOriginal;
+  preview: PostFilesImage;
+  sample: PostFilesImage;
 }
 
 export interface Score {
@@ -29,16 +35,28 @@ export interface Score {
   total: number;
 }
 
+export interface PostStats {
+  score: Score;
+  fav_count: number;
+  is_favorited: boolean;
+  vote: 1 | 0 | -1;
+  comment_count: number;
+  hotness: number;
+}
+
 export interface PostTags {
   general: string[];
-  species: string[];
-  character: string[];
-  copyright: string[];
   artist: string[];
+  contributor: string[];
+  copyright: string[];
+  character: string[];
+  species: string[];
   invalid: string[];
-  lore: string[];
   meta: string[];
+  lore: string[];
 }
+
+export type TagCategoryName = keyof PostTags;
 
 export interface Flags {
   pending: boolean;
@@ -49,10 +67,16 @@ export interface Flags {
   deleted: boolean;
 }
 
+export interface PostHas {
+  parent: boolean;
+  children: boolean;
+  active_children: boolean;
+  notes: boolean;
+  sample: boolean;
+}
+
 export interface Relationships {
-  parent_id?: number;
-  has_children: boolean;
-  has_active_children: boolean;
+  parent_id: number | null;
   children: number[];
 }
 
@@ -60,29 +84,21 @@ export interface Post {
   id: number;
   created_at: string;
   updated_at: string;
-  file: File;
-  preview: Preview;
-  sample: Sample;
-  score: Score;
-  tags: PostTags;
-  locked_tags: string[];
   change_seq: number;
-  flags: Flags;
-  rating: "s" | "q" | "e";
-  fav_count: number;
-  sources: string[];
-  pools: number[];
-  relationships: Relationships;
-  approver_id?: number;
+  files: PostFiles;
   uploader_id: number;
+  uploader_name: string;
+  approver_id: number | null;
+  stats: PostStats;
+  flags: Flags;
+  has: PostHas;
+  relationships: Relationships;
+  pools: number[];
+  rating: "s" | "q" | "e";
+  locked_tags: string[];
+  sources: string[];
   description: string;
-  comment_count: number;
-  is_favorited: boolean;
-  has_notes: boolean;
-}
-
-export interface Posts {
-  posts: Post[];
+  tags: PostTags;
 }
 
 export interface Tag {
@@ -90,11 +106,11 @@ export interface Tag {
   name: string;
   post_count: number;
   related_tags: string;
-  related_tags_updated_at: Date;
-  category: number;
+  related_tags_updated_at: string | null;
+  category: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
   is_locked: boolean;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface TagAlias {
@@ -102,26 +118,25 @@ export interface TagAlias {
   antecedent_name: string;
   reason: string;
   creator_id: number;
-  created_at: Date;
-  forum_post_id?: number;
-  updated_at?: Date;
-  forum_topic_id?: number;
+  created_at: string | null;
+  forum_post_id: number | null;
+  updated_at: string | null;
+  forum_topic_id: number | null;
   consequent_name: string;
   status: string;
   post_count: number;
-  approver_id?: number;
+  approver_id: number | null;
 }
 
 export interface Pool {
   id: number;
   name: string;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
   creator_id: number;
   description: string;
   is_active: boolean;
-  category: string;
-  is_deleted: boolean;
+  category: "collection" | "series";
   post_ids: number[];
   creator_name: string;
   post_count: number;

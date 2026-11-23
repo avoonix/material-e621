@@ -1,6 +1,6 @@
 <template>
-  <v-container class="fill-height">
-    <v-row align-center>
+  <v-container class="fill-height d-flex align-center flex-wrap">
+    <v-row>
       <v-col class="text-center" cols="12" md="8" offset-md="2">
         <v-form @submit="submit">
           <v-text-field v-model="username" append-icon="mdi-send" @click:append="submit" label="Username" />

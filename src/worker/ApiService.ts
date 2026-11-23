@@ -38,23 +38,24 @@ export class ApiService {
     baseUrl: string;
   }) {
     log(args);
-    const posts = (
-      await e621.posts.list({
-        ...args,
-        tags: createTagQuery(
-          args.blacklistMode,
-          args.blacklist || [],
-          args.tags,
-        ),
-        baseUrl: args.baseUrl
-      })
-    ).posts;
+    const posts = await e621.posts.list({
+      ...args,
+      tags: createTagQuery(
+        args.blacklistMode,
+        args.blacklist || [],
+        args.tags,
+      ),
+      baseUrl: args.baseUrl
+    });
 
     return posts.map<EnhancedPost>((post) => ({
       ...post,
-      score: {
-        ...post.score,
-        down: Math.abs(post.score.down), // shouldn't be negative imo
+      stats: {
+        ...post.stats,
+        score: {
+          ...post.stats.score,
+          down: Math.abs(post.stats.score.down), // shouldn't be negative imo
+        },
       },
       __meta: {
         isBlacklisted: isPostBlacklisted(post, args.blacklist || []),

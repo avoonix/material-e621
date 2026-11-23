@@ -1,7 +1,7 @@
 <template>
   <TagMenu :tag="tag">
     <template #default="{ props }">
-      <v-chip :color="color" variant="outlined" class="mr-2 mb-2" v-bind="props" :small="small">
+      <v-chip :color="color" variant="outlined" class="mr-2 mb-2" v-bind="props">
         <v-icon v-if="icon">{{ icon }}</v-icon>
         <span :class="{ 'ml-2': icon }">
           {{ tag.name }}
@@ -25,10 +25,6 @@ export default defineComponent({
       type: Object as PropType<ITag>,
       required: true,
     },
-    small: {
-      type: Boolean,
-      default: false
-    }
   },
   setup(props, context) {
     const color = computed(() => getTagColorFromCategory(props.tag.category));

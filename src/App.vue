@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-if="!minimalHeader" :color="theme.sidebar" :clipped="clipped" v-model="drawer" floating app
+    <v-navigation-drawer v-if="!minimalHeader" :color="theme.sidebar" v-model="drawer" floating
       width="400" class="pa-2">
       <router-link to="/">
         <app-logo v-view-transition-name="'applogo'" :type="logoStyle" />
@@ -9,12 +9,11 @@
       <portal-target name="sidebar-suggestions" />
     </v-navigation-drawer>
     <v-app-bar v-view-transition-name="'appbar'" :color="minimalHeader ? theme.primary : theme.toolbar"
-      :app="!minimalHeader" :flat="minimalHeader" :clipped-left="clipped" :floating="navMode == 'floating'" :class="{
+      :flat="minimalHeader" :floating="navMode == 'floating'" :class="{
         'ma-2': navMode == 'floating',
         'mb-3': navMode == 'floating',
-        primary: minimalHeader,
       }" class="padded-toolbar">
-      <v-menu location="bottom right" offset-y close-delay="0" :nudge-width="200"
+      <v-menu location="bottom right" close-delay="0"
         v-if="navMode == 'floating' && !minimalHeader">
         <template #activator="{ props }">
           <v-btn v-bind="props" icon>
@@ -88,7 +87,6 @@ useHead({
 const { mobile } = useDisplay();
 
 const route = useRoute();
-const clipped = ref(false);
 const drawer_ = ref(true);
 const appName = getAppName();
 

@@ -99,12 +99,15 @@ export default defineConfig(({ mode }) => {
         '@': fileURLToPath(new URL('./src', import.meta.url))
       },
     },
-    build: {
-      rollupOptions: {
-        output: {
-          format: 'iife',
-        },
-      },
+    optimizeDeps: {
+      include: [
+        'vuetify/components/VOverlay',
+        'vuetify/components/VDialog',
+        'vuetify/components/VMenu',
+        'vuetify/components/VSelect',
+        'vuetify/components/VCombobox',
+        'vuetify/components/VTooltip',
+      ],
     },
   }
 })

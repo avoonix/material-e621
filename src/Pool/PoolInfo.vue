@@ -4,7 +4,7 @@
             <v-card color="transparent" elevation="0" style="max-width: 50vw;">
                 <v-card-title class="flex-column align-baseline">
                     <span style="line-height: initial">{{ pool.name }}</span>
-                    <small class="text-caption" style="line-height: initial;">
+                    <small class="text-body-small" style="line-height: initial;">
                         {{ pool.post_count }} Posts &bull; created by {{ pool.creator_name }}
                     </small>
                 </v-card-title>

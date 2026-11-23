@@ -1,8 +1,8 @@
 <template>
-  <fixed-aspect-ratio-box @click.native="handleClick" :ratio="file.height / file.width" v-ripple="true">
+  <fixed-aspect-ratio-box @click.native="handleClick" :ratio="files.original.height / files.original.width" v-ripple="true">
     <img :loading="loading" v-if="(isImage || isVideo) && imageSrc" :src="imageSrc" class="clickable" />
     <div v-else-if="isImage || isVideo" class="centered clickable play-button">
-      <v-chip color="red" text-color="white">Global Blacklist</v-chip>
+      <v-chip color="red">Global Blacklist</v-chip>
       <p class="pa-3 text-center">
         This post is on the server-side blacklist for unauthenticated users. Log
         in to view, or update the blacklist settings.
@@ -22,7 +22,7 @@
 import { useDataSaverInfo } from "@/misc/util/dataSaver";
 import { usePostsStore } from "@/services";
 import { DataSaverType } from "@/services/types";
-import type { File, Preview, Sample } from "@/worker/api";
+import type { PostFiles } from "@/worker/api";
 import type { PropType } from "vue";
 import { computed, defineComponent } from "vue";
 import FixedAspectRatioBox from "./FixedAspectRatioBox.vue";
@@ -31,23 +31,15 @@ import { useRouter } from "vue-router";
 export default defineComponent({
   components: { FixedAspectRatioBox },
   props: {
-    file: {
-      type: Object as PropType<File>,
-      required: true,
-    },
-    preview: {
-      type: Object as PropType<Preview>,
-      required: true,
-    },
-    sample: {
-      type: Object as PropType<Sample>,
+    files: {
+      type: Object as PropType<PostFiles>,
       required: true,
     },
   },
   setup(props, context) {
     const posts = usePostsStore();
-    const isSwf = computed(() => props.file.ext === "swf");
-    const isVideo = computed(() => props.file.ext === "webm");
+    const isSwf = computed(() => props.files.meta.ext === "swf");
+    const isVideo = computed(() => props.files.meta.ext === "webm");
     const isImage = computed(() => !isSwf.value && !isVideo.value);
         const router = useRouter()
 
@@ -61,29 +53,32 @@ export default defineComponent({
 
     const { dataSaverInfo } = useDataSaverInfo();
 
-    const imageSrcPerQuality = computed<{ high: string, low: string, medium: string }>(() => {
+    const imageSrcPerQuality = computed<{ high: string | null, low: string | null, medium: string | null }>(() => {
+      const preview = props.files.preview.jpg;
+      const sample = props.files.sample.jpg;
+      const original = props.files.original.url;
       if (isSwf.value) {
         return {
-          high: props.preview.url,
-          medium: props.preview.url,
-          low: props.preview.url,
+          high: preview,
+          medium: preview,
+          low: preview,
         };
       }
       if (isVideo.value) {
         return {
-          high: props.sample.url || props.preview.url,
-          medium: props.sample.url || props.preview.url,
-          low: props.preview.url,
+          high: sample || preview,
+          medium: sample || preview,
+          low: preview,
         };
       }
       return {
-        high: props.file.url || props.sample.url || props.preview.url,
-        medium: props.sample.url || props.preview.url,
-        low: props.preview.url,
+        high: original || sample || preview,
+        medium: sample || preview,
+        low: preview,
       };
     });
 
-    const imageSrc = computed<string>(() => {
+    const imageSrc = computed<string | null>(() => {
       switch (posts.dataSaver) {
         case DataSaverType.lowest:
           return imageSrcPerQuality.value.low;

@@ -2,7 +2,7 @@
   <v-card>
     <v-card-title>Third party libraries</v-card-title>
     <v-card-text>
-      <div class="text-body-1 mb-2">
+      <div class="text-body-large mb-2">
         Special thanks to these libraries and their maintainers.
       </div>
       <v-list v-if="libraries">

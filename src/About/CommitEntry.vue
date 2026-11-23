@@ -2,15 +2,15 @@
   <v-card>
     <v-card-title>
       <div>
-        <h3 class="text-h5">
+        <h3 class="text-headline-small">
           {{ entry.message.subject }}
         </h3>
-        <div class="text-caption">
+        <div class="text-body-small">
           {{ date }} by {{ entry.author }}
         </div>
       </div>
     </v-card-title>
-    <v-card-text v-if="entry.message.body" class="pre text-body-1">{{ entry.message.body }}</v-card-text>
+    <v-card-text v-if="entry.message.body" class="pre text-body-large">{{ entry.message.body }}</v-card-text>
     <v-card-actions>
       <v-spacer />
       <v-btn variant="text" :href="`https://github.com/avoonix/material-e621/commit/${entry.hash}`" color="primary">

@@ -13,7 +13,6 @@
     <p>
       Current connection type:
       <span
-        :class="dataSaverInfo.typeSupported ? 'success--text' : 'error--text'"
         :title="dataSaverInfo.typeSupported ? 'Supported' : 'Not supported'"
         >{{ dataSaverInfo.type }}</span
       >

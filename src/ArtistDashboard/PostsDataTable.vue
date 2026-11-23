@@ -1,7 +1,7 @@
 <template>
   <v-data-table :items="posts" :headers="headers">
-    <template #item.score.total="{ item }">
-      {{item.score.total}} <span class="half-opacity-text">({{item.score.up}} - {{item.score.down}})</span>
+    <template #item.stats.score.total="{ item }">
+      {{item.stats.score.total}} <span class="half-opacity-text">({{item.stats.score.up}} - {{item.stats.score.down}})</span>
     </template>
     <template #item.created_at="{ item }">
       <DateDisplay :value="item.created_at" />
@@ -54,9 +54,9 @@ export default defineComponent({
     const headers = computed<DataTableHeader<Post>[]>(() => [
       { title: "Rating", value: "rating", width: 0, sortable: false },
       { title: "Post ID", value: "id" },
-      { title: "Favorites", value: "fav_count" },
-      { title: "Score", value: "score.total", cellClass: "text-no-wrap" },
-      { title: "Comments", value: "comment_count", divider: true },
+      { title: "Favorites", value: "stats.fav_count" },
+      { title: "Score", value: "stats.score.total", cellClass: "text-no-wrap" },
+      { title: "Comments", value: "stats.comment_count", divider: true },
       { title: "Created", value: "created_at", cellClass: "text-no-wrap width-0" },
       { title: "Last Updated", value: "updated_at", cellClass: "text-no-wrap width-0", divider: true },
       { title: "", value: "buttons", sortable: false, cellClass: "text-no-wrap", width: 0 },

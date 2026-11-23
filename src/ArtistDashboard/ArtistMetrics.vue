@@ -2,7 +2,7 @@
     <v-row>
         <v-col cols="12" lg="3" md="4" sm="6" :key="idx" v-for="(metric, idx) in metrics">
             <v-card>
-                <v-card-title class="text-h3">
+                <v-card-title class="text-display-small">
                     {{ formatValue(metric.value) }}
                 </v-card-title>
                 <v-card-text>

@@ -1,6 +1,6 @@
 <template>
-  <v-container class="fill-height">
-    <v-row align-center>
+  <v-container class="fill-height d-flex align-center flex-wrap">
+    <v-row>
       <v-col ref="container">
         <div v-if="result">
           <div v-for="cloud in result.wordPositions" :key="cloud.category">

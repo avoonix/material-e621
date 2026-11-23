@@ -11,6 +11,7 @@ const tagColorMapping: { [idx: string]: string | undefined } = {
   default: "grey",
   species: "deep-orange",
   artist: "orange",
+  contributor: "amber",
   lore: "green",
   pool: "pink",
   meta: "grey",
@@ -19,12 +20,14 @@ const tagIconMapping: { [idx: string]: string | undefined } = {
   default: "mdi-tag",
   pool: "mdi-format-list-text",
   artist: "mdi-palette",
+  contributor: "mdi-account-group",
 };
 
 export const categoryIdToCategoryName = (id: number) => {
   const categories: { [idx: string]: string | undefined } = {
     0: "general",
     1: "artist",
+    2: "contributor",
     3: "copyright",
     4: "character",
     5: "species",

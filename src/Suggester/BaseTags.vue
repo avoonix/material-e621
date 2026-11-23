@@ -1,11 +1,11 @@
 <template>
   <v-card>
-    <div class="text-overline">Suggestions based on</div>
+    <div class="text-label-small text-uppercase">Suggestions based on</div>
     <div>
       <template v-for="(item, i) in data" :key="i">
         <div  color="secondary">
           <!-- <v-card-title>{{ item.category }}</v-card-title> -->
-          <div class="text-overline">{{ item.category }}</div>
+          <div class="text-label-small text-uppercase">{{ item.category }}</div>
           <div class="ml-10">
 
           <div v-if="item.tags.length">
