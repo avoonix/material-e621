@@ -27,6 +27,7 @@ import type { PropType } from "vue";
 import { computed, defineComponent } from "vue";
 import FixedAspectRatioBox from "./FixedAspectRatioBox.vue";
 import { useRouter } from "vue-router";
+import { isVideoExt } from "@/misc/util/utilities";
 
 export default defineComponent({
   components: { FixedAspectRatioBox },
@@ -39,7 +40,7 @@ export default defineComponent({
   setup(props, context) {
     const posts = usePostsStore();
     const isSwf = computed(() => props.files.meta.ext === "swf");
-    const isVideo = computed(() => props.files.meta.ext === "webm");
+    const isVideo = computed(() => isVideoExt(props.files.meta.ext));
     const isImage = computed(() => !isSwf.value && !isVideo.value);
         const router = useRouter()
 

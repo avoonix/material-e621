@@ -3,6 +3,8 @@ import { useRouter } from "vue-router";
 export const getAppName = () => "Material e621";
 export const getBaseUrl = () => document.location.origin;
 
+export const isVideoExt = (ext: string) => ext === "webm" || ext === "mp4";
+
 const tagColorMapping: { [idx: string]: string | undefined } = {
   character: "light-green",
   copyright: "purple",

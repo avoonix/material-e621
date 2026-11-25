@@ -14,9 +14,9 @@
             <div v-if="current.files.meta.ext == 'swf'" class="overflow flash">
               flash is not supported
             </div>
-            <video v-else-if="current.files.meta.ext == 'webm' && currentFileUrl"
+            <video v-else-if="isVideoExt(current.files.meta.ext) && currentFileUrl"
               class="overflow flash bg-black position-relative" controls loop autoplay playsinline preload="metadata">
-              <source v-if="current.files.original.url" :src="current.files.original.url" type="video/webm" />
+              <source v-if="current.files.original.url" :src="current.files.original.url" :type="`video/${current.files.meta.ext}`" />
               Video type not supported by your browser
             </video>
             <div v-else class="overflow">
@@ -74,6 +74,7 @@ import {
   watch,
 } from "vue";
 import PostButtons from "@/Post/PostButtons.vue";
+import { isVideoExt } from "@/misc/util/utilities";
 import { useDirectionalTransitions } from "@/misc/util/directionalTransitions";
 import type { EnhancedPost } from "@/worker/ApiService";
 import { FullscreenZoomUiMode } from "@/services/types";
