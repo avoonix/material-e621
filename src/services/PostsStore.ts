@@ -2,6 +2,14 @@ import { defineStore } from "pinia";
 import { computed } from "vue";
 import { useMainStore } from "./state";
 import type { ButtonType } from "./types";
+import { defaultSettings } from "./defaultSettings";
+import { toWholeNumber, type Range } from "./wholeNumber";
+
+export const postLimitRanges = {
+  postListFetchLimit: { min: 10, max: 320 },
+  tagFetchLimit: { min: 10, max: 500 },
+  sidebarSuggestionLimit: { min: 0, max: 500 },
+} satisfies Record<string, Range>;
 
 export const usePostsStore = defineStore("posts", () => {
   const main = useMainStore();
@@ -37,28 +45,28 @@ export const usePostsStore = defineStore("posts", () => {
       main.posts.fullscreenZoomUiMode = value;
     },
   });
-  const postListFetchLimit = computed({
+  const postListFetchLimit = computed<number>({
     get() {
-      return main.posts.postListFetchLimit;
+      return toWholeNumber(main.posts.postListFetchLimit, postLimitRanges.postListFetchLimit, defaultSettings.posts.postListFetchLimit);
     },
     set(value) {
-      main.posts.postListFetchLimit = value;
+      main.posts.postListFetchLimit = toWholeNumber(value, postLimitRanges.postListFetchLimit, postListFetchLimit.value);
     },
   });
-  const sidebarSuggestionLimit = computed({
+  const sidebarSuggestionLimit = computed<number>({
     get() {
-      return main.posts.sidebarSuggestionLimit;
+      return toWholeNumber(main.posts.sidebarSuggestionLimit, postLimitRanges.sidebarSuggestionLimit, defaultSettings.posts.sidebarSuggestionLimit);
     },
     set(value) {
-      main.posts.sidebarSuggestionLimit = value;
+      main.posts.sidebarSuggestionLimit = toWholeNumber(value, postLimitRanges.sidebarSuggestionLimit, sidebarSuggestionLimit.value);
     },
   });
-  const tagFetchLimit = computed({
+  const tagFetchLimit = computed<number>({
     get() {
-      return main.posts.tagFetchLimit;
+      return toWholeNumber(main.posts.tagFetchLimit, postLimitRanges.tagFetchLimit, defaultSettings.posts.tagFetchLimit);
     },
     set(value) {
-      main.posts.tagFetchLimit = value;
+      main.posts.tagFetchLimit = toWholeNumber(value, postLimitRanges.tagFetchLimit, tagFetchLimit.value);
     },
   });
   const goFullscreen = computed({

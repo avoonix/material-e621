@@ -39,14 +39,6 @@
             :items="['https://e621.net/', 'https://e926.net/']" />
           <v-text-field variant="filled" label="Custom e621 URL" type="text" v-model="e621Url" autocomplete="url"
             hint="You might want to change your username/API key if you switch instances" persistent-hint />
-          <v-text-field variant="filled" label="Favorites API" type="text" v-model="proxyUrl" autocomplete="url" />
-          <p class="text-left">
-            Material e621 uses the regular e621 API as much as possible, but the
-            favorites endpoints don't have the required cross origin resource
-            sharing headers in order to use them directly in the browser. This
-            is why adding and removing favorites uses this API:
-            <external-link href="https://github.com/avoonix/material-e621-proxy" />
-          </p>
         </settings-page-item>
       </v-col>
     </v-row>
@@ -94,15 +86,6 @@ const e621Url = computed<string>({
   },
   set(value) {
     url.e621Url = value;
-  },
-});
-
-const proxyUrl = computed<string>({
-  get() {
-    return url.proxyUrl
-  },
-  set(value) {
-    url.proxyUrl = value;
   },
 });
 

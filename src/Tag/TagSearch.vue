@@ -223,27 +223,15 @@ const model = computed<ITagWithText[]>({
   },
   set(val) {
     search.value = "";
-    const newItem = val.find((v) => typeof v === "string");
-    if (newItem) {
-      addTag(newItem as any);
+    const current = [...props.tags];
+    const selected = (val as (ITagWithText | string)[])
+      .map((v) => (typeof v === "string" ? v : v.text))
+      .filter((v) => v);
+    for (const item of differenceBy(current, selected)) {
+      emit("remove-tag", item);
     }
-    const removedItems = differenceBy(
-      props.tags,
-      val.map((v) => v.text).filter((v) => v),
-    );
-    if (removedItems.length) {
-      for (const item of removedItems) {
-        emit("remove-tag", item);
-      }
-    }
-    const addedItems = differenceBy(
-      val.map((v) => v.text).filter((v) => v),
-      props.tags,
-    );
-    if (addedItems.length) {
-      for (const item of addedItems) {
-        addTag(item);
-      }
+    for (const item of differenceBy(selected, current)) {
+      addTag(item);
     }
   },
 });

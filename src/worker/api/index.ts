@@ -111,13 +111,13 @@ export interface IPostFavoriteArgs {
     login: string;
     api_key: string;
   };
-  proxyUrl: string;
+  baseUrl: string;
 }
 
 export const custom = {
   posts: {
     async favorite(args: IPostFavoriteArgs) {
-      const response = await fetch(`${args.proxyUrl}favorites`, {
+      const response = await fetch(buildUrl(args.baseUrl, "favorites.json"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -131,7 +131,7 @@ export const custom = {
       return response.json();
     },
     async unfavorite(args: IPostFavoriteArgs) {
-      const response = await fetch(`${args.proxyUrl}favorites/${args.postId}`, {
+      const response = await fetch(buildUrl(args.baseUrl, `favorites/${+args.postId}.json`), {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

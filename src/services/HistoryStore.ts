@@ -2,15 +2,19 @@ import { isEqual } from "lodash";
 import { defineStore } from "pinia";
 import { computed } from "vue";
 import { useMainStore } from "./state";
+import { defaultSettings } from "./defaultSettings";
+import { toWholeNumber } from "./wholeNumber";
+
+export const historyLengthRange = { min: 0, max: 100000 };
 
 export const useHistoryStore = defineStore("history", () => {
   const main = useMainStore();
-  const maxLength = computed({
+  const maxLength = computed<number>({
     get() {
-      return main.history.maxLength;
+      return toWholeNumber(main.history.maxLength, historyLengthRange, defaultSettings.history.maxLength);
     },
     set(value) {
-      main.history.maxLength = value;
+      main.history.maxLength = toWholeNumber(value, historyLengthRange, maxLength.value);
     },
   });
   const entries = computed(() => main.history.entries);

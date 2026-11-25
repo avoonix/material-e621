@@ -41,7 +41,7 @@ import { cloneDeep, debounce } from "lodash";
 import * as Comlink from "comlink";
 import { useRoute } from "vue-router";
 import ProgressMessage from "@/Suggester/ProgressMessage.vue";
-import { useUrlStore } from "@/services";
+import { useAccountStore, useUrlStore } from "@/services";
 import { useHead } from "@unhead/vue";
 import TagLabel from "@/Tag/TagLabel.vue";
 
@@ -50,6 +50,7 @@ useHead({ title: "Favorite Analyzer" });
 const route = useRoute();
 const progress = ref<IProgressEvent>();
 const urlStore = useUrlStore();
+const account = useAccountStore();
 
 const args = computed<IAnalyzeTagsArgs>(() => {
   const username = route.query?.name?.toString();
@@ -57,7 +58,8 @@ const args = computed<IAnalyzeTagsArgs>(() => {
     height: window.innerHeight * 0.66,
     tags: [`fav:${username}`],
     postLimit: 1000,
-    baseUrl: urlStore.e621Url
+    baseUrl: urlStore.e621Url,
+    auth: account.auth,
     // TODO: useBlacklist: bool
   };
 });

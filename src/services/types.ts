@@ -46,7 +46,7 @@ export interface SavedSearchEntry {
 // }
 
 export interface ISettingsServiceState {
-  configVersion: undefined | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+  configVersion: undefined | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13;
   shortcuts: Shortcut[];
   blacklist: {
     mode: BlacklistMode;
@@ -127,7 +127,6 @@ export interface ISettingsServiceState {
   };
   misc: {
     urls: {
-      proxy: string;
       e621: string;
     };
   };

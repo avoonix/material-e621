@@ -147,6 +147,10 @@ class PersistanceService {
       newState.appearance.hideMigrationInfo = defaultSettings.appearance.hideMigrationInfo;
       newState.configVersion = 12;
     }
+    if (newState.configVersion < 13) {
+      delete (newState.misc.urls as { proxy?: string }).proxy;
+      newState.configVersion = 13;
+    }
 
     this.main.$state = newState;
   }

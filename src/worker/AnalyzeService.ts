@@ -1,5 +1,5 @@
 import { expose } from "comlink";
-import type { PostTags, Post } from "./api";
+import type { PostTags, Post, IPostsListArgs } from "./api";
 import type { EnhancedPost } from "./ApiService";
 import { ApiService } from "./ApiService";
 import { BlacklistMode } from "@/services/types";
@@ -24,6 +24,7 @@ export interface IAnalyzeTagsArgs {
   tags: string[];
   postLimit: number;
   baseUrl: string;
+  auth: IPostsListArgs["auth"];
 }
 
 export interface IAnalyzeTagsResult {
@@ -95,12 +96,13 @@ export class AnalyzeService {
     tags: string[],
     postLimit: number,
     baseUrl: string,
+    auth: IPostsListArgs["auth"],
     onProgress: (event: IProgressEvent) => void,
   ) {
     const service = new ApiService();
     const posts: Post[] = [];
     let page = 1;
-    const key = [tags, postLimit].join("");
+    const key = JSON.stringify([tags, postLimit, baseUrl, auth?.login ?? null]);
     log("start fetch");
     if (key && this.cache[key]) {
       posts.push(...this.cache[key]!);
@@ -112,6 +114,7 @@ export class AnalyzeService {
           tags,
           baseUrl,
           page,
+          auth,
         });
         page += 1;
         posts.push(...newPosts);
@@ -136,6 +139,7 @@ export class AnalyzeService {
       args.tags,
       args.postLimit,
       args.baseUrl,
+      args.auth,
       onProgress,
     );
     onProgress({
@@ -164,12 +168,14 @@ export class AnalyzeService {
   async getFavoriteTags(
     username: string,
     baseUrl: string,
+    auth: IPostsListArgs["auth"],
     onProgress: (event: IProgressEvent) => void,
   ): Promise<FavoriteTagsResult> {
     const posts = await this.fetchPostsCached(
       [`fav:${username}`],
       320 * 6,
       baseUrl,
+      auth,
       onProgress,
     );
 

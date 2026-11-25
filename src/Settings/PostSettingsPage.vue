@@ -15,12 +15,12 @@
           <v-switch v-model="posts.goFullscreen" />
         </settings-page-item>
         <settings-page-item title="Limits" select>
-          <v-slider color="accent" class="my-0 mx-3" v-model="posts.postListFetchLimit" thumb-label :min="10" :max="320"
-            label="Posts per page" />
-          <v-slider color="accent" class="my-0 mx-3" v-model="posts.tagFetchLimit" thumb-label :min="10" :max="500"
-            label="Tags" />
-          <v-slider color="accent" class="my-0 mx-3" v-model="posts.sidebarSuggestionLimit" thumb-label :min="0"
-            :max="500" label="Suggestions (sidebar)" />
+          <v-number-input v-model="posts.postListFetchLimit" v-bind="postLimitRanges.postListFetchLimit"
+            variant="outlined" color="accent" label="Posts per page" />
+          <v-number-input v-model="posts.tagFetchLimit" v-bind="postLimitRanges.tagFetchLimit" variant="outlined"
+            color="accent" label="Tags" />
+          <v-number-input v-model="posts.sidebarSuggestionLimit" v-bind="postLimitRanges.sidebarSuggestionLimit"
+            variant="outlined" color="accent" label="Suggestions (sidebar)" />
         </settings-page-item>
         <settings-page-item title="Data saver" select
           description="Viewing posts in fullscreen will still show highest-quality images.">
@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { usePostsStore } from "@/services";
+import { postLimitRanges, usePostsStore } from "@/services";
 import { DataSaverType, FullscreenZoomUiMode } from "@/services/types";
 import { computed, defineComponent } from "vue";
 import AutomaticDataSaverInfo from "./AutomaticDataSaverInfo.vue";

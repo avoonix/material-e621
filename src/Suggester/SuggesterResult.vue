@@ -79,6 +79,7 @@ const analyze = async (username: string) => {
   result.value = await service.getFavoriteTags(
     username,
     urlStore.e621Url,
+    toRaw(account.auth),
     Comlink.proxy((progressEvent) => {
       progress.value = progressEvent;
     }),

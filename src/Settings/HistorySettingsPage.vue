@@ -8,7 +8,7 @@
             @click-entry="openSearch($event)" />
         </settings-page-item>
         <settings-page-item title="Max history length" select>
-          <v-text-field type="number" v-model.number.lazy="maxLength" />
+          <v-number-input v-model="maxLength" v-bind="historyLengthRange" variant="outlined" color="accent" />
         </settings-page-item>
         <settings-page-item title="History" select>
           <history-list :entries="entries" @delete-entry="deleteEntry($event)" @click-entry="openSearch($event)" />
@@ -23,7 +23,7 @@ import SettingsPageTitle from "./SettingsPageTitle.vue";
 import SettingsPageItem from "./SettingsPageItem.vue";
 import HistoryList from "../Tag/HistoryList.vue";
 import { computed, defineComponent } from "vue";
-import { useHistoryStore, useSavedSearchStore } from "@/services";
+import { historyLengthRange, useHistoryStore, useSavedSearchStore } from "@/services";
 import SavedSearchList from "@/Tag/SavedSearchList.vue";
 import { useHead } from "@unhead/vue";
 import { useRouter } from "vue-router";
